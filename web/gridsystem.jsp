@@ -1,20 +1,27 @@
+<%-- 
+    Document   : gridsystem
+    Created on : Sep 19, 2024, 9:34:11 AM
+    Author     : nhatk
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Simple Line Icons - Kaiadmin Bootstrap 5 Admin Dashboard</title>
+    <title>Grid System - Kaiadmin Bootstrap 5 Admin Dashboard</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
     <link
       rel="icon"
-      href="../assets/img/kaiadmin/favicon.ico"
+      href="assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -25,7 +32,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["../assets/css/fonts.min.css"],
+          urls: ["assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -34,12 +41,12 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="assets/css/demo.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -48,9 +55,9 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="../index.html" class="logo">
+            <a href="../index.jsp" class="logo">
               <img
-                src="../assets/img/kaiadmin/logo_light.svg"
+                src="assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
@@ -83,7 +90,6 @@
                   <i class="fas fa-home"></i>
                   <p>Dashboard</p>
                 </a>
-                
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -100,47 +106,47 @@
                 <div class="collapse show" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../components/avatars.html">
+                      <a href="../components/avatars.jsp">
                         <span class="sub-item">Avatars</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/buttons.html">
+                      <a href="../components/buttons.jsp">
                         <span class="sub-item">Buttons</span>
                       </a>
                     </li>
-                    <li>
-                      <a href="../components/gridsystem.html">
+                    <li class="active">
+                      <a href="../components/gridsystem.jsp">
                         <span class="sub-item">Grid System</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/panels.html">
+                      <a href="../components/panels.jsp">
                         <span class="sub-item">Panels</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/notifications.html">
+                      <a href="../components/notifications.jsp">
                         <span class="sub-item">Notifications</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/sweetalert.html">
+                      <a href="../components/sweetalert.jsp">
                         <span class="sub-item">Sweet Alert</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/font-awesome-icons.html">
+                      <a href="../components/font-awesome-icons.jsp">
                         <span class="sub-item">Font Awesome Icons</span>
                       </a>
                     </li>
-                    <li class="active">
-                      <a href="../components/simple-line-icons.html">
+                    <li>
+                      <a href="../components/simple-line-icons.jsp">
                         <span class="sub-item">Simple Line Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/typography.html">
+                      <a href="../components/typography.jsp">
                         <span class="sub-item">Typography</span>
                       </a>
                     </li>
@@ -156,12 +162,12 @@
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../sidebar-style-2.html">
+                      <a href="../sidebar-style-2.jsp">
                         <span class="sub-item">Sidebar Style 2</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../icon-menu.html">
+                      <a href="../icon-menu.jsp">
                         <span class="sub-item">Icon Menu</span>
                       </a>
                     </li>
@@ -177,7 +183,7 @@
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../forms/forms.html">
+                      <a href="../forms/forms.jsp">
                         <span class="sub-item">Basic Form</span>
                       </a>
                     </li>
@@ -193,12 +199,12 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../tables/tables.html">
+                      <a href="../tables/tables.jsp">
                         <span class="sub-item">Basic Table</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../tables/datatables.html">
+                      <a href="../tables/datatables.jsp">
                         <span class="sub-item">Datatables</span>
                       </a>
                     </li>
@@ -214,12 +220,12 @@
                 <div class="collapse" id="maps">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../maps/googlemaps.html">
+                      <a href="../maps/googlemaps.jsp">
                         <span class="sub-item">Google Maps</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../maps/jsvectormap.html">
+                      <a href="../maps/jsvectormap.jsp">
                         <span class="sub-item">Jsvectormap</span>
                       </a>
                     </li>
@@ -235,12 +241,12 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../charts/charts.html">
+                      <a href="../charts/charts.jsp">
                         <span class="sub-item">Chart Js</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../charts/sparkline.html">
+                      <a href="../charts/sparkline.jsp">
                         <span class="sub-item">Sparkline</span>
                       </a>
                     </li>
@@ -248,14 +254,14 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a href="../widgets.html">
+                <a href="../widgets.jsp">
                   <i class="fas fa-desktop"></i>
                   <p>Widgets</p>
                   <span class="badge badge-success">4</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../../../documentation/index.html">
+                <a href="../../../documentation/index.jsp">
                   <i class="fas fa-file"></i>
                   <p>Documentation</p>
                   <span class="badge badge-secondary">1</span>
@@ -323,9 +329,9 @@
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="../index.html" class="logo">
+              <a href="../index.jsp" class="logo">
                 <img
-                  src="../assets/img/kaiadmin/logo_light.svg"
+                  src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -423,7 +429,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/jm_denis.jpg"
+                                src="assets/img/jm_denis.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -436,7 +442,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/chadengle.jpg"
+                                src="assets/img/chadengle.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -449,7 +455,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/mlane.jpg"
+                                src="assets/img/mlane.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -464,7 +470,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/talha.jpg"
+                                src="assets/img/talha.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -532,7 +538,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/profile2.jpg"
+                                src="assets/img/profile2.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -650,7 +656,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="../assets/img/profile.jpg"
+                        src="assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -666,7 +672,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="../assets/img/profile.jpg"
+                              src="assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -675,7 +681,7 @@
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
-                              href="profile.html"
+                              href="profile.jsp"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >
@@ -704,7 +710,7 @@
         <div class="container">
           <div class="page-inner">
             <div class="page-header">
-              <h3 class="fw-bold mb-3">Icons</h3>
+              <h3 class="fw-bold mb-3">Grid System</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="#">
@@ -721,32 +727,269 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Line Awesome</a>
+                  <a href="#">Grid System</a>
                 </li>
               </ul>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Simple Line Icons</div>
-                    <div class="card-category">
-                      Simple and Minimal Line Icons from
-                      <a
-                        class="link"
-                        href="https://github.com/thesabbir/simple-line-icons"
-                        >Simple Line Icons</a
-                      >
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mt-3">XL Grid</h4>
+                <div class="row row-demo-grid">
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-xl-4</code></div>
                     </div>
                   </div>
-                  <div class="card-body">
-                    <div id="row-demo-icon" class="row"></div>
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-xl-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-xl-4</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">LG Grid (Collapsed at 992px)</h4>
+                <div class="row row-demo-grid">
+                  <div class="col-lg-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-lg-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-lg-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-lg-4</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">MD Grid (Collapsed at 768px)</h4>
+                <div class="row row-demo-grid">
+                  <div class="col-md-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-md-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-md-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-md-4</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">SM Grid (Collapsed at 576px)</h4>
+                <div class="row row-demo-grid">
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-sm-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-sm-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-sm-4</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">XS Grid</h4>
+                <div class="row row-demo-grid">
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-4</code></div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body"><code>.col-4</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">Equality Width</h4>
+                <div class="row row-demo-grid">
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row row-demo-grid">
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">Setting one column width</h4>
+                <div class="row row-demo-grid">
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="card-body"><code>col-6</code></div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body"><code>col</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">
+                  Mix and Match (Showing different sizes on different screens)
+                </h4>
+                <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+                <div class="row row-demo-grid">
+                  <div class="col-12 col-md-8">
+                    <div class="card">
+                      <div class="card-body"><code>col-12 col-md-8</code></div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="card">
+                      <div class="card-body"><code>col-6 col-md-6</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+                <div class="row row-demo-grid">
+                  <div class="col-sm-6 col-md-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <code>col-sm-6 col-md-3</code>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <code>col-sm-6 col-md-3</code>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <code>col-sm-6 col-md-3</code>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <code>col-sm-6 col-md-3</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columns are always 50% wide, on mobile and desktop -->
+                <div class="row row-demo-grid">
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="card-body"><code>col-6</code></div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="card-body"><code>col-6</code></div>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 class="card-title">
+                  Offset Grid (Adding some space when needed)
+                </h4>
+                <div class="row row-demo-grid">
+                  <div class="col-md-4">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <code>col-md-4</code>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 ms-auto">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <code>col-md-4 ms-auto</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row row-demo-grid">
+                  <div class="col-md-4 ms-auto me-auto">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <code>col-md-4 ms-auto me-auto</code>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 ms-auto me-auto">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <code>col-md-4 ms-auto me-auto</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row row-demo-grid">
+                  <div class="col-md-6 ms-auto me-auto">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <code>col-md-6 ms-auto me-auto</code>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
         <footer class="footer">
           <div class="container-fluid d-flex justify-content-between">
@@ -973,212 +1216,41 @@
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
-    <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
 
     <!-- jQuery Scrollbar -->
-    <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Moment JS -->
+    <script src="assets/js/plugin/moment/moment.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
     <!-- Kaiadmin JS -->
-    <script src="../assets/js/kaiadmin.min.js"></script>
+    <script src="assets/js/kaiadmin.min.js"></script>
+
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="../assets/js/setting-demo2.js"></script>
-    <script>
-      var iconClass = [
-        "icon-user",
-        "icon-people",
-        "icon-user-female",
-        "icon-user-follow",
-        "icon-user-following",
-        "icon-user-unfollow",
-        "icon-login",
-        "icon-logout",
-        "icon-emotsmile",
-        "icon-phone",
-        "icon-call-end",
-        "icon-call-in",
-        "icon-call-out",
-        "icon-map",
-        "icon-location-pin",
-        "icon-direction",
-        "icon-directions",
-        "icon-compass",
-        "icon-layers",
-        "icon-menu",
-        "icon-list",
-        "icon-options-vertical",
-        "icon-options",
-        "icon-arrow-down",
-        "icon-arrow-left",
-        "icon-arrow-right",
-        "icon-arrow-up",
-        "icon-arrow-up-circle",
-        "icon-arrow-left-circle",
-        "icon-arrow-right-circle",
-        "icon-arrow-down-circle",
-        "icon-check",
-        "icon-clock",
-        "icon-plus",
-        "icon-close",
-        "icon-trophy",
-        "icon-screen-smartphone",
-        "icon-screen-desktop",
-        "icon-plane",
-        "icon-notebook",
-        "icon-mustache",
-        "icon-mouse",
-        "icon-magnet",
-        "icon-energy",
-        "icon-disc",
-        "icon-cursor",
-        "icon-cursor-move",
-        "icon-crop",
-        "icon-chemistry",
-        "icon-speedometer",
-        "icon-shield",
-        "icon-screen-tablet",
-        "icon-magic-wand",
-        "icon-hourglass",
-        "icon-graduation",
-        "icon-ghost",
-        "icon-game-controller",
-        "icon-fire",
-        "icon-eyeglass",
-        "icon-envelope-open",
-        "icon-envelope-letter",
-        "icon-bell",
-        "icon-badge",
-        "icon-anchor",
-        "icon-wallet",
-        "icon-vector",
-        "icon-speech",
-        "icon-puzzle",
-        "icon-printer",
-        "icon-present",
-        "icon-playlist",
-        "icon-pin",
-        "icon-picture",
-        "icon-handbag",
-        "icon-globe-alt",
-        "icon-globe",
-        "icon-folder-alt",
-        "icon-folder",
-        "icon-film",
-        "icon-feed",
-        "icon-drop",
-        "icon-drawer",
-        "icon-docs",
-        "icon-doc",
-        "icon-diamond",
-        "icon-cup",
-        "icon-calculator",
-        "icon-bubbles",
-        "icon-briefcase",
-        "icon-book-open",
-        "icon-basket-loaded",
-        "icon-basket",
-        "icon-bag",
-        "icon-action-undo",
-        "icon-action-redo",
-        "icon-wrench",
-        "icon-umbrella",
-        "icon-trash",
-        "icon-tag",
-        "icon-support",
-        "icon-frame",
-        "icon-size-fullscreen",
-        "icon-size-actual",
-        "icon-shuffle",
-        "icon-share-alt",
-        "icon-share",
-        "icon-rocket",
-        "icon-question",
-        "icon-pie-chart",
-        "icon-pencil",
-        "icon-note",
-        "icon-loop",
-        "icon-home",
-        "icon-grid",
-        "icon-graph",
-        "icon-microphone",
-        "icon-music-tone-alt",
-        "icon-music-tone",
-        "icon-earphones-alt",
-        "icon-earphones",
-        "icon-equalizer",
-        "icon-like",
-        "icon-dislike",
-        "icon-control-start",
-        "icon-control-rewind",
-        "icon-control-play",
-        "icon-control-pause",
-        "icon-control-forward",
-        "icon-control-end",
-        "icon-volume-1",
-        "icon-volume-2",
-        "icon-volume-off",
-        "icon-calendar",
-        "icon-bulb",
-        "icon-chart",
-        "icon-ban",
-        "icon-bubble",
-        "icon-camrecorder",
-        "icon-camera",
-        "icon-cloud-download",
-        "icon-cloud-upload",
-        "icon-envelope",
-        "icon-eye",
-        "icon-flag",
-        "icon-heart",
-        "icon-information",
-        "icon-key",
-        "icon-link",
-        "icon-lock",
-        "icon-lock-open",
-        "icon-magnifier",
-        "icon-magnifier-add",
-        "icon-magnifier-remove",
-        "icon-paper-clip",
-        "icon-paper-plane",
-        "icon-power",
-        "icon-refresh",
-        "icon-reload",
-        "icon-settings",
-        "icon-star",
-        "icon-symbol-female",
-        "icon-symbol-male",
-        "icon-target",
-        "icon-credit-card",
-        "icon-paypal",
-        "icon-social-tumblr",
-        "icon-social-twitter",
-        "icon-social-facebook",
-        "icon-social-instagram",
-        "icon-social-linkedin",
-        "icon-social-pinterest",
-        "icon-social-github",
-        "icon-social-gplus",
-        "icon-social-reddit",
-        "icon-social-skype",
-        "icon-social-dribbble",
-        "icon-social-behance",
-        "icon-social-foursqare",
-        "icon-social-soundcloud",
-        "icon-social-spotify",
-        "icon-social-stumbleupon",
-        "icon-social-youtube",
-        "icon-social-dropbox",
-      ];
-      var rowDemoIcon = "#row-demo-icon";
-      for (i = 0; i < iconClass.length; i++) {
-        $(rowDemoIcon).append(
-          '<div class="col-md-3"> <div class="demo-icon"> <div class="icon-preview"><i class="' +
-            iconClass[i] +
-            '"></i></div> <div class="icon-class">' +
-            iconClass[i] +
-            "</div> </div> </div>"
-        );
-      }
-    </script>
+    <script src="assets/js/setting-demo2.js"></script>
   </body>
 </html>

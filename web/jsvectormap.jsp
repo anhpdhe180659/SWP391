@@ -1,20 +1,27 @@
+<%-- 
+    Document   : jsvectormap
+    Created on : Sep 19, 2024, 9:35:08 AM
+    Author     : nhatk
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Charts - Kaiadmin Bootstrap 5 Admin Dashboard</title>
+    <title>Jsvectormap - Kaiadmin Bootstrap 5 Admin Dashboard</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
     <link
       rel="icon"
-      href="../assets/img/kaiadmin/favicon.ico"
+      href="assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -25,7 +32,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["../assets/css/fonts.min.css"],
+          urls: ["assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -34,12 +41,12 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="assets/css/demo.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -48,9 +55,9 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="../index.html" class="logo">
+            <a href="../index.jsp" class="logo">
               <img
-                src="../assets/img/kaiadmin/logo_light.svg"
+                src="assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
@@ -99,47 +106,47 @@
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../components/avatars.html">
+                      <a href="../components/avatars.jsp">
                         <span class="sub-item">Avatars</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/buttons.html">
+                      <a href="../components/buttons.jsp">
                         <span class="sub-item">Buttons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/gridsystem.html">
+                      <a href="../components/gridsystem.jsp">
                         <span class="sub-item">Grid System</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/panels.html">
+                      <a href="../components/panels.jsp">
                         <span class="sub-item">Panels</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/notifications.html">
+                      <a href="../components/notifications.jsp">
                         <span class="sub-item">Notifications</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/sweetalert.html">
+                      <a href="../components/sweetalert.jsp">
                         <span class="sub-item">Sweet Alert</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/font-awesome-icons.html">
+                      <a href="../components/font-awesome-icons.jsp">
                         <span class="sub-item">Font Awesome Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/simple-line-icons.html">
+                      <a href="../components/simple-line-icons.jsp">
                         <span class="sub-item">Simple Line Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/typography.html">
+                      <a href="../components/typography.jsp">
                         <span class="sub-item">Typography</span>
                       </a>
                     </li>
@@ -155,12 +162,12 @@
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../sidebar-style-2.html">
+                      <a href="../sidebar-style-2.jsp">
                         <span class="sub-item">Sidebar Style 2</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../icon-menu.html">
+                      <a href="../icon-menu.jsp">
                         <span class="sub-item">Icon Menu</span>
                       </a>
                     </li>
@@ -176,7 +183,7 @@
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../forms/forms.html">
+                      <a href="../forms/forms.jsp">
                         <span class="sub-item">Basic Form</span>
                       </a>
                     </li>
@@ -192,54 +199,54 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../tables/tables.html">
+                      <a href="../tables/tables.jsp">
                         <span class="sub-item">Basic Table</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../tables/datatables.html">
+                      <a href="../tables/datatables.jsp">
                         <span class="sub-item">Datatables</span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active submenu">
                 <a data-bs-toggle="collapse" href="#maps">
                   <i class="fas fa-map-marker-alt"></i>
                   <p>Maps</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="maps">
+                <div class="collapse show" id="maps">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../maps/googlemaps.html">
+                      <a href="../maps/googlemaps.jsp">
                         <span class="sub-item">Google Maps</span>
                       </a>
                     </li>
-                    <li>
-                      <a href="../maps/jsvectormap.html">
+                    <li class="active">
+                      <a href="../maps/jsvectormap.jsp">
                         <span class="sub-item">Jsvectormap</span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
-              <li class="nav-item active submenu">
+              <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#charts">
                   <i class="far fa-chart-bar"></i>
                   <p>Charts</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse show" id="charts">
+                <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
-                    <li class="active">
-                      <a href="../charts/charts.html">
+                    <li>
+                      <a href="../charts/charts.jsp">
                         <span class="sub-item">Chart Js</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../charts/sparkline.html">
+                      <a href="../charts/sparkline.jsp">
                         <span class="sub-item">Sparkline</span>
                       </a>
                     </li>
@@ -247,14 +254,14 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a href="../widgets.html">
+                <a href="../widgets.jsp">
                   <i class="fas fa-desktop"></i>
                   <p>Widgets</p>
                   <span class="badge badge-success">4</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../../../documentation/index.html">
+                <a href="../../../documentation/index.jsp">
                   <i class="fas fa-file"></i>
                   <p>Documentation</p>
                   <span class="badge badge-secondary">1</span>
@@ -322,9 +329,9 @@
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="../index.html" class="logo">
+              <a href="../index.jsp" class="logo">
                 <img
-                  src="../assets/img/kaiadmin/logo_light.svg"
+                  src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -422,7 +429,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/jm_denis.jpg"
+                                src="assets/img/jm_denis.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -435,7 +442,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/chadengle.jpg"
+                                src="assets/img/chadengle.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -448,7 +455,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/mlane.jpg"
+                                src="assets/img/mlane.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -463,7 +470,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/talha.jpg"
+                                src="assets/img/talha.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -531,7 +538,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/profile2.jpg"
+                                src="assets/img/profile2.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -649,7 +656,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="../assets/img/profile.jpg"
+                        src="assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -665,7 +672,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="../assets/img/profile.jpg"
+                              src="assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -674,7 +681,7 @@
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
-                              href="profile.html"
+                              href="profile.jsp"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >
@@ -701,134 +708,30 @@
         </div>
 
         <div class="container">
-          <div class="page-inner">
-            <h3 class="fw-bold mb-3">Chart.js</h3>
-            <div class="page-category">
-              Simple yet flexible JavaScript charting for designers &
-              developers. Please checkout their
-              <a href="http://www.chartjs.org/" target="_blank"
-                >full documentation</a
-              >.
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Line Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas id="lineChart"></canvas>
-                    </div>
-                  </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-transparent">
+                <div class="card-header">
+                  <h4 class="card-title text-center">Vector Maps</h4>
+                  <p class="card-category text-center">
+                    We use the
+                    <a
+                      href="https://github.com/themustafaomar/jsvectormap"
+                      target="_blank"
+                      >Jsvectormap</a
+                    >
+                    plugin to create vector maps.
+                  </p>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Bar Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas id="barChart"></canvas>
+                <div class="card-body">
+                  <div class="col-md-10 ms-auto me-auto">
+                    <div class="mapcontainer">
+                      <div
+                        id="world-map"
+                        class="w-100"
+                        style="height: 450px"
+                      ></div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Pie Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas
-                        id="pieChart"
-                        style="width: 50%; height: 50%"
-                      ></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Doughnut Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas
-                        id="doughnutChart"
-                        style="width: 50%; height: 50%"
-                      ></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Radar Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas id="radarChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Bubble Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas id="bubbleChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Multiple Line Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas id="multipleLineChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Multiple Bar Chart</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container">
-                      <canvas id="multipleBarChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Chart with HTML Legends</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="card-sub">
-                      Sometimes you need a very complex legend. In these cases,
-                      it makes sense to generate an HTML legend. Charts provide
-                      a generateLegend() method on their prototype that returns
-                      an HTML string for the legend.
-                    </div>
-                    <div class="chart-container">
-                      <canvas id="htmlLegendsChart"></canvas>
-                    </div>
-                    <div id="myChartLegend"></div>
                   </div>
                 </div>
               </div>
@@ -1061,623 +964,79 @@
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
-    <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <!-- Chart JS -->
-    <script src="../assets/js/plugin/chart.js/chart.min.js"></script>
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+    <!-- jsvectormap -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
     <!-- jQuery Scrollbar -->
-    <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Kaiadmin JS -->
-    <script src="../assets/js/kaiadmin.min.js"></script>
+    <script src="assets/js/kaiadmin.min.js"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="../assets/js/setting-demo2.js"></script>
+    <script src="assets/js/setting-demo2.js"></script>
     <script>
-      var lineChart = document.getElementById("lineChart").getContext("2d"),
-        barChart = document.getElementById("barChart").getContext("2d"),
-        pieChart = document.getElementById("pieChart").getContext("2d"),
-        doughnutChart = document
-          .getElementById("doughnutChart")
-          .getContext("2d"),
-        radarChart = document.getElementById("radarChart").getContext("2d"),
-        bubbleChart = document.getElementById("bubbleChart").getContext("2d"),
-        multipleLineChart = document
-          .getElementById("multipleLineChart")
-          .getContext("2d"),
-        multipleBarChart = document
-          .getElementById("multipleBarChart")
-          .getContext("2d"),
-        htmlLegendsChart = document
-          .getElementById("htmlLegendsChart")
-          .getContext("2d");
-
-      var myLineChart = new Chart(lineChart, {
-        type: "line",
-        data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "Active Users",
-              borderColor: "#1d7af3",
-              pointBorderColor: "#FFF",
-              pointBackgroundColor: "#1d7af3",
-              pointBorderWidth: 2,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 1,
-              pointRadius: 4,
-              backgroundColor: "transparent",
-              fill: true,
-              borderWidth: 2,
-              data: [
-                542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 900,
-              ],
-            },
-          ],
+      var world_map = new jsVectorMap({
+        selector: "#world-map",
+        map: "world",
+        zoomOnScroll: false,
+        regionStyle: {
+          hover: {
+            fill: "#435ebe",
+          },
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "bottom",
-            labels: {
-              padding: 10,
-              fontColor: "#1d7af3",
+        markers: [
+          {
+            name: "Indonesia",
+            coords: [-6.229728, 106.6894311],
+            style: {
+              fill: "#435ebe",
             },
           },
-          tooltips: {
-            bodySpacing: 4,
-            mode: "nearest",
-            intersect: 0,
-            position: "nearest",
-            xPadding: 10,
-            yPadding: 10,
-            caretPadding: 10,
+          {
+            name: "United States",
+            coords: [38.8936708, -77.1546604],
+            style: {
+              fill: "#28ab55",
+            },
           },
-          layout: {
-            padding: { left: 15, right: 15, top: 15, bottom: 15 },
+          {
+            name: "Russia",
+            coords: [55.5807481, 36.825129],
+            style: {
+              fill: "#f3616d",
+            },
           },
+          {
+            name: "China",
+            coords: [39.9385466, 116.1172735],
+          },
+          {
+            name: "United Kingdom",
+            coords: [51.5285582, -0.2416812],
+          },
+          {
+            name: "India",
+            coords: [26.8851417, 75.6504721],
+          },
+          {
+            name: "Australia",
+            coords: [-35.2813046, 149.124822],
+          },
+          {
+            name: "Brazil",
+            coords: [-22.9140693, -43.5860681],
+          },
+          {
+            name: "Egypt",
+            coords: [26.834955, 26.3823725],
+          },
+        ],
+        onRegionTooltipShow(event, tooltip) {
+          tooltip.css({ backgroundColor: "#435ebe" });
         },
       });
-
-      var myBarChart = new Chart(barChart, {
-        type: "bar",
-        data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "Sales",
-              backgroundColor: "rgb(23, 125, 255)",
-              borderColor: "rgb(23, 125, 255)",
-              data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-        },
-      });
-
-      var myPieChart = new Chart(pieChart, {
-        type: "pie",
-        data: {
-          datasets: [
-            {
-              data: [50, 35, 15],
-              backgroundColor: ["#1d7af3", "#f3545d", "#fdaf4b"],
-              borderWidth: 0,
-            },
-          ],
-          labels: ["New Visitors", "Subscribers", "Active Users"],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "bottom",
-            labels: {
-              fontColor: "rgb(154, 154, 154)",
-              fontSize: 11,
-              usePointStyle: true,
-              padding: 20,
-            },
-          },
-          pieceLabel: {
-            render: "percentage",
-            fontColor: "white",
-            fontSize: 14,
-          },
-          tooltips: false,
-          layout: {
-            padding: {
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: 20,
-            },
-          },
-        },
-      });
-
-      var myDoughnutChart = new Chart(doughnutChart, {
-        type: "doughnut",
-        data: {
-          datasets: [
-            {
-              data: [10, 20, 30],
-              backgroundColor: ["#f3545d", "#fdaf4b", "#1d7af3"],
-            },
-          ],
-
-          labels: ["Red", "Yellow", "Blue"],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "bottom",
-          },
-          layout: {
-            padding: {
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: 20,
-            },
-          },
-        },
-      });
-
-      var myRadarChart = new Chart(radarChart, {
-        type: "radar",
-        data: {
-          labels: ["Running", "Swimming", "Eating", "Cycling", "Jumping"],
-          datasets: [
-            {
-              data: [20, 10, 30, 2, 30],
-              borderColor: "#1d7af3",
-              backgroundColor: "rgba(29, 122, 243, 0.25)",
-              pointBackgroundColor: "#1d7af3",
-              pointHoverRadius: 4,
-              pointRadius: 3,
-              label: "Team 1",
-            },
-            {
-              data: [10, 20, 15, 30, 22],
-              borderColor: "#716aca",
-              backgroundColor: "rgba(113, 106, 202, 0.25)",
-              pointBackgroundColor: "#716aca",
-              pointHoverRadius: 4,
-              pointRadius: 3,
-              label: "Team 2",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "bottom",
-          },
-        },
-      });
-
-      var myBubbleChart = new Chart(bubbleChart, {
-        type: "bubble",
-        data: {
-          datasets: [
-            {
-              label: "Car",
-              data: [
-                { x: 25, y: 17, r: 25 },
-                { x: 30, y: 25, r: 28 },
-                { x: 35, y: 30, r: 8 },
-              ],
-              backgroundColor: "#716aca",
-            },
-            {
-              label: "Motorcycles",
-              data: [
-                { x: 10, y: 17, r: 20 },
-                { x: 30, y: 10, r: 7 },
-                { x: 35, y: 20, r: 10 },
-              ],
-              backgroundColor: "#1d7af3",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "bottom",
-          },
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-            xAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-        },
-      });
-
-      var myMultipleLineChart = new Chart(multipleLineChart, {
-        type: "line",
-        data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "Python",
-              borderColor: "#1d7af3",
-              pointBorderColor: "#FFF",
-              pointBackgroundColor: "#1d7af3",
-              pointBorderWidth: 2,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 1,
-              pointRadius: 4,
-              backgroundColor: "transparent",
-              fill: true,
-              borderWidth: 2,
-              data: [30, 45, 45, 68, 69, 90, 100, 158, 177, 200, 245, 256],
-            },
-            {
-              label: "PHP",
-              borderColor: "#59d05d",
-              pointBorderColor: "#FFF",
-              pointBackgroundColor: "#59d05d",
-              pointBorderWidth: 2,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 1,
-              pointRadius: 4,
-              backgroundColor: "transparent",
-              fill: true,
-              borderWidth: 2,
-              data: [10, 20, 55, 75, 80, 48, 59, 55, 23, 107, 60, 87],
-            },
-            {
-              label: "Ruby",
-              borderColor: "#f3545d",
-              pointBorderColor: "#FFF",
-              pointBackgroundColor: "#f3545d",
-              pointBorderWidth: 2,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 1,
-              pointRadius: 4,
-              backgroundColor: "transparent",
-              fill: true,
-              borderWidth: 2,
-              data: [10, 30, 58, 79, 90, 105, 117, 160, 185, 210, 185, 194],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "top",
-          },
-          tooltips: {
-            bodySpacing: 4,
-            mode: "nearest",
-            intersect: 0,
-            position: "nearest",
-            xPadding: 10,
-            yPadding: 10,
-            caretPadding: 10,
-          },
-          layout: {
-            padding: { left: 15, right: 15, top: 15, bottom: 15 },
-          },
-        },
-      });
-
-      var myMultipleBarChart = new Chart(multipleBarChart, {
-        type: "bar",
-        data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "First time visitors",
-              backgroundColor: "#59d05d",
-              borderColor: "#59d05d",
-              data: [95, 100, 112, 101, 144, 159, 178, 156, 188, 190, 210, 245],
-            },
-            {
-              label: "Visitors",
-              backgroundColor: "#fdaf4b",
-              borderColor: "#fdaf4b",
-              data: [
-                145, 256, 244, 233, 210, 279, 287, 253, 287, 299, 312, 356,
-              ],
-            },
-            {
-              label: "Pageview",
-              backgroundColor: "#177dff",
-              borderColor: "#177dff",
-              data: [
-                185, 279, 273, 287, 234, 312, 322, 286, 301, 320, 346, 399,
-              ],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            position: "bottom",
-          },
-          title: {
-            display: true,
-            text: "Traffic Stats",
-          },
-          tooltips: {
-            mode: "index",
-            intersect: false,
-          },
-          responsive: true,
-          scales: {
-            xAxes: [
-              {
-                stacked: true,
-              },
-            ],
-            yAxes: [
-              {
-                stacked: true,
-              },
-            ],
-          },
-        },
-      });
-
-      // Chart with HTML Legends
-
-      var gradientStroke = htmlLegendsChart.createLinearGradient(
-        500,
-        0,
-        100,
-        0
-      );
-      gradientStroke.addColorStop(0, "#177dff");
-      gradientStroke.addColorStop(1, "#80b6f4");
-
-      var gradientFill = htmlLegendsChart.createLinearGradient(500, 0, 100, 0);
-      gradientFill.addColorStop(0, "rgba(23, 125, 255, 0.7)");
-      gradientFill.addColorStop(1, "rgba(128, 182, 244, 0.3)");
-
-      var gradientStroke2 = htmlLegendsChart.createLinearGradient(
-        500,
-        0,
-        100,
-        0
-      );
-      gradientStroke2.addColorStop(0, "#f3545d");
-      gradientStroke2.addColorStop(1, "#ff8990");
-
-      var gradientFill2 = htmlLegendsChart.createLinearGradient(500, 0, 100, 0);
-      gradientFill2.addColorStop(0, "rgba(243, 84, 93, 0.7)");
-      gradientFill2.addColorStop(1, "rgba(255, 137, 144, 0.3)");
-
-      var gradientStroke3 = htmlLegendsChart.createLinearGradient(
-        500,
-        0,
-        100,
-        0
-      );
-      gradientStroke3.addColorStop(0, "#fdaf4b");
-      gradientStroke3.addColorStop(1, "#ffc478");
-
-      var gradientFill3 = htmlLegendsChart.createLinearGradient(500, 0, 100, 0);
-      gradientFill3.addColorStop(0, "rgba(253, 175, 75, 0.7)");
-      gradientFill3.addColorStop(1, "rgba(255, 196, 120, 0.3)");
-
-      var myHtmlLegendsChart = new Chart(htmlLegendsChart, {
-        type: "line",
-        data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "Subscribers",
-              borderColor: gradientStroke2,
-              pointBackgroundColor: gradientStroke2,
-              pointRadius: 0,
-              backgroundColor: gradientFill2,
-              legendColor: "#f3545d",
-              fill: true,
-              borderWidth: 1,
-              data: [
-                154, 184, 175, 203, 210, 231, 240, 278, 252, 312, 320, 374,
-              ],
-            },
-            {
-              label: "New Visitors",
-              borderColor: gradientStroke3,
-              pointBackgroundColor: gradientStroke3,
-              pointRadius: 0,
-              backgroundColor: gradientFill3,
-              legendColor: "#fdaf4b",
-              fill: true,
-              borderWidth: 1,
-              data: [
-                256, 230, 245, 287, 240, 250, 230, 295, 331, 431, 456, 521,
-              ],
-            },
-            {
-              label: "Active Users",
-              borderColor: gradientStroke,
-              pointBackgroundColor: gradientStroke,
-              pointRadius: 0,
-              backgroundColor: gradientFill,
-              legendColor: "#177dff",
-              fill: true,
-              borderWidth: 1,
-              data: [
-                542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 900,
-              ],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: {
-            display: false,
-          },
-          tooltips: {
-            bodySpacing: 4,
-            mode: "nearest",
-            intersect: 0,
-            position: "nearest",
-            xPadding: 10,
-            yPadding: 10,
-            caretPadding: 10,
-          },
-          layout: {
-            padding: { left: 15, right: 15, top: 15, bottom: 15 },
-          },
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  fontColor: "rgba(0,0,0,0.5)",
-                  fontStyle: "500",
-                  beginAtZero: false,
-                  maxTicksLimit: 5,
-                  padding: 20,
-                },
-                gridLines: {
-                  drawTicks: false,
-                  display: false,
-                },
-              },
-            ],
-            xAxes: [
-              {
-                gridLines: {
-                  zeroLineColor: "transparent",
-                },
-                ticks: {
-                  padding: 20,
-                  fontColor: "rgba(0,0,0,0.5)",
-                  fontStyle: "500",
-                },
-              },
-            ],
-          },
-          legendCallback: function (chart) {
-            var text = [];
-            text.push('<ul class="' + chart.id + '-legend html-legend">');
-            for (var i = 0; i < chart.data.datasets.length; i++) {
-              text.push(
-                '<li><span style="background-color:' +
-                  chart.data.datasets[i].legendColor +
-                  '"></span>'
-              );
-              if (chart.data.datasets[i].label) {
-                text.push(chart.data.datasets[i].label);
-              }
-              text.push("</li>");
-            }
-            text.push("</ul>");
-            return text.join("");
-          },
-        },
-      });
-
-      var myLegendContainer = document.getElementById("myChartLegend");
-
-      // generate HTML legend
-      myLegendContainer.innerHTML = myHtmlLegendsChart.generateLegend();
-
-      // bind onClick event to all LI-tags of the legend
-      var legendItems = myLegendContainer.getElementsByTagName("li");
-      for (var i = 0; i < legendItems.length; i += 1) {
-        legendItems[i].addEventListener("click", legendClickCallback, false);
-      }
     </script>
   </body>
 </html>

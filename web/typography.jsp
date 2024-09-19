@@ -1,20 +1,27 @@
+<%-- 
+    Document   : typography
+    Created on : Sep 19, 2024, 8:58:56 AM
+    Author     : nhatk
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Tables - Kaiadmin Bootstrap 5 Admin Dashboard</title>
+    <title>Typography - Kaiadmin Bootstrap 5 Admin Dashboard</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
     <link
       rel="icon"
-      href="../assets/img/kaiadmin/favicon.ico"
+      href="assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -25,7 +32,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["../assets/css/fonts.min.css"],
+          urls: ["assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -34,12 +41,12 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="assets/css/demo.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -50,7 +57,7 @@
           <div class="logo-header" data-background-color="dark">
             <a href="../index.html" class="logo">
               <img
-                src="../assets/img/kaiadmin/logo_light.svg"
+                src="assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
@@ -82,8 +89,17 @@
                 >
                   <i class="fas fa-home"></i>
                   <p>Dashboard</p>
+                  <span class="caret"></span>
                 </a>
-                
+                <div class="collapse" id="dashboard">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../../demo1/index.html">
+                        <span class="sub-item">Dashboard 1</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -91,13 +107,13 @@
                 </span>
                 <h4 class="text-section">Components</h4>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active submenu">
                 <a data-bs-toggle="collapse" href="#base">
                   <i class="fas fa-layer-group"></i>
                   <p>Base</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="base">
+                <div class="collapse show" id="base">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="../components/avatars.html">
@@ -139,7 +155,7 @@
                         <span class="sub-item">Simple Line Icons</span>
                       </a>
                     </li>
-                    <li>
+                    <li class="active">
                       <a href="../components/typography.html">
                         <span class="sub-item">Typography</span>
                       </a>
@@ -184,15 +200,15 @@
                   </ul>
                 </div>
               </li>
-              <li class="nav-item active submenu">
+              <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#tables">
                   <i class="fas fa-table"></i>
                   <p>Tables</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse show" id="tables">
+                <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
-                    <li class="active">
+                    <li>
                       <a href="../tables/tables.html">
                         <span class="sub-item">Basic Table</span>
                       </a>
@@ -325,7 +341,7 @@
             <div class="logo-header" data-background-color="dark">
               <a href="../index.html" class="logo">
                 <img
-                  src="../assets/img/kaiadmin/logo_light.svg"
+                  src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -423,7 +439,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/jm_denis.jpg"
+                                src="assets/img/jm_denis.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -436,7 +452,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/chadengle.jpg"
+                                src="assets/img/chadengle.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -449,7 +465,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/mlane.jpg"
+                                src="assets/img/mlane.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -464,7 +480,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/talha.jpg"
+                                src="assets/img/talha.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -532,7 +548,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/profile2.jpg"
+                                src="assets/img/profile2.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -650,7 +666,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="../assets/img/profile.jpg"
+                        src="assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -666,7 +682,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="../assets/img/profile.jpg"
+                              src="assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -704,7 +720,7 @@
         <div class="container">
           <div class="page-inner">
             <div class="page-header">
-              <h3 class="fw-bold mb-3">Tables</h3>
+              <h3 class="fw-bold mb-3">Typography</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="#">
@@ -715,443 +731,184 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Tables</a>
+                  <a href="#">Base</a>
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Basic Tables</a>
+                  <a href="#">Typography</a>
                 </li>
               </ul>
             </div>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">Basic Table</div>
+                    <div class="card-title">Card Title</div>
+                    <div class="card-category">Card Category</div>
                   </div>
                   <div class="card-body">
-                    <div class="card-sub">
-                      This is the basic table view of the ready dashboard :
-                    </div>
-                    <table class="table mt-3">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
+                    <table class="table table-typo">
                       <tbody>
                         <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
+                          <td>
+                            <p>Header 1</p>
+                          </td>
+                          <td><span class="h1">h1. Bootstrap heading</span></td>
                         </tr>
                         <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
+                          <td>
+                            <p>Header 2</p>
+                          </td>
+                          <td><span class="h2">h2. Bootstrap heading</span></td>
                         </tr>
                         <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
+                          <td>
+                            <p>Header 3</p>
+                          </td>
+                          <td><span class="h3">h3. Bootstrap heading</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Header 4</p>
+                          </td>
+                          <td><span class="h4">h4. Bootstrap heading</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Header 5</p>
+                          </td>
+                          <td><span class="h5">h5. Bootstrap heading</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Header 5</p>
+                          </td>
+                          <td><span class="h6">h6. Bootstrap heading</span></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Paragraph</p>
+                          </td>
+                          <td>
+                            <p>
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry. Lorem Ipsum has been the
+                              industry's standard dummy text ever since the
+                              1500s, when an unknown printer took a galley of
+                              type and scrambled it to make a type specimen
+                              book.
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Paragraph Lead</p>
+                          </td>
+                          <td>
+                            <p class="lead">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry. Lorem Ipsum has been the
+                              industry's standard dummy text ever since the
+                              1500s, when an unknown printer took a galley of
+                              type and scrambled it to make a type specimen
+                              book.
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Quote</p>
+                          </td>
+                          <td>
+                            <blockquote>
+                              <p class="blockquote blockquote-primary">
+                                "Lorem Ipsum is simply dummy text of the
+                                printing and typesetting industry. Lorem Ipsum
+                                has been the industry's standard dummy text ever
+                                since the 1500s, when an unknown printer took a
+                                galley of type and scrambled it to make a type
+                                specimen book."
+                                <br />
+                                <br />
+                                <small> - Noaa </small>
+                              </p>
+                            </blockquote>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Primary Text</p>
+                          </td>
+                          <td>
+                            <p class="text-primary">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry...
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Info Text</p>
+                          </td>
+                          <td>
+                            <p class="text-info">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry...
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Success Text</p>
+                          </td>
+                          <td>
+                            <p class="text-success">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry...
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Warning Text</p>
+                          </td>
+                          <td>
+                            <p class="text-warning">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry...
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Danger Text</p>
+                          </td>
+                          <td>
+                            <p class="text-danger">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry...
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <p>Muted Text</p>
+                          </td>
+                          <td>
+                            <p class="text-muted">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry...
+                            </p>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                </div>
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Striped Rows</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="card-sub">
-                      Add
-                      <code class="highlighter-rouge">.table-striped</code> to
-                      rows the striped table
-                    </div>
-                    <table class="table table-striped mt-3">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="card-sub">
-                      Add
-                      <code class="#highlighter-rouge"
-                        >.table-striped-bg-*states</code
-                      >
-                      to change background from striped rows
-                    </div>
-                    <table
-                      class="table table-striped table-striped-bg-black mt-3"
-                    >
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table
-                      class="table table-striped table-striped-bg-danger mt-4"
-                    >
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Responsive Table</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="card-sub">
-                      Create responsive tables by wrapping any table with
-                      <code class="highlighter-rouge">.table-responsive</code>
-                      <code class="highlighter-rouge">DIV</code> to make them
-                      scroll horizontally on small devices
-                    </div>
-                    <div class="table-responsive">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Table heading</th>
-                            <th>Table heading</th>
-                            <th>Table heading</th>
-                            <th>Table heading</th>
-                            <th>Table heading</th>
-                            <th>Table heading</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Hoverable Table</div>
-                  </div>
-                  <div class="card-body">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Bordered Table</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="card-sub">
-                      Add
-                      <code class="highlighter-rouge">.table-bordered</code> to
-                      create a bordered table
-                    </div>
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="card-sub">
-                      You can also add
-                      <code class="highlighter-rouge"
-                        >.table-bordered-bd-*states</code
-                      >
-                      to change the border color of the table
-                    </div>
-                    <table
-                      class="table table-bordered table-bordered-bd-warning mt-4"
-                    >
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="card-sub">
-                      It can also add
-                      <code class="highlight-rouge"
-                        >.table-head-bg-*states</code
-                      >
-                      so that the table header has the same color as the border
-                      color of the table
-                    </div>
-                    <table
-                      class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4"
-                    >
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">Table Head States</div>
-                  </div>
-                  <div class="card-body">
-                    <table class="table table-head-bg-success">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table class="table table-head-bg-primary mt-4">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div class="card-footer">
+                    <hr />
+                    Card Footer
                   </div>
                 </div>
               </div>
@@ -1384,44 +1141,42 @@
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
-    <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
 
     <!-- jQuery Scrollbar -->
-    <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Moment JS -->
+    <script src="assets/js/plugin/moment/moment.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
     <!-- Kaiadmin JS -->
-    <script src="../assets/js/kaiadmin.min.js"></script>
+    <script src="assets/js/kaiadmin.min.js"></script>
+
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="../assets/js/setting-demo2.js"></script>
-    <script>
-      $("#displayNotif").on("click", function () {
-        var placementFrom = $("#notify_placement_from option:selected").val();
-        var placementAlign = $("#notify_placement_align option:selected").val();
-        var state = $("#notify_state option:selected").val();
-        var style = $("#notify_style option:selected").val();
-        var content = {};
-
-        content.message =
-          'Turning standard Bootstrap alerts into "notify" like notifications';
-        content.title = "Bootstrap notify";
-        if (style == "withicon") {
-          content.icon = "fa fa-bell";
-        } else {
-          content.icon = "none";
-        }
-        content.url = "index.html";
-        content.target = "_blank";
-
-        $.notify(content, {
-          type: state,
-          placement: {
-            from: placementFrom,
-            align: placementAlign,
-          },
-          time: 1000,
-        });
-      });
-    </script>
+    <script src="assets/js/setting-demo2.js"></script>
   </body>
 </html>
+

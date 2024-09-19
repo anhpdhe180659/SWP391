@@ -1,20 +1,27 @@
+<%-- 
+    Document   : notifications
+    Created on : Sep 19, 2024, 9:35:39 AM
+    Author     : nhatk
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Sweet Alert - Kaiadmin Bootstrap 5 Admin Dashboard</title>
+    <title>Notifications - Kaiadmin Bootstrap 5 Admin Dashboard</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
     <link
       rel="icon"
-      href="../assets/img/kaiadmin/favicon.ico"
+      href="assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -25,7 +32,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["../assets/css/fonts.min.css"],
+          urls: ["assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -34,12 +41,12 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="assets/css/demo.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -48,9 +55,9 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="../index.html" class="logo">
+            <a href="../index.jsp" class="logo">
               <img
-                src="../assets/img/kaiadmin/logo_light.svg"
+                src="assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
@@ -83,7 +90,6 @@
                   <i class="fas fa-home"></i>
                   <p>Dashboard</p>
                 </a>
-                
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -100,47 +106,47 @@
                 <div class="collapse show" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../components/avatars.html">
+                      <a href="../components/avatars.jsp">
                         <span class="sub-item">Avatars</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/buttons.html">
+                      <a href="../components/buttons.jsp">
                         <span class="sub-item">Buttons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/gridsystem.html">
+                      <a href="../components/gridsystem.jsp">
                         <span class="sub-item">Grid System</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/panels.html">
+                      <a href="../components/panels.jsp">
                         <span class="sub-item">Panels</span>
                       </a>
                     </li>
-                    <li>
-                      <a href="../components/notifications.html">
+                    <li class="active">
+                      <a href="../components/notifications.jsp">
                         <span class="sub-item">Notifications</span>
                       </a>
                     </li>
-                    <li class="active">
-                      <a href="../components/sweetalert.html">
+                    <li>
+                      <a href="../components/sweetalert.jsp">
                         <span class="sub-item">Sweet Alert</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/font-awesome-icons.html">
+                      <a href="../components/font-awesome-icons.jsp">
                         <span class="sub-item">Font Awesome Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/simple-line-icons.html">
+                      <a href="../components/simple-line-icons.jsp">
                         <span class="sub-item">Simple Line Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../components/typography.html">
+                      <a href="../components/typography.jsp">
                         <span class="sub-item">Typography</span>
                       </a>
                     </li>
@@ -156,12 +162,12 @@
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../sidebar-style-2.html">
+                      <a href="../sidebar-style-2.jsp">
                         <span class="sub-item">Sidebar Style 2</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../icon-menu.html">
+                      <a href="../icon-menu.jsp">
                         <span class="sub-item">Icon Menu</span>
                       </a>
                     </li>
@@ -177,7 +183,7 @@
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../forms/forms.html">
+                      <a href="../forms/forms.jsp">
                         <span class="sub-item">Basic Form</span>
                       </a>
                     </li>
@@ -193,12 +199,12 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../tables/tables.html">
+                      <a href="../tables/tables.jsp">
                         <span class="sub-item">Basic Table</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../tables/datatables.html">
+                      <a href="../tables/datatables.jsp">
                         <span class="sub-item">Datatables</span>
                       </a>
                     </li>
@@ -214,12 +220,12 @@
                 <div class="collapse" id="maps">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../maps/googlemaps.html">
+                      <a href="../maps/googlemaps.jsp">
                         <span class="sub-item">Google Maps</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../maps/jsvectormap.html">
+                      <a href="../maps/jsvectormap.jsp">
                         <span class="sub-item">Jsvectormap</span>
                       </a>
                     </li>
@@ -235,12 +241,12 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../charts/charts.html">
+                      <a href="../charts/charts.jsp">
                         <span class="sub-item">Chart Js</span>
                       </a>
                     </li>
                     <li>
-                      <a href="../charts/sparkline.html">
+                      <a href="../charts/sparkline.jsp">
                         <span class="sub-item">Sparkline</span>
                       </a>
                     </li>
@@ -248,14 +254,14 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a href="../widgets.html">
+                <a href="../widgets.jsp">
                   <i class="fas fa-desktop"></i>
                   <p>Widgets</p>
                   <span class="badge badge-success">4</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../../../documentation/index.html">
+                <a href="../../../documentation/index.jsp">
                   <i class="fas fa-file"></i>
                   <p>Documentation</p>
                   <span class="badge badge-secondary">1</span>
@@ -323,9 +329,9 @@
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="../index.html" class="logo">
+              <a href="../index.jsp" class="logo">
                 <img
-                  src="../assets/img/kaiadmin/logo_light.svg"
+                  src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -423,7 +429,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/jm_denis.jpg"
+                                src="assets/img/jm_denis.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -436,7 +442,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/chadengle.jpg"
+                                src="assets/img/chadengle.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -449,7 +455,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/mlane.jpg"
+                                src="assets/img/mlane.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -464,7 +470,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/talha.jpg"
+                                src="assets/img/talha.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -532,7 +538,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="../assets/img/profile2.jpg"
+                                src="assets/img/profile2.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -650,7 +656,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="../assets/img/profile.jpg"
+                        src="assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -666,7 +672,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="../assets/img/profile.jpg"
+                              src="assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -675,7 +681,7 @@
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
-                              href="profile.html"
+                              href="profile.jsp"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >
@@ -704,7 +710,7 @@
         <div class="container">
           <div class="page-inner">
             <div class="page-header">
-              <h3 class="fw-bold mb-3">Alert</h3>
+              <h3 class="fw-bold mb-3">Notifications</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="#">
@@ -721,7 +727,7 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Sweet Alert</a>
+                  <a href="#">Notifications</a>
                 </li>
               </ul>
             </div>
@@ -729,155 +735,87 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">Sweet Alert</div>
+                    <div class="card-title">Bootstrap Notify</div>
                     <div class="card-category">
-                      <a href="https://sweetalert.js.org/">SweetAlert</a> makes
-                      popup messages easy and pretty.
+                      Turn standard bootstrap alerts into "growl" like
+                      notifications from
+                      <a
+                        class="link"
+                        href="http://bootstrap-notify.remabledesigns.com/"
+                        >Bootstrap Notify</a
+                      >
                     </div>
                   </div>
                   <div class="card-body">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            Basic alert
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-info"
-                              id="alert_demo_1"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            Alert title and text
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-focus"
-                              id="alert_demo_2"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            Enable <code>warning</code>, <code>error</code>,
-                            <code>success</code>, and <code>info</code> state
-                            icons
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-warning"
-                              id="alert_demo_3_1"
-                            >
-                              Warning
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              id="alert_demo_3_2"
-                            >
-                              Error
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-success"
-                              id="alert_demo_3_3"
-                            >
-                              Success
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-info"
-                              id="alert_demo_3_4"
-                            >
-                              Info
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            Change confirm button text and class
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-success"
-                              id="alert_demo_4"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            Modal window with input field
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-warning"
-                              id="alert_demo_5"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            Closes the modal after a certain amount of time
-                            (specified in ms)
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              id="alert_demo_6"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            A warning message, with a function attached to the
-                            "Confirm" Button
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-success"
-                              id="alert_demo_7"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 40%; vertical-align: middle">
-                            By passing a parameter, you can execute something
-                            else for cancel
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              id="alert_demo_8"
-                            >
-                              Show me
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="form">
+                      <div class="form-group form-show-notify row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 text-end">
+                          <label>Placement :</label>
+                        </div>
+                        <div class="col-lg-4 col-md-9 col-sm-8">
+                          <select
+                            class="form-select input-fixed"
+                            id="notify_placement_from"
+                          >
+                            <option value="top">Top</option>
+                            <option value="bottom">Bottom</option>
+                          </select>
+                          <select
+                            class="form-select input-fixed"
+                            id="notify_placement_align"
+                          >
+                            <option value="left">Left</option>
+                            <option value="right" selected="">Right</option>
+                            <option value="center">Center</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group form-show-notify row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 text-end">
+                          <label>State :</label>
+                        </div>
+                        <div class="col-lg-4 col-md-9 col-sm-8">
+                          <select
+                            class="form-select input-fixed"
+                            id="notify_state"
+                          >
+                            <option value="default">Default</option>
+                            <option value="primary">Primary</option>
+                            <option value="secondary">Secondary</option>
+                            <option value="info">Info</option>
+                            <option value="success">Success</option>
+                            <option value="warning">Warning</option>
+                            <option value="danger">Danger</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group form-show-notify row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 text-end">
+                          <label>Style :</label>
+                        </div>
+                        <div class="col-lg-4 col-md-9 col-sm-8">
+                          <select
+                            class="form-select input-fixed"
+                            id="notify_style"
+                          >
+                            <option value="plain">Plain</option>
+                            <option value="withicon">With Icon</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="form">
+                      <div class="form-group from-show-notify row">
+                        <div class="col-lg-3 col-md-3 col-sm-12"></div>
+                        <div class="col-lg-4 col-md-9 col-sm-12">
+                          <button id="displayNotif" class="btn btn-success">
+                            Display
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1110,225 +1048,47 @@
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
-    <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <!-- Sweet Alert -->
-    <script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
     <!-- jQuery Scrollbar -->
-    <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Kaiadmin JS -->
-    <script src="../assets/js/kaiadmin.min.js"></script>
+    <script src="assets/js/kaiadmin.min.js"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="../assets/js/setting-demo2.js"></script>
+    <script src="assets/js/setting-demo2.js"></script>
     <script>
-      //== Class definition
-      var SweetAlert2Demo = (function () {
-        //== Demos
-        var initDemos = function () {
-          //== Sweetalert Demo 1
-          $("#alert_demo_1").click(function (e) {
-            swal("Good job!", {
-              buttons: {
-                confirm: {
-                  className: "btn btn-success",
-                },
-              },
-            });
-          });
+      $("#displayNotif").on("click", function () {
+        var placementFrom = $("#notify_placement_from option:selected").val();
+        var placementAlign = $("#notify_placement_align option:selected").val();
+        var state = $("#notify_state option:selected").val();
+        var style = $("#notify_style option:selected").val();
+        var content = {};
 
-          //== Sweetalert Demo 2
-          $("#alert_demo_2").click(function (e) {
-            swal("Here's the title!", "...and here's the text!", {
-              buttons: {
-                confirm: {
-                  className: "btn btn-success",
-                },
-              },
-            });
-          });
+        content.message =
+          'Turning standard Bootstrap alerts into "notify" like notifications';
+        content.title = "Bootstrap notify";
+        if (style == "withicon") {
+          content.icon = "fa fa-bell";
+        } else {
+          content.icon = "none";
+        }
+        content.url = "index.jsp";
+        content.target = "_blank";
 
-          //== Sweetalert Demo 3
-          $("#alert_demo_3_1").click(function (e) {
-            swal("Good job!", "You clicked the button!", {
-              icon: "warning",
-              buttons: {
-                confirm: {
-                  className: "btn btn-warning",
-                },
-              },
-            });
-          });
-
-          $("#alert_demo_3_2").click(function (e) {
-            swal("Good job!", "You clicked the button!", {
-              icon: "error",
-              buttons: {
-                confirm: {
-                  className: "btn btn-danger",
-                },
-              },
-            });
-          });
-
-          $("#alert_demo_3_3").click(function (e) {
-            swal("Good job!", "You clicked the button!", {
-              icon: "success",
-              buttons: {
-                confirm: {
-                  className: "btn btn-success",
-                },
-              },
-            });
-          });
-
-          $("#alert_demo_3_4").click(function (e) {
-            swal("Good job!", "You clicked the button!", {
-              icon: "info",
-              buttons: {
-                confirm: {
-                  className: "btn btn-info",
-                },
-              },
-            });
-          });
-
-          //== Sweetalert Demo 4
-          $("#alert_demo_4").click(function (e) {
-            swal({
-              title: "Good job!",
-              text: "You clicked the button!",
-              icon: "success",
-              buttons: {
-                confirm: {
-                  text: "Confirm Me",
-                  value: true,
-                  visible: true,
-                  className: "btn btn-success",
-                  closeModal: true,
-                },
-              },
-            });
-          });
-
-          $("#alert_demo_5").click(function (e) {
-            swal({
-              title: "Input Something",
-              html: '<br><input class="form-control" placeholder="Input Something" id="input-field">',
-              content: {
-                element: "input",
-                attributes: {
-                  placeholder: "Input Something",
-                  type: "text",
-                  id: "input-field",
-                  className: "form-control",
-                },
-              },
-              buttons: {
-                cancel: {
-                  visible: true,
-                  className: "btn btn-danger",
-                },
-                confirm: {
-                  className: "btn btn-success",
-                },
-              },
-            }).then(function () {
-              swal("", "You entered : " + $("#input-field").val(), "success");
-            });
-          });
-
-          $("#alert_demo_6").click(function (e) {
-            swal("This modal will disappear soon!", {
-              buttons: false,
-              timer: 3000,
-            });
-          });
-
-          $("#alert_demo_7").click(function (e) {
-            swal({
-              title: "Are you sure?",
-              text: "You won't be able to revert this!",
-              type: "warning",
-              buttons: {
-                confirm: {
-                  text: "Yes, delete it!",
-                  className: "btn btn-success",
-                },
-                cancel: {
-                  visible: true,
-                  className: "btn btn-danger",
-                },
-              },
-            }).then((Delete) => {
-              if (Delete) {
-                swal({
-                  title: "Deleted!",
-                  text: "Your file has been deleted.",
-                  type: "success",
-                  buttons: {
-                    confirm: {
-                      className: "btn btn-success",
-                    },
-                  },
-                });
-              } else {
-                swal.close();
-              }
-            });
-          });
-
-          $("#alert_demo_8").click(function (e) {
-            swal({
-              title: "Are you sure?",
-              text: "You won't be able to revert this!",
-              type: "warning",
-              buttons: {
-                cancel: {
-                  visible: true,
-                  text: "No, cancel!",
-                  className: "btn btn-danger",
-                },
-                confirm: {
-                  text: "Yes, delete it!",
-                  className: "btn btn-success",
-                },
-              },
-            }).then((willDelete) => {
-              if (willDelete) {
-                swal("Poof! Your imaginary file has been deleted!", {
-                  icon: "success",
-                  buttons: {
-                    confirm: {
-                      className: "btn btn-success",
-                    },
-                  },
-                });
-              } else {
-                swal("Your imaginary file is safe!", {
-                  buttons: {
-                    confirm: {
-                      className: "btn btn-success",
-                    },
-                  },
-                });
-              }
-            });
-          });
-        };
-
-        return {
-          //== Init
-          init: function () {
-            initDemos();
+        $.notify(content, {
+          type: state,
+          placement: {
+            from: placementFrom,
+            align: placementAlign,
           },
-        };
-      })();
-
-      //== Class Initialization
-      jQuery(document).ready(function () {
-        SweetAlert2Demo.init();
+          time: 1000,
+          delay: 0,
+        });
       });
     </script>
   </body>
 </html>
+

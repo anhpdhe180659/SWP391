@@ -1,3 +1,10 @@
+<%-- 
+    Document   : icon-menu
+    Created on : Sep 19, 2024, 9:34:29 AM
+    Author     : nhatk
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,7 +55,7 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
+            <a href="index.jsp" class="logo">
               <img
                 src="assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
@@ -99,47 +106,47 @@
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="components/avatars.html">
+                      <a href="components/avatars.jsp">
                         <span class="sub-item">Avatars</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/buttons.html">
+                      <a href="components/buttons.jsp">
                         <span class="sub-item">Buttons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/gridsystem.html">
+                      <a href="components/gridsystem.jsp">
                         <span class="sub-item">Grid System</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/panels.html">
+                      <a href="components/panels.jsp">
                         <span class="sub-item">Panels</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/notifications.html">
+                      <a href="components/notifications.jsp">
                         <span class="sub-item">Notifications</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/sweetalert.html">
+                      <a href="components/sweetalert.jsp">
                         <span class="sub-item">Sweet Alert</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/font-awesome-icons.html">
+                      <a href="components/font-awesome-icons.jsp">
                         <span class="sub-item">Font Awesome Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/simple-line-icons.html">
+                      <a href="components/simple-line-icons.jsp">
                         <span class="sub-item">Simple Line Icons</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/typography.html">
+                      <a href="components/typography.jsp">
                         <span class="sub-item">Typography</span>
                       </a>
                     </li>
@@ -155,12 +162,12 @@
                 <div class="collapse show" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="sidebar-style-2.html">
+                      <a href="sidebar-style-2.jsp">
                         <span class="sub-item">Sidebar Style 2</span>
                       </a>
                     </li>
                     <li class="active">
-                      <a href="icon-menu.html">
+                      <a href="icon-menu.jsp">
                         <span class="sub-item">Icon Menu</span>
                       </a>
                     </li>
@@ -176,7 +183,7 @@
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="forms/forms.html">
+                      <a href="forms/forms.jsp">
                         <span class="sub-item">Basic Form</span>
                       </a>
                     </li>
@@ -192,12 +199,12 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="tables/tables.html">
+                      <a href="tables/tables.jsp">
                         <span class="sub-item">Basic Table</span>
                       </a>
                     </li>
                     <li>
-                      <a href="tables/datatables.html">
+                      <a href="tables/datatables.jsp">
                         <span class="sub-item">Datatables</span>
                       </a>
                     </li>
@@ -213,12 +220,12 @@
                 <div class="collapse" id="maps">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="maps/googlemaps.html">
+                      <a href="maps/googlemaps.jsp">
                         <span class="sub-item">Google Maps</span>
                       </a>
                     </li>
                     <li>
-                      <a href="maps/jsvectormap.html">
+                      <a href="maps/jsvectormap.jsp">
                         <span class="sub-item">Jsvectormap</span>
                       </a>
                     </li>
@@ -234,12 +241,12 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="charts/charts.html">
+                      <a href="charts/charts.jsp">
                         <span class="sub-item">Chart Js</span>
                       </a>
                     </li>
                     <li>
-                      <a href="charts/sparkline.html">
+                      <a href="charts/sparkline.jsp">
                         <span class="sub-item">Sparkline</span>
                       </a>
                     </li>
@@ -247,14 +254,14 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a href="widgets.html">
+                <a href="widgets.jsp">
                   <i class="fas fa-desktop"></i>
                   <p>Widgets</p>
                   <span class="badge badge-success">4</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../../documentation/index.html">
+                <a href="../../documentation/index.jsp">
                   <i class="fas fa-file"></i>
                   <p>Documentation</p>
                   <span class="badge badge-secondary">1</span>
@@ -322,7 +329,7 @@
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="index.html" class="logo">
+              <a href="index.jsp" class="logo">
                 <img
                   src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
@@ -674,7 +681,7 @@
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
-                              href="profile.html"
+                              href="profile.jsp"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >
@@ -1086,8 +1093,8 @@
 									<div id="activeUsersChart"></div>
 									<h5 class="mt-5 pb-3 mb-0 fw-bold">Top active pages</h5>
 									<ul class="list-unstyled">
-										<li class="d-flex justify-content-between pb-1 pt-1"><small>/product/readypro/index.html</small> <span>7</span></li>
-										<li class="d-flex justify-content-between pb-1 pt-1"><small>/product/kaiadmin/demo.html</small> <span>10</span></li>
+										<li class="d-flex justify-content-between pb-1 pt-1"><small>/product/readypro/index.jsp</small> <span>7</span></li>
+										<li class="d-flex justify-content-between pb-1 pt-1"><small>/product/kaiadmin/demo.jsp</small> <span>10</span></li>
 									</ul>
 								</div>
 							</div>
@@ -1122,7 +1129,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row">/kaiadmin/index.html</th>
+                            <th scope="row">/kaiadmin/index.jsp</th>
                             <td>3,985</td>
                             <td>319</td>
                             <td>
@@ -1133,7 +1140,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row">/kaiadmin/charts.html</th>
+                            <th scope="row">/kaiadmin/charts.jsp</th>
                             <td>3,513</td>
                             <td>294</td>
                             <td>
@@ -1144,7 +1151,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row">/kaiadmin/tables.html</th>
+                            <th scope="row">/kaiadmin/tables.jsp</th>
                             <td>2,050</td>
                             <td>147</td>
                             <td>
@@ -1153,7 +1160,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row">/kaiadmin/profile.html</th>
+                            <th scope="row">/kaiadmin/profile.jsp</th>
                             <td>1,795</td>
                             <td>190</td>
                             <td>
@@ -1171,7 +1178,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <th scope="row">/kaiadmin/index.html</th>
+                            <th scope="row">/kaiadmin/index.jsp</th>
                             <td>3,985</td>
                             <td>319</td>
                             <td>
@@ -1917,3 +1924,4 @@
     </script>
   </body>
 </html>
+
