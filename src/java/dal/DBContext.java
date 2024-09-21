@@ -27,14 +27,14 @@ public class DBContext {
             String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=HotelManagement";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
-            //System.out.println("Connect successful");
+            System.out.println("Connect successful");
         } catch (ClassNotFoundException | SQLException ex) {
-            //System.out.println("Connect fail");
+            System.out.println("Connect fail");
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//    
-//    public static void main(String[] args) {
-//        DBContext db = new DBContext();
-//    }
+    
+    public static void main(String[] args) {
+        DBContext db = new DBContext();
+    }
 }
