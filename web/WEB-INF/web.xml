@@ -4,8 +4,56 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>control.NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>dashboard</servlet-name>
+        <servlet-class>control.dashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EmployeeDAO</servlet-name>
+        <servlet-class>dal.EmployeeDAO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>listUser</servlet-name>
+        <servlet-class>control.listUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteUser</servlet-name>
+        <servlet-class>control.deleteUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addUser</servlet-name>
+        <servlet-class>control.addUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editUser</servlet-name>
+        <servlet-class>control.editUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeDAO</servlet-name>
+        <url-pattern>/EmployeeDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listUser</servlet-name>
+        <url-pattern>/listUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteUser</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addUser</servlet-name>
+        <url-pattern>/addUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editUser</servlet-name>
+        <url-pattern>/editUser</url-pattern>
     </servlet-mapping>
 </web-app>

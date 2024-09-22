@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index.jsp
-    Created on : Sep 21, 2024, 7:25:21 PM
+    Document   : dashboard
+    Created on : Sep 21, 2024, 7:57:19 PM
     Author     : nhatk
 --%>
 
@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Index</title>
+        <title>Dashboard for manager</title>
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -52,9 +52,9 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"/>
+            <jsp:include page="sidebarManager.jsp"/>
             <!-- End Sidebar -->
-
+            
             <div class="main-panel">
                 <div class="main-header">
                     <div class="main-header-logo">
