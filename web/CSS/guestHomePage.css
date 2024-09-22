@@ -120,7 +120,7 @@ section .image-hotel{
     pointer-events: none; /* Prevent the text from interfering with image hover */
 }
 .overlay-text p{
-    font-size:20px;
+    font-size:25px;
     font-family: "Lucida Handwriting", cursive;
 }
 .image-hotel .description .image-intro:hover img{
