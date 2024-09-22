@@ -9,5 +9,6 @@ package model;
  * @author phand
  */
 public class Amenity {
-    
+    int amenId;
+    String amenName;
 }
