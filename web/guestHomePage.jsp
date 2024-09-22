@@ -62,7 +62,7 @@
                             <a href="#about">About Us</a>
                         </div>
                         <div class="navbar-link col-md-3 col-sm-12">
-                            <a href="#contact">Contact Us</a>
+                            <a href="#contact">For Booking</a>
                         </div>
                         <div class="login-area col-md-3 col-sm-12">
                             <a href="login.jsp" role="button" class="btn btn-outline-primary">Login</a>
@@ -85,7 +85,7 @@
                             </div>
                             <div class="image-intro">
                                 <img src="img/hotel/How To Stay In A Decent Cheap Hotel In Tokyo (Review) - The Real Japan.jpg">
-                                <div class="overlay-text">Welcome to Our Hotel</div>   
+                                <div class="overlay-text"><p>Feel comfortable like your home</p></div>   
                             </div>
                         </div>
                         <div class="description col-3 hidden">
@@ -94,7 +94,7 @@
                             </div>
                             <div class="image-intro">
                                 <img src="img/hotel/PS HOUSE _ Jacobsen Arquitetura.jpg">
-                                <div class="overlay-text">Welcome to Our Hotel</div>  
+                                <div class="overlay-text"><p>Feel comfortable like your home</p></div>  
                             </div>
                         </div>
                         <div class="description col-3 hidden">
@@ -103,7 +103,7 @@
                             </div>
                             <div class="image-intro">
                                 <img src="img/hotel/Perfect Color Palettes for a Japandi Bedroom.jpg">
-                                <div class="overlay-text"><p>Luxury room</p></div>  
+                                <div class="overlay-text"><p>Luxury room make you more luxurier</p></div>  
                             </div>
                         </div>
                         <div class="description col-3 hidden">
@@ -112,7 +112,9 @@
                             </div>
                             <div class="image-intro">
                                 <img src="img/hotel/Sjöparken - a tranquil Swedish retreat with minimalist design & natural influences _ These Four Wall.jpg">
-                                <div class="overlay-text">Welcome to Our Hotel</div>  
+                                <div class="overlay-text">
+                                    <p>Feel comfortable like your home</p>
+                                </div>  
                             </div>
                         </div>
                     </div>
