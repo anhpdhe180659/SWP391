@@ -40,6 +40,10 @@
         <servlet-name>addService</servlet-name>
         <servlet-class>control.addService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewDetail</servlet-name>
+        <servlet-class>control.viewDetailRoom</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>addService</servlet-name>
         <url-pattern>/addService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewDetail</servlet-name>
+        <url-pattern>/viewDetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

@@ -38,7 +38,6 @@ public class RoomDao extends DBContext {
         return allRoom;
     }
 
-
     public List<Room> loadMore(int index) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
@@ -61,10 +60,47 @@ public class RoomDao extends DBContext {
         return listRooms;
     }
 
+    public Room findRoomById(int roomid) {
+        String query = """
+                            SELECT * FROM  Room WHERE  RoomID = ?
+                           """;
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Room(
+                        rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
-        new RoomDao().loadMore(1).forEach((r) -> {
-            System.out.println(r.getCleanId());
-        });
+        System.out.println(new RoomDao().findRoomById(1).getRoomNumber());
+    }
+
+    public void updateStatus(Room room) {
+        String query = """
+                        UPDATE Room WHERE  RoomID = ?
+                        SET CleanID = ?,
+                            StatusID = ?
+                           """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, room.getRoomId());
+            pre.setInt(2, room.getCleanId());
+            pre.setInt(3, room.getStatusId());
+            pre.executeUpdate(query);
+            System.out.println("Update succesfull");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
