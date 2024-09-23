@@ -93,7 +93,7 @@
                             <div class="collapse" id="sidebarLayouts">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="listServices">
+                                        <a href="listService">
                                             <span class="sub-item">Services</span>
                                         </a>                                    </li>
                                     

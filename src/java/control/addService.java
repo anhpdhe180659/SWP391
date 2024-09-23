@@ -22,7 +22,7 @@ import model.User;
  *
  * @author admin
  */
-public class listService extends HttpServlet {
+public class addService extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,13 +33,24 @@ public class listService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
          HttpSession session = request.getSession();
-        ServiceDAO udao = new ServiceDAO();
-        List<Service> listService = udao.getAllServices();
+        ServiceDAO sdao = new ServiceDAO();
+        String name = request.getParameter("name");
+        int price  = Integer.parseInt( request.getParameter("price"));
+        Service s = new Service();
+        s.setName(name);
+        s.setPrice(price);
+        sdao.addService(s);
+        List<Service> listService = sdao.getAllServices();
         session.setAttribute("listService", listService);
-        response.sendRedirect("listServices.jsp");
+        request.getRequestDispatcher("listServices.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e.getMessage());
         }
-     
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

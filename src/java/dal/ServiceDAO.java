@@ -16,7 +16,7 @@ public class ServiceDAO extends DBContext{
     public List<Service> getAllServices() {
         List<Service> services = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Services";
+            String query = "SELECT * FROM Service";
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -34,7 +34,7 @@ public class ServiceDAO extends DBContext{
     
     public void addService(Service service) {
         try {
-            String query = "INSERT INTO Services (Name, Price) VALUES (?, ?)";
+            String query = "INSERT INTO Service (Name, Price) VALUES (?, ?)";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, service.getName());
             ps.setInt(2, service.getPrice());
@@ -46,7 +46,7 @@ public class ServiceDAO extends DBContext{
     
     public void deleteService(int serviceID) {
         try {
-            String query = "DELETE FROM Services WHERE ServiceID = ?";
+            String query = "DELETE FROM Service WHERE ServiceID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, serviceID);
             ps.executeUpdate();
@@ -58,7 +58,7 @@ public class ServiceDAO extends DBContext{
     
     public void updateService(Service updatedService) {
     try {
-        String query = "UPDATE Services SET Name = ?, Price = ? WHERE ServiceID = ?";
+        String query = "UPDATE Service SET Name = ?, Price = ? WHERE ServiceID = ?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, updatedService.getName());
         ps.setInt(2, updatedService.getPrice());
@@ -71,7 +71,7 @@ public class ServiceDAO extends DBContext{
    public Service findService(int serviceID) {
     Service service = null;
     try {
-        String query = "SELECT * FROM Services WHERE ServiceID = ?";
+        String query = "SELECT * FROM Service WHERE ServiceID = ?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setInt(1, serviceID);
         ResultSet rs = ps.executeQuery();
@@ -86,5 +86,11 @@ public class ServiceDAO extends DBContext{
     }
     return service;
 }
+    public static void main(String[] args) {
+       
+        new ServiceDAO().getAllServices().forEach((s)->{
+            System.out.println(s.getName());
+        });
+    }
     
 }
