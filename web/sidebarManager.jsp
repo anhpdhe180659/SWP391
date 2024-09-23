@@ -69,17 +69,17 @@
                             <div class="collapse" id="base">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="listEmployee.jsp">
+                                        <a href="listEmployee">
                                             <span class="sub-item">Employee</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="listUser.jsp">
+                                        <a href="listUser">
                                             <span class="sub-item">User</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="listGuest.jsp">
+                                        <a href="listGuest">
                                             <span class="sub-item">Guest</span>
                                         </a>
                                     </li>
