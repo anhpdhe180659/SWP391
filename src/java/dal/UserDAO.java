@@ -135,5 +135,33 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
+        public User getUserByUsername(String userName) {
+        User user = new User();
+        String sql = """
+                     SELECT UserID
+                           ,Username
+                           ,Password
+                           ,Role
+                           ,Email
+                       FROM [User] 
+                       WHERE Username = ?""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, userName);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
 
+                int UserID = rs.getInt("UserID");
+                String Username = rs.getString("Username");
+                String Password = rs.getString("Password");
+                int Role = rs.getInt("Role");
+                String Email = rs.getString("Email");
+
+                user = new User(UserID, Username, Password, Role, Email);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connect error");
+        }
+        return user;
+    }
 }
