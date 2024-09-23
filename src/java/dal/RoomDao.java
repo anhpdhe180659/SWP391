@@ -46,7 +46,7 @@ public class RoomDao extends DBContext {
                        """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
-            pre.setInt(0, index);
+            pre.setInt(1, index);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 listRooms.add(new Room(rs.getInt("RoomID"),
@@ -63,7 +63,7 @@ public class RoomDao extends DBContext {
 
 
     public static void main(String[] args) {
-        new RoomDao().getAllRooms().forEach((r) -> {
+        new RoomDao().loadMore(1).forEach((r) -> {
             System.out.println(r.getCleanId());
         });
     }

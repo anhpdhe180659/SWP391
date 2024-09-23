@@ -19,13 +19,14 @@ public class Employee {
     private String Address;
     private String Phone;
     private String Identification;
+    private String StartDate;
     private int Salary;
     private int UserID;
 
     public Employee() {
     }
 
-    public Employee(int RecID, String Name, String DateOfBirth, int Sex, String Address, String Phone, String Identification, int Salary, int UserID) {
+    public Employee(int RecID, String Name, String DateOfBirth, int Sex, String Address, String Phone, String Identification, String StartDate, int Salary, int UserID) {
         this.RecID = RecID;
         this.Name = Name;
         this.DateOfBirth = DateOfBirth;
@@ -33,6 +34,7 @@ public class Employee {
         this.Address = Address;
         this.Phone = Phone;
         this.Identification = Identification;
+        this.StartDate = StartDate;
         this.Salary = Salary;
         this.UserID = UserID;
     }
@@ -107,6 +109,14 @@ public class Employee {
 
     public void setUserID(int UserID) {
         this.UserID = UserID;
+    }
+
+    public String getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(String StartDate) {
+        this.StartDate = StartDate;
     }
 
     @Override

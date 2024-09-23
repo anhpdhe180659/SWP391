@@ -84,10 +84,10 @@ public class login extends HttpServlet {
 
             // Role-based redirection
             switch (user.getRole()) {
-                case 1 -> response.sendRedirect("dashboard.jsp");
-                case 2 -> response.sendRedirect("receptionHomePage.jsp");
+                case 1 -> response.sendRedirect("/SWP391/dashboard");
+                case 2 -> response.sendRedirect("/SWP391/receptionDashboard");
                 default -> // Default redirection if role is neither 1 nor 2
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("guestHomePage.jsp");
             }
         } else {
             request.setAttribute("error", "Invalid username or password!!!");

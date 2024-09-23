@@ -4,6 +4,7 @@
  */
 package control;
 
+import dal.EmployeeDao;
 import dal.InvoiceDAO;
 import dal.RoomDao;
 import java.io.IOException;
@@ -15,8 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Employee;
 import model.Invoice;
 import model.Room;
+import model.User;
 
 /**
  *
@@ -63,6 +66,17 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", session.getAttribute("role"));
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        EmployeeDao empDao = new EmployeeDao();
+        User user = (User) session.getAttribute("user");
+        Employee emp = empDao.findByUserId(user.getUserID());
+        session.setAttribute("employee", emp);
         //get room
         RoomDao roomDao = new RoomDao();
         List<Room> listRoom = roomDao.getAllRooms();
@@ -80,7 +94,6 @@ public class receptionDashboard extends HttpServlet {
                 room -> room.getStatusId() == 2
         ).toList().size();
         //get session 
-        HttpSession session = request.getSession();
         session.setAttribute("maintaince", underMaintainRoom);
         session.setAttribute("available", availableRoom);
         session.setAttribute("occupied", occupiedRoom);
