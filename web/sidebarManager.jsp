@@ -20,10 +20,10 @@
                 <div class="logo-header" data-background-color="dark">
                     <a href="dashboard" class="logo">
                         <img
-                            src="assets/img/kaiadmin/logo_light.svg"
+                            src="img/logo/logoAdmin.png"
                             alt="navbar brand"
                             class="navbar-brand"
-                            height="20"
+                            height="130"
                             />
                     </a>
                     <div class="nav-toggle">
@@ -45,10 +45,7 @@
                     <ul class="nav nav-secondary">
                         <li class="nav-item">
                             <a
-                                data-bs-toggle="collapse"
                                 href="dashboard"
-                                class="collapsed"
-                                aria-expanded="false"
                                 >
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
