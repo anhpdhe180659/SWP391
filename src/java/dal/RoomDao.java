@@ -38,6 +38,7 @@ public class RoomDao extends DBContext {
         return allRoom;
     }
 
+
     public List<Room> loadMore(int index) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
@@ -59,6 +60,7 @@ public class RoomDao extends DBContext {
         }
         return listRooms;
     }
+
 
     public static void main(String[] args) {
         new RoomDao().getAllRooms().forEach((r) -> {
