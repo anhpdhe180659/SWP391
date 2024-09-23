@@ -98,15 +98,14 @@
                                     <li>
                                         <a href="sidebar-style-2.jsp">
                                             <span class="sub-item">Services</span>
-                                        </a>
-                                    </li>
+                                        </a>                                    </li>
                                     
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#forms">
-                                <i class="fas fa-pen-square"></i>
+                                <i class="fas fas fa-crown"></i>
                                 <p>Amenity</p>
                                 <span class="caret"></span>
                             </a>
