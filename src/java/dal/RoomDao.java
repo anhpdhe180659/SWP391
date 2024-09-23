@@ -84,23 +84,27 @@ public class RoomDao extends DBContext {
     }
 
     public static void main(String[] args) {
-        System.out.println(new RoomDao().findRoomById(1).getRoomNumber());
+        RoomDao dao = new RoomDao();
+       dao.updateStatus(new Room(1,"101",1,1,1));
     }
 
     public void updateStatus(Room room) {
         String query = """
-                        UPDATE Room WHERE  RoomID = ?
-                        SET CleanID = ?,
-                            StatusID = ?
+                        UPDATE Room
+                            SET CleanID  = ?,
+                                StatusID = ?
+                            WHERE RoomID = ? 
                            """;
+
         try (PreparedStatement pre = connection.prepareStatement(query);) {
-            pre.setInt(1, room.getRoomId());
-            pre.setInt(2, room.getCleanId());
-            pre.setInt(3, room.getStatusId());
-            pre.executeUpdate(query);
+            pre.setInt(1, room.getCleanId());
+            pre.setInt(2, room.getStatusId());
+            pre.setInt(3, room.getRoomId());
+            pre.executeUpdate();
             System.out.println("Update succesfull");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+    
 }

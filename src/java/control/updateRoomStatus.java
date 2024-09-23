@@ -74,6 +74,11 @@ public class updateRoomStatus extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//        int roomId = Integer.parseInt(request.getParameter("roomId"));
+//        int cleanId = Integer.parseInt(request.getParameter("cleanId"));
+//        int statusId = Integer.parseInt(request.getParameter("statusId"));
+////        response.getWriter().println(roomId + "/" + cleanId + "/" + statusId);
+//        
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
@@ -86,7 +91,6 @@ public class updateRoomStatus extends HttpServlet {
             int roomId = Integer.parseInt(request.getParameter("roomId"));
             int cleanId = Integer.parseInt(request.getParameter("cleanId"));
             int statusId = Integer.parseInt(request.getParameter("statusId"));
-
             RoomDao roomDao = new RoomDao();
             Room room = roomDao.findRoomById(roomId);
             room.setCleanId(cleanId);
