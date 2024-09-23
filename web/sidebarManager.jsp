@@ -85,44 +85,42 @@
                                     </li>
                                 </ul>
                             </div>
-<!--                        </li>
+                            
+                            
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarLayouts">
                                 <i class="fas fa-th-list"></i>
-                                <p>Sidebar Layouts</p>
+                                <p>Services</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="sidebarLayouts">
                                 <ul class="nav nav-collapse">
                                     <li>
                                         <a href="sidebar-style-2.jsp">
-                                            <span class="sub-item">Sidebar Style 2</span>
+                                            <span class="sub-item">Services</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="icon-menu.jsp">
-                                            <span class="sub-item">Icon Menu</span>
-                                        </a>
-                                    </li>
+                                    
                                 </ul>
                             </div>
-                        </li>-->
-<!--                        <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#forms">
                                 <i class="fas fa-pen-square"></i>
-                                <p>Forms</p>
+                                <p>Amenity</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="forms">
                                 <ul class="nav nav-collapse">
                                     <li>
                                         <a href="forms.jsp">
-                                            <span class="sub-item">Basic Form</span>
+                                            <span class="sub-item">Amenity</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
+                        <!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#tables">
                                 <i class="fas fa-table"></i>
