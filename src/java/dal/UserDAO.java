@@ -61,13 +61,13 @@ public class UserDAO extends DBContext {
             pre.setInt(1, userID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                
+
                 int UserID = rs.getInt("UserID");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
-                
+
                 user = new User(UserID, Username, Password, Role, Email);
             }
         } catch (SQLException e) {
@@ -78,8 +78,13 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO udao = new UserDAO();
-        User u = udao.getUserByID(1);
-        System.out.println(u);
+        User user = new User();
+        user.setUserID(1);
+        user.setUsername("hello");
+        user.setPassword("123");
+        user.setRole(2);
+        user.setEmail("hahah@example.com");
+        udao.editUser(user);
     }
 
     public void addUser(User u) {
@@ -106,18 +111,18 @@ public class UserDAO extends DBContext {
             st.setInt(1, uid);
             st.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e);
+            System.out.println(e);
         }
     }
 
     public void editUser(User u) {
         String sql = """
-                     Update User 
-                       set [Username] = ?,
+                     UPDATE [User] 
+                       SET [Username] = ?,
                        [Password] = ?,
                        [Role] = ?,
-                       [Email] = ?,
-                       where UserID = ?
+                       [Email] = ?
+                       WHERE UserID = ?
                      """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, u.getUsername());
@@ -127,7 +132,7 @@ public class UserDAO extends DBContext {
             st.setInt(5, u.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e);
+            System.out.println(e);
         }
     }
 
