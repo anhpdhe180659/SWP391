@@ -41,17 +41,8 @@
         <servlet-class>control.addService</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
-        <servlet-name>deleteService</servlet-name>
-        <servlet-class>control.deleteService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>editService</servlet-name>
-        <servlet-class>control.editService</servlet-class>
-=======
         <servlet-name>viewDetail</servlet-name>
         <servlet-class>control.viewDetailRoom</servlet-class>
->>>>>>> 993dd489fc1525d8bc296d46801a4da9499d5a1f
     </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
@@ -94,17 +85,8 @@
         <url-pattern>/addService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
-        <servlet-name>deleteService</servlet-name>
-        <url-pattern>/deleteService</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>editService</servlet-name>
-        <url-pattern>/editService</url-pattern>
-=======
         <servlet-name>viewDetail</servlet-name>
         <url-pattern>/viewDetail</url-pattern>
->>>>>>> 993dd489fc1525d8bc296d46801a4da9499d5a1f
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
