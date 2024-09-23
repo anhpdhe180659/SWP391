@@ -5,6 +5,7 @@
 
 package control;
 
+import dal.ServiceDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,14 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
+import model.Service;
 import model.User;
 
 /**
  *
- * @author nhatk
+ * @author admin
  */
-public class listUser extends HttpServlet {
+public class listService extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,21 +34,19 @@ public class listUser extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        UserDAO udao = new UserDAO();
+        ServiceDAO udao = new ServiceDAO();
+        PrintWriter out = response.getWriter();
+        try {
+            int serviceid = Integer.parseInt(request.getParameter("serviceid"));
+            Service service = udao.findService(serviceid);
+            request.setAttribute("service", service);
 
-        List<User> listUser = udao.getAllUser();
-        session.setAttribute("listUser", listUser);
-//        if (session.getAttribute("customer") != null) {
-//            cus = (Customer) session.getAttribute("customer");
-//            int NumberOfItem = cdao.NumberOfCart(cus.getCusID());
-//            session.setAttribute("NoItem", NumberOfItem);
-//            int TotalOfCart = cdao.TotalOfCartOfCustomer(cus.getCusID());
-//            session.setAttribute("TotalOfCart", TotalOfCart);
-//            
-//        }
-        
-        response.sendRedirect("listUser.jsp");
-    } 
+            request.getRequestDispatcher("editService.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e);
+        }
+        }
+     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
