@@ -5,22 +5,24 @@
 
 package control;
 
-import dal.UserDAO;
+import dal.InvoiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.User;
+import model.Invoice;
 
 /**
  *
- * @author nhatk
+ * @author phand
  */
-public class addUser extends HttpServlet {
+@WebServlet(name="receptionDashboard", urlPatterns={"/receptionDashboard"})
+public class receptionDashboard extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,25 +34,17 @@ public class addUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-         HttpSession session = request.getSession();
-        UserDAO udao = new UserDAO();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-        int role =  Integer.parseInt(request.getParameter("role"));
-        User u = new User();
-        u.setUsername(username);
-        u.setPassword(password);
-        u.setEmail(email);
-        u.setRole(role);
-        udao.addUser(u);
-        List<User> listUser = udao.getAllUser();
-        session.setAttribute("listUser", listUser);
-        request.getRequestDispatcher("listUser.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print("Exception in addUser");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet receptionDashboard</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet receptionDashboard at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     } 
 
@@ -65,7 +59,11 @@ public class addUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+           InvoiceDAO invoiceDao = new InvoiceDAO();
+           List<Invoice> listInvoice = invoiceDao.getAll();
+           HttpSession session = request.getSession();
+           session.setAttribute("listInvoice", listInvoice);
+           response.sendRedirect("receptionHomePage.jsp");
     } 
 
     /** 

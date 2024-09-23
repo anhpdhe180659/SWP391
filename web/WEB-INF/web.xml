@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>control.NewServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>dashboard</servlet-name>
         <servlet-class>control.dashboard</servlet-class>
     </servlet>
@@ -28,10 +24,10 @@
         <servlet-name>editUser</servlet-name>
         <servlet-class>control.editUser</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>listRoom</servlet-name>
+        <servlet-class>control.listRoom</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -55,5 +51,9 @@
     <servlet-mapping>
         <servlet-name>editUser</servlet-name>
         <url-pattern>/editUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listRoom</servlet-name>
+        <url-pattern>/listRoom</url-pattern>
     </servlet-mapping>
 </web-app>

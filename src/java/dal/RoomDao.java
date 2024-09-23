@@ -37,7 +37,29 @@ public class RoomDao extends DBContext {
         }
         return allRoom;
     }
-    
+
+    public List<Room> loadMore(int index) {
+        List<Room> listRooms = new ArrayList<>();
+        String query = """
+                       SELECT * FROM Room ORDER BY RoomID offset ? rows fetch next 6 rows only
+                       """;
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(0, index);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                listRooms.add(new Room(rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return listRooms;
+    }
+
     public static void main(String[] args) {
         new RoomDao().getAllRooms().forEach((r) -> {
             System.out.println(r.getCleanId());

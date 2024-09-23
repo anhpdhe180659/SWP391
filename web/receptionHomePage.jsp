@@ -1,17 +1,16 @@
 <%-- 
-    Document   : listEmployee
-    Created on : Sep 21, 2024, 7:31:52 PM
+    Document   : dashboard
+    Created on : Sep 21, 2024, 7:57:19 PM
     Author     : nhatk
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List User</title><!--  page only for manager  -->
+        <title>Dashboard for manager</title>
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -48,21 +47,22 @@
         <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
 
         <!-- CSS Just for demo purpose, don't include it in your project -->
-        <!--        <link rel="stylesheet" href="assets/css/demo.css" />-->
+        <!--<link rel="stylesheet" href="assets/css/demo.css" />-->
     </head>
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
             <!-- End Sidebar -->
+
             <div class="main-panel">
                 <div class="main-header">
                     <div class="main-header-logo">
                         <!-- Logo Header -->
                         <div class="logo-header" data-background-color="dark">
-                            <a href="../index.jsp" class="logo">
+                            <a href="receptionDashboard" class="logo">
                                 <img
-                                    src="assets/img/kaiadmin/logo_light.svg"
+                                    src="img/logo/logo.png"
                                     alt="navbar brand"
                                     class="navbar-brand"
                                     height="20"
@@ -412,7 +412,7 @@
                                                         <h4>Hizrian</h4>
                                                         <p class="text-muted">hello@example.com</p>
                                                         <a
-                                                            href="profile.jsp"
+                                                            href="profile.html"
                                                             class="btn btn-xs btn-secondary btn-sm"
                                                             >View Profile</a
                                                         >
@@ -440,162 +440,143 @@
 
                 <div class="container">
                     <div class="page-inner">
-                        <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage User</h3>
+                        <div
+                            class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+                            >
                         </div>
-
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add User</h4>
-                                        <button
-                                            class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addUserModal"
-                                            >
-                                            <i class="fa fa-plus"></i>
-                                            Add User
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <!-- Modal -->
-                                    <div
-                                        class="modal fade"
-                                        id="addUserModal"
-                                        tabindex="-1"
-                                        role="dialog"
-                                        aria-hidden="true"
-                                        >
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> User </span>
-                                                    </h5>
+                        <div class="row">
+                             <div class="card-title col-12">Hotel Status</div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-info bubble-shadow-small"
+                                                    >
+                                                    <i class="fas fa-bell"></i>
                                                 </div>
-                                                <form action="addUser" onsubmit="return validate()">
-                                                    <div class="modal-body">
-                                                        <p class="small">
-                                                            Create a new user, make sure you
-                                                            fill them all
-                                                        </p>
-
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Username</label>
-                                                                    <input
-                                                                        name="username"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Password</label>
-                                                                    <input
-                                                                        name="password"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Email</label>
-                                                                    <input
-                                                                        id="email"
-                                                                        name="email"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Role</label>                  
-                                                                    <select name="role" class="form-control">
-                                                                        <option value="2">Employee</option>
-                                                                        <option value="1">Admin</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <button
-                                                            type="button submit"
-                                                            class="btn btn-primary">
-                                                            Add
-                                                        </button>
-                                                        <a onclick="doClose()">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </form>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Under Maintenance</p>
+                                                    <h4 class="card-title">1303</h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-success bubble-shadow-small"
+                                                    >
+                                                    <i class="fas fa-air-freshener"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Available</p>
+                                                    <h4 class="card-title">1,345</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-secondary bubble-shadow-small"
+                                                    >
+                                                    <i class="far fa-check-circle"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Occupied</p>
+                                                    <h4 class="card-title">576</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
+                        <!--Transaction history-->
+                        <div class="col-md-12">
+                            <div class="card card-round">
+                                <div class="card-header">
+                                    <div class="card-head-row card-tools-still-right">
+                                        <div class="card-title">Transaction History</div>
+                                        <div class="card-tools">
+                                            <div class="dropdown">
+                                                <button
+                                                    class="btn btn-icon btn-clean me-0"
+                                                    type="button"
+                                                    id="dropdownMenuButton"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false"
+                                                    >
+                                                    <i class="fas fa-ellipsis-h"></i>
+                                                </button>
+                                                <div
+                                                    class="dropdown-menu"
+                                                    aria-labelledby="dropdownMenuButton"
+                                                    >
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#"
+                                                       >Something else here</a
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
                                     <div class="table-responsive">
-                                        <table id="add-user" class="display table table-striped table-hover" >
-                                            <!--                                            <div class="table-responsive">
-                                                                                    <table id="add-user" class="display table table-striped table-hover" >-->
-                                            <thead>
+                                        <!-- Projects table -->
+                                        <table class="table align-items-center mb-0">
+                                            <thead class="thead-light">
                                                 <tr>
-                                                    <th>Username</th>
-                                                    <th>Password</th>
-                                                    <th>Email</th>
-                                                    <th style="width: 10%">Action</th>
+                                                    <th scope="col">Invoice Number</th>
+                                                    <th scope="col" class="text-end">Date & Time</th>
+                                                    <th scope="col" class="text-end">Amount</th>
+                                                    <th scope="col" class="text-end">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${sessionScope.listUser}" var="s">
+                                                <c:forEach items="${sessionScope.listInvoice}" var="i">
                                                     <tr>
-                                                        <td>${s.username}</td>
-                                                        <td>${s.password}</td>
-                                                        <td>${s.email}</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="editUser?userid=${s.userID}" >
-                                                                    <button
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task"
-                                                                        >
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <button
-                                                                    type="button"
-                                                                    title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="doDelete(${s.userID})"
-                                                                    >
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    <th scope="row">
+                                                        <button
+                                                            class="btn btn-icon btn-round btn-success btn-sm me-2"
+                                                            >
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                        Payment from ${i.invoiceNo}
+                                                    </th>
+                                                    <td class="text-end">${i.paymentDate}</td>
+                                                    <td class="text-end">${i.finalAmount} VND</td>
+                                                    <td class="text-end">
+                                                        <span class="badge badge-success">Completed</span>
+                                                    </td>
+                                                </tr>
                                                 </c:forEach>
+                                                
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -607,13 +588,33 @@
             </div>
 
             <footer class="footer">
-
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="http://www.themekita.com">
+                                    ThemeKita
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Help </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Licenses </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright">
+                        2024, made with <i class="fa fa-heart heart text-danger"></i> by
+                        <a href="http://www.themekita.com">ThemeKita</a>
+                    </div>
+                    <div>
+                        Distributed by
+                        <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
+                    </div>
+                </div>
             </footer>
         </div>
-
-        <!-- Custom template | don't include it in your project! -->
-
-        <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
@@ -622,100 +623,53 @@
 
     <!-- jQuery Scrollbar -->
     <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
     <!-- Datatables -->
     <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
     <!-- Kaiadmin JS -->
     <script src="assets/js/kaiadmin.min.js"></script>
+
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="assets/js/setting-demo2.js"></script>
+    <script src="assets/js/setting-demo.js"></script>
+    <script src="assets/js/demo.js"></script>
     <script>
-                                                                        document.querySelector('.close').addEventListener('click', function () {
-                                                                            $('#addUserModal').modal('hide');
-                                                                        });
-    </script>
-    <script>
-        function doClose() {
-            $('#addUserModal').modal('hide');
-        }
-    </script>
-    <script>
-        function validate() {
-            var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-            if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                document.getElementById("email").focus();
-                return false;
-            }
-            return true;
-        }
-    </script>
-    <script>
-        function doDelete(userid) {
-            var option = confirm("Are you sure? You won't be able to revert this");
-            if (option === true) {
-                window.location = "deleteUser?userid=" + userid;
-            }
-        }
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("#basic-datatables").DataTable({});
-
-            $("#multi-filter-select").DataTable({
-                pageLength: 5,
-                initComplete: function () {
-                    this.api()
-                            .columns()
-                            .every(function () {
-                                var column = this;
-                                var select = $(
-                                        '<select class="form-select"><option value=""></option></select>'
-                                        )
-                                        .appendTo($(column.footer()).empty())
-                                        .on("change", function () {
-                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                            column
-                                                    .search(val ? "^" + val + "$" : "", true, false)
-                                                    .draw();
-                                        });
-
-                                column
-                                        .data()
-                                        .unique()
-                                        .sort()
-                                        .each(function (d, j) {
-                                            select.append(
-                                                    '<option value="' + d + '">' + d + "</option>"
-                                                    );
-                                        });
-                            });
-                },
+            $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+                type: "line",
+                height: "70",
+                width: "100%",
+                lineWidth: "2",
+                lineColor: "#177dff",
+                fillColor: "rgba(23, 125, 255, 0.14)",
             });
 
-            // Add Row
-            $("#add-user").DataTable({
-                pageLength: 5,
+            $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+                type: "line",
+                height: "70",
+                width: "100%",
+                lineWidth: "2",
+                lineColor: "#f3545d",
+                fillColor: "rgba(243, 84, 93, .14)",
             });
 
-            var action =
-                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-            $("#addUserButton").click(function () {
-                $("#add-user")
-                        .dataTable()
-                        .fnAddData([
-                            $("#addName").val(),
-                            $("#addPosition").val(),
-                            $("#addOffice").val(),
-                            action,
-                        ]);
-                $("#addUserModal").modal("hide");
+            $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+                type: "line",
+                height: "70",
+                width: "100%",
+                lineWidth: "2",
+                lineColor: "#ffa534",
+                fillColor: "rgba(255, 165, 52, .14)",
             });
-        });
     </script>
-
 </body>
 </html>
 
