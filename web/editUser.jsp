@@ -527,71 +527,26 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <input type="text" name="userid" value="${u.userID}" hidden="">
                                                     <div class="modal-footer border-0">
+                                                        <c:set value="${requestScope.noti}" var="noti"/>
+                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
                                                         <button
                                                             type="reset"
                                                             class="btn btn-danger">
                                                             Reset
-                                                        </button>
+                                                        </button>&nbsp;
                                                         <button
                                                             type="submit"
                                                             class="btn btn-primary">
                                                             Save
                                                         </button>
-                                                        
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!--
-                                                                        <div class="table-responsive">
-                                                                            <table id="edit-user" class="display table table-striped table-hover" >
-                                                                                                                            <div class="table-responsive">
-                                                                                                                        <table id="edit-user" class="display table table-striped table-hover" >
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>Username</th>
-                                                                                        <th>Password</th>
-                                                                                        <th>Email</th>
-                                                                                        <th style="width: 10%">Action</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                    <%--<c:forEach items="${sessionScope.listUser}" var="s">--%>
-                                        <tr>
-
-                                            <td>${s.username}</td>
-                                            <td>${s.password}</td>
-                                            <td>${s.email}</td>
-                                            <td>
-                                                <div class="form-button-action">
-                                                    <button
-                                                        type="button"
-                                                        data-bs-toggle="tooltip"
-                                                        title=""
-                                                        class="btn btn-link btn-primary btn-lg"
-                                                        data-original-title="Edit Task"
-                                                        >
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        title=""
-                                                        class="btn btn-link btn-danger"
-                                                        data-original-title="Remove"
-                                                        onclick="doDelete(${s.userID})"
-                                                        >
-                                                        <i class="fa fa-times"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <%--</c:forEach>--%>
-                                </tbody>
-                            </table>
-                        </div>-->
                                 </div>
                             </div>
                         </div>
@@ -634,24 +589,17 @@
     <script>
         function validate() {
             var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@example\.com$/;
 
             if (!regex1.test(email)) {
-                alert("Please enter a valid Email editress (example@gmail.com)");
+                alert("Please enter a valid Email address (example@gmail.com)");
                 document.getElementById("email").focus();
                 return false;
             }
             return true;
         }
     </script>
-    <script>
-        function doDelete(userid) {
-            var option = confirm("Are you sure? You won't be able to revert this");
-            if (option === true) {
-                window.location = "deleteUser?userid=" + userid;
-            }
-        }
-    </script>
+
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({});

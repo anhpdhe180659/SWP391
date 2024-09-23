@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.User;
 
@@ -40,7 +41,7 @@ public class editUser extends HttpServlet {
             int userid = Integer.parseInt(request.getParameter("userid"));
             User user = udao.getUserByID(userid);
             request.setAttribute("user", user);
-            
+
             request.getRequestDispatcher("editUser.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
             out.print(e);
@@ -77,20 +78,51 @@ public class editUser extends HttpServlet {
         try {
             UserDAO udao = new UserDAO();
             HttpSession session = request.getSession();
-            User acc = (User) session.getAttribute("acc");
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String email = request.getParameter("email");
-            String name = request.getParameter("name");
-            int role = Integer.parseInt(request.getParameter("role"));
-            String phone = request.getParameter("phone");
+            int userid = Integer.parseInt(request.getParameter("userid"));
+            User oldUser = udao.getUserByID(userid);// old user
+            String username = request.getParameter("username");// new information
+            String password = request.getParameter("password");// new information
+            String email = request.getParameter("email");// new information
+            int role = Integer.parseInt(request.getParameter("role"));// new information
+            User user = new User(userid, username, password, role, email);
+            if (oldUser.getUsername().equals(username)) {
+                // check if username is not changed
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("user", oldUser);
+                request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                return;
+            }
+            List<User> listUser = udao.getAllUser();
+            for (User u : listUser) {
+                if (u.getUsername().equals(username)) {
+                    // check if username is existed in database
+                    request.setAttribute("noti", "Username "+username+" existed, please enter again!");
+                    request.setAttribute("user", oldUser);
+                    request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                    return;
+                }
+            }
+            udao.editUser(user);
+            request.setAttribute("noti", "Save successful!");
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("editUser.jsp").forward(request, response);
 
-            List<User> listAcc = udao.getAllUser();
-            session.setAttribute("listAcc", listAcc);
-            request.getRequestDispatcher("userlists.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException ex) {
+        } catch (Exception e) {
             out.print("There are some wrong");
         }
+    }
+
+    public static void main(String[] args) {
+        UserDAO udao = new UserDAO();
+        List<User> listUser = udao.getAllUser();
+
+        int countSameUsername = 0;
+        for (User u : listUser) {
+            if (u.getUsername().equals("rec1")) {
+                countSameUsername++;
+            }
+        }
+        System.out.println(countSameUsername);
     }
 
     /**
