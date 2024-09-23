@@ -18,26 +18,27 @@ import java.util.logging.Logger;
  * @author kiennn
  */
 public class login extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");  
+            out.println("<title>Servlet login</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
-   
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         Cookie arr[] = request.getCookies();
         if (arr != null) {
             for (Cookie cookie : arr) {
@@ -50,11 +51,11 @@ public class login extends HttpServlet {
             }
         }
         request.getRequestDispatcher("login.jsp").forward(request, response);
-    } 
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String result = "";
         UserDAO userDAO = new UserDAO();
         String username = request.getParameter("username");
@@ -80,7 +81,7 @@ public class login extends HttpServlet {
                 response.addCookie(u);
                 response.addCookie(p);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-                
+
             } else {
                 result = "Invalid username or password!!!";
                 request.setAttribute("error", result);
@@ -97,5 +98,4 @@ public class login extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
-
 }

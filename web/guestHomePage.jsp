@@ -9,7 +9,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title></title>
+        <title>AliHotel</title>
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -19,6 +19,8 @@
             href="assets/img/kaiadmin/favicon.ico"
             type="image/x-icon"
             />
+        <link rel="stylesheet" href="CSS/footer.css">
+        <link rel="stylesheet" href="CSS/bootstrap.min.css">
         <script defer src="JS/guestHomePage.js"></script>
 
         <!-- Fonts and icons -->
@@ -77,7 +79,7 @@
                         <img src="img/hotel/banner.svg" alt="image-hotel">
                     </div>
                 </section>
-                <section  id="about">
+                <section  id="about" class="hidden">
                     <div class="image-hotel row">
                         <div class="description col-3 hidden">
                             <div class="intro">
@@ -142,37 +144,109 @@
                     </div>
                 </section>
             </div>
-            <!--            <div class="footer">
-            
-                        </div>-->
-        </div>
-        <!--   Core JS Files   -->
-        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
-        <script src="assets/js/core/bootstrap.min.js"></script>
 
-        <!-- jQuery Scrollbar -->
-        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+            <div class="myfooter">
+                <footer class="footer-14398">
 
-        <!-- Chart JS -->
-        <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+                    <div class="container">
+                        <div class="row mb-5">
+                            <div class="col-md-3">
+                                <a href="#" class="footer-site-logo">AliHotel</a>
+                                <p>Welcome to AliHotel Management System, a comprehensive platform designed to streamline hotel operations.</p>
+                            </div>
+                            <div class="col-md-2 ml-auto">
+                                <h3>Hotel</h3>
+                                <ul class="list-unstyled links">
+                                    <li><a href="#">Room manage</a></li>
+                                    <li><a href="#">Features</a></li>
+                                    <li><a href="#">Examples</a></li>
+                                    <li><a href="#">Website editors</a></li>
+                                    <li><a href="#">Online retail</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-2 ml-auto">
+                                <h3>Press</h3>
+                                <ul class="list-unstyled links">
+                                    <li><a href="#">Events</a></li>
+                                    <li><a href="#">News</a></li>
+                                    <li><a href="#">Awards</a></li>
+                                    <li><a href="#">Testimonials</a></li>
+                                    <li><a href="#">Online retail</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-2 ml-auto">
+                                <h3>About</h3>
+                                <ul class="list-unstyled links">
+                                    <li><a href="#">Contact</a></li>
+                                    <li><a href="#">Services</a></li>
+                                    <li><a href="#">Team</a></li>
+                                    <li><a href="#">Career</a></li>
+                                    <li><a href="#">Contacts</a></li>
+                                </ul>
+                            </div>
+                        </div>
 
-        <!-- jQuery Sparkline -->
-        <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+                        <div class="row mb-4">
+                            <div class="col-12 pb-4">
+                                <div class="line"></div>
+                            </div>
+                            <div class="col-md-6 text-md-left">
+                                <ul class="list-unstyled link-menu nav-left">
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Terms &amp; Conditions</a></li>
+                                    <li><a href="#">Code of Conduct</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 text-md-right">
+                                <ul class="list-unstyled social nav-right">
+                                    <li><a href="#"><span class="icon-twitter"></span></a></li>
+                                    <li><a href="#"><span class="icon-instagram"></span></a></li>
+                                    <li><a href="#"><span class="icon-facebook"></span></a></li>
+                                    <li><a href="#"><span class="icon-pinterest"></span></a></li>
+                                </ul>
+                            </div>
+                        </div>
 
-        <!-- Chart Circle -->
-        <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <p><small></small></p>
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- Datatables -->
-        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+            </div>
+        </footer>
+    </div>
+</div>
+<br>
 
-        <!-- Bootstrap Notify -->
-        <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<!--   Core JS Files   -->
+<script src="assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="assets/js/core/popper.min.js"></script>
+<script src="assets/js/core/bootstrap.min.js"></script>
 
-        <!-- jQuery Vector Maps -->
-        <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-        <script src="assets/js/plugin/jsvectormap/world.js"></script>
-        <script>
+<!-- jQuery Scrollbar -->
+<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+<!-- Chart JS -->
+<script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+<!-- jQuery Sparkline -->
+<script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Chart Circle -->
+<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+<!-- Datatables -->
+<script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+<!-- Bootstrap Notify -->
+<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+<!-- jQuery Vector Maps -->
+<script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="assets/js/plugin/jsvectormap/world.js"></script>
+<script>
             $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
                 type: "line",
                 height: "70",
@@ -199,6 +273,6 @@
                 lineColor: "#ffa534",
                 fillColor: "rgba(255, 165, 52, .14)",
             });
-        </script>
-    </body>
+</script>
+</body>
 </html>

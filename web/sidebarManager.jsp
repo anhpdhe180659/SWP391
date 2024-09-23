@@ -23,7 +23,7 @@
                             src="img/logo/logoAdmin.png"
                             alt="navbar brand"
                             class="navbar-brand"
-                            height="20"
+                            height="130"
                             />
                     </a>
                     <div class="nav-toggle">

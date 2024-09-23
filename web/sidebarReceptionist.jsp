@@ -20,10 +20,10 @@
                 <div class="logo-header" data-background-color="dark">
                     <a href="receptionDashboard" class="logo">
                         <img
-                            src="img/logo/logo.png"
+                            src="img/logo/logoAdmin.png"
                             alt="navbar brand"
                             class="navbar-brand"
-                            height="110"
+                            height="120"
                             />
                     </a>
                     <div class="nav-toggle">
@@ -45,10 +45,7 @@
                     <ul class="nav nav-secondary">
                         <li class="nav-item">
                             <a
-                                data-bs-toggle="collapse"
                                 href="receptionDashboard"
-                                class="collapsed"
-                                aria-expanded="false"
                                 >
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
@@ -62,15 +59,15 @@
                         </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#base">
-                                <i class="fas fa-users"></i>
+                                <i class="fas fa-bed"></i>
                                 <p>Room</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="base">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="listRoom.jsp">
-                                            <span class="sub-item">Room</span>
+                                        <a href="listRoom">
+                                            <span class="sub-item">View Room</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -86,18 +83,18 @@
                                 <ul class="nav nav-collapse">
                                     <li>
                                         <a href="sidebar-style-2.jsp">
-                                            <span class="sub-item">Check in</span>
+                                            <span class="sub-item">Create booking</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="icon-menu.jsp">
-                                            <span class="sub-item">Icon Menu</span>
+                                            <span class="sub-item">Check in</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-                            //TODO: đang làm ở đây
                         </li>
+                        
                     </ul>
                 </div>
             </div>

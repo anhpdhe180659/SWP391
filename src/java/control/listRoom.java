@@ -5,12 +5,16 @@
 
 package control;
 
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Room;
 
 /**
  *
@@ -38,7 +42,11 @@ public class listRoom extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        RoomDao roomDao = new RoomDao();
+        List<Room> listRoom = roomDao.getAllRooms();
+        HttpSession session = request.getSession();
+        session.setAttribute("listRoom", listRoom);
+        response.sendRedirect("listRoom.jsp");
     } 
 
     /** 
