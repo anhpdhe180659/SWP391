@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,9 @@ import java.util.logging.Logger;
  * @author kiennn
  */
 public class login extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+    private static final int COOKIE_MAX_AGE = 360; // 6 hours
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,40 +60,37 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String result = "";
-        UserDAO userDAO = new UserDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String remember = request.getParameter("remember");
 
+        UserDAO userDAO = new UserDAO();
         User user = userDAO.getUserByUsername(username);
-        if (user != null) {
-            if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-                request.getSession().setAttribute("role", user.getRole());
-                request.getSession().setAttribute("loggedInUser", username);
-                request.getSession().setAttribute("user", user);
-                String remember = request.getParameter("remember");
-                Cookie u = new Cookie("userC", username);
-                Cookie p = new Cookie("passC", password);
-                if (remember != null) {
-                    u.setMaxAge(360);
-                    p.setMaxAge(360);
-                } else {
-                    u.setMaxAge(0);
-                    p.setMaxAge(0);
-                }
 
-                response.addCookie(u);
-                response.addCookie(p);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (user != null && username.equals(user.getUsername()) && password.equals(user.getPassword())) {
+            HttpSession session = request.getSession();
+            session.setAttribute("role", user.getRole());
+            session.setAttribute("loggedInUser", username);
+            session.setAttribute("user", user);
 
-            } else {
-                result = "Invalid username or password!!!";
-                request.setAttribute("error", result);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+            if (remember != null) {
+                Cookie userCookie = new Cookie("userC", username);
+                Cookie passCookie = new Cookie("passC", password);
+                userCookie.setMaxAge(COOKIE_MAX_AGE);
+                passCookie.setMaxAge(COOKIE_MAX_AGE);
+                response.addCookie(userCookie);
+                response.addCookie(passCookie);
+            }
+
+            // Role-based redirection
+            switch (user.getRole()) {
+                case 1 -> response.sendRedirect("dashboard.jsp");
+                case 2 -> response.sendRedirect("receptionHomePage.jsp");
+                default -> // Default redirection if role is neither 1 nor 2
+                    response.sendRedirect("index.jsp");
             }
         } else {
-            result = "Invalid username or password!!!";
-            request.setAttribute("error", result);
+            request.setAttribute("error", "Invalid username or password!!!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
