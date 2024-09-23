@@ -9,10 +9,6 @@
         <servlet-class>dal.EmployeeDAO</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>listUser</servlet-name>
-        <servlet-class>control.listUser</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>deleteUser</servlet-name>
         <servlet-class>control.deleteUser</servlet-class>
     </servlet>
@@ -36,6 +32,10 @@
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>listUser</servlet-name>
+        <servlet-class>control.listUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -43,10 +43,6 @@
     <servlet-mapping>
         <servlet-name>EmployeeDAO</servlet-name>
         <url-pattern>/EmployeeDAO</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>listUser</servlet-name>
-        <url-pattern>/listUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>deleteUser</servlet-name>
@@ -71,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>listService</servlet-name>
         <url-pattern>/listService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listUser</servlet-name>
+        <url-pattern>/listUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
