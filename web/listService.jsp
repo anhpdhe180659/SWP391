@@ -544,13 +544,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${sessionScope.listService}" var="s">
+                                                <c:forEach items="${sessionScope.listService}" var="sv">
                                                     <tr>
-                                                        <td>${s.name}</td>
-                                                        <td>${s.price}</td>                                                      
+                                                        <td>${sv.name}</td>
+                                                        <td>${sv.price}</td>                                                      
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="editService?userid=${s.ServiceID}" >
+                                                                <a href="editService?userid=${sv.serviceID}" >
                                                                     <button
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
@@ -566,7 +566,7 @@
                                                                     title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
-                                                                    onclick="doDelete(${s.ServiceID})"
+                                                                    onclick="doDelete(${sv.serviceID})"
                                                                     >
                                                                     <i class="fa fa-times"></i>
                                                                 </button>

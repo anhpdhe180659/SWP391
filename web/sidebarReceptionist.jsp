@@ -110,7 +110,27 @@
                                 </ul>
                             </div>
                         </li>
-                        
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#tables">
+                                <i class="fas fa-money-bill"></i>
+                                <p>Invoice</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="tables">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="tables.jsp">
+                                            <span class="sub-item">Invoice</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="datatables.jsp">
+                                            <span class="sub-item">Invoice</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

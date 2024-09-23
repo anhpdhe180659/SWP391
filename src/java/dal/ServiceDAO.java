@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Service;
 
-public class ServiceDAO extends DBContext{
-    
+public class ServiceDAO extends DBContext {
+
     public List<Service> getAllServices() {
         List<Service> services = new ArrayList<>();
         try {
@@ -31,7 +31,7 @@ public class ServiceDAO extends DBContext{
         }
         return services;
     }
-    
+
     public void addService(Service service) {
         try {
             String query = "INSERT INTO Service (Name, Price) VALUES (?, ?)";
@@ -43,7 +43,7 @@ public class ServiceDAO extends DBContext{
             System.out.println("Error: " + ex.getMessage());
         }
     }
-    
+
     public void deleteService(int serviceID) {
         try {
             String query = "DELETE FROM Service WHERE ServiceID = ?";
@@ -54,43 +54,41 @@ public class ServiceDAO extends DBContext{
             System.out.println("Error: " + ex.getMessage());
         }
     }
-    
-    
+
     public void updateService(Service updatedService) {
-    try {
-        String query = "UPDATE Service SET Name = ?, Price = ? WHERE ServiceID = ?";
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, updatedService.getName());
-        ps.setInt(2, updatedService.getPrice());
-        ps.setInt(3, updatedService.getServiceID());
-        ps.executeUpdate();
-    } catch (SQLException ex) {
-        System.out.println("Error: " + ex.getMessage());
-    }
-}
-   public Service findService(int serviceID) {
-    Service service = null;
-    try {
-        String query = "SELECT * FROM Service WHERE ServiceID = ?";
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, serviceID);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            service = new Service();
-            service.setServiceID(rs.getInt("ServiceID"));
-            service.setName(rs.getString("Name"));
-            service.setPrice(rs.getInt("Price"));
+        try {
+            String query = "UPDATE Service SET Name = ?, Price = ? WHERE ServiceID = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, updatedService.getName());
+            ps.setInt(2, updatedService.getPrice());
+            ps.setInt(3, updatedService.getServiceID());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
-    } catch (SQLException ex) {
-        System.out.println("Error: " + ex.getMessage());
     }
-    return service;
-}
+
+    public Service findService(int serviceID) {
+        Service service = null;
+        try {
+            String query = "SELECT * FROM Service WHERE ServiceID = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, serviceID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                service = new Service();
+                service.setServiceID(rs.getInt("ServiceID"));
+                service.setName(rs.getString("Name"));
+                service.setPrice(rs.getInt("Price"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return service;
+    }
+
     public static void main(String[] args) {
-       
-        new ServiceDAO().getAllServices().forEach((s)->{
-            System.out.println(s.getName());
-        });
+        
     }
-    
+
 }

@@ -9,35 +9,43 @@ package model;
  * @author phand
  */
 public class Service {
-    private int ServiceID;
-    private String Name;
-    private int Price;
+    private int serviceID;
+    private String name;
+    private int price;
 
     public Service() {
     }
 
-    public int getServiceID() {
-        return ServiceID;
+    public Service(int ServiceID, String Name, int Price) {
+        this.serviceID = ServiceID;
+        this.name = Name;
+        this.price = Price;
     }
 
-    public void setServiceID(int ServiceID) {
-        this.ServiceID = ServiceID;
+    public int getServiceID() {
+        return serviceID;
+    }
+
+    public void setServiceID(int serviceID) {
+        this.serviceID = serviceID;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getPrice() {
-        return Price;
+        return price;
     }
 
-    public void setPrice(int Price) {
-        this.Price = Price;
+    public void setPrice(int price) {
+        this.price = price;
     }
+
+    
     
 }
