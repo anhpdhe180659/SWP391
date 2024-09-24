@@ -9,6 +9,26 @@ package model;
  * @author phand
  */
 public class Amenity {
-    int amenId;
-    String amenName;
+    private int amenID;
+    private String amenName;
+
+    public Amenity() {
+    }
+
+    public int getAmenID() {
+        return amenID;
+    }
+
+    public void setAmenId(int amenId) {
+        this.amenID = amenId;
+    }
+
+    public String getAmenName() {
+        return amenName;
+    }
+
+    public void setAmenName(String amenName) {
+        this.amenName = amenName;
+    }
+    
 }

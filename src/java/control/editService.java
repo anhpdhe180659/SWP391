@@ -10,6 +10,7 @@ import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,11 +18,11 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Service;
 import model.User;
-
 /**
  *
  * @author admin
  */
+@WebServlet(urlPatterns = "/editService")
 public class editService extends HttpServlet {
    
     /** 
@@ -71,51 +72,43 @@ public class editService extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    PrintWriter out = response.getWriter();
-    try {
-        ServiceDAO sdao = new ServiceDAO();
-        HttpSession session = request.getSession();
-        
-        int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-        Service oldService = sdao.findService(serviceid); // lấy dịch vụ cũ từ cơ sở dữ liệu
-
-        String name = request.getParameter("name"); // thông tin mới
-        int price = Integer.parseInt(request.getParameter("price")); // thông tin mới
-        
-        Service service = new Service(serviceid, name, price);
-
-        if (oldService.getName().equals(name)) {
-            // Kiểm tra nếu tên không thay đổi
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("service", oldService);
-        } else {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        try {
+            ServiceDAO sdao = new ServiceDAO();
+            HttpSession session = request.getSession();
+            int serviceid = Integer.parseInt(request.getParameter("serviceid"));
+            Service oldService = sdao.findService(serviceid);// old service
+            String name = request.getParameter("name");// new information
+            int price = Integer.parseInt(request.getParameter("price"));// new information
+            Service service = new Service(serviceid, name, price);
+            if (oldService.getName().equals(name)) {
+                // check if username is not changed
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("service", oldService);
+                request.getRequestDispatcher("editService.jsp").forward(request, response);
+                return;
+            }
             List<Service> listService = sdao.getAllServices();
             for (Service s : listService) {
                 if (s.getName().equals(name)) {
-                    // Kiểm tra nếu tên đã tồn tại trong cơ sở dữ liệu
-                    request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                    // check if username is existed in database
+                    request.setAttribute("noti", "name "+name+" existed, please enter again!");
                     request.setAttribute("service", oldService);
-                    break;
+                    request.getRequestDispatcher("editService.jsp").forward(request, response);
+                    return;
                 }
             }
-            
-            // Cập nhật dịch vụ trong cơ sở dữ liệu
             sdao.updateService(service);
             request.setAttribute("noti", "Save successful!");
             request.setAttribute("service", service);
+            request.getRequestDispatcher("editService.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            out.print("There are some wrong");
         }
-
-        // Lấy danh sách dịch vụ mới
-        List<Service> updatedListService = sdao.getAllServices();
-        request.setAttribute("listService", updatedListService);
-
-        request.getRequestDispatcher("editService.jsp").forward(request, response);
-
-    } catch (Exception e) {
-        out.print("There was an error: " + e.getMessage());
     }
-}
 
     public static void main(String[] args) {
         ServiceDAO sdao = new ServiceDAO();
