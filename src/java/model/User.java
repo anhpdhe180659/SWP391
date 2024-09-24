@@ -9,54 +9,56 @@ package model;
  * @author nhatk
  */
 public class User {
-    private int UserID;
-    private String Username;
-    private String Password;
+    private int userId;
+    private String username;
+    private String password;
     private int role;
-    private String Email;
+    private String email;
 
     public User() {
     }
 
-    public User(int UserID, String Username, String Password, int role, String Email) {
-        this.UserID = UserID;
-        this.Username = Username;
-        this.Password = Password;
+    public User(int userId, String username, String password, int role, String email) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
         this.role = role;
-        this.Email = Email;
+        this.email = email;
     }
 
-    public String getEmail() {
-        return Email;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
-    }
-
-    public int getUserID() {
-        return UserID;
-    }
-
-    public void setUserID(int UserID) {
-        this.UserID = UserID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
-    public void setUsername(String Username) {
-        this.Username = Username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
-    public void setPassword(String Password) {
-        this.Password = Password;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+   
 
     public int getRole() {
         return role;
@@ -68,7 +70,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "UserID=" + UserID + ", Username=" + Username + ", Password=" + Password + ", role=" + role + ", Email=" + Email + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", email=" + email + '}';
     }
 
 

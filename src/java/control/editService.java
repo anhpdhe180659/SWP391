@@ -79,42 +79,40 @@ public class editService extends HttpServlet {
         
         int serviceid = Integer.parseInt(request.getParameter("serviceid"));
         Service oldService = sdao.findService(serviceid); // lấy dịch vụ cũ từ cơ sở dữ liệu
-
+        
         String name = request.getParameter("name"); // thông tin mới
         int price = Integer.parseInt(request.getParameter("price")); // thông tin mới
-        
-        Service service = new Service(serviceid, name, price);
+            Service service = new Service(serviceid, name, price);
 
-        if (oldService.getName().equals(name)) {
-            // Kiểm tra nếu tên không thay đổi
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("service", oldService);
-        } else {
-            List<Service> listService = sdao.getAllServices();
-            for (Service s : listService) {
-                if (s.getName().equals(name)) {
-                    // Kiểm tra nếu tên đã tồn tại trong cơ sở dữ liệu
-                    request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
-                    request.setAttribute("service", oldService);
-                    break;
+            if (oldService.getName().equals(name)) {
+                // Kiểm tra nếu tên không thay đổi
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("service", oldService);
+            } else {
+                List<Service> listService = sdao.getAllServices();
+                for (Service s : listService) {
+                    if (s.getName().equals(name)) {
+                        // Kiểm tra nếu tên đã tồn tại trong cơ sở dữ liệu
+                        request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                        request.setAttribute("service", oldService);
+                        break;
+                    }
                 }
+
+                // Cập nhật dịch vụ trong cơ sở dữ liệu
+                sdao.updateService(service);
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("service", service);
             }
-            
-            // Cập nhật dịch vụ trong cơ sở dữ liệu
-            sdao.updateService(service);
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("service", service);
+
+            // Lấy danh sách dịch vụ mới
+            List<Service> updatedListService = sdao.getAllServices();
+            session.setAttribute("listService", updatedListService);
+            request.getRequestDispatcher("listService.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            out.print("There was an error: " + e.getMessage());
         }
-
-        // Lấy danh sách dịch vụ mới
-        List<Service> updatedListService = sdao.getAllServices();
-        request.setAttribute("listService", updatedListService);
-
-        request.getRequestDispatcher("editService.jsp").forward(request, response);
-
-    } catch (Exception e) {
-        out.print("There was an error: " + e.getMessage());
-    }
 }
 
     public static void main(String[] args) {

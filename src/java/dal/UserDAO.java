@@ -129,7 +129,7 @@ public class UserDAO extends DBContext {
             st.setString(2, u.getPassword());
             st.setInt(3, u.getRole());
             st.setString(4, u.getEmail());
-            st.setInt(5, u.getUserID());
+            st.setInt(5, u.getUserId());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

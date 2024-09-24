@@ -12,7 +12,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.User;
 
 /**
  *
@@ -32,26 +34,23 @@ public class dashboard extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet dashboard</title>");  
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet dashboard at " + request.getContextPath () + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+
         DashboardDAO dashboardDAO = new DashboardDAO();
         StasticDto dto = dashboardDAO.getStasticDto();
         List<ChartDTO> chartDTOs = dashboardDAO.getData();
-        request.setAttribute("dto", dto);
-        for(ChartDTO item : chartDTOs){
-            request.setAttribute("month" + item.getMonth(), item.getTotal());
+        session.setAttribute("dto", dto);
+        for (ChartDTO item : chartDTOs) {
+            session.setAttribute("month" + item.getMonth(), item.getTotal());
         }
-        request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+        response.sendRedirect("dashboard.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

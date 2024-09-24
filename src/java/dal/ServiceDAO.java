@@ -88,7 +88,7 @@ public class ServiceDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        new ServiceDAO().deleteService(11);
+        new ServiceDAO().updateService(new Service(1,"Ca phe sua da",20000000));
     }
 
 }
