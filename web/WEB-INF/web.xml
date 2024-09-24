@@ -72,6 +72,14 @@
         <servlet-name>NewsServlet</servlet-name>
         <servlet-class>control.NewsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateNewsServlet</servlet-name>
+        <servlet-class>model.CreateNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewsServlets</servlet-name>
+        <servlet-class>control.CreateNewsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -143,6 +151,10 @@
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewsServlets</servlet-name>
+        <url-pattern>/CreateNewsServlets</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

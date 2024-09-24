@@ -463,60 +463,110 @@
                             </ul> 
                             
                         </div> 
-                         <style>
+                          <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
+            background-color: #f4f4f9;
             margin: 0;
-            padding: 20px;
-           
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        ul {
-            list-style-type: none;
             padding: 0;
         }
-        li {
-            margin-bottom: 10px;
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+           
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
-        a {
-            color: #0066cc;
+
+        h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="datetime-local"],
+        input[type="number"],
+        input[type="checkbox"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        input[type="datetime-local"]:focus,
+        input[type="number"]:focus {
+            border-color: #00aaff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #00aaff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
             text-decoration: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
         }
-        a:hover {
-            text-decoration: underline;
-        }
-        .date {
-            color: #666;
-            font-size: 0.9em;
+
+        .btn:hover {
+            background-color: #008fcc;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>News</h1>
-                        <ul>
-                            <c:forEach var="news" items="${newsList}">
-                                <li>
-                                    <span class="date">${news.postDate}</span>
-                                    <a href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
-                                </li>
-                            </c:forEach>
-                        </ul> 
-         <a href="CreateNewsServlets">Create News</a>
+        <h1>Create News</h1>
+        <form action="create-news" method="post">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Enter the news title" required>
+
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="10" placeholder="Enter the news content" required></textarea>
+
+            <label for="category">Category</label>
+            <input type="text" id="category" name="category" placeholder="Enter the news category">
+
+            <label for="userID">User ID</label>
+            <input type="number" id="userID" name="userID" placeholder="Enter your user ID" required>
+
+            <label for="publish_date">Publish Date</label>
+            <input type="datetime-local" id="publish_date" name="publish_date" required>
+
+            <label for="post_date">Post Date</label>
+            <input type="datetime-local" id="post_date" name="post_date" required>
+
+            <label for="is_active">Is Active?</label>
+            <input type="checkbox" id="is_active" name="is_active" checked>
+
+            <button type="submit" class="btn">Create News</button>
+        </form>
     </div>
-                    </div>
-                </div> 
-                
                        
                 <footer>
                     <jsp:include page="footer.jsp"></jsp:include>

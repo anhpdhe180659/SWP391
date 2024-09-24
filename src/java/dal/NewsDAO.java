@@ -63,7 +63,27 @@ public class NewsDAO extends DBContext {
             e.printStackTrace();
         }
         return news;
+    } 
+    public void addNews(NewsItem news) {
+    String sql = "INSERT INTO NEWS_ITEMS (title, content, userID, publish_date, post_date, category, is_active, last_modified) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        pstmt.setString(1, news.getTitle());
+        pstmt.setString(2, news.getContent());
+        pstmt.setInt(3, news.getUserID());
+        pstmt.setTimestamp(4, news.getPublishDate());
+        pstmt.setTimestamp(5, news.getPostDate());
+        pstmt.setString(6, news.getCategory());
+        pstmt.setBoolean(7, news.isActive());
+        pstmt.setTimestamp(8, news.getLastModified());
+        
+        // Execute the update
+        pstmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
     // Add more methods as needed (e.g., insertNews, updateNews, deleteNews)
 }
