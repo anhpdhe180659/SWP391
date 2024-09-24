@@ -505,12 +505,15 @@
     <div class="container">
         <h1>News</h1>
                         <ul>
-                            <c:forEach var="news" items="${newsList}">
-                                <li>
-                                    <span class="date">${news.postDate}</span>
-                                    <a href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
-                                </li>
-                            </c:forEach>
+                           
+                               <li>
+    <h3 style="color: #0062cc" ${news.newsID}>${news.title}</h3>
+    <span class="date">${news.postDate}</span>
+    <div class="news-content">
+        <p>${news.content}</p> <!-- This line will print the content of the news -->
+    </div>
+</li>
+                           
                         </ul>
     </div>
                     </div>
