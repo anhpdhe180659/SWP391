@@ -1,8 +1,9 @@
 <%-- 
-    Document   : listEmployee
-    Created on : Sep 21, 2024, 7:31:52 PM
+    Document   : editEmployee
+    Created on : Sep 22, 2024, 1:29:17 PM
     Author     : nhatk
 --%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,7 +12,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Employee</title><!--  page only for manager  -->
+        <title>Edit employee</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -21,7 +22,6 @@
             href="assets/img/kaiadmin/favicon.ico"
             type="image/x-icon"
             />
-
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
@@ -38,7 +38,7 @@
                 },
                 active: function () {
                     sessionStorage.fonts = true;
-                }
+                },
             });
         </script>
 
@@ -248,10 +248,10 @@
                                                 <div class="notif-center">
                                                     <a href="#">
                                                         <div class="notif-icon notif-primary">
-                                                            <i class="fa fa-user-plus"></i>
+                                                            <i class="fa fa-employee-plus"></i>
                                                         </div>
                                                         <div class="notif-content">
-                                                            <span class="block"> New user registered </span>
+                                                            <span class="block"> New employee registered </span>
                                                             <span class="time">5 minutes ago</span>
                                                         </div>
                                                     </a>
@@ -378,7 +378,7 @@
                                     </div>
                                 </li>
 
-                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                <li class="nav-item topbar-employee dropdown hidden-caret">
                                     <a
                                         class="dropdown-toggle profile-pic"
                                         data-bs-toggle="dropdown"
@@ -392,15 +392,15 @@
                                                 class="avatar-img rounded-circle"
                                                 />
                                         </div>
-                                        <span class="profile-username">
+                                        <span class="profile-employeename">
                                             <span class="op-7">Hi,</span>
                                             <span class="fw-bold">Hizrian</span>
                                         </span>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                    <ul class="dropdown-menu dropdown-employee animated fadeIn">
+                                        <div class="dropdown-employee-scroll scrollbar-outer">
                                             <li>
-                                                <div class="user-box">
+                                                <div class="employee-box">
                                                     <div class="avatar-lg">
                                                         <img
                                                             src="assets/img/profile.jpg"
@@ -444,69 +444,54 @@
                             <h3 class="fw-bold mb-3">Manage Employee</h3>
                         </div>
 
+
+
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Employee</h4>
-                                        <button
-                                            class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addEmployeeModal"
-                                            >
-                                            <i class="fa fa-plus"></i>
-                                            Add Employee
+                                        <h4 class="card-title">Edit Employee</h4>
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
                                         </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-                                    <div
-                                        class="modal fade"
-                                        id="addEmployeeModal"
-                                        tabindex="-1"
-                                        role="dialog"
-                                        aria-hidden="true"
-                                        >
+                                    <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> Employee </span>
-                                                    </h5>
-                                                </div>
-                                                <form action="addEmployee" onsubmit="return validate()">
+                                                <form action="editEmployee"  method="POST"  onsubmit="return validate()">
+                                                    <c:set value="${requestScope.employee}" var="e"/>
+                                                    <input type="text" name="empid" value="${e.empID}" hidden="">
                                                     <div class="modal-body">
-                                                        <p class="small">
-                                                            Create a new Employee, make sure you
-                                                            fill them all
-                                                        </p>
-
                                                         <div class="row">
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Name</label>
                                                                     <input
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        value="${e.name}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Address</label>
                                                                     <input
                                                                         name="address"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        value="${e.address}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Phone</label>
                                                                     <input
@@ -514,232 +499,219 @@
                                                                         name="phone"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        value="${e.phone}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Identification</label>
                                                                     <input
                                                                         name="identification"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        value="${e.identification}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Sex</label>
                                                                     <select name="sex" class="form-control">
-                                                                        <option value="1">Male</option>
-                                                                        <option value="0">Female</option>
+                                                                        <option value="1" <c:if test="${e.sex == 1}">
+                                                                                selected
+                                                                            </c:if> />Male</option>
+                                                                        <option value="0" <c:if test="${e.sex == 0}">
+                                                                                selected
+                                                                            </c:if> />Female</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6" >
+                                                            <div class="col-sm-4" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Date of Birth</label>
-                                                                    <input type="date" name="birthday" value="" required
+                                                                    <input type="date" name="birthday" value="${e.dateOfBirth}" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6" >
+                                                            <div class="col-sm-3" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Salary</label>
-                                                                    <input type="number" name="salary" value="" required
+                                                                    <input type="number" name="salary" value="${e.salary}" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6" >
+                                                            <div class="col-sm-3" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Start Date</label>
-                                                                    <input type="date" name="startdate" value="" required
+                                                                    <input type="date" name="startdate" value="${e.startDate}" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-                                                            
+                                                            <c:set value="${requestScope.currentUser}" var="currentUser"/>
+                                                            <div class="col-sm-3" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Current Username & password</label>
+                                                                    ${currentUser.username}
+                                                                    <c:if test="${currentUser.username != null}" >&</c:if>
+                                                                    <c:if test="${currentUser.username == null}" >none</c:if>
+                                                                    ${currentUser.password}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3" >
+                                                                <div class="form-group form-group-default" >
+                                                                    <label>Assign another user</label>
+                                                                    <select name="userID" class="form-control">
+                                                                        <option value="${currentUser.userID}" />
+                                                                        ${currentUser.username} 
+                                                                        <c:if test="${currentUser.username != null}" >&</c:if>
+                                                                        <c:if test="${currentUser.username == null}" >none</c:if> 
+                                                                        ${currentUser.password}
+                                                                        </option>
+                                                                        <c:forEach items="${sessionScope.listUserNotUsed}" var="u" >
+                                                                            <option value="${u.userID}" />${u.username}  &  ${u.password}</option>
+                                                                        </c:forEach>
+                                                                        <option value="0" />none</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <button
-                                                            type="button submit"
-                                                            class="btn btn-primary">
-                                                            Add
-                                                        </button>
-                                                        <a onclick="doClose()">
+
+                                                        <div class="modal-footer border-0">
+                                                            <c:set value="${requestScope.noti}" var="noti"/>
+                                                            <c:if test="${noti == 'Save successful!'}" >
+                                                                <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
+                                                            </c:if>
+                                                            <c:if test="${noti != 'Save successful!'}" >
+                                                                <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
+                                                            </c:if>
                                                             <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
+                                                                type="reset"
+                                                                class="btn btn-danger">
+                                                                Reset
+                                                            </button>&nbsp;
+                                                            <button
+                                                                type="submit"
+                                                                class="btn btn-primary">
+                                                                Save
                                                             </button>
-                                                        </a>
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table
-                                            id="add-row"
-                                            class="display table table-striped table-hover"
-                                            >
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Sex</th>
-                                                    <th>Phone</th>
-                                                    <th>Salary</th>
-                                                    <th>Start Date</th>
-                                                    <th style="width: 10%">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="${sessionScope.listEmployee}" var="s">
-                                                    <tr>
-                                                        <td>${s.name}</td>
-                                                        <td>${(s.sex == 1?
-                                                              '<img src="assets/img/male-icon.png" alt="male-image"/>':
-                                                              '<img src="assets/img/female-icon.png" alt="female-image"/>')}
-                                                        </td>
-                                                        <td>${s.phone}</td>
-                                                        <td>${s.salary}</td>
-                                                        <td>${s.startDate}</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="editEmployee?empid=${s.empID}" >
-                                                                    <button
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task"
-                                                                        >
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <button
-                                                                    type="button"
-                                                                    title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="doDelete(${s.empID})"
-                                                                    >
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
-        <!--   Core JS Files   -->
-        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
-        <script src="assets/js/core/bootstrap.min.js"></script>
-        <script>
-                function doDelete(empid) {
-                    var option = confirm("Are you sure? You won't be able to revert this");
-                    if (option === true) {
-                         window.location = "deleteEmployee?empid=" + empid;
-                    }
-                }
-                function doClose() {
-                     $('#addEmployeeModal').modal('hide');
-                }
-        </script>
-        <script type="text/javascript">
-            function validate() {
-                var phone = document.getElementById("phone").value;
-                var regex2 = /^\d{10}$/;
-                if (!regex2.test(phone)) {
-                    alert("Please enter a valid phone number with 10 digit");
-                    document.getElementById("phone").focus();
-                    return false;
-                }
 
-                return true;
+        <!-- Custom template | don't include it in your project! -->
+
+        <!-- End Custom template -->
+    </div>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo2.js"></script>
+    <script>
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editEmployeeModal').modal('hide');
+                                                    });
+    </script>
+    <script>
+        function BackToList() {
+            window.location = "listEmployee";
+        }
+    </script>
+    <script>
+        function validate() {
+            var phone = document.getElementById("phone").value;
+            var regex2 = /^\d{10}$/;
+            if (!regex2.test(phone)) {
+                alert("Please enter a valid phone number with 10 digit");
+                document.getElementById("phone").focus();
+                return false;
             }
-        </script>
-        <!-- jQuery Scrollbar -->
-        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-        <!-- Datatables -->
-        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-        <!-- Kaiadmin JS -->
-        <script src="assets/js/kaiadmin.min.js"></script>
-        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-        <script src="assets/js/setting-demo2.js"></script>
-        <script>
-                                                                        $(document).ready(function () {
-                                                                            $("#basic-datatables").DataTable({});
 
-                                                                            $("#multi-filter-select").DataTable({
-                                                                                pageLength: 5,
-                                                                                initComplete: function () {
-                                                                                    this.api()
-                                                                                            .columns()
-                                                                                            .every(function () {
-                                                                                                var column = this;
-                                                                                                var select = $(
-                                                                                                        '<select class="form-select"><option value=""></option></select>'
-                                                                                                        )
-                                                                                                        .appendTo($(column.footer()).empty())
-                                                                                                        .on("change", function () {
-                                                                                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            return true;
+        }
+    </script>
 
-                                                                                                            column
-                                                                                                                    .search(val ? "^" + val + "$" : "", true, false)
-                                                                                                                    .draw();
-                                                                                                        });
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable({});
 
-                                                                                                column
-                                                                                                        .data()
-                                                                                                        .unique()
-                                                                                                        .sort()
-                                                                                                        .each(function (d, j) {
-                                                                                                            select.append(
-                                                                                                                    '<option value="' + d + '">' + d + "</option>"
-                                                                                                                    );
-                                                                                                        });
-                                                                                            });
-                                                                                },
-                                                                            });
+            $("#multi-filter-select").DataTable({
+                pageLength: 5,
+                initComplete: function () {
+                    this.api()
+                            .columns()
+                            .every(function () {
+                                var column = this;
+                                var select = $(
+                                        '<select class="form-select"><option value=""></option></select>'
+                                        )
+                                        .appendTo($(column.footer()).empty())
+                                        .on("change", function () {
+                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                            column
+                                                    .search(val ? "^" + val + "$" : "", true, false)
+                                                    .draw();
+                                        });
 
-                                                                            // Add Employee
-                                                                            $("#add-row").DataTable({
-                                                                                pageLength: 5,
-                                                                            });
+                                column
+                                        .data()
+                                        .unique()
+                                        .sort()
+                                        .each(function (d, j) {
+                                            select.append(
+                                                    '<option value="' + d + '">' + d + "</option>"
+                                                    );
+                                        });
+                            });
+                },
+            });
 
-                                                                            var action =
-                                                                                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+            // edit Row
+            $("#edit-employee").DataTable({
+                pageLength: 5,
+            });
 
-                                                                            $("#addEmployeeButton").click(function () {
-                                                                                $("#add-row")
-                                                                                        .dataTable()
-                                                                                        .fnAddData([
-                                                                                            $("#addName").val(),
-                                                                                            $("#addPosition").val(),
-                                                                                            $("#addOffice").val(),
-                                                                                            action,
-                                                                                        ]);
-                                                                                $("#addEmployeeModal").modal("hide");
-                                                                            });
-                                                                        });
-        </script>
-    </body>
+            var action =
+                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+            $("#editEmployeeButton").click(function () {
+                $("#edit-employee")
+                        .dataTable()
+                        .fneditData([
+                            $("#editName").val(),
+                            $("#editPosition").val(),
+                            $("#editOffice").val(),
+                            action,
+                        ]);
+                $("#editEmployeeModal").modal("hide");
+            });
+        });
+    </script>
+
+</body>
 </html>
+
 

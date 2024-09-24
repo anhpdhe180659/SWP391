@@ -11,92 +11,99 @@ import java.time.LocalDate;
  * @author nhatk
  */
 public class Guest {
-    int guestId;
-    String name;
-    LocalDate dateOfBirth;
-    int sex;
-    String address;
-    String phone;
-    int identification;
-    String nationality;
+    int GuestID;
+    String Name;
+    LocalDate DateOfBirth;
+    int Sex;
+    String Address;
+    String Phone;
+    int Identification;
+    String Nationality;
 
     public Guest() {
     }
 
-    public Guest(int guestId, String name, LocalDate dateOfBirth, int sex, String address, String phone, int identification, String nationality) {
-        this.guestId = guestId;
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-        this.sex = sex;
-        this.address = address;
-        this.phone = phone;
-        this.identification = identification;
-        this.nationality = nationality;
+    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Address, String Phone, int Identification, String Nationality) {
+        this.GuestID = GuestID;
+        this.Name = Name;
+        this.DateOfBirth = DateOfBirth;
+        this.Sex = Sex;
+        this.Address = Address;
+        this.Phone = Phone;
+        this.Identification = Identification;
+        this.Nationality = Nationality;
     }
 
-    
-    
-    public int getGuestId() {
-        return guestId;
+    public int getGuestID() {
+        return GuestID;
     }
 
-    public void setGuestId(int guestId) {
-        this.guestId = guestId;
+    public void setGuestID(int GuestID) {
+        this.GuestID = GuestID;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+        return DateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(LocalDate DateOfBirth) {
+        this.DateOfBirth = DateOfBirth;
     }
 
     public int getSex() {
-        return sex;
+        return Sex;
     }
 
-    public void setSex(int sex) {
-        this.sex = sex;
+    public void setSex(int Sex) {
+        this.Sex = Sex;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress(String Address) {
+        this.Address = Address;
     }
 
     public String getPhone() {
-        return phone;
+        return Phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
     }
 
     public int getIdentification() {
-        return identification;
+        return Identification;
     }
 
-    public void setIdentification(int identification) {
-        this.identification = identification;
+    public void setIdentification(int Identification) {
+        this.Identification = Identification;
     }
 
     public String getNationality() {
-        return nationality;
+        return Nationality;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setNationality(String Nationality) {
+        this.Nationality = Nationality;
     }
+
+    @Override
+    public String toString() {
+        return "Guest{" + "GuestID=" + GuestID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Nationality=" + Nationality + '}';
+    }
+
+
+    
+    
 }
