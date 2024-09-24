@@ -52,14 +52,6 @@
         <servlet-name>forgotpassword</servlet-name>
         <servlet-class>control.forgotpassword</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>editService</servlet-name>
-        <servlet-class>control.editService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deleteService</servlet-name>
-        <servlet-class>control.deleteService</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -111,14 +103,6 @@
     <servlet-mapping>
         <servlet-name>forgotpassword</servlet-name>
         <url-pattern>/forgotpassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>editService</servlet-name>
-        <url-pattern>/editService</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deleteService</servlet-name>
-        <url-pattern>/deleteService</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
