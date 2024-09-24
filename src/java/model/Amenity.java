@@ -15,6 +15,11 @@ public class Amenity {
     public Amenity() {
     }
 
+    public Amenity(int amenID, String amenName) {
+        this.amenID = amenID;
+        this.amenName = amenName;
+    }
+
     public int getAmenID() {
         return amenID;
     }

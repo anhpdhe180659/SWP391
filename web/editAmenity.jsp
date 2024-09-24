@@ -1,16 +1,16 @@
 <%-- 
-    Document   : listServices
-    Created on : Sep 23, 2024, 4:25:24 PM
+    Document   : editAmenity
+    Created on : Sep 24, 2024, 10:29:09 AM
     Author     : admin
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Service</title><!--  page only for manager  -->
+        <title>Edit Amenity</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -20,7 +20,6 @@
             href="assets/img/kaiadmin/favicon.ico"
             type="image/x-icon"
             />
-
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
@@ -61,7 +60,7 @@
                         <div class="logo-header" data-background-color="dark">
                             <a href="../index.jsp" class="logo">
                                 <img
-                                    src="img/logo/logoAdmin.png"
+                                    src="assets/img/kaiadmin/logo_light.svg"
                                     alt="navbar brand"
                                     class="navbar-brand"
                                     height="20"
@@ -81,6 +80,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
+                    <!-- Navbar Header -->
                     <nav
                         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
                         >
@@ -425,7 +425,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Logout</a>
+                                                <a class="dropdown-item" href="logout">Logout</a>
                                             </li>
                                         </div>
                                     </ul>
@@ -439,48 +439,35 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Service</h3>
+                            <h3 class="fw-bold mb-3">Manage Amenity</h3>
                         </div>
+
+
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Service</h4>
-                                        <button
-                                            class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addUserModal"
-                                            >
-                                            <i class="fa fa-plus"></i>
-                                            Add Service
-                                        </button>
+                                        <h4 class="card-title">Edit Amenity</h4>
+                                        <!--                                        <button
+                                                                                    class="btn btn-primary btn-round ms-auto"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#editUserModal"
+                                                                                    >
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                    Edit User
+                                                                                </button>-->
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-                                    <div
-                                        class="modal fade"
-                                        id="addUserModal"
-                                        tabindex="-1"
-                                        role="dialog"
-                                        aria-hidden="true"
-                                        >
+
+                                    <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> Service </span>
-                                                    </h5>
-                                                </div>
-                                                <form action="addService" onsubmit="return validate()">
+                                                <form action="editAmenity"  method="POST"  onsubmit="return validate()">
+                                                    <c:set value="${requestScope.amenity}" var="a"/>
                                                     <div class="modal-body">
-                                                        <p class="small">
-                                                            Create a new service, make sure you
-                                                            fill them all
-                                                        </p>
-
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
@@ -489,208 +476,142 @@
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        value="${a.amenName}"
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Price</label>
-                                                                    <input
-                                                                        name="price"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            
-                                                            
+                                                            </div>                                                                                                                                                                        
                                                         </div>
                                                     </div>
+                                                    <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
+                                                        <c:set value="${requestScope.noti}" var="noti"/>
+                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
                                                         <button
-                                                            type="button submit"
+                                                            type="reset"
+                                                            class="btn btn-danger">
+                                                            Reset
+                                                        </button>&nbsp;
+                                                        <button
+                                                            type="submit"
                                                             class="btn btn-primary">
-                                                            Add
+                                                            Save
                                                         </button>
-                                                        <a onclick="doClose()">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
-                                                            </button>
-                                                        </a>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
 
-
-                                    <div class="table-responsive">
-                                        <table id="add-user" class="display table table-striped table-hover" >
-                                            <!--                                            <div class="table-responsive">
-                                                                                    <table id="add-user" class="display table table-striped table-hover" >-->
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
-                                                    <th style="width: 10%">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="${sessionScope.listService}" var="sv">
-                                                    <tr>
-                                                        <td>${sv.name}</td>
-                                                        <td>${sv.price}</td>                                                      
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="editService?serviceid=${sv.serviceID}" >
-                                                                    <button
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task"
-                                                                        >
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <button
-                                                                    type="button"
-                                                                    title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="doDelete(${sv.serviceID})"
-                                                                    >
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <footer class="footer">
-
-                </footer>
             </div>
 
-            <!-- Custom template | don't include it in your project! -->
+            <footer class="footer">
 
-            <!-- End Custom template -->
+            </footer>
         </div>
-        <!--   Core JS Files   -->
-        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
-        <script src="assets/js/core/bootstrap.min.js"></script>
 
-        <!-- jQuery Scrollbar -->
-        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-        <!-- Datatables -->
-        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-        <!-- Kaiadmin JS -->
-        <script src="assets/js/kaiadmin.min.js"></script>
-        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-        <script src="assets/js/setting-demo2.js"></script>
-        <script>
-                                                                        document.querySelector('.close').addEventListener('click', function () {
-                                                                            $('#addUserModal').modal('hide');
-                                                                        });
-        </script>
-        <script>
-            function doClose() {
-                $('#addUserModal').modal('hide');
+        <!-- Custom template | don't include it in your project! -->
+
+        <!-- End Custom template -->
+    </div>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo2.js"></script>
+    <script>
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editUserModal').modal('hide');
+                                                    });
+    </script>
+    <script>
+        function doClose() {
+            $('#editUserModal').modal('hide');
+        }
+    </script>
+    <script>
+        function validate() {
+            var email = document.getElementById("email").value;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+
+            if (!regex1.test(email)) {
+                alert("Please enter a valid Email address (example@gmail.com)");
+                document.getElementById("email").focus();
+                return false;
             }
-        </script>
-        <script>
-            function validate() {
-                var email = document.getElementById("email").value;
-                var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            return true;
+        }
+    </script>
 
-                if (!regex1.test(email)) {
-                    alert("Please enter a valid Email address (example@gmail.com)");
-                    document.getElementById("email").focus();
-                    return false;
-                }
-                return true;
-            }
-        </script>
-        <script>
-            function doDelete(serviceid) {
-                var option = confirm("Are you sure? You won't be able to revert this");
-                if (option === true) {
-                    window.location = "deleteService?serviceid=" + serviceid;
-                }
-            }
-        </script>
-        <script>
-            $(document).ready(function () {
-                $("#basic-datatables").DataTable({});
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable({});
 
-                $("#multi-filter-select").DataTable({
-                    pageLength: 5,
-                    initComplete: function () {
-                        this.api()
-                                .columns()
-                                .every(function () {
-                                    var column = this;
-                                    var select = $(
-                                            '<select class="form-select"><option value=""></option></select>'
-                                            )
-                                            .appendTo($(column.footer()).empty())
-                                            .on("change", function () {
-                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                column
-                                                        .search(val ? "^" + val + "$" : "", true, false)
-                                                        .draw();
-                                            });
+            $("#multi-filter-select").DataTable({
+                pageLength: 5,
+                initComplete: function () {
+                    this.api()
+                            .columns()
+                            .every(function () {
+                                var column = this;
+                                var select = $(
+                                        '<select class="form-select"><option value=""></option></select>'
+                                        )
+                                        .appendTo($(column.footer()).empty())
+                                        .on("change", function () {
+                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                            column
+                                                    .search(val ? "^" + val + "$" : "", true, false)
+                                                    .draw();
+                                        });
 
-                                    column
-                                            .data()
-                                            .unique()
-                                            .sort()
-                                            .each(function (d, j) {
-                                                select.append(
-                                                        '<option value="' + d + '">' + d + "</option>"
-                                                        );
-                                            });
-                                });
-                    },
-                });
-
-                // Add Row
-                $("#add-user").DataTable({
-                    pageLength: 5,
-                });
-
-                var action =
-                        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-                $("#addUserButton").click(function () {
-                    $("#add-user")
-                            .dataTable()
-                            .fnAddData([
-                                $("#addName").val(),
-                                $("#addPosition").val(),
-                                $("#addOffice").val(),
-                                action,
-                            ]);
-                    $("#addUserModal").modal("hide");
-                });
+                                column
+                                        .data()
+                                        .unique()
+                                        .sort()
+                                        .each(function (d, j) {
+                                            select.append(
+                                                    '<option value="' + d + '">' + d + "</option>"
+                                                    );
+                                        });
+                            });
+                },
             });
-        </script>
-    </body>
+
+            // edit Row
+            $("#edit-user").DataTable({
+                pageLength: 5,
+            });
+
+            var action =
+                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+            $("#editUserButton").click(function () {
+                $("#edit-user")
+                        .dataTable()
+                        .fneditData([
+                            $("#editName").val(),
+                            $("#editPosition").val(),
+                            $("#editOffice").val(),
+                            action,
+                        ]);
+                $("#editUserModal").modal("hide");
+            });
+        });
+    </script>
+
+</body>
 </html>

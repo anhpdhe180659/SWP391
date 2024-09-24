@@ -5,26 +5,24 @@
 
 package control;
 
+import dal.AmenityDAO;
 import dal.ServiceDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Amenity;
 import model.Service;
-import model.User;
 
 /**
  *
  * @author admin
  */
-@WebServlet(urlPatterns = "/deleteService")
-public class deleteService extends HttpServlet {
+public class deleteAmenity extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,17 +33,20 @@ public class deleteService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+//        out.print("sadsda");
         HttpSession session = request.getSession();
-        ServiceDAO sdao = new ServiceDAO();
-        int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-        sdao.deleteService(serviceid);
-        List<Service> listService = sdao.getAllServices();
-        session.setAttribute("listService", listService);
-        response.sendRedirect("listService");
+        AmenityDAO adao = new AmenityDAO();
+        int amenityid = Integer.parseInt(request.getParameter("amenityid"));
+        adao.deleteAmenity(amenityid);
+        List<Amenity> listAmenity = adao.getAllAmenities();
+        session.setAttribute("listAmenity", listAmenity);
+        response.sendRedirect("listAmenity");
         
     } 
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.

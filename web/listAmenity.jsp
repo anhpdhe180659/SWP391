@@ -1,6 +1,6 @@
 <%-- 
-    Document   : listServices
-    Created on : Sep 23, 2024, 4:25:24 PM
+    Document   : listAmenity
+    Created on : Sep 24, 2024, 9:26:16 AM
     Author     : admin
 --%>
 
@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Service</title><!--  page only for manager  -->
+        <title>List Amenity</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -439,21 +439,21 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Service</h3>
+                            <h3 class="fw-bold mb-3">Manage Amenity</h3>
                         </div>
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Service</h4>
+                                        <h4 class="card-title">Add Amenity</h4>
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
                                             data-bs-toggle="modal"
                                             data-bs-target="#addUserModal"
                                             >
                                             <i class="fa fa-plus"></i>
-                                            Add Service
+                                            Add Amenity
                                         </button>
                                     </div>
                                 </div>
@@ -471,13 +471,13 @@
                                                 <div class="modal-header border-0">
                                                     <h5 class="modal-title">
                                                         <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> Service </span>
+                                                        <span class="fw-light"> Amenity </span>
                                                     </h5>
                                                 </div>
-                                                <form action="addService" onsubmit="return validate()">
+                                                <form action="addAmenity" onsubmit="return validate()">
                                                     <div class="modal-body">
                                                         <p class="small">
-                                                            Create a new service, make sure you
+                                                            Create a new Amenity , make sure you
                                                             fill them all
                                                         </p>
 
@@ -492,21 +492,7 @@
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Price</label>
-                                                                    <input
-                                                                        name="price"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            
-                                                            
+                                                            </div>  
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer border-0">
@@ -533,24 +519,22 @@
 
 
                                     <div class="table-responsive">
-                                        <table id="add-user" class="display table table-striped table-hover" >
+                                        <table id="add-amenity" class="display table table-striped table-hover" >
                                             <!--                                            <div class="table-responsive">
                                                                                     <table id="add-user" class="display table table-striped table-hover" >-->
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
+                                                    <th>Name</th>                                                   
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${sessionScope.listService}" var="sv">
+                                                <c:forEach items="${sessionScope.listAmenity}" var="a">
                                                     <tr>
-                                                        <td>${sv.name}</td>
-                                                        <td>${sv.price}</td>                                                      
+                                                        <td>${a.amenName}</td>                                                                                                            
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="editService?serviceid=${sv.serviceID}" >
+                                                                <a href="editAmenity?amenityid=${a.amenID}" >
                                                                     <button
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
@@ -566,7 +550,7 @@
                                                                     title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
-                                                                    onclick="doDelete(${sv.serviceID})"
+                                                                    onclick="doDelete(${a.amenID})"
                                                                     >
                                                                     <i class="fa fa-times"></i>
                                                                 </button>
@@ -629,68 +613,55 @@
             }
         </script>
         <script>
-            function doDelete(serviceid) {
+            function doDelete(amenityid) {
                 var option = confirm("Are you sure? You won't be able to revert this");
                 if (option === true) {
-                    window.location = "deleteService?serviceid=" + serviceid;
+                    window.location = "deleteAmenity?amenityid=" + amenityid;
                 }
             }
         </script>
         <script>
-            $(document).ready(function () {
-                $("#basic-datatables").DataTable({});
+            $(document).ready(function() {
+    $("#basic-datatables").DataTable({});
 
-                $("#multi-filter-select").DataTable({
-                    pageLength: 5,
-                    initComplete: function () {
-                        this.api()
-                                .columns()
-                                .every(function () {
-                                    var column = this;
-                                    var select = $(
-                                            '<select class="form-select"><option value=""></option></select>'
-                                            )
-                                            .appendTo($(column.footer()).empty())
-                                            .on("change", function () {
-                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                column
-                                                        .search(val ? "^" + val + "$" : "", true, false)
-                                                        .draw();
-                                            });
+    $("#multi-filter-select").DataTable({
+        pageLength: 5,
+        initComplete: function() {
+            this.api().columns().every(function() {
+                var column = this;
+                var select = $('<select class="form-select"><option value=""></option></select>')
+                    .appendTo($(column.footer()).empty())
+                    .on('change', function() {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                        column.search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
 
-                                    column
-                                            .data()
-                                            .unique()
-                                            .sort()
-                                            .each(function (d, j) {
-                                                select.append(
-                                                        '<option value="' + d + '">' + d + "</option>"
-                                                        );
-                                            });
-                                });
-                    },
-                });
-
-                // Add Row
-                $("#add-user").DataTable({
-                    pageLength: 5,
-                });
-
-                var action =
-                        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-                $("#addUserButton").click(function () {
-                    $("#add-user")
-                            .dataTable()
-                            .fnAddData([
-                                $("#addName").val(),
-                                $("#addPosition").val(),
-                                $("#addOffice").val(),
-                                action,
-                            ]);
-                    $("#addUserModal").modal("hide");
+                column.data().unique().sort().each(function(d, j) {
+                    select.append('<option value="'+d+'">'+d+'</option>');
                 });
             });
+        }
+    });
+
+    // Initialize DataTable with paging for "add-user" table
+    var addUserDataTable = $("#add-user").DataTable({
+        pageLength: 5
+    });
+
+    var action =
+        '<td><div class="form-button-action"><button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"><i class="fa fa-edit"></i></button><button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"><i class="fa fa-times"></i></button></div></td>';
+
+    $("#addUserButton").click(function() {
+        addUserDataTable.row.add([
+            $("#addName").val(),
+            $("#addPosition").val(),
+            $("#addOffice").val(),
+            action,
+        ]).draw(false);
+
+        $("#addUserModal").modal("hide");
+    });
+});
         </script>
     </body>
 </html>

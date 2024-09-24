@@ -5,26 +5,24 @@
 
 package control;
 
+import dal.AmenityDAO;
 import dal.ServiceDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Amenity;
 import model.Service;
-import model.User;
 
 /**
  *
  * @author admin
  */
-@WebServlet(urlPatterns = "/deleteService")
-public class deleteService extends HttpServlet {
+public class addAmenity extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,15 +35,22 @@ public class deleteService extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        try {
         HttpSession session = request.getSession();
-        ServiceDAO sdao = new ServiceDAO();
-        int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-        sdao.deleteService(serviceid);
-        List<Service> listService = sdao.getAllServices();
-        session.setAttribute("listService", listService);
-        response.sendRedirect("listService");
+        AmenityDAO adao = new AmenityDAO();
+        String name = request.getParameter("name");
+        Amenity a = new Amenity();
+        a.setAmenName(name);
         
+        adao.addAmenity(a);
+        List<Amenity> listAmenity = adao.getAllAmenities();
+        session.setAttribute("listAmenity", listAmenity);
+        request.getRequestDispatcher("listAmenity.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e.getMessage());
+        }
     } 
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
