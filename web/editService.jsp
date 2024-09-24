@@ -425,7 +425,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Logout</a>
+                                                <a class="dropdown-item" href="logout">Logout</a>
                                             </li>
                                         </div>
                                     </ul>
@@ -473,7 +473,7 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Name</label>
                                                                     <input
-                                                                        name="username"
+                                                                        name="name"
                                                                         type="text"
                                                                         class="form-control"
                                                                         value="${s.name}"

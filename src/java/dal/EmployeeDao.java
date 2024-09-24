@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import model.Employee;
@@ -18,21 +14,22 @@ public class EmployeeDao extends DBContext {
 
     public Employee findByUserId(int userId) {
         String query = """
-                        SELECT * FROM Employee where [UserID] = ?
-                        """;
-        Employee em = new Employee();
-        try (PreparedStatement pre = connection.prepareStatement(query);) {
+                    SELECT * FROM Employee WHERE [UserID] = ?
+                    """;
+        Employee em = null; // Bắt đầu với null
+        try (PreparedStatement pre = connection.prepareStatement(query)) {
             pre.setInt(1, userId);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                 em = new Employee(rs.getInt("RecID"),
+            if (rs.next()) { // Sử dụng if
+                em = new Employee(
+                        rs.getInt("RecID"),
                         rs.getString("Name"),
-                        rs.getDate("DateOfBirth").toString(),
+                        rs.getDate("DateOfBirth") != null ? rs.getDate("DateOfBirth").toString() : null,
                         rs.getInt("Sex"),
                         rs.getString("Address"),
                         rs.getString("Phone"),
                         rs.getString("Identification"),
-                        rs.getDate("StartDate").toString(),
+                        rs.getDate("StartDate") != null ? rs.getDate("StartDate").toString() : null,
                         rs.getInt("Salary"),
                         rs.getInt("UserID")
                 );
@@ -40,9 +37,9 @@ public class EmployeeDao extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return em;
+        return em; // Trả về null nếu không tìm thấy
     }
-    
+
     public static void main(String[] args) {
         System.out.println(new EmployeeDao().findByUserId(3).getName());
     }

@@ -572,7 +572,7 @@
                                                         <td>${s.email}</td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="editUser?userid=${s.userID}" >
+                                                                <a href="editUser?userid=${s.userId}" >
                                                                     <button
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
@@ -588,7 +588,7 @@
                                                                     title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
-                                                                    onclick="doDelete(${s.userID})"
+                                                                    onclick="doDelete(${s.userId})"
                                                                     >
                                                                     <i class="fa fa-times"></i>
                                                                 </button>

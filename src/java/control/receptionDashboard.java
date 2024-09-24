@@ -70,12 +70,12 @@ public class receptionDashboard extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         } else if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", session.getAttribute("role"));
+            request.setAttribute("error","Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        EmployeeDao empDao = new EmployeeDao();
         User user = (User) session.getAttribute("user");
-        Employee emp = empDao.findByUserId(user.getUserID());
+        EmployeeDao empDao = new EmployeeDao();
+        Employee emp = empDao.findByUserId(user.getUserId());
         session.setAttribute("employee", emp);
         //get room
         RoomDao roomDao = new RoomDao();

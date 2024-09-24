@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import java.sql.PreparedStatement;
@@ -9,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 
 /**
@@ -78,13 +76,15 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO udao = new UserDAO();
-        User user = new User();
-        user.setUserID(1);
-        user.setUsername("hello");
-        user.setPassword("123");
-        user.setRole(2);
-        user.setEmail("hahah@example.com");
-        udao.editUser(user);
+//       User user = new User();
+//        user.setUserID(1);
+//        user.setUsername("hello");
+//        user.setPassword("123");
+//        user.setRole(2);
+//        user.setEmail("hahah@example.com");
+//        udao.editUser(user);
+        udao.updatePassword("1", "thaison02004@gmail.com");
+        System.out.println(udao.getUserByUsername("son"));
     }
 
     public void addUser(User u) {
@@ -129,13 +129,14 @@ public class UserDAO extends DBContext {
             st.setString(2, u.getPassword());
             st.setInt(3, u.getRole());
             st.setString(4, u.getEmail());
-            st.setInt(5, u.getUserID());
+            st.setInt(5, u.getUserId());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
-        public User getUserByUsername(String userName) {
+
+    public User getUserByUsername(String userName) {
         User user = new User();
         String sql = """
                      SELECT UserID
@@ -164,4 +165,18 @@ public class UserDAO extends DBContext {
         }
         return user;
     }
+
+    public void updatePassword(String password, String email) {
+        try {
+            String sql = "UPDATE [User] SET Password = ? WHERE Email = ?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, password);
+            st.setString(2, email);
+            st.executeUpdate(); // Use executeUpdate for UPDATE statements
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

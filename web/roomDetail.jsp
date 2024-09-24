@@ -205,7 +205,6 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="updateRoomStatus"  method="POST">
-
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-sm-12">

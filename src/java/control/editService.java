@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
 import dal.ServiceDAO;
@@ -18,22 +17,25 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Service;
 import model.User;
+
 /**
  *
  * @author admin
  */
 @WebServlet(urlPatterns = "/editService")
 public class editService extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         ServiceDAO sdao = new ServiceDAO();
@@ -47,12 +49,13 @@ public class editService extends HttpServlet {
         } catch (ServletException | IOException | NumberFormatException e) {
             out.print(e);
         }
-        
-    } 
+
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -60,53 +63,59 @@ public class editService extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         try {
             ServiceDAO sdao = new ServiceDAO();
             HttpSession session = request.getSession();
+
             int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-            Service oldService = sdao.findService(serviceid);// old service
-            String name = request.getParameter("name");// new information
-            int price = Integer.parseInt(request.getParameter("price"));// new information
+            Service oldService = sdao.findService(serviceid); // lấy dịch vụ cũ từ cơ sở dữ liệu
+
+            String name = request.getParameter("name"); // thông tin mới
+            int price = Integer.parseInt(request.getParameter("price")); // thông tin mới
             Service service = new Service(serviceid, name, price);
+
             if (oldService.getName().equals(name)) {
-                // check if username is not changed
+                // Kiểm tra nếu tên không thay đổi
                 request.setAttribute("noti", "Save successful!");
                 request.setAttribute("service", oldService);
-                request.getRequestDispatcher("editService.jsp").forward(request, response);
-                return;
-            }
-            List<Service> listService = sdao.getAllServices();
-            for (Service s : listService) {
-                if (s.getName().equals(name)) {
-                    // check if username is existed in database
-                    request.setAttribute("noti", "name "+name+" existed, please enter again!");
-                    request.setAttribute("service", oldService);
-                    request.getRequestDispatcher("editService.jsp").forward(request, response);
-                    return;
+            } else {
+                List<Service> listService = sdao.getAllServices();
+                for (Service s : listService) {
+                    if (s.getName().equals(name)) {
+                        // Kiểm tra nếu tên đã tồn tại trong cơ sở dữ liệu
+                        request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                        request.setAttribute("service", oldService);
+                        break;
+                    }
                 }
+                // Cập nhật dịch vụ trong cơ sở dữ liệu
+                sdao.updateService(service);
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("service", service);
             }
-            sdao.updateService(service);
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("service", service);
-            request.getRequestDispatcher("editService.jsp").forward(request, response);
+
+            // Lấy danh sách dịch vụ mới
+            List<Service> updatedListService = sdao.getAllServices();
+            session.setAttribute("listService", updatedListService);
+            request.getRequestDispatcher("listService.jsp").forward(request, response);
 
         } catch (Exception e) {
-            out.print("There are some wrong");
+            out.print("There was an error: " + e.getMessage());
         }
     }
 
@@ -123,10 +132,9 @@ public class editService extends HttpServlet {
         System.out.println(countSameServicename);
     }
 
-    
-
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
