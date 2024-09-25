@@ -461,7 +461,7 @@
                                                             <i class="fa fa-search search-icon"></i>
                                                         </button>
                                                     </div>
-                                                    <c:if test="${n == null}">
+                                                    <c:if test="${n.length() < 2}">
                                                         <input
                                                             type="text"
                                                             name="name"
@@ -469,7 +469,7 @@
                                                             class="form-control"
                                                             />
                                                     </c:if>
-                                                    <c:if test="${n != null}">
+                                                    <c:if test="${n.length() > 1}">
                                                         <input
                                                             type="text"
                                                             name="name"
