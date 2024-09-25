@@ -117,7 +117,6 @@ public class UserDAO extends DBContext {
         String sql = """
                      UPDATE [User] 
                        SET [Username] = ?,
-                       [Password] = ?,
                        [Role] = ?,
                        [Email] = ?,
                      [Status] = ?
@@ -125,11 +124,10 @@ public class UserDAO extends DBContext {
                      """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, u.getUsername());
-            st.setString(2, u.getPassword());
-            st.setInt(3, u.getRole());
-            st.setString(4, u.getEmail());
-            st.setInt(5, u.getStatus());
-            st.setInt(6, u.getUserID());
+            st.setInt(2, u.getRole());
+            st.setString(3, u.getEmail());
+            st.setInt(4, u.getStatus());
+            st.setInt(5, u.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

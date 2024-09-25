@@ -472,6 +472,7 @@
                                                                     <label>Username</label>
                                                                     <input
                                                                         name="username"
+                                                                        pattern="[a-zA-Z0-9]{6,12}$" title="length should be 6-12, no spaces, unsigned"
                                                                         type="text"
                                                                         class="form-control"
                                                                         value="${u.username}"
@@ -487,10 +488,8 @@
                                                                         type="password"
                                                                         class="form-control"
                                                                         value="${u.password}"
-                                                                        required
-                                                                        style="width: 50%"
+                                                                        readonly=""
                                                                         />
-                                                                    <!--<span class="toggle-password" id="togglePassword">&#128065;</span>-->
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12">

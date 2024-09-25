@@ -472,6 +472,7 @@
                                                                     <input
                                                                         name="username"
                                                                         type="text"
+                                                                        pattern="[a-zA-Z0-9]{6,12}$" title="length should be 6-12, no spaces, unsigned"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -482,7 +483,7 @@
                                                                     <label>Password</label>
                                                                     <input
                                                                         name="password" id="password"
-                                                                        type="text"
+                                                                        type="text" pattern="[a-zA-Z0-9]{3,18}$" required title="length should be 3-18, no spaces, unsigned"
                                                                         class="form-control"
                                                                         required
                                                                         style="width: 50%"
@@ -597,9 +598,8 @@
         function validate() {
             var email = document.getElementById("email").value;
             var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
             if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (gmail@gmail.com)");
+                alert("Please enter a valid Email address (example@gmail.com)");
                 document.getElementById("email").focus();
                 return false;
             }
