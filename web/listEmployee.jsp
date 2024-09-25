@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/logo.png"
             type="image/x-icon"
             />
 
@@ -461,7 +461,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-                                    <div
+<!--                                    <div
                                         class="modal fade"
                                         id="addEmployeeModal"
                                         tabindex="-1"
@@ -582,12 +582,13 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="table-responsive">
                                         <table class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>
+                                                    <th>Date Of Birth</th>
                                                     <th>Sex</th>
                                                     <th>Phone</th>
                                                     <th>Salary</th>
@@ -599,6 +600,7 @@
                                                 <c:forEach items="${sessionScope.listEmployee}" var="s">
                                                     <tr>
                                                         <td>${s.name}</td>
+                                                        <td>${s.dateOfBirth}</td>
                                                         <td>${(s.sex == 1?
                                                               '<img src="assets/img/male-icon.png" alt="male-image"/>':
                                                               '<img src="assets/img/female-icon.png" alt="female-image"/>')}

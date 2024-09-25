@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/logo.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
@@ -508,6 +508,7 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Identification</label>
                                                                     <input
+                                                                        id="identification"
                                                                         name="identification"
                                                                         type="text"
                                                                         class="form-control"
@@ -539,7 +540,8 @@
                                                             <div class="col-sm-3" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Salary</label>
-                                                                    <input type="number" name="salary" value="${e.salary}" required
+                                                                    <input type="number" name="salary" value="${e.salary}" 
+                                                                           min="0" max="2000000000" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
@@ -553,11 +555,11 @@
                                                             <c:set value="${requestScope.currentUser}" var="currentUser"/>
                                                             <div class="col-sm-3" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
-                                                                    <label>Current Username & password</label>
+                                                                    <label>Current Username</label>
                                                                     ${currentUser.username}
-                                                                    <c:if test="${currentUser.username != null}" >&</c:if>
+                                                                    <c:if test="${currentUser.username != null}" ></c:if>
                                                                     <c:if test="${currentUser.username == null}" >none</c:if>
-                                                                    ${currentUser.password}
+                                                                    
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-3" >
@@ -566,12 +568,12 @@
                                                                     <select name="userID" class="form-control">
                                                                         <option value="${currentUser.userID}" />
                                                                         ${currentUser.username} 
-                                                                        <c:if test="${currentUser.username != null}" >&</c:if>
+                                                                        <c:if test="${currentUser.username != null}" ></c:if>
                                                                         <c:if test="${currentUser.username == null}" >none</c:if> 
-                                                                        ${currentUser.password}
+                                                                        
                                                                         </option>
                                                                         <c:forEach items="${sessionScope.listUserNotUsed}" var="u" >
-                                                                            <option value="${u.userID}" />${u.username}  &  ${u.password}</option>
+                                                                            <option value="${u.userID}" />${u.username}</option>
                                                                         </c:forEach>
                                                                         <option value="0" />none</option>
                                                                     </select>
@@ -643,13 +645,19 @@
     <script>
         function validate() {
             var phone = document.getElementById("phone").value;
-            var regex2 = /^\d{10}$/;
-            if (!regex2.test(phone)) {
+            var regex = /^\d{10}$/;
+            var identification = document.getElementById("identification").value;
+            var regex2 = /^\d{12}$/;
+            if (!regex.test(phone)) {
                 alert("Please enter a valid phone number with 10 digit");
                 document.getElementById("phone").focus();
                 return false;
             }
-
+            if (!regex2.test(identification)) {
+                alert("Please enter a valid identification number with 12 digit");
+                document.getElementById("identification").focus();
+                return false;
+            }
             return true;
         }
     </script>

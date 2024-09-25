@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/logo.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
@@ -484,7 +484,7 @@
                                                                     <label>Password</label>
                                                                     <input
                                                                         name="password" id="password"
-                                                                        type="text"
+                                                                        type="password"
                                                                         class="form-control"
                                                                         value="${u.password}"
                                                                         required
@@ -624,7 +624,7 @@
             var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
             if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (gmail@gmail.com)");
+                alert("Please enter a valid Email address (example@gmail.com)");
                 document.getElementById("email").focus();
                 return false;
             }
