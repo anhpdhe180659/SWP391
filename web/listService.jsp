@@ -81,7 +81,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                                         <!-- Navbar Header -->
+                     <!-- Navbar Header -->
                     <nav
                         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
                         >
@@ -163,7 +163,7 @@
                                                             />
                                                     </div>
                                                     <div class="u-text">
-                                                        <h4>${sessionScope.employee.name}</h4>
+                                                        <h4>${sessionScope.user.username}</h4>
                                                         <p class="text-muted">${sessionScope.user.email}</p>
                                                         <a
                                                             href="profile.html"
@@ -176,6 +176,7 @@
                                             <li>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="ViewProfileServlet?userId=${sessionScope.user.userID}">My Profile</a>
+                                                <a class="dropdown-item" href="changePassword.jsp">Change Password</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
