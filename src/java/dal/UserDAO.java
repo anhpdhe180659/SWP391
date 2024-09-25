@@ -81,7 +81,7 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO udao = new UserDAO();
-        System.out.println(udao.getAllUserNotUsed());
+        System.out.println(udao.emailExists("thaison102004@gmail.com"));
     }
 
     public void addUser(User u) {
@@ -258,7 +258,7 @@ public class UserDAO extends DBContext {
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                user = new User(UserID, Username, Password, Role, Email,Status);
+                user = new User(UserID, Username, Password, Role, Email, Status);
             }
         } catch (SQLException e) {
             System.out.println("Connect error");
@@ -267,8 +267,8 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePassword(String password, String email) {
+        String sql = "UPDATE [User] SET Password = ? WHERE Email = ?";
         try {
-            String sql = "UPDATE [User] SET Password = ? WHERE Email = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, password);
             st.setString(2, email);
@@ -279,4 +279,17 @@ public class UserDAO extends DBContext {
         }
     }
 
+    public boolean emailExists(String email) {
+    String sql = "SELECT TOP 1 1 FROM [User] WHERE Email = ?";
+    try (PreparedStatement st = connection.prepareStatement(sql);) {
+        st.setString(1, email);
+        try (ResultSet rs = st.executeQuery()) {
+            return rs.next(); // Trả về true nếu có ít nhất một kết quả
+        }
+    } catch (SQLException ex) {
+        System.err.println("Error checking email existence: " + ex.getMessage());
+        ex.printStackTrace(); // In stack trace để debug
+        throw new RuntimeException("Database error occurred", ex);
+    }
+}
 }

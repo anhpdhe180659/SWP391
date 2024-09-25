@@ -16,6 +16,11 @@
                     <h1>Forgot password</h1>
                     <input type="text" placeholder="Input your email!" name="email" required>
                     <button type="submit">Send</button>
+                    <c:if test="${not empty error}">
+                        <div style="color: red; margin-top: 10px;">
+                            <strong>${error}</strong>
+                        </div>
+                    </c:if>
                     <a href="login">Back to login!</a>
                 </form>
             </div>
