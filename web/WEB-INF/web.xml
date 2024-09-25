@@ -64,10 +64,7 @@
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>login</servlet-name>
-        <servlet-class>control.login</servlet-class>
-    </servlet>
+    
     <servlet>
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
