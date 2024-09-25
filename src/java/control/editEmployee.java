@@ -35,17 +35,22 @@ public class editEmployee extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        EmployeeDAO edao = new EmployeeDAO();
-        UserDAO udao = new UserDAO();
-        HttpSession session = request.getSession();
-        List<User> listUserNotUsed = udao.getAllUserNotUsed();
-        session.setAttribute("listUserNotUsed", listUserNotUsed);
-        int empid = Integer.parseInt(request.getParameter("empid"));
-        Employee e = edao.getEmployeeByID(empid);
-        User u = udao.getUserByEmpID(empid);
-        request.setAttribute("currentUser", u);
-        request.setAttribute("employee", e);
-        request.getRequestDispatcher("editEmployee.jsp").forward(request, response);
+        PrintWriter out = response.getWriter();
+        try {
+            EmployeeDAO edao = new EmployeeDAO();
+            UserDAO udao = new UserDAO();
+            HttpSession session = request.getSession();
+            List<User> listUserNotUsed = udao.getAllUserNotUsed();
+            session.setAttribute("listUserNotUsed", listUserNotUsed);
+            int empid = Integer.parseInt(request.getParameter("empid"));
+            Employee e = edao.getEmployeeByID(empid);
+            User u = udao.getUserByEmpID(empid);
+            request.setAttribute("currentUser", u);
+            request.setAttribute("employee", e);
+            request.getRequestDispatcher("editEmployee.jsp").forward(request, response);
+        } catch (Exception e) {
+            out.print(e);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -104,7 +109,7 @@ public class editEmployee extends HttpServlet {
             emp.setSalary(Salary);
             int userID = Integer.parseInt(request.getParameter("userID"));
             emp.setUserID(userID);
-            out.print(emp);
+
             List<Employee> listEmployee = edao.getAllEmployee();
             for (Employee e : listEmployee) {
                 if (!newIdentification.equals(oldIdentification)) {
@@ -119,6 +124,7 @@ public class editEmployee extends HttpServlet {
             }
             edao.editEmployee(emp);
             request.setAttribute("noti", "Save successful!");
+
             request.setAttribute("employee", emp);
             User u = udao.getUserByEmpID(empid);
             request.setAttribute("currentUser", u);

@@ -1,4 +1,4 @@
-<%-- 
+<<%-- 
     Document   : editUser
     Created on : Sep 22, 2024, 1:29:17 PM
     Author     : nhatk
@@ -12,7 +12,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Edit user</title><!--  page only for manager  -->
+        <title>Add user</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -450,36 +450,21 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Edit User</h4>
-                                        <button
-                                            class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editUserModal"
-                                            >
-                                            <i class="fa fa-plus"></i>
-                                            Edit User
+                                        <h4 class="card-title">Add User</h4>
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
                                         </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
+
                                     <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> User </span>
-                                                    </h5>
-                                                </div>
-                                                <form action="editUser" onsubmit="return validate()">
+                                                <form action="addUser"  method="POST"  onsubmit="return validate()">
                                                     <div class="modal-body">
-
-                                                        <p class="small">
-                                                            Create a new user, make sure you
-                                                            fill them all
-                                                        </p>
-
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
@@ -496,11 +481,13 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Password</label>
                                                                     <input
-                                                                        name="password"
+                                                                        name="password" id="password"
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
+                                                                        style="width: 50%"
                                                                         />
+                                                                    <!--<span class="toggle-password" id="togglePassword">&#128065;</span>-->
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12">
@@ -515,7 +502,7 @@
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Role</label>                  
                                                                     <select name="role" class="form-control">
@@ -524,77 +511,32 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Status</label>
+                                                                    <select name="status" class="form-control">
+                                                                        <option value="1">active</option>
+                                                                        <option value="0">unactive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <input type="text" name="userid" value="${u.userID}" hidden="">
                                                     <div class="modal-footer border-0">
+                                                        <c:set value="${requestScope.noti}" var="noti"/>
+                                                        ${noti}
                                                         <button
-                                                            type="button submit"
+                                                            type="submit"
                                                             class="btn btn-primary">
-                                                            edit
+                                                            ADD
                                                         </button>
-                                                        <a onclick="doClose()">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
-                                                            </button>
-                                                        </a>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
 
-<!--
-                                    <div class="table-responsive">
-                                        <table id="edit-user" class="display table table-striped table-hover" >
-                                                                                        <div class="table-responsive">
-                                                                                    <table id="edit-user" class="display table table-striped table-hover" >
-                                            <thead>
-                                                <tr>
-                                                    <th>Username</th>
-                                                    <th>Password</th>
-                                                    <th>Email</th>
-                                                    <th style="width: 10%">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <%--<c:forEach items="${sessionScope.listUser}" var="s">--%>
-                                                    <tr>
-
-                                                        <td>${s.username}</td>
-                                                        <td>${s.password}</td>
-                                                        <td>${s.email}</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button
-                                                                    type="button"
-                                                                    data-bs-toggle="tooltip"
-                                                                    title=""
-                                                                    class="btn btn-link btn-primary btn-lg"
-                                                                    data-original-title="Edit Task"
-                                                                    >
-                                                                    <i class="fa fa-edit"></i>
-                                                                </button>
-                                                                <button
-                                                                    type="button"
-                                                                    title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="doDelete(${s.userID})"
-                                                                    >
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                <%--</c:forEach>--%>
-                                            </tbody>
-                                        </table>
-                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -625,9 +567,21 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                                        document.querySelector('.close').editEventListener('click', function () {
-                                                                            $('#editUserModal').modal('hide');
-                                                                        });
+                                                    const togglePassword = document.querySelector('#togglePassword');
+                                                    const password = document.querySelector('#password');
+                                                    togglePassword.addEventListener('click', function () {
+                                                        // Toggle the type attribute
+                                                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                        password.setAttribute('type', type);
+
+                                                        // Toggle the icon (optional)
+                                                        this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+                                                    });
+    </script>
+    <script>
+        document.querySelector('.close').editEventListener('click', function () {
+            $('#editUserModal').modal('hide');
+        });
     </script>
     <script>
         function doClose() {
@@ -635,26 +589,24 @@
         }
     </script>
     <script>
-            function validate() {
-                var email = document.getElementById("email").value;
-                var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-                if (!regex1.test(email)) {
-                    alert("Please enter a valid Email editress (example@gmail.com)");
-                    document.getElementById("email").focus();
-                    return false;
-                }
-                return true;
-            }
-        </script>
-    <script>
-        function doDelete(userid) {
-            var option = confirm("Are you sure? You won't be able to revert this");
-            if (option === true) {
-                window.location = "deleteUser?userid=" + userid;
-            }
+        function BackToList() {
+            window.location = "listUser";
         }
     </script>
+    <script>
+        function validate() {
+            var email = document.getElementById("email").value;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+            if (!regex1.test(email)) {
+                alert("Please enter a valid Email address (gmail@gmail.com)");
+                document.getElementById("email").focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
+
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({});

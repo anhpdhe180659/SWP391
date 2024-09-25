@@ -1,4 +1,3 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -9,13 +8,12 @@ import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.User;
-
-import jakarta.servlet.http.HttpServlet;
 
 /**
  *
@@ -49,6 +47,7 @@ public class listUser extends HttpServlet {
         session.setAttribute("listUser", listUser);
         response.sendRedirect("listUser.jsp");
     }
+
     public int getNoPage(List<User> list) {
         double page = (double) list.size() / 5;
         page = Math.ceil(page);

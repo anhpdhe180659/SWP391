@@ -33,34 +33,7 @@ public class addEmployee extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            HttpSession session = request.getSession();
-            EmployeeDAO edao = new EmployeeDAO();
-            Employee emp = new Employee();
-            String Name = request.getParameter("name");
-            emp.setName(Name);
-            String DateOfBirth = request.getParameter("birthday");
-            emp.setDateOfBirth(DateOfBirth);
-            int Sex = Integer.parseInt(request.getParameter("sex"));
-            emp.setSex(Sex);
-            String Address = request.getParameter("address");
-            emp.setAddress(Address);
-            String Phone = request.getParameter("phone");
-            emp.setPhone(Phone);
-            String Identification = request.getParameter("identification");
-            emp.setIdentification(Identification);
-            String StartDate = request.getParameter("startdate");
-            emp.setStartDate(StartDate);
-            int Salary = Integer.parseInt(request.getParameter("salary"));
-            emp.setSalary(Salary);
-            edao.addEmployee(emp);
-            List<Employee> listEmployee = edao.getAllEmployee();
-            session.setAttribute("listEmployee", listEmployee);
-            response.sendRedirect("listEmployee.jsp");
-        } catch (NumberFormatException e) {
-            out.print("Exception in addEmployee");
-        }
+        response.sendRedirect("addEmployee.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -89,7 +62,44 @@ public class addEmployee extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        try {
+            HttpSession session = request.getSession();
+            EmployeeDAO edao = new EmployeeDAO();
+            Employee emp = new Employee();
+            String Name = request.getParameter("name");
+            emp.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");
+            emp.setDateOfBirth(DateOfBirth);
+            int Sex = Integer.parseInt(request.getParameter("sex"));
+            emp.setSex(Sex);
+            String Address = request.getParameter("address");
+            emp.setAddress(Address);
+            String Phone = request.getParameter("phone");
+            emp.setPhone(Phone);
+            String Identification = request.getParameter("identification");
+            emp.setIdentification(Identification);
+            String StartDate = request.getParameter("startdate");
+            emp.setStartDate(StartDate);
+            int Salary = Integer.parseInt(request.getParameter("salary"));
+            emp.setSalary(Salary);
+            String noti = "<div style='margin-right: 25px;color: darkgreen; font-weight:bold'>Add employee successfully!</div>";
+            List<Employee> listEmployee = edao.getAllEmployee();
+            for (Employee e : listEmployee) {
+                    if (e.getIdentification().equals(Identification)) {
+                        // check if Identification is existed in database
+                        request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");
+                        request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
+                        return;
+                    }
+            }
+            edao.addEmployee(emp);
+            request.setAttribute("noti", noti);
+            request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
+            
+        } catch (NumberFormatException e) {
+            out.print("Exception in addEmployee");
+        }
     }
 
     /**
