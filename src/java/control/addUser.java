@@ -94,11 +94,10 @@ public class addUser extends HttpServlet {
             udao.addUser(u);
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addUser.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException |NoSuchAlgorithmException e) {
+        } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
             out.print("Exception in addUser");
         }
     }
-
 
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         // Chọn thuật toán SHA-256
@@ -107,8 +106,18 @@ public class addUser extends HttpServlet {
         // Băm mật khẩu
         byte[] hash = md.digest(password.getBytes());
 
-        // Chuyển đổi thành chuỗi Base64 hoặc Hex để dễ lưu trữ
-        return Base64.getEncoder().encodeToString(hash);
+        // Chuyển đổi mảng byte sang chuỗi Hex để dễ lưu trữ
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        // Trả về chuỗi băm đã chuyển thành dạng Hex
+        return hexString.toString();
     }
 
     /**
