@@ -95,7 +95,7 @@ public class EmployeeDAO extends DBContext {
 
     public static void main(String[] args) {
         EmployeeDAO edao = new EmployeeDAO();
-        System.out.println(edao.findByUserId(12).getName());
+        System.out.println(edao.findByUserId(11).getName());
     }
 
     public void addEmployee(Employee e) {

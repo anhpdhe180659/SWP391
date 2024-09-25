@@ -41,11 +41,11 @@ public class RoomDao extends DBContext {
     public List<Room> loadMore(int index) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
-                       SELECT * FROM Room ORDER BY RoomID offset ? rows fetch next 6 rows only
+                       SELECT * FROM Room ORDER BY RoomID offset ? rows fetch next 5 rows only
                        """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
-            pre.setInt(1, index);
+            pre.setInt(1, 5 * (index - 1));
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 listRooms.add(new Room(rs.getInt("RoomID"),
