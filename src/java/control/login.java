@@ -66,6 +66,10 @@ public class login extends HttpServlet {
 
         UserDAO userDAO = new UserDAO();
         User user = userDAO.getUserByUsername(username);
+        if (user.getStatus() == 0) {
+            request.setAttribute("error", "Account has been banned");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
 
         if (user != null && username.equals(user.getUsername()) && password.equals(user.getPassword())) {
             HttpSession session = request.getSession();
