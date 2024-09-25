@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/logo.png"
             type="image/x-icon"
             />
 
@@ -567,7 +567,7 @@
                                                 <c:forEach items="${sessionScope.listUser}" var="s">
                                                     <tr>
                                                         <td>${s.username}</td>
-                                                        <td>${s.password}</td>
+                                                        <td>**********</td>
                                                         <td>${s.email}</td>
                                                         <td>${s.status == 1 ? 'active' :'unactive'}</td>
                                                         <td>
