@@ -52,6 +52,10 @@
         <servlet-name>updateProfileUser</servlet-name>
         <servlet-class>control.updateProfileUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>searchEmployee</servlet-name>
+        <servlet-class>control.searchEmployee</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -235,6 +239,10 @@
     <servlet-mapping>
         <servlet-name>updateProfileUser</servlet-name>
         <url-pattern>/updateProfileUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchEmployee</servlet-name>
+        <url-pattern>/searchEmployee</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
