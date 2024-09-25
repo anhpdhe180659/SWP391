@@ -68,6 +68,22 @@
         <servlet-name>editAmenity</servlet-name>
         <servlet-class>control.editAmenity</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>listAmenityDetail</servlet-name>
+        <servlet-class>control.listAmenityDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addAmenityDetail</servlet-name>
+        <servlet-class>control.addAmenityDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteAmenityDetail</servlet-name>
+        <servlet-class>control.deleteAmenityDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editAmenityDetail</servlet-name>
+        <servlet-class>control.editAmenityDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -135,6 +151,22 @@
     <servlet-mapping>
         <servlet-name>editAmenity</servlet-name>
         <url-pattern>/editAmenity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listAmenityDetail</servlet-name>
+        <url-pattern>/listAmenityDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addAmenityDetail</servlet-name>
+        <url-pattern>/addAmenityDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteAmenityDetail</servlet-name>
+        <url-pattern>/deleteAmenityDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editAmenityDetail</servlet-name>
+        <url-pattern>/editAmenityDetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

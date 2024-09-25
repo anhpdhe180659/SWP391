@@ -6,8 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>List Amenity</title><!--  page only for manager  -->
@@ -61,7 +62,7 @@
                         <div class="logo-header" data-background-color="dark">
                             <a href="../index.jsp" class="logo">
                                 <img
-                                    src="img/logo/logoAdmin.png"
+                                    src="assets/img/kaiadmin/logo_light.svg"
                                     alt="navbar brand"
                                     class="navbar-brand"
                                     height="20"
@@ -392,7 +393,7 @@
                                         </div>
                                         <span class="profile-username">
                                             <span class="op-7">Hi,</span>
-                                            <span class="fw-bold">Hizrian</span>
+                                            <span class="fw-bold">${sessionScope.user.username}</span>
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -408,9 +409,9 @@
                                                     </div>
                                                     <div class="u-text">
                                                         <h4>Hizrian</h4>
-                                                        <p class="text-muted">hello@example.com</p>
+                                                        <p class="text-muted">${sessionScope.user.email}</p>
                                                         <a
-                                                            href="profile.jsp"
+                                                            href="profile.html"
                                                             class="btn btn-xs btn-secondary btn-sm"
                                                             >View Profile</a
                                                         >
@@ -425,7 +426,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Logout</a>
+                                                <a class="dropdown-item" href="logout">Logout</a>
                                             </li>
                                         </div>
                                     </ul>
@@ -477,7 +478,7 @@
                                                 <form action="addAmenity" onsubmit="return validate()">
                                                     <div class="modal-body">
                                                         <p class="small">
-                                                            Create a new Amenity , make sure you
+                                                            Create a new amenity, make sure you
                                                             fill them all
                                                         </p>
 
@@ -492,9 +493,12 @@
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>  
-                                                        </div>
+                                                            </div>
+                                                        </div>  
                                                     </div>
+                                                            
+                                                            
+                                                    
                                                     <div class="modal-footer border-0">
                                                         <button
                                                             type="button submit"
@@ -519,19 +523,21 @@
 
 
                                     <div class="table-responsive">
-                                        <table id="add-amenity" class="display table table-striped table-hover" >
+                                        <table id="add-user" class="display table table-striped table-hover" >
                                             <!--                                            <div class="table-responsive">
                                                                                     <table id="add-user" class="display table table-striped table-hover" >-->
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>                                                   
+                                                    
+                                                    <th>Name</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <c:forEach items="${sessionScope.listAmenity}" var="a">
                                                     <tr>
-                                                        <td>${a.amenName}</td>                                                                                                            
+                                                        <td>${a.amenName}</td>
+                                                        
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="editAmenity?amenityid=${a.amenID}" >
@@ -566,102 +572,117 @@
                         </div>
                     </div>
                 </div>
-
-                <footer class="footer">
-
-                </footer>
             </div>
 
-            <!-- Custom template | don't include it in your project! -->
+            <footer class="footer">
 
-            <!-- End Custom template -->
+            </footer>
         </div>
-        <!--   Core JS Files   -->
-        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
-        <script src="assets/js/core/bootstrap.min.js"></script>
 
-        <!-- jQuery Scrollbar -->
-        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-        <!-- Datatables -->
-        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-        <!-- Kaiadmin JS -->
-        <script src="assets/js/kaiadmin.min.js"></script>
-        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-        <script src="assets/js/setting-demo2.js"></script>
-        <script>
+        <!-- Custom template | don't include it in your project! -->
+
+        <!-- End Custom template -->
+    </div>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo2.js"></script>
+    <script>
                                                                         document.querySelector('.close').addEventListener('click', function () {
                                                                             $('#addUserModal').modal('hide');
                                                                         });
-        </script>
-        <script>
-            function doClose() {
-                $('#addUserModal').modal('hide');
-            }
-        </script>
-        <script>
-            function validate() {
-                var email = document.getElementById("email").value;
-                var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    </script>
+    <script>
+        function doClose() {
+            $('#addUserModal').modal('hide');
+        }
+    </script>
+    <script>
+        function validate() {
+            var email = document.getElementById("email").value;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
-                if (!regex1.test(email)) {
-                    alert("Please enter a valid Email address (example@gmail.com)");
-                    document.getElementById("email").focus();
-                    return false;
-                }
-                return true;
+            if (!regex1.test(email)) {
+                alert("Please enter a valid Email address (example@gmail.com)");
+                document.getElementById("email").focus();
+                return false;
             }
-        </script>
-        <script>
-            function doDelete(amenityid) {
+            return true;
+        }
+    </script>
+    <script>
+        function doDelete(amenityid) {
                 var option = confirm("Are you sure? You won't be able to revert this");
                 if (option === true) {
                     window.location = "deleteAmenity?amenityid=" + amenityid;
                 }
             }
-        </script>
-        <script>
-            $(document).ready(function() {
-    $("#basic-datatables").DataTable({});
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable({});
 
-    $("#multi-filter-select").DataTable({
-        pageLength: 5,
-        initComplete: function() {
-            this.api().columns().every(function() {
-                var column = this;
-                var select = $('<select class="form-select"><option value=""></option></select>')
-                    .appendTo($(column.footer()).empty())
-                    .on('change', function() {
-                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                        column.search(val ? '^'+val+'$' : '', true, false).draw();
-                    });
+            $("#multi-filter-select").DataTable({
+                pageLength: 5,
+                initComplete: function () {
+                    this.api()
+                            .columns()
+                            .every(function () {
+                                var column = this;
+                                var select = $(
+                                        '<select class="form-select"><option value=""></option></select>'
+                                        )
+                                        .appendTo($(column.footer()).empty())
+                                        .on("change", function () {
+                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                            column
+                                                    .search(val ? "^" + val + "$" : "", true, false)
+                                                    .draw();
+                                        });
 
-                column.data().unique().sort().each(function(d, j) {
-                    select.append('<option value="'+d+'">'+d+'</option>');
-                });
+                                column
+                                        .data()
+                                        .unique()
+                                        .sort()
+                                        .each(function (d, j) {
+                                            select.append(
+                                                    '<option value="' + d + '">' + d + "</option>"
+                                                    );
+                                        });
+                            });
+                },
             });
-        }
-    });
 
-    // Initialize DataTable with paging for "add-user" table
-    var addUserDataTable = $("#add-user").DataTable({
-        pageLength: 5
-    });
+            // Add Row
+            $("#add-user").DataTable({
+                pageLength: 5,
+            });
 
-    var action =
-        '<td><div class="form-button-action"><button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"><i class="fa fa-edit"></i></button><button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"><i class="fa fa-times"></i></button></div></td>';
+            var action =
+                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-    $("#addUserButton").click(function() {
-        addUserDataTable.row.add([
-            $("#addName").val(),
-            $("#addPosition").val(),
-            $("#addOffice").val(),
-            action,
-        ]).draw(false);
+            $("#addUserButton").click(function () {
+                $("#add-user")
+                        .dataTable()
+                        .fnAddData([
+                            $("#addName").val(),
+                            $("#addPosition").val(),
+                            $("#addOffice").val(),
+                            action,
+                        ]);
+                $("#addUserModal").modal("hide");
+            });
+        });
+    </script>
 
-        $("#addUserModal").modal("hide");
-    });
-});
-        </script>
-    </body>
+</body>
 </html>

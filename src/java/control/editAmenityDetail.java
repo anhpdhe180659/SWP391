@@ -5,7 +5,7 @@
 
 package control;
 
-import dal.AmenityDAO;
+import dal.AmenityDetailDAO;
 import dal.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,14 +15,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Amenity;
+import model.AmenityDetail;
 import model.Service;
 
 /**
  *
  * @author admin
  */
-public class deleteAmenity extends HttpServlet {
+public class editAmenityDetail extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,18 +33,20 @@ public class deleteAmenity extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print("sadsda");
         HttpSession session = request.getSession();
-        AmenityDAO adao = new AmenityDAO();
-        int amenityid = Integer.parseInt(request.getParameter("amenityid"));
-        adao.deleteAmenity(amenityid);
-        List<Amenity> listAmenity = adao.getAllAmenities();
-        session.setAttribute("listAmenity", listAmenity);
-        response.sendRedirect("listAmenity");
-        
+        AmenityDetailDAO adao = new AmenityDetailDAO();
+        PrintWriter out = response.getWriter();
+        try {
+            int amenid = Integer.parseInt(request.getParameter("amenid"));
+            AmenityDetail a = adao.findAmenityDetail(amenid);
+            request.setAttribute("amenitydetail", a);
+
+            request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e);
+        }
+
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,7 +73,6 @@ public class deleteAmenity extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /** 

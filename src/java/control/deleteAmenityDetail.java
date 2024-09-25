@@ -5,8 +5,8 @@
 
 package control;
 
-import dal.AmenityDAO;
-import dal.ServiceDAO;
+
+import dal.AmenityDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,14 +15,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Amenity;
-import model.Service;
+import model.AmenityDetail;
+
 
 /**
  *
  * @author admin
  */
-public class deleteAmenity extends HttpServlet {
+public class deleteAmenityDetail extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,18 +33,15 @@ public class deleteAmenity extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.print("sadsda");
         HttpSession session = request.getSession();
-        AmenityDAO adao = new AmenityDAO();
-        int amenityid = Integer.parseInt(request.getParameter("amenityid"));
-        adao.deleteAmenity(amenityid);
-        List<Amenity> listAmenity = adao.getAllAmenities();
-        session.setAttribute("listAmenity", listAmenity);
-        response.sendRedirect("listAmenity");
-        
+        AmenityDetailDAO adao = new AmenityDetailDAO();
+        int amenid = Integer.parseInt(request.getParameter("amenid"));
+        adao.deleteAmenityDetail(amenid, amenid);
+        List<AmenityDetail> listAmenityDetail = adao.getAllAmenityDetails();
+        session.setAttribute("listAmenityDetail", listAmenityDetail);
+        response.sendRedirect("listAmenityDetail");
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

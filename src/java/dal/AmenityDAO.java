@@ -47,7 +47,7 @@ public class AmenityDAO extends DBContext{
 
     public void deleteAmenity(int amenId) {
         try {
-            String query = "DELETE FROM Amenity WHERE AmenId = ?";
+            String query = "DELETE FROM Amenity WHERE AmenID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, amenId);
             ps.executeUpdate();
@@ -58,7 +58,7 @@ public class AmenityDAO extends DBContext{
 
     public void updateAmenity(Amenity updatedAmenity) {
         try {
-            String query = "UPDATE Amenity SET AmenName = ? WHERE AmenId = ?";
+            String query = "UPDATE Amenity SET AmenName = ? WHERE AmenID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, updatedAmenity.getAmenName());
             ps.setInt(2, updatedAmenity.getAmenID());
@@ -87,7 +87,7 @@ public class AmenityDAO extends DBContext{
     }
 
     public static void main(String[] args) {
-        
+        new AmenityDAO().deleteAmenity(1);
     }
 
 }
