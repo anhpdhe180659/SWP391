@@ -448,9 +448,39 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add User</h4>
+                                        <nav
+                                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                            >
+                                            <c:set value="${requestScope.searchName} " var="n"/>
+                                            <form action="searchUser">
+                                                <div class="input-group" >
+                                                    <div class="input-group-prepend">
+                                                        <button type="submit" class="btn btn-search pe-1">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                    <c:if test="${n.length() < 2}">
+                                                        <input
+                                                            type="text"
+                                                            name="username"
+                                                            placeholder="Search username..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                    <c:if test="${n.length() > 1}">
+                                                        <input
+                                                            type="text"
+                                                            name="username"
+                                                            value="${n}"
+                                                            placeholder="Search username..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                </div>
+                                            </form>
+                                        </nav>
                                         <c:set value="${requestScope.noti}" var="noti" />
-                                        
+
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
                                             onclick="addUser()">
