@@ -195,9 +195,43 @@
                     <div class="container">
                         <div class="page-inner">
                             <div class="page-header">
-                                <h3 class="fw-bold mb-3">Room Status</h3>
+                                <h2 class="fw-bold mb-3">Room Status</h2>
                             </div>
                             <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body row">
+                                        <h3 class="fw-bold mb-3">Room Filter</h3>
+                                        <form action="listRoom">
+                                            <span>Type</span>
+                                            <select class="form-select-sm col-2 me-3" name="typeId">
+                                                <option value="0" ${requestScope.typeId == '0' ? 'selected' : ''}>All</option>
+                                                <option value="1" ${requestScope.typeId == '1' ? 'selected' : ''}>Single Room</option>
+                                                <option value="2" ${requestScope.typeId == '2' ? 'selected' : ''}>Double Room</option>
+                                                <option value="3" ${requestScope.typeId == '3' ? 'selected' : ''}>Family Room</option>
+                                                <option value="4" ${requestScope.typeId == '4' ? 'selected' : ''}>Deluxe Room</option>
+                                                <option value="5" ${requestScope.typeId == '5' ? 'selected' : ''}>President Room</option>
+                                            </select>
+
+                                            <span>Status</span>
+                                            <select class="form-select-sm col-2 me-3" name="statusId">
+                                                <option value="0" ${requestScope.statusId == '0' ? 'selected' : ''}>All</option>
+                                                <option value="1" ${requestScope.statusId == '1' ? 'selected' : ''}>Available</option>
+                                                <option value="2" ${requestScope.statusId == '2' ? 'selected' : ''}>Occupied</option>
+                                                <option value="3" ${requestScope.statusId == '3' ? 'selected' : ''}>Under maintenance</option>
+                                            </select>
+
+                                            <span>Clean Status</span>
+                                            <select class="form-select-sm col-2" name="cleanId">
+                                                <option value="0" ${requestScope.cleanId == '0' ? 'selected' : ''}>All</option>
+                                                <option value="1" ${requestScope.cleanId == '1' ? 'selected' : ''}>Not Cleaned</option>
+                                                <option value="2" ${requestScope.cleanId == '2' ? 'selected' : ''}>In Progress</option>
+                                                <option value="3" ${requestScope.cleanId == '3' ? 'selected' : ''}>Cleaned</option>
+                                            </select>
+
+                                            <button class="btn btn-label-info ms-4" type="submit">Filter</button>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -277,56 +311,60 @@
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
+                                                    <c:if test="${requestScope.noti != null}">
+                                                        <tr >
+                                                            <td style="text-align: center" colspan="5"><p class="text-warning">${requestScope.noti}</p></td><!-- comment --></tr>
+                                                            </c:if>
                                                 </tbody>
                                             </table>
                                             <c:set value="${sessionScope.currentindex}" var="index" />
-                                                <c:set value="${sessionScope.Nopage}" var="Nopage" />
-                                                <div class="card-body" >
-                                                    <div class="demo">
-                                                        <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
-                                                            <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
-                                                            <li class="page-item ${index < 2 ? 'disabled' :'' } ">
-                                                                <a class="page-link" href="listRoom?index=${index-1}" aria-label="Previous">
-                                                                    <span aria-hidden="true">&laquo;</span>
-                                                                    <span class="sr-only">Previous</span>
-                                                                </a>
-                                                            </li>
-                                                            <c:choose>
-                                                                <c:when test="${index <= 3}">
-                                                                    <c:set var="startPage" value="1" />
-                                                                    <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
-                                                                </c:when>
-                                                                <c:when test="${index > Nopage - 3}">
-                                                                    <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
-                                                                    <c:set var="endPage" value="${Nopage}" />
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:set var="startPage" value="${index - 2}" />
-                                                                    <c:set var="endPage" value="${index + 2}" />
-                                                                </c:otherwise>
-                                                            </c:choose>
+                                            <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                            <div class="card-body" >
+                                                <div class="demo">
+                                                    <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
+                                                        <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
+                                                        <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                            <a class="page-link" href="listRoom?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
+                                                                <span aria-hidden="true">&laquo;</span>
+                                                                <span class="sr-only">Previous</span>
+                                                            </a>
+                                                        </li>
+                                                        <c:choose>
+                                                            <c:when test="${index <= 3}">
+                                                                <c:set var="startPage" value="1" />
+                                                                <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                            </c:when>
+                                                            <c:when test="${index > Nopage - 3}">
+                                                                <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                                <c:set var="endPage" value="${Nopage}" />
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:set var="startPage" value="${index - 2}" />
+                                                                <c:set var="endPage" value="${index + 2}" />
+                                                            </c:otherwise>
+                                                        </c:choose>
 
-                                                            <c:forEach var="p" begin="${startPage}" end="${endPage}">
-                                                                <c:if test="${index == p}">
-                                                                    <li class="page-item active">
-                                                                        <a class="page-link" href="listRoom?index=${p}">${p}</a>
-                                                                    </li>
-                                                                </c:if>
-                                                                <c:if test="${index != p}">
-                                                                    <li class="page-item">
-                                                                        <a class="page-link" href="listRoom?index=${p}">${p}</a>
-                                                                    </li>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                            <li class="page-item ${index < Nopage ? '' :'disabled' }" >
-                                                                <a class="page-link" href="listRoom?index=${index+1}" aria-label="Next">
-                                                                    <span aria-hidden="true">&raquo;</span>
-                                                                    <span class="sr-only">Next</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                        <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                                                            <c:if test="${index == p}">
+                                                                <li class="page-item active">
+                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                </li>
+                                                            </c:if>
+                                                            <c:if test="${index != p}">
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                </li>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <li class="page-item ${index < Nopage ? '' :'disabled' }" >
+                                                            <a class="page-link" href="listRoom?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
+                                                                <span aria-hidden="true">&raquo;</span>
+                                                                <span class="sr-only">Next</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -399,7 +437,7 @@
                 });
 
                 //             Add Row
-                
+
             });
         </script>
     </body>

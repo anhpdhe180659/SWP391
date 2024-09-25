@@ -42,18 +42,46 @@ public class listRoom extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         RoomDao roomDao = new RoomDao();
         int index = 1;
-        int noPage = (int) Math.ceil(roomDao.getAllRooms().size() / 5);
+        int typeId = 0;
+        int statusId = 0;
+        int cleanId = 0;
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
-        List<Room> listRoom = roomDao.loadMore(index);
-        HttpSession session = request.getSession();
+        if (request.getParameter("typeId") != null) {
+            typeId = Integer.parseInt(request.getParameter("typeId"));
+        }
+        if (request.getParameter("statusId") != null) {
+            statusId = Integer.parseInt(request.getParameter("statusId"));
+        }
+        if (request.getParameter("cleanId") != null) {
+            cleanId = Integer.parseInt(request.getParameter("cleanId"));
+        }
+        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId);
+        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId) / 5);
+        System.out.println(noPage);
+        if (noPage == 0) {
+            request.setAttribute("noti", "No room found");
+        }
         session.setAttribute("listRoom", listRoom);
         session.setAttribute("Nopage", noPage);
         session.setAttribute("currentindex", index);
-        response.sendRedirect("listRoom.jsp");
+        // Add the values to the request scope so they can be used in the JSP
+        request.setAttribute("typeId", typeId);
+        request.setAttribute("statusId", statusId);
+        request.setAttribute("cleanId", cleanId);
+
+        request.getRequestDispatcher("listRoom.jsp").forward(request, response);
     }
 
     /**
