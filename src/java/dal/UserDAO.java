@@ -5,12 +5,15 @@
  */
 package dal;
 
+import com.sun.jdi.connect.spi.Connection;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import util.PasswordUtils;
 
 /**
  *
@@ -80,8 +83,8 @@ public class UserDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        UserDAO udao = new UserDAO();
-        System.out.println(udao.emailExists("thaison102004@gmail.com"));
+        UserDAO userDAO = new UserDAO();
+        userDAO.updatePasswordsToHashed();
     }
 
     public void addUser(User u) {
@@ -280,16 +283,46 @@ public class UserDAO extends DBContext {
     }
 
     public boolean emailExists(String email) {
-    String sql = "SELECT TOP 1 1 FROM [User] WHERE Email = ?";
-    try (PreparedStatement st = connection.prepareStatement(sql);) {
-        st.setString(1, email);
-        try (ResultSet rs = st.executeQuery()) {
-            return rs.next(); // Trả về true nếu có ít nhất một kết quả
+        String sql = "SELECT TOP 1 1 FROM [User] WHERE Email = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql);) {
+            st.setString(1, email);
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next(); // Trả về true nếu có ít nhất một kết quả
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error checking email existence: " + ex.getMessage());
+            ex.printStackTrace(); // In stack trace để debug
+            throw new RuntimeException("Database error occurred", ex);
         }
-    } catch (SQLException ex) {
-        System.err.println("Error checking email existence: " + ex.getMessage());
-        ex.printStackTrace(); // In stack trace để debug
-        throw new RuntimeException("Database error occurred", ex);
     }
-}
+
+    public void updatePasswordsToHashed() {
+        String selectSQL = "SELECT UserID, Password FROM [User]";
+        String updateSQL = "UPDATE [User] SET Password = ? WHERE UserID = ?";
+
+        try (PreparedStatement psSelect = connection.prepareStatement(selectSQL); ResultSet rs = psSelect.executeQuery()) {
+
+            while (rs.next()) {
+                int userId = rs.getInt("UserID");
+                String plainPassword = rs.getString("Password");
+
+                // Băm mật khẩu
+                String hashedPassword = PasswordUtils.hashPassword(plainPassword);
+
+                // Cập nhật mật khẩu đã băm vào cơ sở dữ liệu
+                try (PreparedStatement psUpdate = connection.prepareStatement(updateSQL)) {
+                    psUpdate.setString(1, hashedPassword);
+                    psUpdate.setInt(2, userId);
+                    psUpdate.executeUpdate();
+                }
+            }
+
+            System.out.println("Tất cả mật khẩu đã được băm và cập nhật thành công.");
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            System.err.println("Error updating passwords: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Database error occurred", e);
+        }
+    }
+
 }

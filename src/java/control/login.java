@@ -10,9 +10,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.PasswordUtils;
 
 /**
  *
@@ -40,64 +42,72 @@ public class login extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Cookie arr[] = request.getCookies();
-        if (arr != null) {
-            for (Cookie cookie : arr) {
-                if (cookie.getName().equals("userC")) {
-                    request.setAttribute("usernameC", cookie.getValue());
-                }
-                if (cookie.getName().equals("passC")) {
-                    request.setAttribute("passwordC", cookie.getValue());
-                }
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("userC")) {
+                request.setAttribute("usernameC", cookie.getValue());
             }
         }
+    }
+    request.getRequestDispatcher("login.jsp").forward(request, response);
+}
+
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
+    String remember = request.getParameter("remember");
+
+    UserDAO userDAO = new UserDAO();
+    User user = userDAO.getUserByUsername(username);
+
+    // Kiểm tra nếu tài khoản không tồn tại
+    if (user == null) {
+        request.setAttribute("error", "Invalid username or password!!!");
         request.getRequestDispatcher("login.jsp").forward(request, response);
+        return;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String remember = request.getParameter("remember");
-
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUserByUsername(username);
-        if (user.getStatus() == 0) {
-            request.setAttribute("error", "Account has been banned");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-
-        if (user != null && username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-            HttpSession session = request.getSession();
-            session.setAttribute("role", user.getRole());
-            session.setAttribute("loggedInUser", username);
-            session.setAttribute("user", user);
-
-            if (remember != null) {
-                Cookie userCookie = new Cookie("userC", username);
-                Cookie passCookie = new Cookie("passC", password);
-                userCookie.setMaxAge(COOKIE_MAX_AGE);
-                passCookie.setMaxAge(COOKIE_MAX_AGE);
-                response.addCookie(userCookie);
-                response.addCookie(passCookie);
-            }
-
-            // Role-based redirection
-            switch (user.getRole()) {
-                case 1 -> response.sendRedirect("/SWP391/dashboard");
-                case 2 -> response.sendRedirect("/SWP391/receptionDashboard");
-                default -> // Default redirection if role is neither 1 nor 2
-                    response.sendRedirect("guestHomePage.jsp");
-            }
-        } else {
-            request.setAttribute("error", "Invalid username or password!!!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+    // Kiểm tra tài khoản bị khóa
+    if (user.getStatus() == 0) {
+        request.setAttribute("error", "Account has been banned");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+        return;
     }
+
+        try {
+            // So sánh mật khẩu đã hash
+            if (PasswordUtils.verifyPassword(password, user.getPassword())) {
+                HttpSession session = request.getSession();
+                session.setAttribute("role", user.getRole());
+                session.setAttribute("loggedInUser", username);
+                session.setAttribute("user", user);
+                
+                if (remember != null) {
+                    Cookie userCookie = new Cookie("userC", username);
+                    userCookie.setMaxAge(COOKIE_MAX_AGE);
+                    response.addCookie(userCookie);
+                }
+                
+                // Chuyển hướng dựa trên role
+                switch (user.getRole()) {
+                    case 1 -> response.sendRedirect("/SWP391/dashboard");
+                    case 2 -> response.sendRedirect("/SWP391/receptionDashboard");
+                    default -> response.sendRedirect("guestHomePage.jsp");
+                }
+            } else {
+                request.setAttribute("error", "Invalid username or password!!!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }   } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+
 
     @Override
     public String getServletInfo() {
