@@ -16,7 +16,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <link rel="stylesheet" href="CSS/footer.css">
@@ -72,7 +72,6 @@
                     </div>
                 </nav>
             </div>
-
             <div class="body-container">
                 <section class="hidden">
                     <div class="image-banner">
