@@ -1,10 +1,9 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
-
-import java.util.Date;
 
 /**
  *
@@ -12,7 +11,7 @@ import java.util.Date;
  */
 public class Employee {
 
-    private int RecID;
+    private int EmpID;
     private String Name;
     private String DateOfBirth;
     private int Sex;
@@ -26,8 +25,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int RecID, String Name, String DateOfBirth, int Sex, String Address, String Phone, String Identification, String StartDate, int Salary, int UserID) {
-        this.RecID = RecID;
+    public Employee(int EmpID, String Name, String DateOfBirth, int Sex, String Address, String Phone, String Identification, String StartDate, int Salary, int UserID) {
+        this.EmpID = EmpID;
         this.Name = Name;
         this.DateOfBirth = DateOfBirth;
         this.Sex = Sex;
@@ -39,12 +38,12 @@ public class Employee {
         this.UserID = UserID;
     }
 
-    public int getRecID() {
-        return RecID;
+    public int getEmpID() {
+        return EmpID;
     }
 
-    public void setRecID(int RecID) {
-        this.RecID = RecID;
+    public void setEmpID(int EmpID) {
+        this.EmpID = EmpID;
     }
 
     public String getName() {
@@ -121,8 +120,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" + "RecID=" + RecID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Salary=" + Salary + ", UserID=" + UserID + '}';
+        return "Employee{" + "EmpID=" + EmpID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Salary=" + Salary + ", UserID=" + UserID + '}';
     }
-    
-
+   
 }

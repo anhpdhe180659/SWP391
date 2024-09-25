@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -41,7 +42,6 @@ public class editUser extends HttpServlet {
             int userid = Integer.parseInt(request.getParameter("userid"));
             User user = udao.getUserByID(userid);
             request.setAttribute("user", user);
-
             request.getRequestDispatcher("editUser.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
             out.print(e);
@@ -80,19 +80,19 @@ public class editUser extends HttpServlet {
             HttpSession session = request.getSession();
             int userid = Integer.parseInt(request.getParameter("userid"));
             User oldUser = udao.getUserByID(userid);// old user
-            String oldName = oldUser.getUsername();
-            String newName = request.getParameter("username");// new information
+            String username = request.getParameter("username");// new information
             String password = request.getParameter("password");// new information
             String email = request.getParameter("email");// new information
             int role = Integer.parseInt(request.getParameter("role"));// new information
             int status = Integer.parseInt(request.getParameter("status"));// new information
-            User user = new User(userid, newName, password, role, email, status);
+            User user = new User(userid, username, password, role, email, status);
+
             List<User> listUser = udao.getAllUser();
             for (User u : listUser) {
-                if (!newName.equals(oldName)) {
-                    if (u.getUsername().equals(newName)) {
-                        // check if username is existed in database and different from old name
-                        request.setAttribute("noti", "Username " + newName + " existed, please enter again!");
+                if (!oldUser.getUsername().equals(username)) {
+                    if (u.getUsername().equals(username)) {
+                        // check if username is existed in database
+                        request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: darkorange'>Username " + username + " existed, please enter again!</div>");
                         request.setAttribute("user", oldUser);
                         request.getRequestDispatcher("editUser.jsp").forward(request, response);
                         return;
@@ -100,14 +100,28 @@ public class editUser extends HttpServlet {
                 }
             }
             udao.editUser(user);
-            request.setAttribute("noti", "Save successful!");
+            request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: green'>Save successfully! </div>");
             request.setAttribute("user", user);
             request.getRequestDispatcher("editUser.jsp").forward(request, response);
 
         } catch (Exception e) {
-            out.print(e);
+            out.print("There are some wrong");
         }
     }
+
+    public static void main(String[] args) {
+        UserDAO udao = new UserDAO();
+        List<User> listUser = udao.getAllUser();
+
+        int countSameUsername = 0;
+        for (User u : listUser) {
+            if (u.getUsername().equals("rec1")) {
+                countSameUsername++;
+            }
+        }
+        System.out.println(countSameUsername);
+    }
+
     /**
      * Returns a short description of the servlet.
      *

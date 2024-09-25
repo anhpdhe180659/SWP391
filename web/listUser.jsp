@@ -1,3 +1,4 @@
+<<<<<<< OURS
 <%-- 
     Document   : listEmployee
     Created on : Sep 21, 2024, 7:31:52 PM
@@ -448,11 +449,11 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Add User</h4>
+                                        <c:set value="${requestScope.noti}" var="noti" />
+                                        
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addUserModal"
-                                            >
+                                            onclick="addUser()">
                                             <i class="fa fa-plus"></i>
                                             Add User
                                         </button>
@@ -552,14 +553,13 @@
 
 
                                     <div class="table-responsive">
-                                        <table id="add-user" class="display table table-striped table-hover" >
-                                            <!--                                            <div class="table-responsive">
-                                                                                    <table id="add-user" class="display table table-striped table-hover" >-->
+                                        <table class="display table table-striped table-hover" >
                                             <thead>
                                                 <tr>
                                                     <th>Username</th>
                                                     <th>Password</th>
                                                     <th>Email</th>
+                                                    <th>Status</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
@@ -569,9 +569,10 @@
                                                         <td>${s.username}</td>
                                                         <td>${s.password}</td>
                                                         <td>${s.email}</td>
+                                                        <td>${s.status == 1 ? 'active' :'unactive'}</td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="editUser?userid=${s.userId}" >
+                                                                <a href="editUser?userid=${s.userID}" >
                                                                     <button
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
@@ -587,7 +588,7 @@
                                                                     title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
-                                                                    onclick="doDelete(${s.userId})"
+                                                                    onclick="doDelete(${s.userID})"
                                                                     >
                                                                     <i class="fa fa-times"></i>
                                                                 </button>
@@ -598,6 +599,55 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <c:set value="${sessionScope.currentindex}" var="index" />
+                                <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                <div class="card-body" >
+                                    <div class="demo">
+                                        <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
+                                            <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
+                                            <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                <a class="page-link" href="listUser?index=${index-1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <c:choose>
+                                                <c:when test="${index <= 3}">
+                                                    <c:set var="startPage" value="1" />
+                                                    <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                </c:when>
+                                                <c:when test="${index > Nopage - 3}">
+                                                    <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                    <c:set var="endPage" value="${Nopage}" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="startPage" value="${index - 2}" />
+                                                    <c:set var="endPage" value="${index + 2}" />
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                            <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                                                <c:if test="${index == p}">
+                                                    <li class="page-item active">
+                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${index != p}">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                            <li class="page-item ${index < Nopage ? '' :'disabled' }" >
+                                                <a class="page-link" href="listUser?index=${index+1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -638,6 +688,11 @@
         }
     </script>
     <script>
+        function addUser() {
+            window.location = "addUser";
+        }
+    </script>
+    <script>
         function validate() {
             var email = document.getElementById("email").value;
             var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
@@ -652,7 +707,7 @@
     </script>
     <script>
         function doDelete(userid) {
-            var option = confirm("Are you sure? You won't be able to revert this");
+            var option = confirm("Are you sure to unactive this?");
             if (option === true) {
                 window.location = "deleteUser?userid=" + userid;
             }
@@ -717,4 +772,3 @@
 
 </body>
 </html>
-

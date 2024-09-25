@@ -4,7 +4,7 @@
  */
 package control;
 
-import dal.EmployeeDao;
+import dal.EmployeeDAO;
 import dal.InvoiceDAO;
 import dal.RoomDao;
 import java.io.IOException;
@@ -74,8 +74,8 @@ public class receptionDashboard extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         User user = (User) session.getAttribute("user");
-        EmployeeDao empDao = new EmployeeDao();
-        Employee emp = empDao.findByUserId(user.getUserId());
+        EmployeeDAO empDao = new EmployeeDAO();
+        Employee emp = empDao.findByUserId(user.getUserID());
         session.setAttribute("employee", emp);
         //get room
         RoomDao roomDao = new RoomDao();

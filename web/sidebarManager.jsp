@@ -1,3 +1,4 @@
+<<<<<<< OURS
 <%-- 
     Document   : managerSidebar
     Created on : Sep 21, 2024, 7:33:50 PM
@@ -82,8 +83,8 @@
                                     </li>
                                 </ul>
                             </div>
-                            
-                            
+
+
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarLayouts">
                                 <i class="fas fa-th-list"></i>
@@ -96,7 +97,7 @@
                                         <a href="listService">
                                             <span class="sub-item">Services</span>
                                         </a>                                    </li>
-                                    
+
                                 </ul>
                             </div>
                         </li>

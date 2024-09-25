@@ -37,9 +37,7 @@ public class deleteUser extends HttpServlet {
         UserDAO udao = new UserDAO();
         int userid = Integer.parseInt(request.getParameter("userid"));
         udao.deleteUser(userid);
-        List<User> listUser = udao.getAllUser();
-        session.setAttribute("listUser", listUser);
-        request.getRequestDispatcher("listUser.jsp").forward(request, response);
+        response.sendRedirect("listUser");
         
     } 
 

@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -9,69 +10,77 @@ package model;
  * @author nhatk
  */
 public class User {
-    private int userId;
-    private String username;
-    private String password;
-    private int role;
-    private String email;
+
+    private int UserID;
+    private String Username;
+    private String Password;
+    private int Role;
+    private String Email;
+    private int Status;
 
     public User() {
     }
 
-    public User(int userId, String username, String password, int role, String email) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.email = email;
+    public User(int UserID, String Username, String Password, int Role, String Email, int Status) {
+        this.UserID = UserID;
+        this.Username = Username;
+        this.Password = Password;
+        this.Role = Role;
+        this.Email = Email;
+        this.Status = Status;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getStatus() {
+        return Status;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setStatus(int Status) {
+        this.Status = Status;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 
-   
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int UserID) {
+        this.UserID = UserID;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String Username) {
+        this.Username = Username;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
 
     public int getRole() {
-        return role;
+        return Role;
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public void setRole(int Role) {
+        this.Role = Role;
     }
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", email=" + email + '}';
+        return "User{" + "UserID=" + UserID + ", Username=" + Username + ", Password=" + Password + ", Role=" + Role + ", Email=" + Email + ", Status=" + Status + '}';
     }
-
 
 }

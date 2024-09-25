@@ -1,3 +1,4 @@
+<<<<<<< OURS
 <%-- 
     Document   : editUser
     Created on : Sep 22, 2024, 1:29:17 PM
@@ -82,7 +83,8 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                   <nav
+                    <!-- Navbar Header -->
+                    <nav
                         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
                         >
                         <div class="container-fluid">
@@ -393,7 +395,7 @@
                                         </div>
                                         <span class="profile-username">
                                             <span class="op-7">Hi,</span>
-                                            <span class="fw-bold">${sessionScope.user.username}</span>
+                                            <span class="fw-bold">Hizrian</span>
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -409,9 +411,9 @@
                                                     </div>
                                                     <div class="u-text">
                                                         <h4>Hizrian</h4>
-                                                        <p class="text-muted">${sessionScope.user.email}</p>
+                                                        <p class="text-muted">hello@example.com</p>
                                                         <a
-                                                            href="profile.html"
+                                                            href="profile.jsp"
                                                             class="btn btn-xs btn-secondary btn-sm"
                                                             >View Profile</a
                                                         >
@@ -426,7 +428,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="logout">Logout</a>
+                                                <a class="dropdown-item" href="#">Logout</a>
                                             </li>
                                         </div>
                                     </ul>
@@ -450,14 +452,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Edit User</h4>
-                                        <!--                                        <button
-                                                                                    class="btn btn-primary btn-round ms-auto"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#editUserModal"
-                                                                                    >
-                                                                                    <i class="fa fa-plus"></i>
-                                                                                    Edit User
-                                                                                </button>-->
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -486,12 +484,14 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Password</label>
                                                                     <input
-                                                                        name="password"
+                                                                        name="password" id="password"
                                                                         type="text"
                                                                         class="form-control"
                                                                         value="${u.password}"
                                                                         required
+                                                                        style="width: 50%"
                                                                         />
+                                                                    <!--<span class="toggle-password" id="togglePassword">&#128065;</span>-->
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12">
@@ -507,7 +507,7 @@
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Role</label>                  
                                                                     <select name="role" class="form-control">
@@ -521,6 +521,23 @@
                                                                                     selected
                                                                                 </c:if>
                                                                                 >Admin</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Status</label>
+                                                                    <select name="status" class="form-control">
+                                                                        <option value="1"
+                                                                                <c:if test="${u.status == 1}">
+                                                                                    selected
+                                                                                </c:if>
+                                                                                >active</option>
+                                                                        <option value="0"
+                                                                                <c:if test="${u.status == 0}">
+                                                                                    selected
+                                                                                </c:if>
+                                                                                >unactive</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -576,9 +593,21 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
+                                                    const togglePassword = document.querySelector('#togglePassword');
+                                                    const password = document.querySelector('#password');
+                                                    togglePassword.addEventListener('click', function () {
+                                                        // Toggle the type attribute
+                                                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                        password.setAttribute('type', type);
+
+                                                        // Toggle the icon (optional)
+                                                        this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
                                                     });
+    </script>
+    <script>
+        document.querySelector('.close').editEventListener('click', function () {
+            $('#editUserModal').modal('hide');
+        });
     </script>
     <script>
         function doClose() {
@@ -586,12 +615,17 @@
         }
     </script>
     <script>
+        function BackToList() {
+            window.location = "listUser";
+        }
+    </script>
+    <script>
         function validate() {
             var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
             if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
+                alert("Please enter a valid Email address (gmail@gmail.com)");
                 document.getElementById("email").focus();
                 return false;
             }
@@ -658,5 +692,3 @@
 
 </body>
 </html>
-
-
