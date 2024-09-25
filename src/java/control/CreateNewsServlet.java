@@ -42,7 +42,7 @@ public class CreateNewsServlet extends HttpServlet {
         newsDAO.addNews(newsItem);
 
         // Redirect to the list of news or a success page
-        response.sendRedirect("newsList");  // Assuming "news-list" is the endpoint for the news listing
+        response.sendRedirect("NewsServlet");  // Assuming "news-list" is the endpoint for the news listing
     }
 
     @Override
