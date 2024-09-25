@@ -449,6 +449,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Edit Amenity</h4>
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
+                                        </button>
                                         <!--                                        <button
                                                                                     class="btn btn-primary btn-round ms-auto"
                                                                                     data-bs-toggle="modal"
@@ -553,6 +557,11 @@
                 return false;
             }
             return true;
+        }
+    </script>
+    <script>
+        function BackToList() {
+            window.location = "listAmenity";
         }
     </script>
 

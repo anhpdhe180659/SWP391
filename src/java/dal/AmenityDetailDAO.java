@@ -69,12 +69,13 @@ public class AmenityDetailDAO extends DBContext {
             System.out.println("Error: " + ex.getMessage());
         }
     }
-    public AmenityDetail findAmenityDetail(int amenId) {
+    public AmenityDetail findAmenityDetail(int amenId,int roomId) {
     AmenityDetail amenityDetail = new AmenityDetail();
     try {
-        String query = "SELECT * FROM AmenityDetail WHERE AmenId = ?";
+        String query = "SELECT * FROM AmenityDetail WHERE AmenID = ? AND roomID = ?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setInt(1, amenId);
+        ps.setInt(2, roomId);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             amenityDetail = new AmenityDetail();
@@ -88,6 +89,27 @@ public class AmenityDetailDAO extends DBContext {
     }
     return amenityDetail;
 }
+    public AmenityDetail showAmenityDetail(int amenId) {
+    AmenityDetail amenityDetail = new AmenityDetail();
+    try {
+        String query = "SELECT * FROM AmenityDetail WHERE AmenID = ?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setInt(1, amenId);
+        
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            amenityDetail = new AmenityDetail();
+            amenityDetail.setAmenID(rs.getInt("AmenID"));
+            amenityDetail.setRoomID(rs.getInt("RoomID"));
+            amenityDetail.setQuantity(rs.getInt("Quantity"));
+            
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+    return amenityDetail;
+}
+    
 
 }
 

@@ -56,6 +56,10 @@
         <servlet-name>searchEmployee</servlet-name>
         <servlet-class>control.searchEmployee</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>searchUser</servlet-name>
+        <servlet-class>control.searchUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -67,6 +71,10 @@
     <servlet>
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>login</servlet-name>
+        <servlet-class>control.login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>addService</servlet-name>
@@ -127,6 +135,10 @@
     <servlet>
         <servlet-name>CreateNewsServlets</servlet-name>
         <servlet-class>control.CreateNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>showAmenityDetail</servlet-name>
+        <servlet-class>control.showAmenityDetail</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EmployeeDAO</servlet-name>
@@ -233,6 +245,10 @@
         <url-pattern>/CreateNewsServlets</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>showAmenityDetail</servlet-name>
+        <url-pattern>/showAmenityDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ViewProfileServlet</servlet-name>
         <url-pattern>/ViewProfileServlet</url-pattern>
     </servlet-mapping>
@@ -243,6 +259,10 @@
     <servlet-mapping>
         <servlet-name>searchEmployee</servlet-name>
         <url-pattern>/searchEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchUser</servlet-name>
+        <url-pattern>/searchUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

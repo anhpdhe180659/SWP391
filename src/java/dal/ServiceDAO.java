@@ -56,6 +56,7 @@ public class ServiceDAO extends DBContext {
     }
 
     public void updateService(Service updatedService) {
+        System.out.println(updatedService.getPrice());
         try {
             String query = "UPDATE Service SET Name = ?, Price = ? WHERE ServiceID = ?";
             PreparedStatement ps = connection.prepareStatement(query);

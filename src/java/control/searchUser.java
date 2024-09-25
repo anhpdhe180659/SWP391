@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
-import dal.AmenityDetailDAO;
-import dal.ServiceDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,44 +13,53 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.AmenityDetail;
-import model.Service;
+import model.User;
 
 /**
  *
- * @author admin
+ * @author nhatk
  */
-public class editAmenityDetail extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+public class searchUser extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        UserDAO udao = new UserDAO();
         HttpSession session = request.getSession();
-        AmenityDetailDAO adao = new AmenityDetailDAO();
-        PrintWriter out = response.getWriter();
-        try {
-            int amenid = Integer.parseInt(request.getParameter("amenid"));
-            int roomid = Integer.parseInt(request.getParameter("roomid"));
-            AmenityDetail a = adao.findAmenityDetail(amenid, roomid);
-            request.setAttribute("amenitydetail", a);
-
-            request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+        int index = 1;
+        String username = request.getParameter("username");
+        username = username.trim();
+        int NoPage = getNoPage(udao.findUserByUsername(username));
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
         }
+        List<User> listUser = udao.getNext5SearchUser(index, username);
+        session.setAttribute("Nopage", NoPage);
+        session.setAttribute("currentindex", index);
+        session.setAttribute("listUser", listUser);
+//        response.sendRedirect("listUser.jsp");
+        request.getRequestDispatcher("listUser.jsp").forward(request, response);
+    }
 
-    } 
+    public int getNoPage(List<User> list) {
+        double page = (double) list.size() / 5;
+        page = Math.ceil(page);
+        return (int) page;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -60,12 +67,13 @@ public class editAmenityDetail extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -73,39 +81,13 @@ public class editAmenityDetail extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        try {
-            AmenityDetailDAO adao = new AmenityDetailDAO();
-            HttpSession session = request.getSession();
-
-            int amenityid = Integer.parseInt(request.getParameter("amenid"));
-            int roomid = Integer.parseInt(request.getParameter("roomid"));
-
-
-            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-        } catch (Exception e) {
-            out.print("There was an error: " + e.getMessage());
-        }
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-//    public static void main(String[] args) {
-//        AmenityDetailDAO adao = new AmenityDetailDAO();
-//        List<AmenityDetail> listAmenity = adao.getAllAmenityDetails();
-//
-//        int countSameAmenityname = 0;
-//        for (AmenityDetail a : listAmenityDetail) {
-//            if (a.getRoomID().equals("rec1")) {
-//                countSameAmenityname++;
-//            }
-//        }
-//        System.out.println(countSameAmenityname);
-//    }
-//    
-    
-
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -5,7 +5,6 @@
  */
 package dal;
 
-import com.sun.jdi.connect.spi.Connection;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,7 +83,8 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
-        userDAO.updatePasswordsToHashed();
+        System.out.println(userDAO.getAllUser());
+        System.out.println(userDAO.getNext5SearchUser(1, "admin"));
     }
 
     public void addUser(User u) {
@@ -321,6 +321,64 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
             throw new RuntimeException("Database error occurred", e);
         }
+    }
+
+    public List<User> findUserByUsername(String username) {
+
+        List<User> sList = new ArrayList<>();
+        String sql = """
+                     SELECT [UserID],[Username],[Password],[Role],[Email],[Status]
+                     FROM [dbo].[User]
+                     WHERE Username like ? """;
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + username + "%");
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int UserID = rs.getInt("UserID");
+                String Username = rs.getString("Username");
+                String Password = rs.getString("Password");
+                int Role = rs.getInt("Role");
+                String Email = rs.getString("Email");
+                int Status = rs.getInt("Status");
+                User user = new User(UserID, Username, Password, Role, Email, Status);
+                sList.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connect error");
+        }
+        return sList;
+
+    }
+
+    public List<User> getNext5SearchUser(int index, String username) {
+
+        List<User> sList = new ArrayList<>();
+        String sql = """
+                     SELECT [UserID],[Username],[Password],[Role],[Email],[Status]
+                     FROM [dbo].[User]
+                     WHERE Username like ?
+                     ORDER BY UserID
+                     OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + username + "%");
+            pre.setInt(2, 5*(index-1));
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int UserID = rs.getInt("UserID");
+                String Username = rs.getString("Username");
+                String Password = rs.getString("Password");
+                int Role = rs.getInt("Role");
+                String Email = rs.getString("Email");
+                int Status = rs.getInt("Status");
+                User user = new User(UserID, Username, Password, Role, Email, Status);
+                sList.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return sList;
     }
 
 }
