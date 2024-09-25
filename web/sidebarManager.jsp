@@ -1,4 +1,3 @@
-<<<<<<< OURS
 <%-- 
     Document   : managerSidebar
     Created on : Sep 21, 2024, 7:33:50 PM

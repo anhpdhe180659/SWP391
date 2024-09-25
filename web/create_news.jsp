@@ -82,7 +82,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                     <!-- Navbar Header -->
+                    <!-- Navbar Header -->
                     <nav
                         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
                         >
@@ -131,8 +131,8 @@
                                     </ul>
                                 </li>
                                 <!--Notification-->
-                                
-                                
+
+
                                 <li class="nav-item topbar-user dropdown hidden-caret">
                                     <a
                                         class="dropdown-toggle profile-pic"
@@ -196,25 +196,6 @@
                     <div class="page-inner">
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Notifications</h3>
-                            <ul class="breadcrumbs mb-3">
-                                <li class="nav-home">
-                                    <a href="#">
-                                        <i class="icon-home"></i>
-                                    </a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Base</a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Notifications</a>
-                                </li>
-                            </ul> 
 
                         </div> 
                         <style>
@@ -306,8 +287,8 @@
                                     <label for="category">Category</label>
                                     <input type="text" id="category" name="category" placeholder="Enter the news category">
 
-                                    <label for="userID">User ID</label>
-                                    <input type="number" id="userID" name="userID" placeholder="Enter your user ID" required>
+                                    <!--<label for="userID">User ID</label>-->
+                                    <input type="hidden" id="userID" name="userID" value="${sessionScope.user.userID}" >
 
                                     <label for="publish_date">Publish Date</label>
                                     <input type="datetime-local" id="publish_date" name="publish_date" required>
@@ -323,9 +304,6 @@
                             </div>
                     </div>
                 </div>
-                <footer>
-                    <jsp:include page="footer.jsp"></jsp:include>
-                </footer>
             </div>
 
             <!-- End Custom template -->
