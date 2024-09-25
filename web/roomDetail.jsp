@@ -188,14 +188,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Room ${u.roomNumber}</h4>
-                                        <!--                                        <button
-                                                                                    class="btn btn-primary btn-round ms-auto"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#editUserModal"
-                                                                                    >
-                                                                                    <i class="fa fa-plus"></i>
-                                                                                    Edit User
-                                                                                </button>-->
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -334,7 +330,12 @@
                                                     <input type="text" name="roomId" value="${u.roomId}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
+                                                        <c:if test="${noti == 'Update status successful !'}" >
+                                                            <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
+                                                        </c:if>
+                                                        <c:if test="${noti != 'Update status successful !'}" >
+                                                            <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
+                                                        </c:if>
                                                         <button
                                                             type="reset"
                                                             class="btn btn-danger">
@@ -343,7 +344,7 @@
                                                         <button
                                                             type="submit"
                                                             class="btn btn-primary">
-                                                            Save
+                                                            Update
                                                         </button>
                                                     </div>
                                                 </form>
@@ -381,9 +382,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-            document.querySelector('.close').editEventListener('click', function () {
-                $('#editUserModal').modal('hide');
-            });
+                                            document.querySelector('.close').editEventListener('click', function () {
+                                                $('#editUserModal').modal('hide');
+                                            });
 
     </script>
     <script>
@@ -420,7 +421,11 @@
             $('#editUserModal').modal('hide');
         }
     </script>
-
+    <script>
+        function BackToList() {
+            window.location = "listRoom";
+        }
+    </script>
 
     <script>
         $(document).ready(function () {

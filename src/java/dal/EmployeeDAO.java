@@ -95,7 +95,7 @@ public class EmployeeDAO extends DBContext {
 
     public static void main(String[] args) {
         EmployeeDAO edao = new EmployeeDAO();
-        System.out.println(edao.getNext5Employee(1));
+        System.out.println(edao.findByUserId(12).getName());
     }
 
     public void addEmployee(Employee e) {
@@ -231,7 +231,7 @@ public class EmployeeDAO extends DBContext {
                            ,[Salary]
                            ,[UserID]
                        FROM [Employee]
-                     WHERE [EmpID] = ?""";
+                     WHERE [UserID] = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, userID);
@@ -255,4 +255,5 @@ public class EmployeeDAO extends DBContext {
         return emp;
 
     }
+    
 }

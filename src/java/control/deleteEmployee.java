@@ -39,8 +39,8 @@ public class deleteEmployee extends HttpServlet {
         edao.deleteEmployee(empid);
         List<Employee> listEmployee = edao.getAllEmployee();
         session.setAttribute("listEmployee", listEmployee);
-        response.sendRedirect("listEmployee.jsp");
-    } 
+        response.sendRedirect("listEmployee");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
