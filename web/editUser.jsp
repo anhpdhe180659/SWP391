@@ -472,7 +472,7 @@
                                                                     <label>Username</label>
                                                                     <input
                                                                         name="username"
-                                                                        pattern="[a-zA-Z0-9]{6,12}$" title="length should be 6-12, no spaces, unsigned"
+                                                                        pattern="[a-zA-Z0-9]{3,12}$" title="length should be 6-12, no spaces, unsigned"
                                                                         type="text"
                                                                         class="form-control"
                                                                         value="${u.username}"

@@ -600,7 +600,9 @@
                                                 <c:forEach items="${sessionScope.listEmployee}" var="s">
                                                     <tr>
                                                         <td>${s.name}</td>
-                                                        <td>${s.dateOfBirth}</td>
+                                                        <td>
+                                                            ${s.dateOfBirth}
+                                                        </td>
                                                         <td>${(s.sex == 1?
                                                               '<img src="assets/img/male-icon.png" alt="male-image"/>':
                                                               '<img src="assets/img/female-icon.png" alt="female-image"/>')}
