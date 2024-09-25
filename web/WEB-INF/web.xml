@@ -44,18 +44,16 @@
         <servlet-name>addEmployee</servlet-name>
         <servlet-class>control.addEmployee</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>dashboard</servlet-name>
-        <url-pattern>/dashboard</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>login</servlet-name>
-        <servlet-class>control.login</servlet-class>
-    </servlet>
     <servlet>
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>login</servlet-name>
+        <servlet-class>control.login</servlet-class>
+    </servlet>
+    
     <servlet>
         <servlet-name>addService</servlet-name>
         <servlet-class>control.addService</servlet-class>
@@ -116,9 +114,19 @@
         <servlet-name>CreateNewsServlets</servlet-name>
         <servlet-class>control.CreateNewsServlet</servlet-class>
     </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>EmployeeDAO</servlet-name>
         <url-pattern>/EmployeeDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listUser</servlet-name>
+        <url-pattern>/listUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>deleteUser</servlet-name>
@@ -139,6 +147,18 @@
     <servlet-mapping>
         <servlet-name>listEmployee</servlet-name>
         <url-pattern>/listEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteEmployee</servlet-name>
+        <url-pattern>/deleteEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editEmployee</servlet-name>
+        <url-pattern>/editEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addEmployee</servlet-name>
+        <url-pattern>/addEmployee</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>login</servlet-name>
