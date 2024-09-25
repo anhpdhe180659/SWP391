@@ -4,7 +4,7 @@
  */
 package control;
 
-import dal.UserDAO;
+import dal.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,15 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
-import model.User;
+import model.Employee;
 
 /**
  *
  * @author nhatk
  */
-public class editUser extends HttpServlet {
+public class addEmployee extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,17 +33,33 @@ public class editUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        UserDAO udao = new UserDAO();
         PrintWriter out = response.getWriter();
         try {
-            int userid = Integer.parseInt(request.getParameter("userid"));
-            User user = udao.getUserByID(userid);
-            request.setAttribute("user", user);
-
-            request.getRequestDispatcher("editUser.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+            HttpSession session = request.getSession();
+            EmployeeDAO edao = new EmployeeDAO();
+            Employee emp = new Employee();
+            String Name = request.getParameter("name");
+            emp.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");
+            emp.setDateOfBirth(DateOfBirth);
+            int Sex = Integer.parseInt(request.getParameter("sex"));
+            emp.setSex(Sex);
+            String Address = request.getParameter("address");
+            emp.setAddress(Address);
+            String Phone = request.getParameter("phone");
+            emp.setPhone(Phone);
+            String Identification = request.getParameter("identification");
+            emp.setIdentification(Identification);
+            String StartDate = request.getParameter("startdate");
+            emp.setStartDate(StartDate);
+            int Salary = Integer.parseInt(request.getParameter("salary"));
+            emp.setSalary(Salary);
+            edao.addEmployee(emp);
+            List<Employee> listEmployee = edao.getAllEmployee();
+            session.setAttribute("listEmployee", listEmployee);
+            response.sendRedirect("listEmployee.jsp");
+        } catch (NumberFormatException e) {
+            out.print("Exception in addEmployee");
         }
     }
 
@@ -74,40 +89,9 @@ public class editUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        try {
-            UserDAO udao = new UserDAO();
-            HttpSession session = request.getSession();
-            int userid = Integer.parseInt(request.getParameter("userid"));
-            User oldUser = udao.getUserByID(userid);// old user
-            String oldName = oldUser.getUsername();
-            String newName = request.getParameter("username");// new information
-            String password = request.getParameter("password");// new information
-            String email = request.getParameter("email");// new information
-            int role = Integer.parseInt(request.getParameter("role"));// new information
-            int status = Integer.parseInt(request.getParameter("status"));// new information
-            User user = new User(userid, newName, password, role, email, status);
-            List<User> listUser = udao.getAllUser();
-            for (User u : listUser) {
-                if (!newName.equals(oldName)) {
-                    if (u.getUsername().equals(newName)) {
-                        // check if username is existed in database and different from old name
-                        request.setAttribute("noti", "Username " + newName + " existed, please enter again!");
-                        request.setAttribute("user", oldUser);
-                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
-                        return;
-                    }
-                }
-            }
-            udao.editUser(user);
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("editUser.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            out.print(e);
-        }
+        processRequest(request, response);
     }
+
     /**
      * Returns a short description of the servlet.
      *
