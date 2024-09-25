@@ -66,12 +66,12 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+       HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
-            request.setAttribute("error","Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        else if (session.getAttribute("role").equals("1")) {
+            response.sendRedirect("login.jsp");
         }
         User user = (User) session.getAttribute("user");
         EmployeeDAO empDao = new EmployeeDAO();

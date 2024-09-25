@@ -180,6 +180,8 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="changePassword.jsp">Change Password</a>
+                                                <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="logout">Logout</a>
                                             </li>
                                         </div>
