@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : notifications
     Created on : Sep 19, 2024, 9:35:39 AM
@@ -51,7 +52,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"/>
+            <jsp:include page="sidebarManager.jsp"/>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -502,29 +503,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Thông Báo Tin Tức</h1>
-        <ul>
-            <li>
-                <span class="date">21/09/24 21:25 :</span>
-                <a href="news.jsp?id=1">Thông báo lịch thi kết thúc học phần lần 1, lần 2 môn KOR321, KRL312 học kỳ Fall 2024</a>
-            </li>
-            <li>
-                <span class="date">20/09/24 22:53 :</span>
-                <a href="news.jsp?id=2">Thông báo danh sách thi kết thúc học phần lần 2 môn SSL101c ngày 22/9/2024</a>
-            </li>
-            <li>
-                <span class="date">20/09/24 22:01 :</span>
-                <a href="news.jsp?id=3">Thông báo điểm thi kết thúc học phần lần 1 môn coursera SSL101c half 2 học kỳ Spring 2024, điểm thi giữa kỳ môn KOR321 học kỳ Fall 2024</a>
-            </li>
-            <li>
-                <span class="date">19/09/24 14:00 :</span>
-                <a href="news.jsp?id=4">[CTSV] - Thông báo Điểm Rèn Luyện Học Kỳ Summer 2024</a>
-            </li>
-            <li>
-                <span class="date">18/09/24 00:24 :</span>
-                <a href="news.jsp?id=5">V/v: Tham dự Seminar "Hướng dẫn viết Project Proposal"</a>
-            </li>
-        </ul>
+        <h1>News</h1>
+                        <ul>
+                            <c:forEach var="news" items="${newsList}">
+                                <li>
+                                    <span class="date">${news.postDate}</span>
+                                    <a href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
+                                </li>
+                            </c:forEach>
+                        </ul> 
+         <a href="CreateNewsServlets">Create News</a>
     </div>
                     </div>
                 </div> 

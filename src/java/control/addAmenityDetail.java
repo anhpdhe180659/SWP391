@@ -6,6 +6,7 @@
 package control;
 
 import dal.AmenityDAO;
+import dal.AmenityDetailDAO;
 import dal.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,13 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Amenity;
+import model.AmenityDetail;
 import model.Service;
 
 /**
  *
  * @author admin
  */
-public class deleteAmenity extends HttpServlet {
+public class addAmenityDetail extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,20 +34,27 @@ public class deleteAmenity extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print("sadsda");
+        throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    try {
         HttpSession session = request.getSession();
-        AmenityDAO adao = new AmenityDAO();
-        int amenityid = Integer.parseInt(request.getParameter("amenityid"));
-        adao.deleteAmenity(amenityid);
-        List<Amenity> listAmenity = adao.getAllAmenities();
-        session.setAttribute("listAmenity", listAmenity);
-        response.sendRedirect("listAmenity");
+        AmenityDetailDAO adao = new AmenityDetailDAO();       
+        String roomid = request.getParameter("roomid");
+        int amenid = Integer.parseInt(request.getParameter("amenid"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        AmenityDetail a = new AmenityDetail();
+        a.setRoomID(amenid);
+        a.setAmenID(amenid);
+        a.setQuantity(quantity);
+        List<AmenityDetail> listAmenityDetail = adao.getAllAmenityDetails();
+        session.setAttribute("listAmenityDetail", listAmenityDetail);
         
-    } 
+        request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);
+    } catch (ServletException | IOException | NumberFormatException e) {
+        out.print(e.getMessage());
+    }
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
