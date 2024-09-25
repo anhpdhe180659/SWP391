@@ -65,10 +65,6 @@
         <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>login</servlet-name>
-        <servlet-class>control.login</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
     </servlet>
@@ -127,10 +123,6 @@
     <servlet>
         <servlet-name>NewsServlet</servlet-name>
         <servlet-class>control.NewsServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateNewsServlet</servlet-name>
-        <servlet-class>model.CreateNewsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateNewsServlets</servlet-name>

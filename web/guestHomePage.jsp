@@ -128,12 +128,12 @@
                         <div class="hotel-infor hidden col-6">
                             <h3 style="font-size: 40px">ALIHOTEL</h3>
                             <br><!-- comment -->
-                            <p><b>Địa chỉ:</b> Số nhà 25, tổ dân phố 21, phường Him Lam, thành phố Điện Biên Phủ, tỉnh Điện Biên</p>
-                            <p><b>VPGD:</b> Tòa nhà Mường Thanh, lô CC5 bán đảo Linh Đàm, phường Hoàng Liệt, quận Hoàng Mai, Hà Nội, Việt Nam.</p>
+                            <p><b>Địa chỉ:</b> Tòa nhà Beta, Đại học FPT Hà Nội - toạ lạc tại khu công nghệ cao Hoà Lạc, Thạch Thất, Hà Nội.</p>
+                            <p><b>VPGD:</b> Tòa nhà Beta, Đại học FPT Hà Nội - toạ lạc tại khu công nghệ cao Hoà Lạc, Thạch Thất, Hà Nội.</p>
                             <p><b>Mã số thuế:</b> 0106011932</p>
                             <br><!-- comment -->
                             <br><!-- comment -->
-                            <p><b>Email:</b> info@muongthanh.vn</p>
+                            <p><b>Email:</b> info@alihotel.vn</p>
                             <p><b>Điện thoại:</b> +84-243-8222-333</p>
                             <p><b>Hotline: 1900 1833</b></p>
                         </div>
