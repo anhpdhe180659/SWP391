@@ -1,6 +1,6 @@
 <%-- 
-    Document   : editAmenity
-    Created on : Sep 24, 2024, 10:29:09 AM
+    Document   : listAmenityDetail
+    Created on : Sep 25, 2024, 8:46:26 AM
     Author     : admin
 --%>
 
@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Edit Amenity</title><!--  page only for manager  -->
+        <title>List Amenity Detail</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -20,6 +20,7 @@
             href="assets/img/kaiadmin/favicon.ico"
             type="image/x-icon"
             />
+
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
@@ -80,7 +81,6 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                    <!-- Navbar Header -->
                     <nav
                         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
                         >
@@ -392,7 +392,7 @@
                                         </div>
                                         <span class="profile-username">
                                             <span class="op-7">Hi,</span>
-                                            <span class="fw-bold">Hizrian</span>
+                                            <span class="fw-bold">${sessionScope.user.username}</span>
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -408,9 +408,9 @@
                                                     </div>
                                                     <div class="u-text">
                                                         <h4>Hizrian</h4>
-                                                        <p class="text-muted">hello@example.com</p>
+                                                        <p class="text-muted">${sessionScope.user.email}</p>
                                                         <a
-                                                            href="profile.jsp"
+                                                            href="profile.html"
                                                             class="btn btn-xs btn-secondary btn-sm"
                                                             >View Profile</a
                                                         >
@@ -439,72 +439,189 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Amenity</h3>
+                            <h3 class="fw-bold mb-3">Amenity Detail</h3>
                         </div>
-
-
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Edit Amenity</h4>
-                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
-                                            <i class="fas fa-angle-left"></i>
-                                            Back to list
+                                        <h4 class="card-title">Add Amenity Detail</h4>
+                                        <c:set value="${requestScope.noti}" var="noti" />
+                                        
+                                        <button
+                                            class="btn btn-primary btn-round ms-auto"
+                                            onclick="addAmenityDetail()">
+                                            <i class="fa fa-plus"></i>
+                                            Add Amenity Detail
                                         </button>
-                                        <!--                                        <button
-                                                                                    class="btn btn-primary btn-round ms-auto"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#editUserModal"
-                                                                                    >
-                                                                                    <i class="fa fa-plus"></i>
-                                                                                    Edit User
-                                                                                </button>-->
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-
-                                    <div>
+                                    <div
+                                        class="modal fade"
+                                        id="addUserModal"
+                                        tabindex="-1"
+                                        role="dialog"
+                                        aria-hidden="true"
+                                        >
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="editAmenity"  method="POST"  onsubmit="return validate()">
-                                                    <c:set value="${requestScope.amenity}" var="a"/>
+                                                <div class="modal-header border-0">
+                                                    <h5 class="modal-title">
+                                                        <span class="fw-mediumbold"> New</span>
+                                                        <span class="fw-light"> Amenity Detail </span>
+                                                    </h5>
+                                                </div>
+                                                <form action="addUser" onsubmit="return validate()">
                                                     <div class="modal-body">
+                                                        <p class="small">
+                                                            Create a new amenity detail, make sure you
+                                                            fill them all
+                                                        </p>
+
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Name</label>
+                                                                    <label>RoomID</label>
                                                                     <input
-                                                                        name="name"
+                                                                        name="roomid"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${a.amenName}"
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>                                                                                                                                                                        
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Quantity</label>
+                                                                    <input
+                                                                        name="quantity"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
                                                         </div>
                                                     </div>
-                                                    <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
-                                                        <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
                                                         <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
+                                                            type="button submit"
                                                             class="btn btn-primary">
-                                                            Save
+                                                            Add
                                                         </button>
+                                                        <a onclick="doClose()">
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-danger"
+                                                                data-dismiss="modal"
+                                                                aria-label="Close"
+                                                                >
+                                                                Close
+                                                            </button>
+                                                        </a>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
+                                    </div>
+
+
+                                    <div class="table-responsive">
+                                        <table class="display table table-striped table-hover" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Room ID</th>
+                                                    <th>Quantity</th>
+                                                    <th style="width: 10%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${sessionScope.listAmenityDetail}" var="a">
+                                                    <tr>
+                                                        <td>${a.RoomID}</td>
+                                                        <td>${a.Quantity}</td>
+                                                        
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <a href="editAmenityDetail?roomid=${a.RoomID}" >
+                                                                    <button
+                                                                        type="button"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title=""
+                                                                        class="btn btn-link btn-primary btn-lg"
+                                                                        data-original-title="Edit Task"
+                                                                        >
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                                <button
+                                                                    type="button"
+                                                                    title=""
+                                                                    class="btn btn-link btn-danger"
+                                                                    data-original-title="Remove"
+                                                                    onclick="doDelete(${a.RoomID})"
+                                                                    >
+                                                                    <i class="fa fa-times"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <c:set value="${sessionScope.currentindex}" var="index" />
+                                <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                <div class="card-body" >
+                                    <div class="demo">
+                                        <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
+                                            <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
+                                            <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                <a class="page-link" href="listUser?index=${index-1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <c:choose>
+                                                <c:when test="${index <= 3}">
+                                                    <c:set var="startPage" value="1" />
+                                                    <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                </c:when>
+                                                <c:when test="${index > Nopage - 3}">
+                                                    <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                    <c:set var="endPage" value="${Nopage}" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="startPage" value="${index - 2}" />
+                                                    <c:set var="endPage" value="${index + 2}" />
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                            <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                                                <c:if test="${index == p}">
+                                                    <li class="page-item active">
+                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${index != p}">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                            <li class="page-item ${index < Nopage ? '' :'disabled' }" >
+                                                <a class="page-link" href="listUser?index=${index+1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
 
                                 </div>
@@ -537,19 +654,24 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
-                                                    });
+                                                                        document.querySelector('.close').addEventListener('click', function () {
+                                                                            $('#addUserModal').modal('hide');
+                                                                        });
     </script>
     <script>
         function doClose() {
-            $('#editUserModal').modal('hide');
+            $('#addUserModal').modal('hide');
+        }
+    </script>
+    <script>
+        function addAmenityDetail() {
+            window.location = "addAmenityDetail";
         }
     </script>
     <script>
         function validate() {
             var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
             if (!regex1.test(email)) {
                 alert("Please enter a valid Email address (example@gmail.com)");
@@ -560,11 +682,13 @@
         }
     </script>
     <script>
-        function BackToList() {
-            window.location = "listAmenity";
+        function doDelete(userid) {
+            var option = confirm("Are you sure to unactive this?");
+            if (option === true) {
+                window.location = "deleteUser?userid=" + userid;
+            }
         }
     </script>
-
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({});
@@ -600,24 +724,24 @@
                 },
             });
 
-            // edit Row
-            $("#edit-user").DataTable({
+            // Add Row
+            $("#add-user").DataTable({
                 pageLength: 5,
             });
 
             var action =
                     '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-            $("#editUserButton").click(function () {
-                $("#edit-user")
+            $("#addUserButton").click(function () {
+                $("#add-user")
                         .dataTable()
-                        .fneditData([
-                            $("#editName").val(),
-                            $("#editPosition").val(),
-                            $("#editOffice").val(),
+                        .fnAddData([
+                            $("#addName").val(),
+                            $("#addPosition").val(),
+                            $("#addOffice").val(),
                             action,
                         ]);
-                $("#editUserModal").modal("hide");
+                $("#addUserModal").modal("hide");
             });
         });
     </script>

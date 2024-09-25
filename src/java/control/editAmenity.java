@@ -85,7 +85,7 @@ public class editAmenity extends HttpServlet {
 
             if (oldAmenity.getAmenName().equals(name)) {
                 
-                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("noti", "No changes made!");
                 request.setAttribute("amenity", oldAmenity);
             } else {
                 List<Amenity> listAmenity = adao.getAllAmenities();
@@ -93,18 +93,17 @@ public class editAmenity extends HttpServlet {
                     if (s.getAmenName().equals(name)) {
                         request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
                         request.setAttribute("amenity", oldAmenity);
+                        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
                         break;
                     }
                 }
                 adao.updateAmenity(amenity);
                 request.setAttribute("noti", "Save successful!");
                 request.setAttribute("amenity", amenity);
+                request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
             }
 
-            // Lấy danh sách dịch vụ mới
-            List<Amenity> updatedListAmenity = adao.getAllAmenities();
-            session.setAttribute("listAmenity", updatedListAmenity);
-            request.getRequestDispatcher("listAmenity.jsp").forward(request, response);
+            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
 
         } catch (Exception e) {
             out.print("There was an error: " + e.getMessage());
