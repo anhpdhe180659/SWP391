@@ -56,6 +56,10 @@
         <servlet-name>searchEmployee</servlet-name>
         <servlet-class>control.searchEmployee</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>searchUser</servlet-name>
+        <servlet-class>control.searchUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -243,6 +247,10 @@
     <servlet-mapping>
         <servlet-name>searchEmployee</servlet-name>
         <url-pattern>/searchEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchUser</servlet-name>
+        <url-pattern>/searchUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

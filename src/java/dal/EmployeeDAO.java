@@ -237,7 +237,7 @@ public class EmployeeDAO extends DBContext {
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + name + "%");
-            pre.setInt(2, 5 * (index - 1));
+            pre.setInt(2, 5*(index - 1));
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int EmpID = rs.getInt("EmpID");
