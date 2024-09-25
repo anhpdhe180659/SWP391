@@ -188,14 +188,10 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Room ${u.roomNumber}</h4>
-                                        <!--                                        <button
-                                                                                    class="btn btn-primary btn-round ms-auto"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#editUserModal"
-                                                                                    >
-                                                                                    <i class="fa fa-plus"></i>
-                                                                                    Edit User
-                                                                                </button>-->
+                                      <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -343,7 +339,7 @@
                                                         <button
                                                             type="submit"
                                                             class="btn btn-primary">
-                                                            Save
+                                                            Update
                                                         </button>
                                                     </div>
                                                 </form>
@@ -420,7 +416,11 @@
             $('#editUserModal').modal('hide');
         }
     </script>
-
+    <script>
+        function BackToList(){
+            window.location="listRoom";
+        }
+    </script>
 
     <script>
         $(document).ready(function () {

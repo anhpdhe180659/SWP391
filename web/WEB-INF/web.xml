@@ -83,7 +83,7 @@
         <servlet-class>control.deleteAmenity</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>editAmenity</servlet-name>
+<servlet-name>editAmenity</servlet-name>
         <servlet-class>control.editAmenity</servlet-class>
     </servlet>
     <servlet>
@@ -115,11 +115,12 @@
         <servlet-class>control.CreateNewsServlet</servlet-class>
     </servlet>
     
+    
+    
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>EmployeeDAO</servlet-name>
         <url-pattern>/EmployeeDAO</url-pattern>
@@ -169,7 +170,7 @@
         <url-pattern>/listService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>addService</servlet-name>
+<servlet-name>addService</servlet-name>
         <url-pattern>/addService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -201,7 +202,6 @@
         <url-pattern>/editAmenity</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>listAmenityDetail</servlet-name>
         <url-pattern>/listAmenityDetail</url-pattern>
     </servlet-mapping>
