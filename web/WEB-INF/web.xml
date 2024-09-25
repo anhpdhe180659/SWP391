@@ -83,7 +83,7 @@
         <servlet-class>control.deleteAmenity</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>editAmenity</servlet-name>
+<servlet-name>editAmenity</servlet-name>
         <servlet-class>control.editAmenity</servlet-class>
     </servlet>
     <servlet>
@@ -169,7 +169,7 @@
         <url-pattern>/listService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>addService</servlet-name>
+<servlet-name>addService</servlet-name>
         <url-pattern>/addService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
