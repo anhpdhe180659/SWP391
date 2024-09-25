@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
 import dal.RoomDao;
@@ -21,19 +20,20 @@ import model.Room;
  * @author phand
  */
 public class listRoom extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -41,16 +41,24 @@ public class listRoom extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         RoomDao roomDao = new RoomDao();
-        List<Room> listRoom = roomDao.getAllRooms();
+        int index = 1;
+        int noPage = (int) Math.ceil(roomDao.getAllRooms().size() / 5);
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        List<Room> listRoom = roomDao.loadMore(index);
         HttpSession session = request.getSession();
         session.setAttribute("listRoom", listRoom);
+        session.setAttribute("Nopage", noPage);
+        session.setAttribute("currentindex", index);
         response.sendRedirect("listRoom.jsp");
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,11 +66,12 @@ public class listRoom extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -45,15 +45,25 @@
         <servlet-class>control.addEmployee</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>listService</servlet-name>
-        <servlet-class>control.listService</servlet-class>
+        <servlet-name>ViewProfileServlet</servlet-name>
+        <servlet-class>control.ViewProfileServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>updateProfileUser</servlet-name>
+        <servlet-class>control.updateProfileUser</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>login</servlet-name>
         <servlet-class>control.login</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>listService</servlet-name>
+        <servlet-class>control.listService</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>addService</servlet-name>
         <servlet-class>control.addService</servlet-class>
@@ -83,7 +93,7 @@
         <servlet-class>control.deleteAmenity</servlet-class>
     </servlet>
     <servlet>
-<servlet-name>editAmenity</servlet-name>
+        <servlet-name>editAmenity</servlet-name>
         <servlet-class>control.editAmenity</servlet-class>
     </servlet>
     <servlet>
@@ -114,13 +124,6 @@
         <servlet-name>CreateNewsServlets</servlet-name>
         <servlet-class>control.CreateNewsServlet</servlet-class>
     </servlet>
-    
-    
-    
-    <servlet-mapping>
-        <servlet-name>dashboard</servlet-name>
-        <url-pattern>/dashboard</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EmployeeDAO</servlet-name>
         <url-pattern>/EmployeeDAO</url-pattern>
@@ -170,7 +173,7 @@
         <url-pattern>/listService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<servlet-name>addService</servlet-name>
+        <servlet-name>addService</servlet-name>
         <url-pattern>/addService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -224,6 +227,14 @@
     <servlet-mapping>
         <servlet-name>CreateNewsServlets</servlet-name>
         <url-pattern>/CreateNewsServlets</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProfileServlet</servlet-name>
+        <url-pattern>/ViewProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateProfileUser</servlet-name>
+        <url-pattern>/updateProfileUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
