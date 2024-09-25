@@ -16,10 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.PasswordUtils;
 
-/**
- *
- * @author kiennn
- */
 public class login extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

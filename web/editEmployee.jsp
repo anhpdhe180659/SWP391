@@ -248,10 +248,10 @@
                                                 <div class="notif-center">
                                                     <a href="#">
                                                         <div class="notif-icon notif-primary">
-                                                            <i class="fa fa-user-plus"></i>
+                                                            <i class="fa fa-employee-plus"></i>
                                                         </div>
                                                         <div class="notif-content">
-                                                            <span class="block"> New user registered </span>
+                                                            <span class="block"> New employee registered </span>
                                                             <span class="time">5 minutes ago</span>
                                                         </div>
                                                     </a>
@@ -378,7 +378,7 @@
                                     </div>
                                 </li>
 
-                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                <li class="nav-item topbar-employee dropdown hidden-caret">
                                     <a
                                         class="dropdown-toggle profile-pic"
                                         data-bs-toggle="dropdown"
@@ -392,15 +392,15 @@
                                                 class="avatar-img rounded-circle"
                                                 />
                                         </div>
-                                        <span class="profile-username">
+                                        <span class="profile-employeename">
                                             <span class="op-7">Hi,</span>
-                                            <span class="fw-bold">${sessionScope.user.username}</span>
+                                            <span class="fw-bold">Hizrian</span>
                                         </span>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                    <ul class="dropdown-menu dropdown-employee animated fadeIn">
+                                        <div class="dropdown-employee-scroll scrollbar-outer">
                                             <li>
-                                                <div class="user-box">
+                                                <div class="employee-box">
                                                     <div class="avatar-lg">
                                                         <img
                                                             src="assets/img/profile.jpg"
@@ -410,9 +410,9 @@
                                                     </div>
                                                     <div class="u-text">
                                                         <h4>Hizrian</h4>
-                                                        <p class="text-muted">${sessionScope.user.email}</p>
+                                                        <p class="text-muted">hello@example.com</p>
                                                         <a
-                                                            href="profile.html"
+                                                            href="profile.jsp"
                                                             class="btn btn-xs btn-secondary btn-sm"
                                                             >View Profile</a
                                                         >
@@ -427,7 +427,7 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">Account Setting</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="logout">Logout</a>
+                                                <a class="dropdown-item" href="#">Logout</a>
                                             </li>
                                         </div>
                                     </ul>
