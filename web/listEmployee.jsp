@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/logo.png"
             type="image/x-icon"
             />
 
@@ -443,17 +443,47 @@
                     <div class="page-inner">
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Manage Employee</h3>
+
                         </div>
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Employee</h4>
+                                        <nav
+                                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                            >
+                                            <c:set value="${requestScope.searchName} " var="n"/>
+                                            <form action="searchEmployee">
+                                                <div class="input-group" >
+                                                    <div class="input-group-prepend">
+                                                        <button type="submit" class="btn btn-search pe-1">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                    <c:if test="${n.length() < 2}">
+                                                        <input
+                                                            type="text"
+                                                            name="name"
+                                                            placeholder="Search employee by name..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                    <c:if test="${n.length() > 1}">
+                                                        <input
+                                                            type="text"
+                                                            name="name"
+                                                            value="${n}"
+                                                            placeholder="Search employee by name..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                </div>
+                                            </form>
+                                        </nav>
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
                                             onclick="addEmployee()">
-                                            
                                             <i class="fa fa-plus"></i>
                                             Add Employee
                                         </button>
@@ -461,133 +491,134 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-                                    <div
-                                        class="modal fade"
-                                        id="addEmployeeModal"
-                                        tabindex="-1"
-                                        role="dialog"
-                                        aria-hidden="true"
-                                        >
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> Employee </span>
-                                                    </h5>
-                                                </div>
-                                                <form action="addEmployee" onsubmit="return validate()">
-                                                    <div class="modal-body">
-                                                        <p class="small">
-                                                            Create a new Employee, make sure you
-                                                            fill them all
-                                                        </p>
-
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Name</label>
-                                                                    <input
-                                                                        name="name"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Address</label>
-                                                                    <input
-                                                                        name="address"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Phone</label>
-                                                                    <input
-                                                                        id="phone"
-                                                                        name="phone"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Identification</label>
-                                                                    <input
-                                                                        name="identification"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Sex</label>
-                                                                    <select name="sex" class="form-control">
-                                                                        <option value="1">Male</option>
-                                                                        <option value="0">Female</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6" >
-                                                                <div class="form-group form-group-default" style="line-height: 23px">
-                                                                    <label>Date of Birth</label>
-                                                                    <input type="date" name="birthday" value="" required
-                                                                           style="width: 100%; border: none; "/>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6" >
-                                                                <div class="form-group form-group-default" style="line-height: 23px">
-                                                                    <label>Salary</label>
-                                                                    <input type="number" name="salary" value="" required
-                                                                           style="width: 100%; border: none; "/>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6" >
-                                                                <div class="form-group form-group-default" style="line-height: 23px">
-                                                                    <label>Start Date</label>
-                                                                    <input type="date" name="startdate" value="" required
-                                                                           style="width: 100%; border: none; "/>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <button
-                                                            type="button submit"
-                                                            class="btn btn-primary">
-                                                            Add
-                                                        </button>
-                                                        <a onclick="doClose()">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!--                                    <div
+                                                                            class="modal fade"
+                                                                            id="addEmployeeModal"
+                                                                            tabindex="-1"
+                                                                            role="dialog"
+                                                                            aria-hidden="true"
+                                                                            >
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header border-0">
+                                                                                        <h5 class="modal-title">
+                                                                                            <span class="fw-mediumbold"> New</span>
+                                                                                            <span class="fw-light"> Employee </span>
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <form action="addEmployee" onsubmit="return validate()">
+                                                                                        <div class="modal-body">
+                                                                                            <p class="small">
+                                                                                                Create a new Employee, make sure you
+                                                                                                fill them all
+                                                                                            </p>
+                                    
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-12">
+                                                                                                    <div class="form-group form-group-default">
+                                                                                                        <label>Name</label>
+                                                                                                        <input
+                                                                                                            name="name"
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            required
+                                                                                                            />
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-12">
+                                                                                                    <div class="form-group form-group-default">
+                                                                                                        <label>Address</label>
+                                                                                                        <input
+                                                                                                            name="address"
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            required
+                                                                                                            />
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6">
+                                                                                                    <div class="form-group form-group-default">
+                                                                                                        <label>Phone</label>
+                                                                                                        <input
+                                                                                                            id="phone"
+                                                                                                            name="phone"
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            required
+                                                                                                            />
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6">
+                                                                                                    <div class="form-group form-group-default">
+                                                                                                        <label>Identification</label>
+                                                                                                        <input
+                                                                                                            name="identification"
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            required
+                                                                                                            />
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6">
+                                                                                                    <div class="form-group form-group-default">
+                                                                                                        <label>Sex</label>
+                                                                                                        <select name="sex" class="form-control">
+                                                                                                            <option value="1">Male</option>
+                                                                                                            <option value="0">Female</option>
+                                                                                                        </select>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6" >
+                                                                                                    <div class="form-group form-group-default" style="line-height: 23px">
+                                                                                                        <label>Date of Birth</label>
+                                                                                                        <input type="date" name="birthday" value="" required
+                                                                                                               style="width: 100%; border: none; "/>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6" >
+                                                                                                    <div class="form-group form-group-default" style="line-height: 23px">
+                                                                                                        <label>Salary</label>
+                                                                                                        <input type="number" name="salary" value="" required
+                                                                                                               style="width: 100%; border: none; "/>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6" >
+                                                                                                    <div class="form-group form-group-default" style="line-height: 23px">
+                                                                                                        <label>Start Date</label>
+                                                                                                        <input type="date" name="startdate" value="" required
+                                                                                                               style="width: 100%; border: none; "/>
+                                                                                                    </div>
+                                                                                                </div>
+                                    
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="modal-footer border-0">
+                                                                                            <button
+                                                                                                type="button submit"
+                                                                                                class="btn btn-primary">
+                                                                                                Add
+                                                                                            </button>
+                                                                                            <a onclick="doClose()">
+                                                                                                <button
+                                                                                                    type="button"
+                                                                                                    class="btn btn-danger"
+                                                                                                    data-dismiss="modal"
+                                                                                                    aria-label="Close"
+                                                                                                    >
+                                                                                                    Close
+                                                                                                </button>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>-->
                                     <div class="table-responsive">
                                         <table class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>
+                                                    <th>Date Of Birth</th>
                                                     <th>Sex</th>
                                                     <th>Phone</th>
                                                     <th>Salary</th>
@@ -599,6 +630,9 @@
                                                 <c:forEach items="${sessionScope.listEmployee}" var="s">
                                                     <tr>
                                                         <td>${s.name}</td>
+                                                        <td>
+                                                            ${s.dateOfBirth}
+                                                        </td>
                                                         <td>${(s.sex == 1?
                                                               '<img src="assets/img/male-icon.png" alt="male-image"/>':
                                                               '<img src="assets/img/female-icon.png" alt="female-image"/>')}

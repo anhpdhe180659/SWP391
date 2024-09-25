@@ -45,6 +45,26 @@
         <servlet-class>control.addEmployee</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ViewProfileServlet</servlet-name>
+        <servlet-class>control.ViewProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateProfileUser</servlet-name>
+        <servlet-class>control.updateProfileUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>searchEmployee</servlet-name>
+        <servlet-class>control.searchEmployee</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>login</servlet-name>
+        <servlet-class>control.login</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
     </servlet>
@@ -116,10 +136,6 @@
         <servlet-name>showAmenityDetail</servlet-name>
         <servlet-class>control.showAmenityDetail</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>dashboard</servlet-name>
-        <url-pattern>/dashboard</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EmployeeDAO</servlet-name>
         <url-pattern>/EmployeeDAO</url-pattern>
@@ -227,6 +243,18 @@
     <servlet-mapping>
         <servlet-name>showAmenityDetail</servlet-name>
         <url-pattern>/showAmenityDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProfileServlet</servlet-name>
+        <url-pattern>/ViewProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateProfileUser</servlet-name>
+        <url-pattern>/updateProfileUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchEmployee</servlet-name>
+        <url-pattern>/searchEmployee</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

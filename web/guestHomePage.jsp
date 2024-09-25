@@ -16,7 +16,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <link rel="stylesheet" href="CSS/footer.css">
@@ -72,7 +72,6 @@
                     </div>
                 </nav>
             </div>
-
             <div class="body-container">
                 <section class="hidden">
                     <div class="image-banner">
@@ -274,5 +273,12 @@
                 fillColor: "rgba(255, 165, 52, .14)",
             });
 </script>
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="AliHotel"
+  agent-id="c077f1bd-3bd4-4aa6-adca-b44871671084"
+  language-code="en"
+></df-messenger>
 </body>
 </html>

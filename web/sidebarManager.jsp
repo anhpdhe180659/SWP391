@@ -76,11 +76,11 @@
                                             <span class="sub-item">User</span>
                                         </a>
                                     </li>
-                                    <li>
+<!--                                    <li>
                                         <a href="listGuest">
                                             <span class="sub-item">Guest</span>
                                         </a>
-                                    </li>
+                                    </li>-->
                                 </ul>
                             </div>
 

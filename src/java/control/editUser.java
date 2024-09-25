@@ -12,7 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import model.User;
 
@@ -84,8 +87,7 @@ public class editUser extends HttpServlet {
             String email = request.getParameter("email");// new information
             int role = Integer.parseInt(request.getParameter("role"));// new information
             int status = Integer.parseInt(request.getParameter("status"));// new information
-            User user = new User(userid, username, password, role, email, status);
-
+            User user = new User(userid, username, hashPassword(password), role, email, status);
             List<User> listUser = udao.getAllUser();
             for (User u : listUser) {
                 if (!oldUser.getUsername().equals(username)) {
@@ -102,10 +104,30 @@ public class editUser extends HttpServlet {
             request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: green'>Save successfully! </div>");
             request.setAttribute("user", user);
             request.getRequestDispatcher("editUser.jsp").forward(request, response);
-
-        } catch (Exception e) {
+        } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
             out.print("There are some wrong");
         }
+    }
+
+    public static String hashPassword(String password) throws NoSuchAlgorithmException {
+        // Chọn thuật toán SHA-256
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        // Băm mật khẩu
+        byte[] hash = md.digest(password.getBytes());
+
+        // Chuyển đổi mảng byte sang chuỗi Hex để dễ lưu trữ
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        // Trả về chuỗi băm đã chuyển thành dạng Hex
+        return hexString.toString();
     }
 
     public static void main(String[] args) {

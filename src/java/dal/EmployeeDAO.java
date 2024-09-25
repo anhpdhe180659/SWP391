@@ -95,7 +95,7 @@ public class EmployeeDAO extends DBContext {
 
     public static void main(String[] args) {
         EmployeeDAO edao = new EmployeeDAO();
-        System.out.println(edao.getNext5Employee(1));
+        System.out.println(edao.findEmployeeByName("VAN"));
     }
 
     public void addEmployee(Employee e) {
@@ -216,6 +216,49 @@ public class EmployeeDAO extends DBContext {
         return sList;
     }
 
+    public List<Employee> getNext5SearchEmployee(int index, String name) {
+
+        List<Employee> sList = new ArrayList<>();
+        String sql = """
+                     SELECT [EmpID]
+                                                ,[Name]
+                                                ,[DateOfBirth]
+                                                ,[Sex]
+                                                ,[Address]
+                                                ,[Phone]
+                                                ,[Identification]
+                                                ,[StartDate]
+                                                ,[Salary]
+                                                ,[UserID]
+                                            FROM [HotelManagement].[dbo].[Employee]
+                     WHERE Name like ?
+                      ORDER BY EmpID 
+                     OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + name + "%");
+            pre.setInt(2, 5 * (index - 1));
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int EmpID = rs.getInt("EmpID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                int UserID = rs.getInt("UserID");
+                Employee user = new Employee(EmpID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, UserID);
+                sList.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connect error");
+        }
+        return sList;
+    }
+
     public Employee findByUserId(int userID) {
 
         Employee emp = new Employee();
@@ -231,7 +274,7 @@ public class EmployeeDAO extends DBContext {
                            ,[Salary]
                            ,[UserID]
                        FROM [Employee]
-                     WHERE [EmpID] = ?""";
+                     WHERE [UserID] = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, userID);
@@ -255,4 +298,45 @@ public class EmployeeDAO extends DBContext {
         return emp;
 
     }
+
+    public List<Employee> findEmployeeByName(String name) {
+        List<Employee> sList = new ArrayList<>();
+        String sql = """
+                     SELECT [EmpID]
+                                                ,[Name]
+                                                ,[DateOfBirth]
+                                                ,[Sex]
+                                                ,[Address]
+                                                ,[Phone]
+                                                ,[Identification]
+                                                ,[StartDate]
+                                                ,[Salary]
+                                                ,[UserID]
+                                            FROM [Employee]
+                                          WHERE Name like ? """;
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + name + "%");
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int EmpID = rs.getInt("EmpID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                int UserID = rs.getInt("UserID");
+                Employee emp = new Employee(EmpID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, UserID);
+                sList.add(emp);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connect error");
+        }
+        return sList;
+
+    }
+
 }

@@ -12,7 +12,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 
 /**
@@ -73,7 +78,7 @@ public class addUser extends HttpServlet {
             int role = Integer.parseInt(request.getParameter("role"));
             User u = new User();
             u.setUsername(username);
-            u.setPassword(password);
+            u.setPassword(hashPassword(password));
             u.setEmail(email);
             u.setRole(role);
             List<User> listUser = udao.getAllUser();
@@ -89,9 +94,30 @@ public class addUser extends HttpServlet {
             udao.addUser(u);
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addUser.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
+        } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
             out.print("Exception in addUser");
         }
+    }
+
+    public static String hashPassword(String password) throws NoSuchAlgorithmException {
+        // Chọn thuật toán SHA-256
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        // Băm mật khẩu
+        byte[] hash = md.digest(password.getBytes());
+
+        // Chuyển đổi mảng byte sang chuỗi Hex để dễ lưu trữ
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        // Trả về chuỗi băm đã chuyển thành dạng Hex
+        return hexString.toString();
     }
 
     /**

@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/logo.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
@@ -503,6 +503,7 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Identification</label>
                                                                     <input
+                                                                        id="identification"
                                                                         name="identification"
                                                                         type="text"
                                                                         class="form-control"
@@ -529,7 +530,8 @@
                                                             <div class="col-sm-4" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Salary</label>
-                                                                    <input type="number" name="salary"  required
+                                                                    <input type="number" name="salary"
+                                                                           min="0" max="2000000000" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
@@ -595,13 +597,19 @@
     <script>
         function validate() {
             var phone = document.getElementById("phone").value;
-            var regex2 = /^\d{10}$/;
-            if (!regex2.test(phone)) {
+            var regex = /^\d{10}$/;
+            var identification = document.getElementById("identification").value;
+            var regex2 = /^\d{12}$/;
+            if (!regex.test(phone)) {
                 alert("Please enter a valid phone number with 10 digit");
                 document.getElementById("phone").focus();
                 return false;
             }
-
+            if (!regex2.test(identification)) {
+                alert("Please enter a valid identification number with 12 digit");
+                document.getElementById("identification").focus();
+                return false;
+            }
             return true;
         }
     </script>

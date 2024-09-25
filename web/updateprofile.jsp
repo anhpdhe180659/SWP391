@@ -1,9 +1,8 @@
 <%-- 
-    Document   : editUser
-    Created on : Sep 22, 2024, 1:29:17 PM
-    Author     : nhatk
+    Document   : updateprofile
+    Created on : Sep 25, 2024, 10:22:02 AM
+    Author     : LENOVO
 --%>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,14 +11,14 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Edit user</title><!--  page only for manager  -->
+        <title>Update Profile</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="assets/img/kaiadmin/favicon.ico"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
@@ -53,7 +52,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
             <!-- End Sidebar -->
             <div class="main-panel">
                 <div class="main-header">
@@ -248,10 +247,10 @@
                                                 <div class="notif-center">
                                                     <a href="#">
                                                         <div class="notif-icon notif-primary">
-                                                            <i class="fa fa-user-plus"></i>
+                                                            <i class="fa fa-employee-plus"></i>
                                                         </div>
                                                         <div class="notif-content">
-                                                            <span class="block"> New user registered </span>
+                                                            <span class="block"> New employee registered </span>
                                                             <span class="time">5 minutes ago</span>
                                                         </div>
                                                     </a>
@@ -378,7 +377,7 @@
                                     </div>
                                 </li>
 
-                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                <li class="nav-item topbar-employee dropdown hidden-caret">
                                     <a
                                         class="dropdown-toggle profile-pic"
                                         data-bs-toggle="dropdown"
@@ -392,15 +391,15 @@
                                                 class="avatar-img rounded-circle"
                                                 />
                                         </div>
-                                        <span class="profile-username">
+                                        <span class="profile-employeename">
                                             <span class="op-7">Hi,</span>
                                             <span class="fw-bold">Hizrian</span>
                                         </span>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                    <ul class="dropdown-menu dropdown-employee animated fadeIn">
+                                        <div class="dropdown-employee-scroll scrollbar-outer">
                                             <li>
-                                                <div class="user-box">
+                                                <div class="employee-box">
                                                     <div class="avatar-lg">
                                                         <img
                                                             src="assets/img/profile.jpg"
@@ -441,7 +440,7 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage User</h3>
+                            <h3 class="fw-bold mb-3">My Profile</h3>
                         </div>
 
 
@@ -450,7 +449,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Edit User</h4>
+                                        <h4 class="card-title">Update Profile</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
@@ -459,102 +458,145 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-
                                     <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="editUser"  method="POST"  onsubmit="return validate()">
-                                                    <c:set value="${requestScope.user}" var="u"/>
+                                                <form action="updateProfileUser"  method="POST"  onsubmit="return validate()">
+                                                    <c:set value="${requestScope.employee}" var="e"/>
+                                                    <input type="text" name="empid" value="${e.empID}" hidden="">
                                                     <div class="modal-body">
                                                         <div class="row">
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Username</label>
+                                                                    <label>Name</label>
                                                                     <input
-                                                                        name="username"
-                                                                        pattern="[a-zA-Z0-9]{3,12}$" title="length should be 6-12, no spaces, unsigned"
+                                                                        name="name"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${u.username}"
+                                                                        value="${e.name}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Password</label>
+                                                                    <label>Address</label>
                                                                     <input
-                                                                        name="password" id="password"
-                                                                        type="password"
-                                                                        class="form-control"
-                                                                        value="${u.password}"
-                                                                        readonly=""
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Email</label>
-                                                                    <input
-                                                                        id="email"
-                                                                        name="email"
+                                                                        name="address"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${u.email}"
+                                                                        value="${e.address}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Role</label>                  
-                                                                    <select name="role" class="form-control">
-                                                                        <option value="2"
-                                                                                <c:if test="${u.role == 2}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Employee</option>
-                                                                        <option value="1"
-                                                                                <c:if test="${u.role == 1}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Admin</option>
+                                                                    <label>Phone</label>
+                                                                    <input
+                                                                        id="phone"
+                                                                        name="phone"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        value="${e.phone}"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Identification</label>
+                                                                    <input
+                                                                        name="identification"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        value="${e.identification}"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Sex</label>
+                                                                    <select name="sex" class="form-control">
+                                                                        <option value="1" <c:if test="${e.sex == 1}">
+                                                                                selected
+                                                                            </c:if> />Male</option>
+                                                                        <option value="0" <c:if test="${e.sex == 0}">
+                                                                                selected
+                                                                            </c:if> />Female</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Status</label>
-                                                                    <select name="status" class="form-control">
-                                                                        <option value="1"
-                                                                                <c:if test="${u.status == 1}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >active</option>
-                                                                        <option value="0"
-                                                                                <c:if test="${u.status == 0}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >unactive</option>
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Date of Birth</label>
+                                                                    <input type="date" name="birthday" value="${e.dateOfBirth}" required
+                                                                           style="width: 100%; border: none; "/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Salary</label>
+                                                                    <input type="number" name="salary" value="${e.salary}" required
+                                                                           style="width: 100%; border: none; "/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Start Date</label>
+                                                                    <input type="date" name="startdate" value="${e.startDate}" required
+                                                                           style="width: 100%; border: none; "/>
+                                                                </div>
+                                                            </div>
+                                                            <c:set value="${requestScope.currentUser}" var="currentUser"/>
+                                                            <div class="col-sm-3" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Current Username & password</label>
+                                                                    ${currentUser.username}
+                                                                    <c:if test="${currentUser.username != null}" >&</c:if>
+                                                                    <c:if test="${currentUser.username == null}" >none</c:if>
+                                                                    ${currentUser.password}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3" >
+                                                                <div class="form-group form-group-default" >
+                                                                    <label>Assign another user</label>
+                                                                    <select name="userID" class="form-control">
+                                                                        <option value="${currentUser.userID}" />
+                                                                        ${currentUser.username} 
+                                                                        <c:if test="${currentUser.username != null}" >&</c:if>
+                                                                        <c:if test="${currentUser.username == null}" >none</c:if> 
+                                                                        ${currentUser.password}
+                                                                        </option>
+                                                                        <c:forEach items="${sessionScope.listUserNotUsed}" var="u" >
+                                                                            <option value="${u.userID}" />${u.username}  &  ${u.password}</option>
+                                                                        </c:forEach>
+                                                                        <option value="0" />none</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <input type="text" name="userid" value="${u.userID}" hidden="">
-                                                    <div class="modal-footer border-0">
-                                                        <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
-                                                        <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary">
-                                                            Save
-                                                        </button>
+
+                                                        <div class="modal-footer border-0">
+                                                            <c:set value="${requestScope.noti}" var="noti"/>
+                                                            <c:if test="${noti == 'Save successful!'}" >
+                                                                <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
+                                                            </c:if>
+                                                            <c:if test="${noti != 'Save successful!'}" >
+                                                                <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
+                                                            </c:if>
+                                                            <button
+                                                                type="reset"
+                                                                class="btn btn-danger">
+                                                                Reset
+                                                            </button>&nbsp;
+                                                            <button
+                                                                type="submit"
+                                                                class="btn btn-primary">
+                                                                Save
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -568,9 +610,6 @@
                 </div>
             </div>
 
-            <footer class="footer">
-
-            </footer>
         </div>
 
         <!-- Custom template | don't include it in your project! -->
@@ -591,42 +630,25 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    const togglePassword = document.querySelector('#togglePassword');
-                                                    const password = document.querySelector('#password');
-                                                    togglePassword.addEventListener('click', function () {
-                                                        // Toggle the type attribute
-                                                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                        password.setAttribute('type', type);
-
-                                                        // Toggle the icon (optional)
-                                                        this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editEmployeeModal').modal('hide');
                                                     });
     </script>
     <script>
-        document.querySelector('.close').editEventListener('click', function () {
-            $('#editUserModal').modal('hide');
-        });
-    </script>
-    <script>
-        function doClose() {
-            $('#editUserModal').modal('hide');
-        }
-    </script>
-    <script>
         function BackToList() {
-            window.location = "listUser";
+            window.location = "ViewProfileServlet?userId=${sessionScope.user.userID}";
         }
     </script>
     <script>
         function validate() {
-            var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-            if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                document.getElementById("email").focus();
+            var phone = document.getElementById("phone").value;
+            var regex2 = /^\d{10}$/;
+            if (!regex2.test(phone)) {
+                alert("Please enter a valid phone number with 10 digit");
+                document.getElementById("phone").focus();
                 return false;
             }
+
             return true;
         }
     </script>
@@ -667,15 +689,15 @@
             });
 
             // edit Row
-            $("#edit-user").DataTable({
+            $("#edit-employee").DataTable({
                 pageLength: 5,
             });
 
             var action =
                     '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-            $("#editUserButton").click(function () {
-                $("#edit-user")
+            $("#editEmployeeButton").click(function () {
+                $("#edit-employee")
                         .dataTable()
                         .fneditData([
                             $("#editName").val(),
@@ -683,7 +705,7 @@
                             $("#editOffice").val(),
                             action,
                         ]);
-                $("#editUserModal").modal("hide");
+                $("#editEmployeeModal").modal("hide");
             });
         });
     </script>
