@@ -130,8 +130,10 @@ public class EmployeeDAO extends DBContext {
 
     public void deleteEmployee(int empid) {
         String sql = """
-                     DELETE FROM [Employee]
-                     WHERE EmpID = ? """;
+                     UPDATE [dbo].[Employee]
+                        SET 
+                           [UserID] = null
+                      WHERE EmpID = ? """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, empid);
             st.executeUpdate();
