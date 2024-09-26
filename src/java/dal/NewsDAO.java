@@ -79,11 +79,23 @@ public class NewsDAO extends DBContext {
         pstmt.setTimestamp(8, news.getLastModified());
         
         // Execute the update
+    
+    
         pstmt.executeUpdate();
     } catch (SQLException e) {
         e.printStackTrace();
-    }
 }
+} 
+    public void deleteNews(int id) {
+    String sql = "DELETE FROM news WHERE id = ?";
+    try (
+         PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
 
     // Add more methods as needed (e.g., insertNews, updateNews, deleteNews)
+} 
 }
