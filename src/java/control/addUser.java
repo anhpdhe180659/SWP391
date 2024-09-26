@@ -90,6 +90,12 @@ public class addUser extends HttpServlet {
                     request.getRequestDispatcher("addUser.jsp").forward(request, response);
                     return;
                 }
+                if (user.getEmail().equals(email)) {
+                    noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Email " + email + " existed, please try again!</div>";
+                    request.setAttribute("noti", noti);
+                    request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                    return;
+                }
             }
             udao.addUser(u);
             request.setAttribute("noti", noti);

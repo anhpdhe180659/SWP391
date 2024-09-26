@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -108,7 +108,7 @@
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Visitors</p>
+                                                    <p class="card-category">Guest</p>
                                                     <h4 class="card-title">${sessionScope.dto.numberOfVisitors}</h4>
                                                 </div>
                                             </div>

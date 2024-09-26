@@ -237,7 +237,6 @@
                                                                 <c:set var="endPage" value="${index + 2}" />
                                                             </c:otherwise>
                                                         </c:choose>
-
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">
                                                             <c:if test="${index == p}">
                                                                 <li class="page-item active">

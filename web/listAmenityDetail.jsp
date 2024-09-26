@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -309,11 +309,6 @@
     <script>
         function doClose() {
             $('#addUserModal').modal('hide');
-        }
-    </script>
-    <script>
-        function addAmenityDetail() {
-            window.location = "addAmenityDetail";
         }
     </script>
     <script>

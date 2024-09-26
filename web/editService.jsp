@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->

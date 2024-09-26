@@ -93,7 +93,16 @@ public class editUser extends HttpServlet {
                 if (!oldUser.getUsername().equals(username)) {
                     if (u.getUsername().equals(username)) {
                         // check if username is existed in database
-                        request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: darkorange'>Username " + username + " existed, please enter again!</div>");
+                        request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: red'>Username " + username + " existed, please enter again!</div>");
+                        request.setAttribute("user", oldUser);
+                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                        return;
+                    }
+                }
+                if (!oldUser.getEmail().equals(email)) {
+                    if (u.getEmail().equals(email)) {
+                        // check if email is existed in database
+                        request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: red'>Email " + email + " existed, please enter again!</div>");
                         request.setAttribute("user", oldUser);
                         request.getRequestDispatcher("editUser.jsp").forward(request, response);
                         return;
