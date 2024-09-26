@@ -5,6 +5,7 @@
 
 package control;
 
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Room;
 
 /**
  *
@@ -76,7 +78,32 @@ public class addRoom extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        try {
+            String roomNumber = request.getParameter("roomNumber");
+            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
+            int statusId = Integer.parseInt(request.getParameter("statusId"));
+            int typeId =  Integer.parseInt(request.getParameter("typeId"));
+            RoomDao roomDao = new RoomDao();
+            Room room = new Room();
+            room.setRoomNumber(roomNumber);
+            room.setCleanId(cleanId);
+            room.setStatusId(statusId);
+            room.setTypeId(typeId);
+            roomDao.addRoom(room);
+            System.out.println(room.getTypeId()+"/"+room.getRoomNumber()+"/"+room.getStatusId()+"/"+room.getCleanId());
+            request.setAttribute("noti", "Add room successful !");
+            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /** 

@@ -124,6 +124,12 @@ public class RoomDao extends DBContext {
         RoomDao dao = new RoomDao();
         dao.loadMore(1, 0, 0, 0).forEach(System.out::println);
         System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1) / 5));
+        Room room = new Room();
+        room.setRoomNumber("601");
+        room.setCleanId(1);
+        room.setStatusId(1);
+        room.setTypeId(1);
+        dao.addRoom(room);
     }
 
     public void updateStatus(Room room) {
@@ -144,7 +150,8 @@ public class RoomDao extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-     public void updateRoom(Room room) {
+
+    public void updateRoom(Room room) {
         String query = """
                         UPDATE Room
                             SET CleanID  = ?,
@@ -156,7 +163,7 @@ public class RoomDao extends DBContext {
             pre.setInt(1, room.getCleanId());
             pre.setInt(2, room.getStatusId());
             pre.setInt(3, room.getTypeId());
-             pre.setInt(4, room.getRoomId());
+            pre.setInt(4, room.getRoomId());
             pre.executeUpdate();
             System.out.println("Update succesfull");
         } catch (SQLException e) {
@@ -164,5 +171,22 @@ public class RoomDao extends DBContext {
         }
     }
 
+    public void addRoom(Room room) {
+        String query = """
+                        INSERT INTO Room (RoomNumber, CleanID, TypeID, StatusID)
+                        values
+                        (?, ?, ?, ?)
+                        """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setString(1, room.getRoomNumber());
+            pre.setInt(2, room.getCleanId());
+            pre.setInt(3, room.getTypeId());
+            pre.setInt(4, room.getStatusId());
+            pre.executeUpdate();
+            System.out.println("Add succesfull");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
