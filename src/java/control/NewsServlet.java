@@ -1,4 +1,3 @@
- 
 package control;
 
 import java.io.IOException;
@@ -9,10 +8,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import dal.NewsDAO;
+import jakarta.servlet.http.HttpSession;
 import model.NewsItem;
 
-
 public class NewsServlet extends HttpServlet {
+
     private NewsDAO newsDAO;
 
     @Override
@@ -24,6 +24,13 @@ public class NewsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        else if (session.getAttribute("role").equals("2")) {
+            response.sendRedirect("login.jsp");
+        }
         String action = request.getParameter("action");
         if (action == null) {
             action = "list";

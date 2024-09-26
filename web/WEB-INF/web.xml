@@ -65,10 +65,6 @@
         <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>login</servlet-name>
-        <servlet-class>control.login</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>listService</servlet-name>
         <servlet-class>control.listService</servlet-class>
     </servlet>
@@ -108,38 +104,16 @@
         <servlet-name>editAmenity</servlet-name>
         <servlet-class>control.editAmenity</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>listAmenityDetail</servlet-name>
-        <servlet-class>control.listAmenityDetail</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>addAmenityDetail</servlet-name>
-        <servlet-class>control.addAmenityDetail</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deleteAmenityDetail</servlet-name>
-        <servlet-class>control.deleteAmenityDetail</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>editAmenityDetail</servlet-name>
-        <servlet-class>control.editAmenityDetail</servlet-class>
-    </servlet>
+ 
     <servlet>
         <servlet-name>NewsServlet</servlet-name>
         <servlet-class>control.NewsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateNewsServlet</servlet-name>
-        <servlet-class>model.CreateNewsServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateNewsServlets</servlet-name>
         <servlet-class>control.CreateNewsServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>showAmenityDetail</servlet-name>
-        <servlet-class>control.showAmenityDetail</servlet-class>
-    </servlet>
+  
     <servlet>
         <servlet-name>changePassword</servlet-name>
         <servlet-class>control.changePassword</servlet-class>
@@ -228,22 +202,7 @@
         <servlet-name>editAmenity</servlet-name>
         <url-pattern>/editAmenity</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>listAmenityDetail</servlet-name>
-        <url-pattern>/listAmenityDetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>addAmenityDetail</servlet-name>
-        <url-pattern>/addAmenityDetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deleteAmenityDetail</servlet-name>
-        <url-pattern>/deleteAmenityDetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>editAmenityDetail</servlet-name>
-        <url-pattern>/editAmenityDetail</url-pattern>
-    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -252,10 +211,7 @@
         <servlet-name>CreateNewsServlets</servlet-name>
         <url-pattern>/CreateNewsServlets</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>showAmenityDetail</servlet-name>
-        <url-pattern>/showAmenityDetail</url-pattern>
-    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>ViewProfileServlet</servlet-name>
         <url-pattern>/ViewProfileServlet</url-pattern>

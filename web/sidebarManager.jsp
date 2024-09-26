@@ -1,4 +1,3 @@
-<<<<<<< OURS
 <%-- 
     Document   : managerSidebar
     Created on : Sep 21, 2024, 7:33:50 PM
@@ -117,28 +116,24 @@
                                 </ul>
                             </div>
                         </li>
-                        <!--
+                        
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#tables">
-                                <i class="fas fa-table"></i>
-                                <p>Tables</p>
+                                <i class="fas fa-bell"></i>
+                                <p>Notification</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="tables">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="tables.jsp">
-                                            <span class="sub-item">Basic Table</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="datatables.jsp">
-                                            <span class="sub-item">Datatables</span>
+                                        <a href="NewsServlet">
+                                            <span class="sub-item">Notification</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
+                        <!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#maps">
                                 <i class="fas fa-map-marker-alt"></i>

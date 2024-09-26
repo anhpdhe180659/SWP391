@@ -96,7 +96,7 @@ public class updateRoomStatus extends HttpServlet {
             room.setCleanId(cleanId);
             room.setStatusId(statusId);
             roomDao.updateStatus(room);
-            request.setAttribute("detailRoom", room);
+            session.setAttribute("detailRoom", room);
             request.setAttribute("noti", "Update status successful !");
             request.getRequestDispatcher("roomDetail.jsp").forward(request, response);
         } catch (NumberFormatException e) {
