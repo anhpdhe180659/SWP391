@@ -41,7 +41,7 @@
                 },
             });
         </script>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <!-- CSS Files -->
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
@@ -210,7 +210,7 @@
                                                         <!-- Success message -->
                                                         <c:if test="${noti == 'Update room successful !'}">
                                                             <div class="success hidden" style="margin-right: 25px; font-weight: bold; color: green;">
-                                                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                                                <i class="fa fa-check-circle" aria-hidden="true"></i>
                                                                 <p>${noti}</p>
                                                             </div>
                                                         </c:if>
@@ -237,7 +237,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
