@@ -8,18 +8,19 @@ import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import model.Room;
 
 /**
  *
  * @author phand
  */
-public class listRoom extends HttpServlet {
+@WebServlet(name = "viewDetailRoomAdmin", urlPatterns = {"/viewDetailAdmin"})
+public class viewDetailRoomAdmin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,6 +31,23 @@ public class listRoom extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet viewDetailRoomAdmin</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet viewDetailRoomAdmin at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -45,42 +63,17 @@ public class listRoom extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
+        }
+        if (session.getAttribute("role") != null && session.getAttribute("role").equals("2")) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        RoomDao roomDao = new RoomDao();
-        int index = 1;
-        int typeId = 0;
-        int statusId = 0;
-        int cleanId = 0;
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        if (request.getParameter("typeId") != null) {
-            typeId = Integer.parseInt(request.getParameter("typeId"));
-        }
-        if (request.getParameter("statusId") != null) {
-            statusId = Integer.parseInt(request.getParameter("statusId"));
-        }
-        if (request.getParameter("cleanId") != null) {
-            cleanId = Integer.parseInt(request.getParameter("cleanId"));
-        }
-        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId);
-        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId) / 5);
-        System.out.println(noPage);
-        if (noPage == 0) {
-            request.setAttribute("noti", "No room found");
-        }
-        session.setAttribute("listRoom", listRoom);
-        session.setAttribute("Nopage", noPage);
-        session.setAttribute("currentindex", index);
-        // Add the values to the request scope so they can be used in the JSP
-        request.setAttribute("typeId", typeId);
-        request.setAttribute("statusId", statusId);
-        request.setAttribute("cleanId", cleanId);
 
-        request.getRequestDispatcher("listRoom.jsp").forward(request, response);
+        int roomId = Integer.parseInt(request.getParameter("id"));
+        RoomDao roomDao = new RoomDao();
+        Room room = roomDao.findRoomById(roomId);
+        session.setAttribute("detailRoomAdmin", room);
+        response.sendRedirect("roomDetailAdmin.jsp");
     }
 
     /**
@@ -94,6 +87,7 @@ public class listRoom extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

@@ -1,16 +1,16 @@
 <%-- 
-    Document   : listServices
-    Created on : Sep 23, 2024, 4:25:24 PM
+    Document   : listAmenityDetail
+    Created on : Sep 25, 2024, 8:46:26 AM
     Author     : admin
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Service</title><!--  page only for manager  -->
+        <title>List Amenity Detail</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -61,7 +61,7 @@
                         <div class="logo-header" data-background-color="dark">
                             <a href="../index.jsp" class="logo">
                                 <img
-                                    src="img/logo/logoAdmin.png"
+                                    src="assets/img/kaiadmin/logo_light.svg"
                                     alt="navbar brand"
                                     class="navbar-brand"
                                     height="20"
@@ -81,27 +81,27 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                    <jsp:include page="navbar-header.jsp"/>
+                     <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Service</h3>
+                            <h3 class="fw-bold mb-3">Amenity Detail</h3>
                         </div>
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Service</h4>
+                                        <h4 class="card-title">Add Amenity Detail</h4>
+                                        <c:set value="${requestScope.noti}" var="noti" />
+                                        
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addUserModal"
-                                            >
+                                            onclick="addAmenityDetail()">
                                             <i class="fa fa-plus"></i>
-                                            Add Service
+                                            Add Amenity Detail
                                         </button>
                                     </div>
                                 </div>
@@ -119,22 +119,22 @@
                                                 <div class="modal-header border-0">
                                                     <h5 class="modal-title">
                                                         <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> Service </span>
+                                                        <span class="fw-light"> Amenity Detail </span>
                                                     </h5>
                                                 </div>
-                                                <form action="addService" onsubmit="return validate()">
+                                                <form action="addUser" onsubmit="return validate()">
                                                     <div class="modal-body">
                                                         <p class="small">
-                                                            Create a new service, make sure you
+                                                            Create a new amenity detail, make sure you
                                                             fill them all
                                                         </p>
 
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Name</label>
+                                                                    <label>RoomID</label>
                                                                     <input
-                                                                        name="name"
+                                                                        name="roomid"
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
@@ -143,18 +143,17 @@
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Price</label>
+                                                                    <label>Quantity</label>
                                                                     <input
-                                                                        name="price"
+                                                                        name="quantity"
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-
-
-
+                                                            
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer border-0">
@@ -181,24 +180,23 @@
 
 
                                     <div class="table-responsive">
-                                        <table id="add-user" class="display table table-striped table-hover" >
-                                            <!--                                            <div class="table-responsive">
-                                                                                    <table id="add-user" class="display table table-striped table-hover" >-->
+                                        <table class="display table table-striped table-hover" >
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Price</th>
+                                                    <th>Room ID</th>
+                                                    <th>Quantity</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${sessionScope.listService}" var="sv">
+                                                <c:forEach items="${sessionScope.listAmenityDetail}" var="a">
                                                     <tr>
-                                                        <td>${sv.name}</td>
-                                                        <td>${sv.price}</td>                                                      
+                                                        <td>${a.RoomID}</td>
+                                                        <td>${a.Quantity}</td>
+                                                        
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="editService?serviceid=${sv.serviceID}" >
+                                                                <a href="editAmenityDetail?roomid=${a.RoomID}" >
                                                                     <button
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
@@ -214,7 +212,7 @@
                                                                     title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
-                                                                    onclick="doDelete(${sv.serviceID})"
+                                                                    onclick="doDelete(${a.RoomID})"
                                                                     >
                                                                     <i class="fa fa-times"></i>
                                                                 </button>
@@ -226,119 +224,170 @@
                                         </table>
                                     </div>
                                 </div>
+                                <c:set value="${sessionScope.currentindex}" var="index" />
+                                <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                <div class="card-body" >
+                                    <div class="demo">
+                                        <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
+                                            <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
+                                            <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                <a class="page-link" href="listUser?index=${index-1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <c:choose>
+                                                <c:when test="${index <= 3}">
+                                                    <c:set var="startPage" value="1" />
+                                                    <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                </c:when>
+                                                <c:when test="${index > Nopage - 3}">
+                                                    <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                    <c:set var="endPage" value="${Nopage}" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="startPage" value="${index - 2}" />
+                                                    <c:set var="endPage" value="${index + 2}" />
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                            <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                                                <c:if test="${index == p}">
+                                                    <li class="page-item active">
+                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${index != p}">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                            <li class="page-item ${index < Nopage ? '' :'disabled' }" >
+                                                <a class="page-link" href="listUser?index=${index+1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <footer class="footer">
-
-                </footer>
             </div>
 
-            <!-- Custom template | don't include it in your project! -->
+            <footer class="footer">
 
-            <!-- End Custom template -->
+            </footer>
         </div>
-        <!--   Core JS Files   -->
-        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
-        <script src="assets/js/core/bootstrap.min.js"></script>
 
-        <!-- jQuery Scrollbar -->
-        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-        <!-- Datatables -->
-        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-        <!-- Kaiadmin JS -->
-        <script src="assets/js/kaiadmin.min.js"></script>
-        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-        <script src="assets/js/setting-demo2.js"></script>
-        <script>
+        <!-- Custom template | don't include it in your project! -->
+
+        <!-- End Custom template -->
+    </div>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo2.js"></script>
+    <script>
                                                                         document.querySelector('.close').addEventListener('click', function () {
                                                                             $('#addUserModal').modal('hide');
                                                                         });
-        </script>
-        <script>
-            function doClose() {
-                $('#addUserModal').modal('hide');
+    </script>
+    <script>
+        function doClose() {
+            $('#addUserModal').modal('hide');
+        }
+    </script>
+    <script>
+        function validate() {
+            var email = document.getElementById("email").value;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+            if (!regex1.test(email)) {
+                alert("Please enter a valid Email address (example@gmail.com)");
+                document.getElementById("email").focus();
+                return false;
             }
-        </script>
-        <script>
-            function validate() {
-                var email = document.getElementById("email").value;
-                var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-                if (!regex1.test(email)) {
-                    alert("Please enter a valid Email address (example@gmail.com)");
-                    document.getElementById("email").focus();
-                    return false;
-                }
-                return true;
+            return true;
+        }
+    </script>
+    <script>
+        function doDelete(userid) {
+            var option = confirm("Are you sure to unactive this?");
+            if (option === true) {
+                window.location = "deleteUser?userid=" + userid;
             }
-        </script>
-        <script>
-            function doDelete(serviceid) {
-                var option = confirm("Are you sure? You won't be able to revert this");
-                if (option === true) {
-                    window.location = "deleteService?serviceid=" + serviceid;
-                }
-            }
-        </script>
-        <script>
-            $(document).ready(function () {
-                $("#basic-datatables").DataTable({});
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable({});
 
-                $("#multi-filter-select").DataTable({
-                    pageLength: 5,
-                    initComplete: function () {
-                        this.api()
-                                .columns()
-                                .every(function () {
-                                    var column = this;
-                                    var select = $(
-                                            '<select class="form-select"><option value=""></option></select>'
-                                            )
-                                            .appendTo($(column.footer()).empty())
-                                            .on("change", function () {
-                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                column
-                                                        .search(val ? "^" + val + "$" : "", true, false)
-                                                        .draw();
-                                            });
+            $("#multi-filter-select").DataTable({
+                pageLength: 5,
+                initComplete: function () {
+                    this.api()
+                            .columns()
+                            .every(function () {
+                                var column = this;
+                                var select = $(
+                                        '<select class="form-select"><option value=""></option></select>'
+                                        )
+                                        .appendTo($(column.footer()).empty())
+                                        .on("change", function () {
+                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                            column
+                                                    .search(val ? "^" + val + "$" : "", true, false)
+                                                    .draw();
+                                        });
 
-                                    column
-                                            .data()
-                                            .unique()
-                                            .sort()
-                                            .each(function (d, j) {
-                                                select.append(
-                                                        '<option value="' + d + '">' + d + "</option>"
-                                                        );
-                                            });
-                                });
-                    },
-                });
-
-                // Add Row
-                $("#add-user").DataTable({
-                    pageLength: 5,
-                });
-
-                var action =
-                        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-                $("#addUserButton").click(function () {
-                    $("#add-user")
-                            .dataTable()
-                            .fnAddData([
-                                $("#addName").val(),
-                                $("#addPosition").val(),
-                                $("#addOffice").val(),
-                                action,
-                            ]);
-                    $("#addUserModal").modal("hide");
-                });
+                                column
+                                        .data()
+                                        .unique()
+                                        .sort()
+                                        .each(function (d, j) {
+                                            select.append(
+                                                    '<option value="' + d + '">' + d + "</option>"
+                                                    );
+                                        });
+                            });
+                },
             });
-        </script>
-    </body>
+
+            // Add Row
+            $("#add-user").DataTable({
+                pageLength: 5,
+            });
+
+            var action =
+                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+            $("#addUserButton").click(function () {
+                $("#add-user")
+                        .dataTable()
+                        .fnAddData([
+                            $("#addName").val(),
+                            $("#addPosition").val(),
+                            $("#addOffice").val(),
+                            action,
+                        ]);
+                $("#addUserModal").modal("hide");
+            });
+        });
+    </script>
+
+</body>
 </html>

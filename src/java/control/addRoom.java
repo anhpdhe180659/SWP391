@@ -5,6 +5,7 @@
 
 package control;
 
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Room;
 
 /**
  *
- * @author nhatk
+ * @author phand
  */
-@WebServlet(name="NewServlet1", urlPatterns={"/NewServlet1"})
-public class NewServlet1 extends HttpServlet {
+@WebServlet(name="addRoom", urlPatterns={"/addRoom"})
+public class addRoom extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +38,10 @@ public class NewServlet1 extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet1</title>");  
+            out.println("<title>Servlet addRoom</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewServlet1 at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet addRoom at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +58,14 @@ public class NewServlet1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        response.sendRedirect("addRoom.jsp");
     } 
 
     /** 
@@ -68,7 +78,32 @@ public class NewServlet1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        try {
+            String roomNumber = request.getParameter("roomNumber");
+            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
+            int statusId = Integer.parseInt(request.getParameter("statusId"));
+            int typeId =  Integer.parseInt(request.getParameter("typeId"));
+            RoomDao roomDao = new RoomDao();
+            Room room = new Room();
+            room.setRoomNumber(roomNumber);
+            room.setCleanId(cleanId);
+            room.setStatusId(statusId);
+            room.setTypeId(typeId);
+            roomDao.addRoom(room);
+            System.out.println(room.getTypeId()+"/"+room.getRoomNumber()+"/"+room.getStatusId()+"/"+room.getCleanId());
+            request.setAttribute("noti", "Add room successful !");
+            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /** 

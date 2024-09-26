@@ -19,8 +19,8 @@ import model.Room;
  *
  * @author phand
  */
-@WebServlet(name = "updateRoomStatus", urlPatterns = {"/updateRoomStatus"})
-public class updateRoomStatus extends HttpServlet {
+@WebServlet(name = "updateRoomDetail", urlPatterns = {"/updateRoomDetail"})
+public class updateRoomDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,10 @@ public class updateRoomStatus extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet updateRoomStatus</title>");
+            out.println("<title>Servlet updateRoomDetail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet updateRoomStatus at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet updateRoomDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -74,11 +74,6 @@ public class updateRoomStatus extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int roomId = Integer.parseInt(request.getParameter("roomId"));
-//        int cleanId = Integer.parseInt(request.getParameter("cleanId"));
-//        int statusId = Integer.parseInt(request.getParameter("statusId"));
-////        response.getWriter().println(roomId + "/" + cleanId + "/" + statusId);
-//        
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
@@ -91,18 +86,21 @@ public class updateRoomStatus extends HttpServlet {
             int roomId = Integer.parseInt(request.getParameter("roomId"));
             int cleanId = Integer.parseInt(request.getParameter("cleanId"));
             int statusId = Integer.parseInt(request.getParameter("statusId"));
+            int typeId =  Integer.parseInt(request.getParameter("typeId"));
+            response.getWriter().print(roomId+"/"+cleanId+"."+statusId+"/"+typeId);
             RoomDao roomDao = new RoomDao();
             Room room = roomDao.findRoomById(roomId);
             room.setCleanId(cleanId);
             room.setStatusId(statusId);
-            roomDao.updateStatus(room);
-            session.setAttribute("detailRoom", room);
-            request.setAttribute("noti", "Update status successful !");
-            request.getRequestDispatcher("roomDetail.jsp").forward(request, response);
+            room.setTypeId(typeId);
+            roomDao.updateRoom(room);
+            System.out.println(room.getTypeId()+"/"+room.getRoomNumber()+"/"+room.getStatusId()+"/"+room.getCleanId());
+            session.setAttribute("detailRoomAdmin", room);
+            request.setAttribute("noti", "Update room successful !");
+            request.getRequestDispatcher("roomDetailAdmin.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     /**

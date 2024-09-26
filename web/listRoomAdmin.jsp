@@ -52,7 +52,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <jsp:include page="sidebarManager.jsp"/>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -88,14 +88,58 @@
                 <div class="container">
                     <div class="container">
                         <div class="page-inner">
-                            <div class="page-header">
-                                <h2 class="fw-bold mb-3">Room Status</h2>
+                            <div class="page-header row">
+                                <h2 class="fw-bold mb-3 col-12">Room</h2>
                             </div>
                             <div class="col-md-12">
                                 <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <nav
+                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                                >
+                                                <c:set value="${requestScope.searchName} " var="n"/>
+                                                <form action="searchUser">
+                                                    <div class="input-group" >
+                                                        <div class="input-group-prepend">
+                                                            <button type="submit" class="btn btn-search pe-1">
+                                                                <i class="fa fa-search search-icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <c:if test="${n.length() < 2}">
+                                                            <input
+                                                                type="text"
+                                                                name="username"
+                                                                placeholder="Search room..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                        <c:if test="${n.length() > 1}">
+                                                            <input
+                                                                type="text"
+                                                                name="username"
+                                                                value="${n}"
+                                                                placeholder="Search room..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                    </div>
+                                                </form>
+                                            </nav>
+                                            <c:set value="${requestScope.noti}" var="noti" />
+
+                                            <button
+                                                class="btn btn-primary btn-round ms-auto"
+                                                onclick="addRoom()">
+                                                <i class="fa fa-plus"></i>
+                                                Add Room
+                                            </button>
+                                        </div>
+                                    </div>
                                     <div class="card-body row">
+
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
-                                        <form action="listRoom">
+                                        <form action="listRoomAdmin">
                                             <span>Type</span>
                                             <select class="form-select-sm col-2 me-3" name="typeId">
                                                 <option value="0" ${requestScope.typeId == '0' ? 'selected' : ''}>All</option>
@@ -130,15 +174,13 @@
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table id="add-user" class="display table table-striped table-hover" >
-                                                <!--                                            <div class="table-responsive">
-                                                                                        <table id="add-user" class="display table table-striped table-hover" >-->
                                                 <thead>
                                                     <tr>
                                                         <th>Room Number</th>
                                                         <th>Clean Status</th>
                                                         <th>Type</th>
                                                         <th>Room Status</th>
-                                                        <th>Action</th>
+                                                        <th style="text-align: center" colspan="2">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -199,8 +241,15 @@
                                                                 </td>
                                                             </c:if>
                                                             <td style="text-align: center">
-                                                                <a href="viewDetail?id=${s.roomId}"
+                                                                <a href="viewDetailAdmin?id=${s.roomId}"
                                                                    <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
+                                                                </a>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                                <a style="color:red" 
+                                                                   href="deleteRoom?id=${s.roomId}"
+                                                                   onclick="return confirm('Do you want to delete this room?')"
+                                                                   <i class="far fa-trash-alt me-3"></i>&nbsp;&nbsp;Delete
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -218,7 +267,7 @@
                                                     <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
                                                         <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
                                                         <li class="page-item ${index < 2 ? 'disabled' :'' } ">
-                                                            <a class="page-link" href="listRoom?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
+                                                            <a class="page-link" href="listRoomAdmin?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                                 <span class="sr-only">Previous</span>
                                                             </a>
@@ -240,17 +289,17 @@
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">
                                                             <c:if test="${index == p}">
                                                                 <li class="page-item active">
-                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoomAdmin?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${index != p}">
                                                                 <li class="page-item">
-                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoomAdmin?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
                                                         <li class="page-item ${index < Nopage ? '' :'disabled' }" >
-                                                            <a class="page-link" href="listRoom?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
+                                                            <a class="page-link" href="listRoomAdmin?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                                 <span class="sr-only">Next</span>
                                                             </a>
@@ -295,43 +344,48 @@
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
         <script>
-            $(document).ready(function () {
-                $("#basic-datatables").DataTable({
-                });
-                $("#multi-filter-select").DataTable({
-                    pageLength: 10,
-                    initComplete: function () {
-                        this.api()
-                                .columns()
-                                .every(function () {
-                                    var column = this;
-                                    var select = $(
-                                            '<select class="form-select"><option value=""></option></select>'
-                                            )
-                                            .appendTo($(column.footer()).empty())
-                                            .on("change", function () {
-                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                column
-                                                        .search(val ? "^" + val + "$" : "", true, false)
-                                                        .draw();
-                                            });
+            function addRoom(){
+                window.location='addRoom';
+            }
+        </script>
+        <script>
+                                                                       $(document).ready(function () {
+                                                                           $("#basic-datatables").DataTable({
+                                                                           });
+                                                                           $("#multi-filter-select").DataTable({
+                                                                               pageLength: 10,
+                                                                               initComplete: function () {
+                                                                                   this.api()
+                                                                                           .columns()
+                                                                                           .every(function () {
+                                                                                               var column = this;
+                                                                                               var select = $(
+                                                                                                       '<select class="form-select"><option value=""></option></select>'
+                                                                                                       )
+                                                                                                       .appendTo($(column.footer()).empty())
+                                                                                                       .on("change", function () {
+                                                                                                           var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                                                                                           column
+                                                                                                                   .search(val ? "^" + val + "$" : "", true, false)
+                                                                                                                   .draw();
+                                                                                                       });
 
-                                    column
-                                            .data()
-                                            .unique()
-                                            .sort()
-                                            .each(function (d, j) {
-                                                select.append(
-                                                        '<option value="' + d + '">' + d + "</option>"
-                                                        );
-                                            });
-                                });
-                    },
-                });
+                                                                                               column
+                                                                                                       .data()
+                                                                                                       .unique()
+                                                                                                       .sort()
+                                                                                                       .each(function (d, j) {
+                                                                                                           select.append(
+                                                                                                                   '<option value="' + d + '">' + d + "</option>"
+                                                                                                                   );
+                                                                                                       });
+                                                                                           });
+                                                                               },
+                                                                           });
 
-                //             Add Row
+                                                                           //             Add Row
 
-            });
+                                                                       });
         </script>
     </body>
 </html>
