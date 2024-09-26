@@ -144,5 +144,25 @@ public class RoomDao extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+     public void updateRoom(Room room) {
+        String query = """
+                        UPDATE Room
+                            SET CleanID  = ?,
+                                StatusID = ?,
+                                TypeID = ?
+                            WHERE RoomID = ? 
+                           """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, room.getCleanId());
+            pre.setInt(2, room.getStatusId());
+            pre.setInt(3, room.getTypeId());
+             pre.setInt(4, room.getRoomId());
+            pre.executeUpdate();
+            System.out.println("Update succesfull");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

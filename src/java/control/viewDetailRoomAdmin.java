@@ -8,6 +8,7 @@ import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +19,8 @@ import model.Room;
  *
  * @author phand
  */
-public class viewDetailRoom extends HttpServlet {
+@WebServlet(name = "viewDetailRoomAdmin", urlPatterns = {"/viewDetailAdmin"})
+public class viewDetailRoomAdmin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,10 @@ public class viewDetailRoom extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet viewDetailRoom</title>");            
+            out.println("<title>Servlet viewDetailRoomAdmin</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet viewDetailRoom at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet viewDetailRoomAdmin at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,16 +64,16 @@ public class viewDetailRoom extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
+        if (session.getAttribute("role") != null && session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        
+
         int roomId = Integer.parseInt(request.getParameter("id"));
         RoomDao roomDao = new RoomDao();
         Room room = roomDao.findRoomById(roomId);
-        session.setAttribute("detailRoom", room);
-        response.sendRedirect("roomDetail.jsp");
+        session.setAttribute("detailRoomAdmin", room);
+        response.sendRedirect("roomDetailAdmin.jsp");
     }
 
     /**
