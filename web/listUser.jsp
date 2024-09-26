@@ -83,7 +83,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                     <!-- Navbar Header -->
+                    <!-- Navbar Header -->
                     <nav
                         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
                         >
@@ -132,8 +132,8 @@
                                     </ul>
                                 </li>
                                 <!--Notification-->
-                                
-                                
+
+
                                 <li class="nav-item topbar-user dropdown hidden-caret">
                                     <a
                                         class="dropdown-toggle profile-pic"
@@ -354,7 +354,15 @@
                                                         <td>${s.username}</td>
                                                         <td>**********</td>
                                                         <td>${s.email}</td>
-                                                        <td>${s.status == 1 ? 'active' :'unactive'}</td>
+                                                        <td>
+                                                            <c:if test="${s.status == 1}">
+                                                                <span style="font-weight: bold;color: green" >active</span>
+                                                            </c:if>
+                                                            <c:if test="${s.status == 0}">
+                                                                <span style="font-weight: bold;color: red" >inactive</span>
+                                                            </c:if>
+                                                        </td>
+                                                        ${s.status == 1 ? 'active' :'inactive'}
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="editUser?userid=${s.userID}" >
@@ -463,9 +471,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                                        document.querySelector('.close').addEventListener('click', function () {
-                                                                            $('#addUserModal').modal('hide');
-                                                                        });
+                                                                document.querySelector('.close').addEventListener('click', function () {
+                                                                    $('#addUserModal').modal('hide');
+                                                                });
     </script>
     <script>
         function doClose() {
