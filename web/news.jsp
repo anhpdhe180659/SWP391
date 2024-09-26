@@ -1,4 +1,3 @@
-
 <%-- 
     Document   : notifications
     Created on : Sep 19, 2024, 9:35:39 AM
@@ -82,7 +81,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                   <jsp:include page="navbar-header.jsp"/>
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
@@ -139,7 +138,7 @@
                                         <div class="news-content">
                                             <p>${news.content}</p> <!-- This line will print the content of the news -->
                                         </div>
-                                        <a href="delele">Delete</a>
+                                       
                                     </li>
 
                                 </ul>
@@ -167,4 +166,3 @@
 
     </body>
 </html>
-

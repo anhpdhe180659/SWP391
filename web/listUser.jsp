@@ -83,7 +83,9 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
+                    <!-- Navbar Header -->
                     <jsp:include page="navbar-header.jsp"/>
+                    <!-- End Navbar -->
                 </div>
 
                 <div class="container">
@@ -247,7 +249,15 @@
                                                         <td>${s.username}</td>
                                                         <td>**********</td>
                                                         <td>${s.email}</td>
-                                                        <td>${s.status == 1 ? 'active' :'unactive'}</td>
+                                                        <td>
+                                                            <c:if test="${s.status == 0}">
+                                                                <span style="color: red; font-weight:bold">inactive</span>
+                                                            </c:if>
+                                                            <c:if test="${s.status == 1}">
+                                                                <span style="color: green; font-weight:bold">active</span>
+                                                            </c:if>
+                                                        </td>
+
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="editUser?userid=${s.userID}" >

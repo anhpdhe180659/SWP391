@@ -165,7 +165,7 @@
                                                                     <label>Status</label>
                                                                     <select name="status" class="form-control">
                                                                         <option value="1">active</option>
-                                                                        <option value="0">unactive</option>
+                                                                        <option value="0">inactive</option>
                                                                     </select>
                                                                 </div>
                                                             </div>

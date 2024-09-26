@@ -182,7 +182,7 @@
                                                                                 <c:if test="${u.status == 0}">
                                                                                     selected
                                                                                 </c:if>
-                                                                                >unactive</option>
+                                                                                >inactive</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
