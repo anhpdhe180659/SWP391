@@ -86,7 +86,7 @@
 
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                                <i class="fas fa-th-list"></i>
+                                <i class="far fa-check-circle"></i>
                                 <p>Services</p>
                                 <span class="caret"></span>
                             </a>
@@ -102,7 +102,7 @@
                         </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#forms">
-                                <i class="fas fas fa-crown"></i>
+                                <i class="fas fa-window-maximize"></i>
                                 <p>Amenity</p>
                                 <span class="caret"></span>
                             </a>
