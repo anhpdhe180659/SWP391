@@ -133,28 +133,28 @@
                                 </ul>
                             </div>
                         </li>
-                        <!--
+                        
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#maps">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <p>Maps</p>
+                                <i class="fas fa-home"></i>
+                                <p>Room</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="maps">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="googlemaps.jsp">
-                                            <span class="sub-item">Google Maps</span>
+                                        <a href="listRoomAdmin">
+                                            <span class="sub-item">Room</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="jsvectormap.jsp">
-                                            <span class="sub-item">Jsvectormap</span>
+                                        <a href="listRoomType">
+                                            <span class="sub-item">Room Type</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li><!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#charts">
                                 <i class="far fa-chart-bar"></i>

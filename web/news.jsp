@@ -89,26 +89,6 @@
                     <div class="page-inner">
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Notifications</h3>
-                            <ul class="breadcrumbs mb-3">
-                                <li class="nav-home">
-                                    <a href="#">
-                                        <i class="icon-home"></i>
-                                    </a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Base</a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Notifications</a>
-                                </li>
-                            </ul> 
-
                         </div> 
                         <style>
                             body {
@@ -159,17 +139,13 @@
                                         <div class="news-content">
                                             <p>${news.content}</p> <!-- This line will print the content of the news -->
                                         </div>
+                                        <a href="delele">Delete</a>
                                     </li>
 
                                 </ul>
                             </div>
                     </div>
                 </div> 
-
-
-                <footer>
-                    <jsp:include page="footer.jsp"></jsp:include>
-                </footer>
             </div>
         </div>
 
