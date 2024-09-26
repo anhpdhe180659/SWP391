@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -51,8 +51,14 @@
     </head>
     <body>
         <div class="wrapper">
-            <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <c:if test="${sessionScope.user.role == 2}">
+                <!-- Sidebar -->
+                <jsp:include page="sidebarReceptionist.jsp"/>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 1}">
+                <!-- Sidebar -->
+                <jsp:include page="sidebarManager.jsp"/>
+            </c:if>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -82,113 +88,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                    <!-- Navbar Header -->
-                    <nav
-                        class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-                        >
-                        <div class="container-fluid">
-                            <nav
-                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-                                >
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button type="submit" class="btn btn-search pe-1">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </button>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Search ..."
-                                        class="form-control"
-                                        />
-                                </div>
-                            </nav>
-
-                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                                <li
-                                    class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-                                    >
-                                    <a
-                                        class="nav-link dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        href="#"
-                                        role="button"
-                                        aria-expanded="false"
-                                        aria-haspopup="true"
-                                        >
-                                        <i class="fa fa-search"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
-                                        <form class="navbar-left navbar-form nav-search">
-                                            <div class="input-group">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Search ..."
-                                                    class="form-control"
-                                                    />
-                                            </div>
-                                        </form>
-                                    </ul>
-                                </li>
-                                <!--Notification-->
-
-
-                                <li class="nav-item topbar-user dropdown hidden-caret">
-                                    <a
-                                        class="dropdown-toggle profile-pic"
-                                        data-bs-toggle="dropdown"
-                                        href="#"
-                                        aria-expanded="false"
-                                        >
-                                        <div class="avatar-sm">
-                                            <img
-                                                src="assets/img/profile.jpg"
-                                                alt="..."
-                                                class="avatar-img rounded-circle"
-                                                />
-                                        </div>
-                                        <span class="profile-username">
-                                            <span class="op-7">Hi,</span>
-                                            <span class="fw-bold">${sessionScope.employee.name}</span>
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
-                                            <li>
-                                                <div class="user-box">
-                                                    <div class="avatar-lg">
-                                                        <img
-                                                            src="assets/img/profile.jpg"
-                                                            alt="image profile"
-                                                            class="avatar-img rounded"
-                                                            />
-                                                    </div>
-                                                    <div class="u-text">
-                                                        <h4>${sessionScope.employee.name}</h4>
-                                                        <p class="text-muted">${sessionScope.user.email}</p>
-                                                        <a
-                                                            href="profile.html"
-                                                            class="btn btn-xs btn-secondary btn-sm"
-                                                            >View Profile</a
-                                                        >
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="ViewProfileServlet?userId=${sessionScope.user.userID}">My Profile</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Account Setting</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="logout">Logout</a>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <!-- End Navbar -->
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
 
@@ -213,7 +113,7 @@
                                 <td style="text-align: right; padding: 10px; background-color: #fafafa; border-radius: 0 8px 8px 0;">${(s.sex == 1?
                                                                                                                                        '<img src="assets/img/male-icon.png" alt="male-image"/>':
                                                                                                                                        '<img src="assets/img/female-icon.png" alt="female-image"/>')}</td> 
-                                
+
                             <tr>
                                 <th style="text-align: left; color: #555; font-weight: 600; padding: 10px; background-color: #f5f5f5; border-radius: 8px 0 0 8px;">Address</th>
                                 <td style="text-align: right; padding: 10px; background-color: #fafafa; border-radius: 0 8px 8px 0;">${e.address}</td>
@@ -235,45 +135,12 @@
                                 <td style="text-align: right; padding: 10px; background-color: #fafafa; border-radius: 0 8px 8px 0;">${e.salary}</td>
                             </tr>
                         </table> 
-                            
-                                <a href="updateProfileUser?empid=${requestScope.employee.empID}">Update Profile</a>
+
+                        <a href="updateProfileUser?empid=${requestScope.employee.empID}">Update Profile</a>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-        <footer class="footer">
-            <div class="container-fluid d-flex justify-content-between">
-                <nav class="pull-left">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://www.themekita.com">
-                                ThemeKita
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> Help </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> Licenses </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="copyright">
-                    2024, made with <i class="fa fa-heart heart text-danger"></i> by
-                    <a href="http://www.themekita.com">ThemeKita</a>
-                </div>
-                <div>
-                    Distributed by
-                    <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-                </div>
-            </div>
-        </footer>
     </div>
 </div>
 <!--   Core JS Files   -->
