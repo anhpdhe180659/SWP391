@@ -87,7 +87,7 @@ public class NewsDAO extends DBContext {
 }
 } 
     public void deleteNews(int id) {
-    String sql = "DELETE FROM news WHERE id = ?";
+    String sql = "DELETE FROM NEWS_ITEMS WHERE newsID = ?";
     try (
          PreparedStatement stmt = connection.prepareStatement(sql)) {
         stmt.setInt(1, id);
@@ -97,5 +97,14 @@ public class NewsDAO extends DBContext {
     }
 
     // Add more methods as needed (e.g., insertNews, updateNews, deleteNews)
-} 
+}  
+    public static void main (String[] args){
+        NewsDAO dao = new NewsDAO(); 
+        dao.deleteNews(3); 
+        List<NewsItem> list = dao.getAllNews();
+        for (NewsItem newsItem : list) {
+            System.out.println(newsItem);
+        }
+//        System.out.println(dao.getAllNews());
+    }
 }

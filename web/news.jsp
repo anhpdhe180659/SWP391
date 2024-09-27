@@ -138,7 +138,11 @@
                                         <div class="news-content">
                                             <p>${news.content}</p> <!-- This line will print the content of the news -->
                                         </div>
-                                       
+                                       <a href="NewsServlet?action=delete&id=${news.newsID}" 
+               onclick="return confirm('Are you sure you want to delete this news item?');" 
+               class="btn btn-danger">
+               Delete
+            </a>
                                     </li>
 
                                 </ul>

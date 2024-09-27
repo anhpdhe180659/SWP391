@@ -27,7 +27,7 @@ public class NewsServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
+        } else if (session.getAttribute("role") != null && session.getAttribute("role").equals("2")) {
             response.sendRedirect("login.jsp");
         }
         String action = request.getParameter("action");
@@ -67,7 +67,7 @@ public class NewsServlet extends HttpServlet {
             throws ServletException, IOException {
         int newsId = Integer.parseInt(request.getParameter("id"));
         newsDAO.deleteNews(newsId);  // Implement this method in NewsDAO to delete news by ID
-        response.sendRedirect("/notifications.jsp");  // Redirect back to news list
+         response.sendRedirect("NewsServlet"); // Redirect back to news list
     }
 
     // Add more methods as needed (e.g., for handling POST requests to add/update news)
