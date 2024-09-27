@@ -80,6 +80,12 @@ public class editUser extends HttpServlet {
         try {
             UserDAO udao = new UserDAO();
             HttpSession session = request.getSession();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            } else if (session.getAttribute("role").equals("2")) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
             int userid = Integer.parseInt(request.getParameter("userid"));
             User oldUser = udao.getUserByID(userid);// old user
             String username = request.getParameter("username");// new information

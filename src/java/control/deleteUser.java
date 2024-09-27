@@ -33,7 +33,14 @@ public class deleteUser extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         UserDAO udao = new UserDAO();
         int userid = Integer.parseInt(request.getParameter("userid"));
         udao.deleteUser(userid);

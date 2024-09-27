@@ -37,9 +37,16 @@ public class editEmployee extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            EmployeeDAO edao = new EmployeeDAO();
-            UserDAO udao = new UserDAO();
             HttpSession session = request.getSession();
+            EmployeeDAO edao = new EmployeeDAO();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            } else if (session.getAttribute("role").equals("2")) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            UserDAO udao = new UserDAO();
+            
             List<User> listUserNotUsed = udao.getAllUserNotUsed();
             session.setAttribute("listUserNotUsed", listUserNotUsed);
             int empid = Integer.parseInt(request.getParameter("empid"));

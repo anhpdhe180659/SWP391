@@ -284,6 +284,10 @@
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
+                                                <c:if test="${requestScope.noti != null}">
+                                                    <tr >
+                                                        <td style="text-align: center" colspan="5"><p class="text-warning">${requestScope.noti}</p></td><!-- comment --></tr>
+                                                        </c:if>
                                             </tbody>
                                         </table>
                                     </div>

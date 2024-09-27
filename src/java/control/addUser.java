@@ -71,6 +71,12 @@ public class addUser extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             HttpSession session = request.getSession();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            } else if (session.getAttribute("role").equals("2")) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
             UserDAO udao = new UserDAO();
             String username = request.getParameter("username");
             String password = request.getParameter("password");

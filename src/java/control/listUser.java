@@ -34,6 +34,12 @@ public class listUser extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         PrintWriter out = response.getWriter();
         UserDAO udao = new UserDAO();
         int index = 1;

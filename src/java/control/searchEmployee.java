@@ -36,11 +36,20 @@ public class searchEmployee extends HttpServlet {
         String name = request.getParameter("name");
         HttpSession session = request.getSession();
         EmployeeDAO edao = new EmployeeDAO();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         name = name.trim();
         int index = 1;
         int NoPage = getNoPage(edao.findEmployeeByName(name));
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
+        }
+        if(NoPage == 0){
+            request.setAttribute("noti", "No employee found");
         }
         List<Employee> listEmployee = edao.getNext5SearchEmployee(index,name);
         session.setAttribute("Nopage", NoPage);
@@ -48,7 +57,7 @@ public class searchEmployee extends HttpServlet {
         session.setAttribute("listEmployee", listEmployee);
         request.setAttribute("searchName", name);
         request.getRequestDispatcher("listEmployee.jsp").forward(request, response);
-//        response.sendRedirect("listEmployee.jsp");
+
     }
 
     public int getNoPage(List<Employee> list) {

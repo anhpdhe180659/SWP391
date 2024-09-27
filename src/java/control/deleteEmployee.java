@@ -34,6 +34,12 @@ public class deleteEmployee extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         EmployeeDAO edao = new EmployeeDAO();
         int empid = Integer.parseInt(request.getParameter("empid"));
         edao.deleteEmployee(empid);

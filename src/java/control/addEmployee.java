@@ -33,6 +33,13 @@ public class addEmployee extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         response.sendRedirect("addEmployee.jsp");
     }
 
@@ -86,17 +93,17 @@ public class addEmployee extends HttpServlet {
             String noti = "<div style='margin-right: 25px;color: darkgreen; font-weight:bold'>Add employee successfully!</div>";
             List<Employee> listEmployee = edao.getAllEmployee();
             for (Employee e : listEmployee) {
-                    if (e.getIdentification().equals(Identification)) {
-                        // check if Identification is existed in database
-                        request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");
-                        request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
-                        return;
-                    }
+                if (e.getIdentification().equals(Identification)) {
+                    // check if Identification is existed in database
+                    request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");
+                    request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
+                    return;
+                }
             }
             edao.addEmployee(emp);
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addEmployee.jsp").forward(request, response);
-            
+
         } catch (NumberFormatException e) {
             out.print("Exception in addEmployee");
         }

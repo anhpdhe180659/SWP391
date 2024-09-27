@@ -35,12 +35,21 @@ public class searchUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         UserDAO udao = new UserDAO();
         HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         int index = 1;
         String username = request.getParameter("username");
         username = username.trim();
         int NoPage = getNoPage(udao.findUserByUsername(username));
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
+        }
+        if(NoPage == 0){
+            request.setAttribute("noti", "No user found");
         }
         List<User> listUser = udao.getNext5SearchUser(index, username);
         session.setAttribute("Nopage", NoPage);
