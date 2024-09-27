@@ -179,6 +179,70 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-info bubble-shadow-small"
+                                                    >
+                                                    <i class="fas fa-bell"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Under Maintenance</p>
+                                                    <h4 class="card-title">${sessionScope.maintaince}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-success bubble-shadow-small"
+                                                    >
+                                                    <i class="fas fa-air-freshener"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Available</p>
+                                                    <h4 class="card-title">${sessionScope.available}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-secondary bubble-shadow-small"
+                                                    >
+                                                    <i class="far fa-check-circle"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Occupied</p>
+                                                    <h4 class="card-title">${sessionScope.occupied}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -208,7 +272,7 @@
             <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
             <script src="assets/js/plugin/jsvectormap/world.js"></script>
 
-         
+
             <!-- Kaiadmin JS -->
             <script src="assets/js/kaiadmin.min.js"></script>
 

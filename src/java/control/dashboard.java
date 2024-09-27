@@ -5,6 +5,7 @@
 package control;
 
 import dal.DashboardDAO;
+import dal.RoomDao;
 import dto.ChartDTO;
 import dto.StasticDto;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Room;
 import model.User;
 
 /**
@@ -42,7 +44,8 @@ public class dashboard extends HttpServlet {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
+         RoomDao roomDao = new RoomDao();
+        List<Room> listRoom = roomDao.getAllRooms();
         DashboardDAO dashboardDAO = new DashboardDAO();
         StasticDto dto = dashboardDAO.getStasticDto();
         List<ChartDTO> chartDTOs = dashboardDAO.getData();
@@ -50,6 +53,19 @@ public class dashboard extends HttpServlet {
         for (ChartDTO item : chartDTOs) {
             session.setAttribute("month" + item.getMonth(), item.getTotal());
         }
+        int underMaintainRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 3
+        ).toList().size();
+        int availableRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 1
+        ).toList().size();
+        int occupiedRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 2
+        ).toList().size();
+        //get session 
+        session.setAttribute("maintaince", underMaintainRoom);
+        session.setAttribute("available", availableRoom);
+        session.setAttribute("occupied", occupiedRoom);
         response.sendRedirect("dashboard.jsp");
     }
 
