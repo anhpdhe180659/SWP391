@@ -8,6 +8,7 @@ import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +19,8 @@ import model.Room;
  *
  * @author phand
  */
-public class viewDetailRoom extends HttpServlet {
+@WebServlet(name = "updateRoomDetail", urlPatterns = {"/updateRoomDetail"})
+public class updateRoomDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,10 @@ public class viewDetailRoom extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet viewDetailRoom</title>");            
+            out.println("<title>Servlet updateRoomDetail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet viewDetailRoom at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet updateRoomDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,20 +60,7 @@ public class viewDetailRoom extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        }
-        else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-        
-        int roomId = Integer.parseInt(request.getParameter("id"));
-        RoomDao roomDao = new RoomDao();
-        Room room = roomDao.findRoomById(roomId);
-        session.setAttribute("detailRoom", room);
-        response.sendRedirect("roomDetail.jsp");
+        processRequest(request, response);
     }
 
     /**
@@ -85,7 +74,33 @@ public class viewDetailRoom extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        try {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
+            int statusId = Integer.parseInt(request.getParameter("statusId"));
+            int typeId =  Integer.parseInt(request.getParameter("typeId"));
+            response.getWriter().print(roomId+"/"+cleanId+"."+statusId+"/"+typeId);
+            RoomDao roomDao = new RoomDao();
+            Room room = roomDao.findRoomById(roomId);
+            room.setCleanId(cleanId);
+            room.setStatusId(statusId);
+            room.setTypeId(typeId);
+            roomDao.updateRoom(room);
+            System.out.println(room.getTypeId()+"/"+room.getRoomNumber()+"/"+room.getStatusId()+"/"+room.getCleanId());
+            session.setAttribute("detailRoomAdmin", room);
+            request.setAttribute("noti", "Update room successful !");
+            request.getRequestDispatcher("roomDetailAdmin.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**

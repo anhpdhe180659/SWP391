@@ -100,14 +100,7 @@
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
                                         </button>
-                                        <!--                                        <button
-                                                                                    class="btn btn-primary btn-round ms-auto"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#editUserModal"
-                                                                                    >
-                                                                                    <i class="fa fa-plus"></i>
-                                                                                    Edit User
-                                                                                </button>-->
+                                        
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -151,7 +144,7 @@
                                                     <input type="text" name="serviceid" value="${s.serviceID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
+                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
                                                         <button
                                                             type="reset"
                                                             class="btn btn-danger">

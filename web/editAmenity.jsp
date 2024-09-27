@@ -137,7 +137,7 @@
                                                     <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
+                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
                                                         <button
                                                             type="reset"
                                                             class="btn btn-danger">

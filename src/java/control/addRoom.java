@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package control;
 
 import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,38 +20,36 @@ import model.Room;
  *
  * @author phand
  */
-public class viewDetailRoom extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+@WebServlet(name="addRoom", urlPatterns={"/addRoom"})
+public class addRoom extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet viewDetailRoom</title>");            
+            out.println("<title>Servlet addRoom</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet viewDetailRoom at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet addRoom at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,26 +57,19 @@ public class viewDetailRoom extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+    throws ServletException, IOException {
+       HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        }
-        else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        
-        int roomId = Integer.parseInt(request.getParameter("id"));
-        RoomDao roomDao = new RoomDao();
-        Room room = roomDao.findRoomById(roomId);
-        session.setAttribute("detailRoom", room);
-        response.sendRedirect("roomDetail.jsp");
-    }
+        response.sendRedirect("addRoom.jsp");
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -84,13 +77,37 @@ public class viewDetailRoom extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    throws ServletException, IOException {
+       HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        try {
+            String roomNumber = request.getParameter("roomNumber");
+            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
+            int statusId = Integer.parseInt(request.getParameter("statusId"));
+            int typeId =  Integer.parseInt(request.getParameter("typeId"));
+            RoomDao roomDao = new RoomDao();
+            Room room = new Room();
+            room.setRoomNumber(roomNumber);
+            room.setCleanId(cleanId);
+            room.setStatusId(statusId);
+            room.setTypeId(typeId);
+            roomDao.addRoom(room);
+            System.out.println(room.getTypeId()+"/"+room.getRoomNumber()+"/"+room.getStatusId()+"/"+room.getCleanId());
+            request.setAttribute("noti", "Add room successful !");
+            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
