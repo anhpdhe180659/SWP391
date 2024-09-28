@@ -196,35 +196,7 @@
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-                                                            <c:set value="${requestScope.currentUser}" var="currentUser"/>
-                                                            <div class="col-sm-3" >
-                                                                <div class="form-group form-group-default" style="line-height: 23px">
-                                                                    <label>Current Username & password</label>
-                                                                    ${currentUser.username}
-                                                                    <c:if test="${currentUser.username != null}" >&</c:if>
-                                                                    <c:if test="${currentUser.username == null}" >none</c:if>
-                                                                    ${currentUser.password}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3" >
-                                                                <div class="form-group form-group-default" >
-                                                                    <label>Assign another user</label>
-                                                                    <select name="userID" class="form-control">
-                                                                        <option value="${currentUser.userID}" />
-                                                                        ${currentUser.username} 
-                                                                        <c:if test="${currentUser.username != null}" >&</c:if>
-                                                                        <c:if test="${currentUser.username == null}" >none</c:if> 
-                                                                        ${currentUser.password}
-                                                                        </option>
-                                                                        <c:forEach items="${sessionScope.listUserNotUsed}" var="u" >
-                                                                            <option value="${u.userID}" />${u.username}  &  ${u.password}</option>
-                                                                        </c:forEach>
-                                                                        <option value="0" />none</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
+                                                         
                                                         <div class="modal-footer border-0">
                                                             <c:set value="${requestScope.noti}" var="noti"/>
                                                             <c:if test="${noti == 'Save successful!'}" >

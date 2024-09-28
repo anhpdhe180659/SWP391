@@ -83,8 +83,7 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
-        System.out.println(userDAO.getAllUser());
-        System.out.println(userDAO.getNext5SearchUser(1, "admin"));
+        
     }
 
     public void addUser(User u) {
