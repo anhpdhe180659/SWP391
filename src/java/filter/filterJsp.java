@@ -113,7 +113,8 @@ public class filterJsp implements Filter {
         if (req.getServletPath().endsWith(".jsp")
                 && !req.getServletPath().equals("/guestHomePage.jsp")
                 && !req.getServletPath().equals("/login.jsp")
-                && !req.getServletPath().equals("/forgetpassword.jsp")) {
+                && !req.getServletPath().equals("/forgetpassword.jsp")
+                && !req.getServletPath().equals("/signinGG.jsp")) {
 
             // Kiểm tra nếu session là null hoặc session tồn tại nhưng không có thuộc tính "user"
             if (session == null || session.getAttribute("user") == null) {

@@ -83,7 +83,7 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
-        System.out.println(userDAO.getAllUser());
+//        userDAO.updatePassword(password, "thaison02004@gmail.com");
         System.out.println(userDAO.getNext5SearchUser(1, "admin"));
     }
 
@@ -323,6 +323,40 @@ public class UserDAO extends DBContext {
         }
     }
 
+    public void updatePasswordByEmail(String email, String newPassword) {
+        String selectSQL = "SELECT UserID FROM [User] WHERE Email = ?";
+        String updateSQL = "UPDATE [User] SET Password = ? WHERE UserID = ?";
+
+        try (PreparedStatement psSelect = connection.prepareStatement(selectSQL)) {
+            // Thiết lập giá trị cho truy vấn SELECT
+            psSelect.setString(1, email);
+            try (ResultSet rs = psSelect.executeQuery()) {
+
+                if (rs.next()) {
+                    int userId = rs.getInt("UserID");
+
+                    // Băm mật khẩu mới
+                    String hashedPassword = PasswordUtils.hashPassword(newPassword);
+
+                    // Cập nhật mật khẩu đã băm vào cơ sở dữ liệu
+                    try (PreparedStatement psUpdate = connection.prepareStatement(updateSQL)) {
+                        psUpdate.setString(1, hashedPassword);
+                        psUpdate.setInt(2, userId);
+                        psUpdate.executeUpdate();
+
+                        System.out.println("Mật khẩu cho email " + email + " đã được cập nhật thành công.");
+                    }
+                } else {
+                    System.out.println("Không tìm thấy email: " + email);
+                }
+            }
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            System.err.println("Error updating password for email: " + email + " - " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Database error occurred", e);
+        }
+    }
+
     public List<User> findUserByUsername(String username) {
 
         List<User> sList = new ArrayList<>();
@@ -363,7 +397,7 @@ public class UserDAO extends DBContext {
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + username + "%");
-            pre.setInt(2, 5*(index-1));
+            pre.setInt(2, 5 * (index - 1));
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int UserID = rs.getInt("UserID");

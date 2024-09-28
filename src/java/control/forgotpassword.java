@@ -7,7 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import util.PasswordUtils;  // Import PasswordUtils for hashing
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.UUID;
 import javax.mail.*;
@@ -51,16 +52,31 @@ public class forgotpassword extends HttpServlet {
             request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
             return;
         }
+        
         // Generate a new temporary password
         String newPassword = UUID.randomUUID().toString().substring(0, 8);
-        // Send the email (simplified example)
-        sendResetEmail(email, newPassword);
-        // updatePassword(email, newPassword);
-        // Save the new password to the database
-        udao.updatePassword(newPassword, email);
-        String success = "New password has been sent to your email.";
-        request.setAttribute("success", success);
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        
+        try {
+            // Hash the new password using SHA-256
+            String hashedPassword = PasswordUtils.hashPassword(newPassword);
+            
+            // Send the email with the plain new password
+            sendResetEmail(email, newPassword);
+            
+            // Save the hashed password to the database
+            udao.updatePassword(hashedPassword, email);
+            
+            String success = "New password has been sent to your email.";
+            request.setAttribute("success", success);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            
+        } catch (NoSuchAlgorithmException e) {
+            // Handle hashing error
+            e.printStackTrace();
+            String error = "An error occurred while resetting your password. Please try again.";
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
+        }
     }
 
     private void sendResetEmail(String email, String newPassword) {
@@ -69,7 +85,6 @@ public class forgotpassword extends HttpServlet {
         String content = "Your new password is: " + newPassword;
 
         // Set up your SMTP server and send the email (this is a simplified example)
-        // For production use, you might want to use a library like JavaMail
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
@@ -93,5 +108,4 @@ public class forgotpassword extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 }
