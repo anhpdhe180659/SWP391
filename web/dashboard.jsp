@@ -124,7 +124,7 @@
                                                 <div
                                                     class="icon-big text-center icon-info bubble-shadow-small"
                                                     >
-                                                    <i class="fas fa-user-check"></i>
+                                                    <i class="fas fa-bed"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
@@ -185,9 +185,9 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-info bubble-shadow-small"
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color: orange"
                                                     >
-                                                    <i class="fas fa-bell"></i>
+                                                    <i class="fas fa-wrench"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
@@ -207,9 +207,9 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-success bubble-shadow-small"
+                                                    class="icon-big text-center icon-success bubble-shadow-small"style="background-color: greenyellow"
                                                     >
-                                                    <i class="fas fa-air-freshener"></i>
+                                                    <i class="fas fa-toggle-on"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
@@ -228,9 +228,9 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-secondary bubble-shadow-small"
+                                                    class="icon-big text-center icon-secondary bubble-shadow-small"style="background-color: #f25285"
                                                     >
-                                                    <i class="far fa-check-circle"></i>
+                                                    <i class="fas fa-user-check"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
