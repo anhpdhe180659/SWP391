@@ -7,6 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,8 +49,6 @@
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
         <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
 
-        <!-- CSS Just for demo purpose, don't include it in your project -->
-        <!--        <link rel="stylesheet" href="assets/css/demo.css" />-->
     </head>
     <body>
         <div class="wrapper">
@@ -58,31 +57,6 @@
             <!-- End Sidebar -->
             <div class="main-panel">
                 <div class="main-header">
-                    <div class="main-header-logo">
-                        <!-- Logo Header -->
-                        <div class="logo-header" data-background-color="dark">
-                            <a href="../index.jsp" class="logo">
-                                <img
-                                    src="assets/img/kaiadmin/logo_light.svg"
-                                    alt="navbar brand"
-                                    class="navbar-brand"
-                                    height="20"
-                                    />
-                            </a>
-                            <div class="nav-toggle">
-                                <button class="btn btn-toggle toggle-sidebar">
-                                    <i class="gg-menu-right"></i>
-                                </button>
-                                <button class="btn btn-toggle sidenav-toggler">
-                                    <i class="gg-menu-left"></i>
-                                </button>
-                            </div>
-                            <button class="topbar-toggler more">
-                                <i class="gg-more-vertical-alt"></i>
-                            </button>
-                        </div>
-                        <!-- End Logo Header -->
-                    </div>
                     <!-- Navbar Header -->
                     <jsp:include page="navbar-header.jsp"/>
                     <!-- End Navbar -->
@@ -112,17 +86,17 @@
                                                     <c:if test="${n.length() < 2}">
                                                         <input
                                                             type="text"
-                                                            name="username"
-                                                            placeholder="Search username..."
+                                                            name="name"
+                                                            placeholder="Search by name..."
                                                             class="form-control"
                                                             />
                                                     </c:if>
                                                     <c:if test="${n.length() > 1}">
                                                         <input
                                                             type="text"
-                                                            name="username"
+                                                            name="name"
                                                             value="${n}"
-                                                            placeholder="Search username..."
+                                                            placeholder="Search by name..."
                                                             class="form-control"
                                                             />
                                                     </c:if>
@@ -141,114 +115,39 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-                                    <div
-                                        class="modal fade"
-                                        id="addUserModal"
-                                        tabindex="-1"
-                                        role="dialog"
-                                        aria-hidden="true"
-                                        >
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> User </span>
-                                                    </h5>
-                                                </div>
-                                                <form action="addUser" onsubmit="return validate()">
-                                                    <div class="modal-body">
-                                                        <p class="small">
-                                                            Create a new user, make sure you
-                                                            fill them all
-                                                        </p>
-
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Username</label>
-                                                                    <input
-                                                                        name="username"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Password</label>
-                                                                    <input
-                                                                        name="password"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Email</label>
-                                                                    <input
-                                                                        id="email"
-                                                                        name="email"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Role</label>                  
-                                                                    <select name="role" class="form-control">
-                                                                        <option value="2">Employee</option>
-                                                                        <option value="1">Admin</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <button
-                                                            type="button submit"
-                                                            class="btn btn-primary">
-                                                            Add
-                                                        </button>
-                                                        <a onclick="doClose()">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
                                     <div class="table-responsive">
                                         <table class="display table table-striped table-hover" >
                                             <thead>
-                                                <tr>
-                                                    <th>Username</th>
-                                                    <th>Password</th>
-                                                    <th>Email</th>
+                                                <tr style="text-align: center">
+                                                    <th>Name</th>
+                                                    <th>Date Of Birth</th>
+                                                    <th>Sex</th>
+                                                    <th>Address</th>
+                                                    <th>Phone</th>
+                                                    <th>Salary</th>
+                                                    <th>Start Date</th>
                                                     <th>Status</th>
-                                                    <th style="width: 10%">Action</th>
+                                                    <th style="width: 10%; text-align: center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <c:forEach items="${sessionScope.listUser}" var="s">
                                                     <tr>
-                                                        <td>${s.username}</td>
-                                                        <td>**********</td>
-                                                        <td>${s.email}</td>
+                                                        <td>${s.name}</td>
+                                                        <td>${s.dateOfBirth}</td>
+                                                        <td>${(s.sex == 1?
+                                                              '<img src="assets/img/male-icon.png" alt="male-image"/>':
+                                                              '<img src="assets/img/female-icon.png" alt="female-image"/>')}
+                                                        </td>
+                                                        <td>${s.address}</td>
+                                                        <td>${s.phone}</td>
+                                                        <td>${s.salary}</td>
+                                                        <td>
+                                                            <%--<fmt:formatDate pattern="" value="${s.startDate}" />--%>
+                                                            ${s.startDate}
+                                                            </td>
                                                         <td>
                                                             <c:if test="${s.status == 0}">
                                                                 <span style="color: red; font-weight:bold">inactive</span>
@@ -286,7 +185,7 @@
                                                 </c:forEach>
                                                 <c:if test="${requestScope.noti != null}">
                                                     <tr >
-                                                        <td style="text-align: center" colspan="5"><p class="text-warning">${requestScope.noti}</p></td><!-- comment --></tr>
+                                                        <td style="text-align: center; font-weight: bold" colspan="9"><p class="text-danger">${requestScope.noti}</p></td><!-- comment --></tr>
                                                         </c:if>
                                             </tbody>
                                         </table>
@@ -399,7 +298,7 @@
     </script>
     <script>
         function doDelete(userid) {
-            var option = confirm("Are you sure to unactive this?");
+            var option = confirm("Are you sure to ban this user?");
             if (option === true) {
                 window.location = "deleteUser?userid=" + userid;
             }

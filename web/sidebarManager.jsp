@@ -60,19 +60,19 @@
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#base">
                                 <i class="fas fa-users"></i>
-                                <p>People</p>
+                                <p>User</p>
                                 <span class="caret"></span>
                             </a>
                             <div class="collapse" id="base">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="listEmployee">
-                                            <span class="sub-item">Employee</span>
+                                        <a href="listUser">
+                                            <span class="sub-item">List user</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="listUser">
-                                            <span class="sub-item">User</span>
+                                        <a href="addUser">
+                                            <span class="sub-item">Add user</span>
                                         </a>
                                     </li>
                                     <!--                                    <li>

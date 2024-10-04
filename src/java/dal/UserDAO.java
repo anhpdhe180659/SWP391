@@ -26,23 +26,41 @@ public class UserDAO extends DBContext {
         List<User> sList = new ArrayList<>();
         String sql = """
                      SELECT [UserID]
-                           ,[Username]
-                           ,[Password]
-                           ,[Role]
-                           ,[Email]
-                           ,[Status]
-                       FROM [dbo].[User]""";
+                             ,[Name]
+                             ,[DateOfBirth]
+                             ,[Sex]
+                             ,[Address]
+                             ,[Phone]
+                             ,[Identification]
+                             ,[StartDate]
+                             ,[Salary]
+                             ,[Image]
+                             ,[Username]
+                             ,[Password]
+                             ,[Role]
+                             ,[Email]
+                             ,[Status]
+                         FROM [HotelManagement].[dbo].[User]""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                User user = new User(UserID, Username, Password, Role, Email, Status);
+                User user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
                 sList.add(user);
             }
         } catch (SQLException e) {
@@ -54,11 +72,21 @@ public class UserDAO extends DBContext {
     public User getUserByID(int userID) {
         User user = new User();
         String sql = """
-                     SELECT UserID
-                           ,Username
-                           ,Password
-                           ,Role
-                           ,Email,[Status]
+                     SELECT [UserID]
+                                 ,[Name]
+                                 ,[DateOfBirth]
+                                 ,[Sex]
+                                 ,[Address]
+                                 ,[Phone]
+                                 ,[Identification]
+                                 ,[StartDate]
+                                 ,[Salary]
+                                 ,[Image]
+                                 ,[Username]
+                                 ,[Password]
+                                 ,[Role]
+                                 ,[Email]
+                                 ,[Status]
                        FROM [User] 
                        WHERE UserID = ?""";
         try {
@@ -66,14 +94,22 @@ public class UserDAO extends DBContext {
             pre.setInt(1, userID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-
                 int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                user = new User(UserID, Username, Password, Role, Email, Status);
+                user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
             }
         } catch (SQLException e) {
             System.out.println("Connect error");
@@ -81,21 +117,39 @@ public class UserDAO extends DBContext {
         return user;
     }
 
-    public static void main(String[] args) {
-        UserDAO userDAO = new UserDAO();
-        
-    }
-
     public void addUser(User u) {
         String sql = """
-                     insert into [User]([Username],[Password],[Role],[Email],[Status])
-                     values(?,?,?,?,?) """;
+                     INSERT INTO [dbo].[User]
+                                ([Name]
+                                ,[DateOfBirth]
+                                ,[Sex]
+                                ,[Address]
+                                ,[Phone]
+                                ,[Identification]
+                                ,[StartDate]
+                                ,[Salary]
+                                ,[Image]
+                                ,[Username]
+                                ,[Password]
+                                ,[Role]
+                                ,[Email]
+                                ,[Status])
+                     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, u.getUsername());
-            st.setString(2, u.getPassword());
-            st.setInt(3, u.getRole());
-            st.setString(4, u.getEmail());
-            st.setInt(5, 1);
+            st.setString(1, u.getName());
+            st.setString(2, u.getDateOfBirth());
+            st.setInt(3, u.getSex());
+            st.setString(4, u.getAddress());
+            st.setString(5, u.getPhone());
+            st.setString(6, u.getIdentification());
+            st.setString(7, u.getStartDate());
+            st.setInt(8, u.getSalary());
+            st.setString(9, u.getImage());
+            st.setString(10, u.getUsername());
+            st.setString(11, u.getPassword());
+            st.setInt(12, u.getRole());
+            st.setString(13, u.getEmail());
+            st.setInt(14, u.getStatus());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -117,101 +171,64 @@ public class UserDAO extends DBContext {
 
     public void editUser(User u) {
         String sql = """
-                     UPDATE [User] 
-                       SET [Username] = ?,
-                       [Role] = ?,
-                       [Email] = ?,
-                     [Status] = ?
-                       WHERE UserID = ?
+                     UPDATE [dbo].[User]
+                          SET [Name] = ?
+                             ,[DateOfBirth] = ?
+                             ,[Sex] = ?
+                             ,[Address] = ?
+                             ,[Phone] = ?
+                             ,[Identification] = ?
+                             ,[StartDate] = ?
+                             ,[Salary] = ?
+                             ,[Image] = ?
+                             ,[Username] = ?
+                             ,[Password] = ?
+                             ,[Role] = ?
+                             ,[Email] = ?
+                             ,[Status] = ?
+                        WHERE UserID = ?
                      """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, u.getUsername());
-            st.setInt(2, u.getRole());
-            st.setString(3, u.getEmail());
-            st.setInt(4, u.getStatus());
-            st.setInt(5, u.getUserID());
+            st.setString(1, u.getName());
+            st.setString(2, u.getDateOfBirth());
+            st.setInt(3, u.getSex());
+            st.setString(4, u.getAddress());
+            st.setString(5, u.getPhone());
+            st.setString(6, u.getIdentification());
+            st.setString(7, u.getStartDate());
+            st.setInt(8, u.getSalary());
+            st.setString(9, u.getImage());
+            st.setString(10, u.getUsername());
+            st.setString(11, u.getPassword());
+            st.setInt(12, u.getRole());
+            st.setString(13, u.getEmail());
+            st.setInt(14, u.getStatus());
+            st.setInt(15, u.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
 
-    public User getUserByEmpID(int empid) {
-        User user = new User();
-        String sql = """
-                     select u.[UserID]
-                           ,[Username]
-                           ,[Password]
-                           ,[Role]
-                           ,[Email]
-                           ,[Status] from Employee e, [User] u
-                     where e.UserID = u.UserID
-                     and e.EmpID = ?""";
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, empid);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                int UserID = rs.getInt("UserID");
-                String Username = rs.getString("Username");
-                String Password = rs.getString("Password");
-                int Role = rs.getInt("Role");
-                String Email = rs.getString("Email");
-                int Status = rs.getInt("Status");
-                user = new User(UserID, Username, Password, Role, Email, Status);
-            }
-        } catch (SQLException e) {
-            System.out.println("Connect error");
-        }
-        return user;
-
-    }
-
-    public List<User> getAllUserNotUsed() {
-
-        List<User> sList = new ArrayList<>();
-        String sql = """
-                     select *
-                     from (
-                         select u.[UserID]
-                           ,[Username]
-                           ,[Password]
-                           ,[Role]
-                           ,[Email]
-                           ,[Status], e.UserID as eid
-                         from [User] u
-                         left join Employee e on e.UserID = u.UserID
-                     ) a
-                     where a.eid IS NULL;""";
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                int UserID = rs.getInt("UserID");
-                String Username = rs.getString("Username");
-                String Password = rs.getString("Password");
-                int Role = rs.getInt("Role");
-                String Email = rs.getString("Email");
-                int Status = rs.getInt("Status");
-                User user = new User(UserID, Username, Password, Role, Email, Status);
-                sList.add(user);
-            }
-        } catch (SQLException e) {
-            System.out.println("Connect error");
-        }
-        return sList;
-    }
-
     public List<User> getNext5User(int index) {
 
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT  [UserID]
-                           ,[Username]
-                           ,[Password]
-                           ,[Role]
-                           ,[Email]
-                           ,[Status]
+                     SELECT [UserID]
+                                 ,[Name]
+                                 ,[DateOfBirth]
+                                 ,[Sex]
+                                 ,[Address]
+                                 ,[Phone]
+                                 ,[Identification]
+                                 ,[StartDate]
+                                 ,[Salary]
+                                 ,[Image]
+                                 ,[Username]
+                                 ,[Password]
+                                 ,[Role]
+                                 ,[Email]
+                                 ,[Status]
                        FROM [HotelManagement].[dbo].[User]
                        ORDER BY UserID
                        OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY """;
@@ -221,12 +238,21 @@ public class UserDAO extends DBContext {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                User user = new User(UserID, Username, Password, Role, Email, Status);
+                User user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
                 sList.add(user);
             }
         } catch (SQLException e) {
@@ -238,12 +264,21 @@ public class UserDAO extends DBContext {
     public User getUserByUsername(String userName) {
         User user = new User();
         String sql = """
-                     SELECT UserID
-                           ,Username
-                           ,Password
-                           ,Role
-                           ,Email
-                           ,[Status]
+                     SELECT [UserID]
+                                 ,[Name]
+                                 ,[DateOfBirth]
+                                 ,[Sex]
+                                 ,[Address]
+                                 ,[Phone]
+                                 ,[Identification]
+                                 ,[StartDate]
+                                 ,[Salary]
+                                 ,[Image]
+                                 ,[Username]
+                                 ,[Password]
+                                 ,[Role]
+                                 ,[Email]
+                                 ,[Status]
                        FROM [User] 
                        WHERE Username = ?""";
         try {
@@ -251,14 +286,22 @@ public class UserDAO extends DBContext {
             pre.setString(1, userName);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-
                 int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                user = new User(UserID, Username, Password, Role, Email, Status);
+                user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
             }
         } catch (SQLException e) {
             System.out.println("Connect error");
@@ -313,7 +356,6 @@ public class UserDAO extends DBContext {
                     psUpdate.executeUpdate();
                 }
             }
-
             System.out.println("Tất cả mật khẩu đã được băm và cập nhật thành công.");
         } catch (SQLException | NoSuchAlgorithmException e) {
             System.err.println("Error updating passwords: " + e.getMessage());
@@ -322,25 +364,55 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public List<User> findUserByUsername(String username) {
+    public static void main(String[] args) {
+        UserDAO userDAO = new UserDAO();
+        userDAO.addUser(new User(7,
+                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
+                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
+    }
+
+    public List<User> findUserByName(String name) {
 
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT [UserID],[Username],[Password],[Role],[Email],[Status]
+                     SELECT [UserID]
+                           ,[Name]
+                           ,[DateOfBirth]
+                           ,[Sex]
+                           ,[Address]
+                           ,[Phone]
+                           ,[Identification]
+                           ,[StartDate]
+                           ,[Salary]
+                           ,[Image]
+                           ,[Username]
+                           ,[Password]
+                           ,[Role]
+                           ,[Email]
+                           ,[Status]
                      FROM [dbo].[User]
-                     WHERE Username like ? """;
+                     WHERE Name like ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setString(1, "%" + username + "%");
+            pre.setString(1, "%" + name + "%");
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                User user = new User(UserID, Username, Password, Role, Email, Status);
+                User user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
                 sList.add(user);
             }
         } catch (SQLException e) {
@@ -350,28 +422,50 @@ public class UserDAO extends DBContext {
 
     }
 
-    public List<User> getNext5SearchUser(int index, String username) {
-
+    public List<User> getNext5SearchUser(int index, String name) {
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT [UserID],[Username],[Password],[Role],[Email],[Status]
+                     SELECT [UserID]
+                           ,[Name]
+                           ,[DateOfBirth]
+                           ,[Sex]
+                           ,[Address]
+                           ,[Phone]
+                           ,[Identification]
+                           ,[StartDate]
+                           ,[Salary]
+                           ,[Image]
+                           ,[Username]
+                           ,[Password]
+                           ,[Role]
+                           ,[Email]
+                           ,[Status]
                      FROM [dbo].[User]
-                     WHERE Username like ?
+                     WHERE Name like ?
                      ORDER BY UserID
                      OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setString(1, "%" + username + "%");
-            pre.setInt(2, 5*(index-1));
+            pre.setString(1, "%" + name + "%");
+            pre.setInt(2, 5 * (index - 1));
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
                 String Username = rs.getString("Username");
                 String Password = rs.getString("Password");
                 int Role = rs.getInt("Role");
                 String Email = rs.getString("Email");
                 int Status = rs.getInt("Status");
-                User user = new User(UserID, Username, Password, Role, Email, Status);
+                User user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
                 sList.add(user);
             }
         } catch (SQLException e) {
