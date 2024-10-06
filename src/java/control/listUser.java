@@ -33,6 +33,7 @@ public class listUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("login.jsp");
@@ -40,7 +41,7 @@ public class listUser extends HttpServlet {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        PrintWriter out = response.getWriter();
+        
         UserDAO udao = new UserDAO();
         int index = 1;
         int NoPage = getNoPage(udao.getAllUser());

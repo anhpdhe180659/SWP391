@@ -38,6 +38,13 @@ public class addUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role").equals("2")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         response.sendRedirect("addUser.jsp");
 
     }
@@ -71,43 +78,55 @@ public class addUser extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             HttpSession session = request.getSession();
-            if (session == null) {
-                response.sendRedirect("login.jsp");
-            } else if (session.getAttribute("role").equals("2")) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
             UserDAO udao = new UserDAO();
+            User user = new User();
             String username = request.getParameter("username");
+            if(request.getParameter("username") != null){
+                user.setUsername(username);
+            }
             String password = request.getParameter("password");
-            String email = request.getParameter("email");
-            int role = Integer.parseInt(request.getParameter("role"));
-            User u = new User();
-            u.setUsername(username);
-            u.setPassword(hashPassword(password));
-            u.setEmail(email);
-            u.setRole(role);
-            List<User> listUser = udao.getAllUser();
-            String noti = "<div style='margin-right: 25px;color: darkgreen; font-weight:bold'>Add user successfully!</div>";
-            for (User user : listUser) {
-                if (user.getUsername().equals(username)) {
+            if(request.getParameter("password") != null){
+                user.setPassword(hashPassword(password));
+            }
+            String email = request.getParameter("email");user.setEmail(email);
+            int role = Integer.parseInt(request.getParameter("role"));user.setRole(role);
+            int status = Integer.parseInt(request.getParameter("status"));user.setStatus(status);
+            String Name = request.getParameter("name");user.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");user.setDateOfBirth(DateOfBirth);
+            int Sex = Integer.parseInt(request.getParameter("sex"));user.setSex(Sex);
+            String Address = request.getParameter("address");user.setAddress(Address);
+            String Phone = request.getParameter("phone");user.setPhone(Phone);
+            String Identification = request.getParameter("identification"); user.setIdentification(Identification);
+            String StartDate = request.getParameter("startdate");user.setStartDate(StartDate);
+            int Salary = Integer.parseInt(request.getParameter("salary"));user.setSalary(Salary);
+            
+            List<User> listUser = udao.getAllUser();request.setAttribute("user", user);
+            String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Add user successfully!</div>";
+            for (User u : listUser) {
+                if (u.getUsername().equals(username)) {
                     noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Username " + username + " existed, please try again!</div>";
                     request.setAttribute("noti", noti);
                     request.getRequestDispatcher("addUser.jsp").forward(request, response);
                     return;
                 }
-                if (user.getEmail().equals(email)) {
+                if (u.getEmail().equals(email)) {
                     noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Email " + email + " existed, please try again!</div>";
                     request.setAttribute("noti", noti);
                     request.getRequestDispatcher("addUser.jsp").forward(request, response);
                     return;
                 }
+                if (u.getIdentification().equals(Identification)) {
+                    // check if Identification is existed in database
+                    request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");
+                    request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                    return;
+                }
             }
-            udao.addUser(u);
+            udao.addUser(user);
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addUser.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
-            out.print("Exception in addUser");
+            out.print(e);
         }
     }
 
