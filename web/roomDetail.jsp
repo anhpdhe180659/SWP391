@@ -321,7 +321,7 @@
                 capacity.value = 2;
                 price.value = 2000000;
                 break;
-            case 'President Room' :
+            case 'President' :
                 capacity.value = 2;
                 price.value = 5000000;
                 break;
