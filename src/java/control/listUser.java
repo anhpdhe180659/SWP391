@@ -37,7 +37,7 @@ public class listUser extends HttpServlet {
         HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
+        } else if (!session.getAttribute("role").equals("1")) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
