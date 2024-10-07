@@ -64,39 +64,36 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//       HttpSession session = request.getSession(false);
-//        if (session == null) {
-//            response.sendRedirect("login.jsp");
-//        }
-//        else if (session.getAttribute("role").equals("1")) {
-//            response.sendRedirect("login.jsp");
-//        }
-//        User user = (User) session.getAttribute("user");
-//        EmployeeDAO empDao = new EmployeeDAO();
-//        Employee emp = empDao.findByUserId(user.getUserID());
-//        session.setAttribute("employee", emp);
+       HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        else if (session.getAttribute("role").equals("1")) {
+            response.sendRedirect("login.jsp");
+        }
+        User user = (User) session.getAttribute("user");
 //        //get room
-//        RoomDao roomDao = new RoomDao();
-//        List<Room> listRoom = roomDao.getAllRooms();
-//        //get invoice
-//        InvoiceDAO invoiceDao = new InvoiceDAO();
-//        List<Invoice> listInvoice = invoiceDao.getAll();
-//
-//        int underMaintainRoom = listRoom.stream().filter(
-//                room -> room.getStatusId() == 3
-//        ).toList().size();
-//        int availableRoom = listRoom.stream().filter(
-//                room -> room.getStatusId() == 1
-//        ).toList().size();
-//        int occupiedRoom = listRoom.stream().filter(
-//                room -> room.getStatusId() == 2
-//        ).toList().size();
-//        //get session 
-//        session.setAttribute("maintaince", underMaintainRoom);
-//        session.setAttribute("available", availableRoom);
-//        session.setAttribute("occupied", occupiedRoom);
-//        session.setAttribute("listInvoice", listInvoice);
-//        response.sendRedirect("receptionHomePage.jsp");
+        RoomDao roomDao = new RoomDao();
+        List<Room> listRoom = roomDao.getAllRooms();
+        //get invoice
+        InvoiceDAO invoiceDao = new InvoiceDAO();
+        List<Invoice> listInvoice = invoiceDao.getAll();
+
+        int underMaintainRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 3
+        ).toList().size();
+        int availableRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 1
+        ).toList().size();
+        int occupiedRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 2
+        ).toList().size();
+        //get session 
+        session.setAttribute("maintaince", underMaintainRoom);
+        session.setAttribute("available", availableRoom);
+        session.setAttribute("occupied", occupiedRoom);
+        session.setAttribute("listInvoice", listInvoice);
+        response.sendRedirect("receptionHomePage.jsp");
     }
 
     /**

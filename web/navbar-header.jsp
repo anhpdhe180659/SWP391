@@ -30,14 +30,7 @@
                         <span class="op-7">Hi,</span>
                         <!-- Sidebar -->
                         <span class="fw-bold">
-                            <c:choose>
-                                <c:when test="${sessionScope.user.role == 2}">
-                                    ${sessionScope.employee.name}
-                                </c:when>
-                                <c:otherwise>
-                                    ${sessionScope.user.username}
-                                </c:otherwise>
-                            </c:choose>
+                                    ${sessionScope.user.name}
                         </span>
                     </span>
                 </a>
@@ -53,7 +46,7 @@
                                         />
                                 </div>
                                 <div class="u-text">
-                                    <h4>${sessionScope.employee.name}</h4>
+                                    <h4>${sessionScope.user.name}</h4>
                                     <p class="text-muted">${sessionScope.user.email}</p>
                                     <a
                                         href="ViewProfileServlet?userId=${sessionScope.user.userID}"
