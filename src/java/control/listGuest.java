@@ -4,12 +4,16 @@
  */
 package control;
 
+import dal.GuestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Guest;
 
 /**
  *
@@ -28,18 +32,19 @@ public class listGuest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet listGuest</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet listGuest at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            GuestDAO guestDao = new GuestDAO();
+            List<Guest> listGuest = guestDao.getAllGuests();  // Fetch the list of guests from the database
+
+            session.setAttribute("listGuest", listGuest);     // Set the list in the session
+            response.sendRedirect("listGuest.jsp");           // Redirect to the JSP page for guest listing
         }
     }
 
