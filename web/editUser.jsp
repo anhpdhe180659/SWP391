@@ -113,7 +113,7 @@
                                                 <form action="editUser"  method="POST"  onsubmit="return validate()">
                                                     <c:set value="${requestScope.user}" var="u"/>
                                                     <div class="modal-body">
-                                                        
+
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
@@ -188,7 +188,7 @@
                                                                     <input 
                                                                         value="${u.dateOfBirth}"
                                                                         type="date" name="birthday" required
-                                                                           style="width: 100%; border: none; "/>
+                                                                        style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-4" >
@@ -251,23 +251,45 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Status</label>
-                                                                    <select name="status" class="form-control">
-                                                                        <option value="1"
-                                                                                <c:if test="${u.status == 1}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                style="color: green;font-weight: bold" >active</option>
-                                                                        <option value="0"
-                                                                                <c:if test="${u.status == 0}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                style="color: red;font-weight: bold">inactive</option>
-                                                                    </select>
+                                                            <c:if test="${u.role != 1}">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Status</label>
+                                                                        <select name="status" class="form-control">
+                                                                            <option value="1"
+                                                                                    <c:if test="${u.status == 1}">
+                                                                                        selected
+                                                                                    </c:if>
+                                                                                    style="color: green;font-weight: bold" >active</option>
+                                                                            <option value="0"
+                                                                                    <c:if test="${u.status == 0}">
+                                                                                        selected
+                                                                                    </c:if>
+                                                                                    style="color: red;font-weight: bold">inactive</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            </c:if>
+                                                            <c:if test="${u.role == 1}">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group form-group-default" >
+                                                                        <label>Status</label>
+                                                                        <c:if test="${u.status == 1}">
+                                                                        <div style="margin:5px 0px;color: green;font-weight: bold">active</div>
+                                                                        </c:if>
+                                                                        <c:if test="${u.status == 0}">
+                                                                        <div style="margin:5px 0px;color: red;font-weight: bold">inactive</div>
+                                                                        </c:if>
+                                                                        <input
+                                                                        name="status"
+                                                                        type="text"
+                                                                        value="${u.status}"
+                                                                        class="form-control"
+                                                                        hidden
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                     <input type="text" name="userid" value="${u.userID}" hidden="">
@@ -320,9 +342,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-        document.querySelector('.close').editEventListener('click', function () {
-            $('#editUserModal').modal('hide');
-        });
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editUserModal').modal('hide');
+                                                    });
     </script>
     <script>
         function doClose() {

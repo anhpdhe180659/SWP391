@@ -157,6 +157,10 @@ public class UserDAO extends DBContext {
     }
 
     public void deleteUser(int uid) {
+        UserDAO udao = new UserDAO();
+        if(udao.getUserByID(uid).getRole() == 1){
+            return;
+        }
         String sql = """
                      UPDATE [User] 
                      SET [Status] = 0
