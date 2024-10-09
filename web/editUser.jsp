@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->

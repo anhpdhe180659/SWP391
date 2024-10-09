@@ -1,4 +1,4 @@
-<<%-- 
+<%-- 
     Document   : editUser
     Created on : Sep 22, 2024, 1:29:17 PM
     Author     : nhatk
@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
