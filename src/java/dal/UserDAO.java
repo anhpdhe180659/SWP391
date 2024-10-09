@@ -366,9 +366,11 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
-        userDAO.addUser(new User(7,
-                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
-                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
+        User u = userDAO.getUserByUsername("admin");
+        System.out.println(u);
+//        userDAO.addUser(new User(7,
+//                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
+//                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
     }
 
     public List<User> findUserByName(String name) {
