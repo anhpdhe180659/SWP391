@@ -121,6 +121,7 @@
                                                                         name="name"
                                                                         value="${u.name}"
                                                                         type="text"
+                                                                        maxlength="100"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -134,6 +135,7 @@
                                                                         name="address"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        maxlength="200"
                                                                         required
                                                                         />
                                                                 </div>
@@ -146,6 +148,7 @@
                                                                         id="phone"
                                                                         name="phone"
                                                                         type="text"
+                                                                        maxlength="50"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -159,6 +162,7 @@
                                                                         id="identification"
                                                                         name="identification"
                                                                         type="text"
+                                                                        maxlength="20"
                                                                         class="form-control"
                                                                         required
                                                                         />

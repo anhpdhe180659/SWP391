@@ -186,7 +186,6 @@ public class UserDAO extends DBContext {
                              ,[Salary] = ?
                              ,[Image] = ?
                              ,[Username] = ?
-                             ,[Password] = ?
                              ,[Role] = ?
                              ,[Email] = ?
                              ,[Status] = ?
@@ -203,11 +202,10 @@ public class UserDAO extends DBContext {
             st.setInt(8, u.getSalary());
             st.setString(9, u.getImage());
             st.setString(10, u.getUsername());
-            st.setString(11, u.getPassword());
-            st.setInt(12, u.getRole());
-            st.setString(13, u.getEmail());
-            st.setInt(14, u.getStatus());
-            st.setInt(15, userid);
+            st.setInt(11, u.getRole());
+            st.setString(12, u.getEmail());
+            st.setInt(13, u.getStatus());
+            st.setInt(14, userid);
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

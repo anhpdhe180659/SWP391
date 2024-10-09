@@ -163,7 +163,7 @@
                                                                         id="identification"
                                                                         name="identification"
                                                                         type="text"
-                                                                        maxlength="100"
+                                                                        maxlength="20"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -196,7 +196,7 @@
                                                                     <label>Salary</label>
                                                                     <input type="number" name="salary"
                                                                            value="${u.salary}"
-                                                                           min="0" max="1000000000" required
+                                                                           min="0" max="2000000000" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
@@ -359,11 +359,24 @@
     <script>
         function validate() {
             var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-            if (!regex1.test(email)) {
+            var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!regex.test(email)) {
                 alert("Please enter a valid Email address (example@gmail.com)");
                 document.getElementById("email").focus();
+                return false;
+            }
+            var phone = document.getElementById("phone").value;
+            var regex1 = /^\d{10}$/;
+            var identification = document.getElementById("identification").value;
+            var regex2 = /^\d{12}$/;
+            if (!regex1.test(phone)) {
+                alert("Please enter a valid phone number with 10 digit");
+                document.getElementById("phone").focus();
+                return false;
+            }
+            if (!regex2.test(identification)) {
+                alert("Please enter a valid identification number with 12 digit");
+                document.getElementById("identification").focus();
                 return false;
             }
             return true;
