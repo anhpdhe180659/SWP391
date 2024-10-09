@@ -1,17 +1,16 @@
 <%-- 
-    Document   : listAmenity
-    Created on : Sep 24, 2024, 9:26:16 AM
+    Document   : editAmenity
+    Created on : Sep 24, 2024, 10:29:09 AM
     Author     : admin
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Amenity</title><!--  page only for manager  -->
+        <title>Edit Amenity</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -21,7 +20,6 @@
             href="img/logo/favicon.png"
             type="image/x-icon"
             />
-
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
@@ -82,7 +80,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                    <jsp:include page="navbar-header.jsp"/>
+                   <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
@@ -91,130 +89,85 @@
                             <h3 class="fw-bold mb-3">Manage Amenity</h3>
                         </div>
 
+
+
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Amenity</h4>
-                                        <button
-                                            class="btn btn-primary btn-round ms-auto"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#addUserModal"
-                                            >
-                                            <i class="fa fa-plus"></i>
-                                            Add Amenity
+                                        <h4 class="card-title">Edit Amenity</h4>
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
                                         </button>
+                                        <!--                                        <button
+                                                                                    class="btn btn-primary btn-round ms-auto"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#editUserModal"
+                                                                                    >
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                    Edit User
+                                                                                </button>-->
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-                                    <div
-                                        class="modal fade"
-                                        id="addUserModal"
-                                        tabindex="-1"
-                                        role="dialog"
-                                        aria-hidden="true"
-                                        >
+
+                                    <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title">
-                                                        <span class="fw-mediumbold"> New</span>
-                                                        <span class="fw-light"> Amenity </span>
-                                                    </h5>
-                                                </div>
-                                                <form action="addAmenity" onsubmit="return validate()">
+                                                <form action="editAmenityDetail"  method="POST"  >
+                                                    <c:set value="${requestScope.amenity}" var="a"/>
                                                     <div class="modal-body">
-                                                        <p class="small">
-                                                            Create a new amenity, make sure you
-                                                            fill them all
-                                                        </p>
-
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Name</label>
+                                                                    <label>RoomID</label>
                                                                     <input
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        value="${amenityDetail.roomID
+                                                                        }"
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>
-                                                        </div>  
+                                                            </div>            
+                                                                        <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Quantity</label>
+                                                                    <input
+                                                                        name="quantity"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        value="${amenityDetail.quantity
+                                                                        }"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>  
+                                                        </div>
                                                     </div>
-                                                            
-                                                            
-                                                    
+                                                    <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
+                                                        <c:set value="${requestScope.noti}" var="noti"/>
+                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
                                                         <button
-                                                            type="button submit"
+                                                            type="reset"
+                                                            class="btn btn-danger">
+                                                            Reset
+                                                        </button>&nbsp;
+                                                        <button
+                                                            type="submit"
                                                             class="btn btn-primary">
-                                                            Add
+                                                            Save
                                                         </button>
-                                                        <a onclick="doClose()">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-danger"
-                                                                data-dismiss="modal"
-                                                                aria-label="Close"
-                                                                >
-                                                                Close
-                                                            </button>
-                                                        </a>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
 
-
-                                    <div class="table-responsive">
-                                        <table id="add-user" class="display table table-striped table-hover" >
-                                            <!--                                            <div class="table-responsive">
-                                                                                    <table id="add-user" class="display table table-striped table-hover" >-->
-                                            <thead>
-                                                <tr>
-                                                    
-                                                    <th>Name</th>
-                                                    <th style="width: 10%">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="${sessionScope.listAmenity}" var="a">
-                                                    <tr>
-                                                        <td><a href="amenity-detail">${a.amenName}</a></td>
-                                                        
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="editAmenity?amenityid=${a.amenID}" >
-                                                                    <button
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task"
-                                                                        >
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <button
-                                                                    type="button"
-                                                                    title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="doDelete(${a.amenID})"
-                                                                    >
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -245,19 +198,19 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                                        document.querySelector('.close').addEventListener('click', function () {
-                                                                            $('#addUserModal').modal('hide');
-                                                                        });
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editUserModal').modal('hide');
+                                                    });
     </script>
     <script>
         function doClose() {
-            $('#addUserModal').modal('hide');
+            $('#editUserModal').modal('hide');
         }
     </script>
     <script>
         function validate() {
             var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            var regex1 = /^[a-zA-Z0-9._%+-]+@example\.com$/;
 
             if (!regex1.test(email)) {
                 alert("Please enter a valid Email address (example@gmail.com)");
@@ -268,13 +221,11 @@
         }
     </script>
     <script>
-        function doDelete(amenityid) {
-                var option = confirm("Are you sure? You won't be able to revert this");
-                if (option === true) {
-                    window.location = "deleteAmenity?amenityid=" + amenityid;
-                }
-            }
+        function BackToList() {
+            window.location = "listAmenity";
+        }
     </script>
+
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({});
@@ -310,24 +261,24 @@
                 },
             });
 
-            // Add Row
-            $("#add-user").DataTable({
+            // edit Row
+            $("#edit-user").DataTable({
                 pageLength: 5,
             });
 
             var action =
                     '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-            $("#addUserButton").click(function () {
-                $("#add-user")
+            $("#editUserButton").click(function () {
+                $("#edit-user")
                         .dataTable()
-                        .fnAddData([
-                            $("#addName").val(),
-                            $("#addPosition").val(),
-                            $("#addOffice").val(),
+                        .fneditData([
+                            $("#editName").val(),
+                            $("#editPosition").val(),
+                            $("#editOffice").val(),
                             action,
                         ]);
-                $("#addUserModal").modal("hide");
+                $("#editUserModal").modal("hide");
             });
         });
     </script>
