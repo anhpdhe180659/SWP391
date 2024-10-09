@@ -44,7 +44,7 @@ public class editUser extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || !session.getAttribute("role").equals("1")) {
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

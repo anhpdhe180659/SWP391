@@ -41,7 +41,7 @@ public class addUser extends HttpServlet {
         HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
+        } else if ((int)session.getAttribute("role") != 1) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
