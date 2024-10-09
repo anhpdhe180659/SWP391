@@ -113,46 +113,125 @@
                                                 <form action="editUser"  method="POST"  onsubmit="return validate()">
                                                     <c:set value="${requestScope.user}" var="u"/>
                                                     <div class="modal-body">
+                                                        
                                                         <div class="row">
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Username</label>
+                                                                    <label>Full Name</label>
                                                                     <input
-                                                                        name="username"
-                                                                        pattern="[a-zA-Z0-9]{3,12}$" title="length should be 6-12, no spaces, unsigned"
+                                                                        name="name"
+                                                                        value="${u.name}"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${u.username}"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>Password</label>
+                                                                    <label>Address</label>
                                                                     <input
-                                                                        name="password" id="password"
-                                                                        type="password"
+                                                                        value="${u.address}"
+                                                                        name="address"
+                                                                        type="text"
                                                                         class="form-control"
-                                                                        value="${u.password}"
-                                                                        readonly=""
+                                                                        required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Phone</label>
+                                                                    <input
+                                                                        value="${u.phone}"
+                                                                        id="phone"
+                                                                        name="phone"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Identification</label>
+                                                                    <input
+                                                                        value="${u.identification}"
+                                                                        id="identification"
+                                                                        name="identification"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Sex</label>
+                                                                    <select name="sex" class="form-control">
+                                                                        <option value="1" <c:if test="${u.sex == 1}">
+                                                                                selected
+                                                                            </c:if> />Male</option>
+                                                                        <option value="0" <c:if test="${u.sex == 0}">
+                                                                                selected
+                                                                            </c:if> />Female</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Date of Birth</label>
+                                                                    <input 
+                                                                        value="${u.dateOfBirth}"
+                                                                        type="date" name="birthday" required
+                                                                           style="width: 100%; border: none; "/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Salary</label>
+                                                                    <input type="number" name="salary"
+                                                                           value="${u.salary}"
+                                                                           min="0" max="2000000000" required
+                                                                           style="width: 100%; border: none; "/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4" >
+                                                                <div class="form-group form-group-default" style="line-height: 23px">
+                                                                    <label>Start Date</label>
+                                                                    <input type="date" name="startdate" 
+                                                                           value="${u.startDate}" required
+                                                                           style="width: 100%; border: none; "/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Username</label>
+                                                                    <input
+                                                                        value="${u.username}"
+                                                                        name="username"
+                                                                        type="text"
+                                                                        pattern="[a-zA-Z0-9]{6,12}$" title="length should be 6-12, no spaces, unsigned"
+                                                                        class="form-control"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Email</label>
                                                                     <input
                                                                         id="email"
                                                                         name="email"
                                                                         type="text"
-                                                                        class="form-control"
                                                                         value="${u.email}"
+                                                                        class="form-control"
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-3">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Role</label>                  
                                                                     <select name="role" class="form-control">
@@ -169,7 +248,7 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-3">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Status</label>
                                                                     <select name="status" class="form-control">
@@ -177,12 +256,12 @@
                                                                                 <c:if test="${u.status == 1}">
                                                                                     selected
                                                                                 </c:if>
-                                                                                >active</option>
+                                                                                style="color: green;font-weight: bold" >active</option>
                                                                         <option value="0"
                                                                                 <c:if test="${u.status == 0}">
                                                                                     selected
                                                                                 </c:if>
-                                                                                >inactive</option>
+                                                                                style="color: red;font-weight: bold">inactive</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -237,18 +316,6 @@
     <script src="assets/js/kaiadmin.min.js"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
-    <script>
-                                                    const togglePassword = document.querySelector('#togglePassword');
-                                                    const password = document.querySelector('#password');
-                                                    togglePassword.addEventListener('click', function () {
-                                                        // Toggle the type attribute
-                                                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                        password.setAttribute('type', type);
-
-                                                        // Toggle the icon (optional)
-                                                        this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
-                                                    });
-    </script>
     <script>
         document.querySelector('.close').editEventListener('click', function () {
             $('#editUserModal').modal('hide');

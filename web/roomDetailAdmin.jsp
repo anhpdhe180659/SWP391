@@ -289,14 +289,14 @@
                     setTimeout(function () {
                         success.classList.toggle('show');
                         overlay.classList.remove('show-overlay'); // Hide overlay after the notification disappears
-                    }, 3000);
+                    }, 1500);
                     break;
-                default:
+                default: 
                     warning.classList.toggle('show');
                     setTimeout(function () {
                         warning.classList.toggle('show');
                         overlay.classList.remove('show-overlay'); // Hide overlay after the notification disappears
-                    }, 2000);
+                    }, 1500);
             }
         }
 

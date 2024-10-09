@@ -145,70 +145,43 @@
                                                     <c:forEach items="${sessionScope.listRoom}" var="s">
                                                         <tr>
                                                             <td>${s.roomNumber}</td>
-                                                            <c:if test="${s.cleanId == 1}">
-                                                                <td class="text-warning">
-                                                                    Not cleaned
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.cleanId == 2}">
-                                                                <td class="text-info">
-                                                                    In progress
-                                                                </td>
-                                                            </c:if><c:if test="${s.cleanId == 3}">
-                                                                <td class="text-success">
-                                                                    Cleaned
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 1}">
-                                                                <td>
-                                                                    Single Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 2}">
-                                                                <td>
-                                                                    Double Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 3}">
-                                                                <td>
-                                                                    Family Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 4}">
-                                                                <td>
-                                                                    Deluxe Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 5}">
-                                                                <td>
-                                                                    President Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.statusId == 1}">
-                                                                <td class="text-bg-success">
-                                                                    Available
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.statusId == 3}">
-                                                                <td class="text-bg-warning">
-                                                                    Under Maintenance
-                                                                </td>
-                                                            </c:if><c:if test="${s.statusId == 2}">
-                                                                <td class="text-bg-info">
-                                                                    Occupied
-                                                                </td>
-                                                            </c:if>
+                                                            <!-- Clean Status -->
+                                                            <td>
+                                                                <select class="form-select update" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
+                                                                    <option value="1" ${s.cleanId == 1 ? 'selected' : ''}>Not cleaned</option>
+                                                                    <option value="2" ${s.cleanId == 2 ? 'selected' : ''}>In progress</option>
+                                                                    <option value="3" ${s.cleanId == 3 ? 'selected' : ''}>Cleaned</option>
+                                                                </select>
+                                                            </td>
+
+                                                            <!-- Room Type -->
+                                                            <td>
+                                                                <select disabled class="form-select update" name="typeId" data-room-id="${s.roomId}" data-field="typeId">
+                                                                    <option value="1" ${s.typeId == 1 ? 'selected' : ''}>Single Room</option>
+                                                                    <option value="2" ${s.typeId == 2 ? 'selected' : ''}>Double Room</option>
+                                                                    <option value="3" ${s.typeId == 3 ? 'selected' : ''}>Family Room</option>
+                                                                    <option value="4" ${s.typeId == 4 ? 'selected' : ''}>Deluxe Room</option>
+                                                                    <option value="5" ${s.typeId == 5 ? 'selected' : ''}>President Room</option>
+                                                                </select>
+                                                            </td>
+
+                                                            <!-- Room Status -->
+                                                            <td>
+                                                                <select class="form-select update text-bg-light" name="statusId" data-room-id="${s.roomId}" data-field="statusId">
+                                                                    <option value="1" ${s.statusId == 1 ? 'selected' : ''}>Available</option>
+                                                                    <option value="2" ${s.statusId == 2 ? 'selected' : ''}>Occupied</option>
+                                                                    <option value="3" ${s.statusId == 3 ? 'selected' : ''}>Under Maintenance</option>
+                                                                </select>
+                                                            </td>
+
+                                                            <!-- View Details Button -->
                                                             <td style="text-align: center">
-                                                                <a href="viewDetail?id=${s.roomId}"
-                                                                   <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
+                                                                <a href="viewDetail?id=${s.roomId}">
+                                                                    <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
-                                                    <c:if test="${requestScope.noti != null}">
-                                                        <tr >
-                                                            <td style="text-align: center" colspan="5"><p class="text-warning">${requestScope.noti}</p></td><!-- comment --></tr>
-                                                            </c:if>
                                                 </tbody>
                                             </table>
                                             <c:set value="${sessionScope.currentindex}" var="index" />
@@ -331,6 +304,34 @@
 
                 //             Add Row
 
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('.update').on('change', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = $(this).data('field'); // Get field name from data attribute
+                    const value = $(this).val(); // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            // Handle success, you can show a notification or update the UI
+                            alert('Update successfully');
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed:');
+                        }
+                    });
+                });
             });
         </script>
     </body>

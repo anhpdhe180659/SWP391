@@ -321,7 +321,7 @@
                 capacity.value = 2;
                 price.value = 2000000;
                 break;
-            case 'President Room' :
+            case 'President' :
                 capacity.value = 2;
                 price.value = 5000000;
                 break;
@@ -336,58 +336,6 @@
         function BackToList() {
             window.location = "listRoom";
         }
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("#basic-datatables").DataTable({});
-            $("#multi-filter-select").DataTable({
-                pageLength: 5,
-                initComplete: function () {
-                    this.api()
-                            .columns()
-                            .every(function () {
-                                var column = this;
-                                var select = $(
-                                        '<select class="form-select"><option value=""></option></select>'
-                                        )
-                                        .appendTo($(column.footer()).empty())
-                                        .on("change", function () {
-                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                            column
-                                                    .search(val ? "^" + val + "$" : "", true, false)
-                                                    .draw();
-                                        });
-                                column
-                                        .data()
-                                        .unique()
-                                        .sort()
-                                        .each(function (d, j) {
-                                            select.append(
-                                                    '<option value="' + d + '">' + d + "</option>"
-                                                    );
-                                        });
-                            });
-                },
-            });
-            // edit Row
-            $("#edit-user").DataTable({
-                pageLength: 5,
-            });
-            var action =
-                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-            $("#editUserButton").click(function () {
-                $("#edit-user")
-                        .dataTable()
-                        .fneditData([
-                            $("#editName").val(),
-                            $("#editPosition").val(),
-                            $("#editOffice").val(),
-                            action,
-                        ]);
-                $("#editUserModal").modal("hide");
-            });
-        });
     </script>
 
 </body>

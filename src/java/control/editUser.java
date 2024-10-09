@@ -4,6 +4,7 @@
  */
 package control;
 
+import static control.addUser.hashPassword;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,6 +41,13 @@ public class editUser extends HttpServlet {
         HttpSession session = request.getSession();
         UserDAO udao = new UserDAO();
         PrintWriter out = response.getWriter();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || !session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         try {
             int userid = Integer.parseInt(request.getParameter("userid"));
             User user = udao.getUserByID(userid);
@@ -78,86 +86,91 @@ public class editUser extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         try {
-            UserDAO udao = new UserDAO();
             HttpSession session = request.getSession();
-            if (session == null) {
-                response.sendRedirect("login.jsp");
-            } else if (session.getAttribute("role").equals("2")) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+            UserDAO udao = new UserDAO();
+            User user = new User();
+            String username = request.getParameter("username");
+            if (request.getParameter("username") != null) {
+                user.setUsername(username);
             }
+            String password = request.getParameter("password");
+            if (request.getParameter("password") != null) {
+                user.setPassword(hashPassword(password));
+            }
+            String email = request.getParameter("email");
+            user.setEmail(email);
+            int role = Integer.parseInt(request.getParameter("role"));
+            user.setRole(role);
+            int status = Integer.parseInt(request.getParameter("status"));
+            user.setStatus(status);
+            String Name = request.getParameter("name");
+            user.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");
+            user.setDateOfBirth(DateOfBirth);
+            int Sex = Integer.parseInt(request.getParameter("sex"));
+            user.setSex(Sex);
+            String Address = request.getParameter("address");
+            user.setAddress(Address);
+            String Phone = request.getParameter("phone");
+            user.setPhone(Phone);
+            String Identification = request.getParameter("identification");
+            user.setIdentification(Identification);
+            String StartDate = request.getParameter("startdate");
+            user.setStartDate(StartDate);
+            int Salary = Integer.parseInt(request.getParameter("salary"));
+            user.setSalary(Salary);
+            List<User> listUser = udao.getAllUser();
+            request.setAttribute("user", user);
             int userid = Integer.parseInt(request.getParameter("userid"));
             User oldUser = udao.getUserByID(userid);// old user
-            String username = request.getParameter("username");// new information
-            String password = request.getParameter("password");// new information
-            String email = request.getParameter("email");// new information
-            int role = Integer.parseInt(request.getParameter("role"));// new information
-            int status = Integer.parseInt(request.getParameter("status"));// new information
-            User user = new User(userid, username, hashPassword(password), role, email, status);
-            List<User> listUser = udao.getAllUser();
+            String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Save successfully!</div>";
             for (User u : listUser) {
                 if (!oldUser.getUsername().equals(username)) {
                     if (u.getUsername().equals(username)) {
-                        // check if username is existed in database
-                        request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: red'>Username " + username + " existed, please enter again!</div>");
-                        request.setAttribute("user", oldUser);
-                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                        noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Username " + username + " existed, please try again!</div>";
+                        request.setAttribute("noti", noti);
+                        request.getRequestDispatcher("addUser.jsp").forward(request, response);
                         return;
                     }
                 }
                 if (!oldUser.getEmail().equals(email)) {
                     if (u.getEmail().equals(email)) {
-                        // check if email is existed in database
-                        request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: red'>Email " + email + " existed, please enter again!</div>");
-                        request.setAttribute("user", oldUser);
-                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                        noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Email " + email + " existed, please try again!</div>";
+                        request.setAttribute("noti", noti);
+                        request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                        return;
+                    }
+                }
+                if (!Identification.equals(u.getIdentification())) {
+                    if (u.getIdentification().equals(Identification)) {
+                        // check if Identification is existed in database
+                        request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");
+                        request.getRequestDispatcher("addUser.jsp").forward(request, response);
                         return;
                     }
                 }
             }
             udao.editUser(user);
-            request.setAttribute("noti", "<div style='margin-right: 25px; font-weight: bold;color: green'>Save successfully! </div>");
             request.setAttribute("user", user);
+            request.setAttribute("noti", noti);
             request.getRequestDispatcher("editUser.jsp").forward(request, response);
+
         } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
-            out.print("There are some wrong");
+            out.print(e);
         }
     }
 
-    public static String hashPassword(String password) throws NoSuchAlgorithmException {
-        // Chọn thuật toán SHA-256
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-        // Băm mật khẩu
-        byte[] hash = md.digest(password.getBytes());
-
-        // Chuyển đổi mảng byte sang chuỗi Hex để dễ lưu trữ
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-
-        // Trả về chuỗi băm đã chuyển thành dạng Hex
-        return hexString.toString();
-    }
-
-    public static void main(String[] args) {
-        UserDAO udao = new UserDAO();
-        List<User> listUser = udao.getAllUser();
-
-        int countSameUsername = 0;
-        for (User u : listUser) {
-            if (u.getUsername().equals("rec1")) {
-                countSameUsername++;
-            }
-        }
-        System.out.println(countSameUsername);
-    }
-
+//    public static void main(String[] args) {
+//        UserDAO udao = new UserDAO();
+//        List<User> listUser = udao.getAllUser();
+//        int countSameUsername = 0;
+//        for (User u : listUser) {
+//            if (u.getUsername().equals("rec1")) {
+//                countSameUsername++;
+//            }
+//        }
+//        System.out.println(countSameUsername);
+//    }
     /**
      * Returns a short description of the servlet.
      *

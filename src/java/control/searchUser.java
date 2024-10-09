@@ -37,24 +37,25 @@ public class searchUser extends HttpServlet {
         HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
+        } else if (!session.getAttribute("role").equals("1")) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         int index = 1;
-        String username = request.getParameter("username");
-        username = username.trim();
-        int NoPage = getNoPage(udao.findUserByUsername(username));
+        String name = request.getParameter("name");
+        name = name.trim();
+        int NoPage = getNoPage(udao.findUserByName(name));
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
         if(NoPage == 0){
             request.setAttribute("noti", "No user found");
         }
-        List<User> listUser = udao.getNext5SearchUser(index, username);
+        List<User> listUser = udao.getNext5SearchUser(index, name);
         session.setAttribute("Nopage", NoPage);
         session.setAttribute("currentindex", index);
         session.setAttribute("listUser", listUser);
+        request.setAttribute("searchName", name);
 //        response.sendRedirect("listUser.jsp");
         request.getRequestDispatcher("listUser.jsp").forward(request, response);
     }

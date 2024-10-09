@@ -5,7 +5,7 @@
 
 package control;
 
-import dal.EmployeeDAO;
+import dal.UserDAO;
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -13,7 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Employee;
+import model.User;
 
 /**
  *
@@ -25,8 +25,8 @@ public class ViewProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // ArrayList to store employee data
         int userId = Integer.parseInt(request.getParameter("userId"));
-        EmployeeDAO empDao = new EmployeeDAO();
-        Employee emp = empDao.findByUserId(userId);
+        UserDAO udao = new UserDAO();
+        User emp = udao.getUserByID(userId);
          if (emp == null) {
             response.sendRedirect("error.jsp?message=Employee not found");
             return;

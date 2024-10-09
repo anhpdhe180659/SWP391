@@ -4,7 +4,6 @@
  */
 package control;
 
-import dal.EmployeeDAO;
 import dal.InvoiceDAO;
 import dal.RoomDao;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Employee;
 import model.Invoice;
 import model.Room;
 import model.User;
@@ -74,10 +72,7 @@ public class receptionDashboard extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
         User user = (User) session.getAttribute("user");
-        EmployeeDAO empDao = new EmployeeDAO();
-        Employee emp = empDao.findByUserId(user.getUserID());
-        session.setAttribute("employee", emp);
-        //get room
+//        //get room
         RoomDao roomDao = new RoomDao();
         List<Room> listRoom = roomDao.getAllRooms();
         //get invoice

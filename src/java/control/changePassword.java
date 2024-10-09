@@ -118,7 +118,7 @@ public class changePassword extends HttpServlet {
             userDAO.updatePassword(user.getPassword(), user.getEmail()); // Cập nhật mật khẩu trong cơ sở dữ liệu
 
             request.setAttribute("success", "Password changed successfully!");
-            request.getRequestDispatcher("changePassword.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
 
         } catch (NoSuchAlgorithmException ex) {
             System.out.println("Error while hashing the password: " + ex.getMessage());
