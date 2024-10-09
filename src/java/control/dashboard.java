@@ -39,34 +39,36 @@ public class dashboard extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer)session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            RoomDao roomDao = new RoomDao();
+            List<Room> listRoom = roomDao.getAllRooms();
+            DashboardDAO dashboardDAO = new DashboardDAO();
+            StasticDto dto = dashboardDAO.getStasticDto();
+            List<ChartDTO> chartDTOs = dashboardDAO.getData();
+            session.setAttribute("dto", dto);
+            for (ChartDTO item : chartDTOs) {
+                session.setAttribute("month" + item.getMonth(), item.getTotal());
+            }
+            int underMaintainRoom = listRoom.stream().filter(
+                    room -> room.getStatusId() == 3
+            ).toList().size();
+            int availableRoom = listRoom.stream().filter(
+                    room -> room.getStatusId() == 1
+            ).toList().size();
+            int occupiedRoom = listRoom.stream().filter(
+                    room -> room.getStatusId() == 2
+            ).toList().size();
+            //get session 
+            session.setAttribute("maintaince", underMaintainRoom);
+            session.setAttribute("available", availableRoom);
+            session.setAttribute("occupied", occupiedRoom);
+            response.sendRedirect("dashboard.jsp");
         }
-        if (session.getAttribute("user") == null || !session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-         RoomDao roomDao = new RoomDao();
-        List<Room> listRoom = roomDao.getAllRooms();
-        DashboardDAO dashboardDAO = new DashboardDAO();
-        StasticDto dto = dashboardDAO.getStasticDto();
-        List<ChartDTO> chartDTOs = dashboardDAO.getData();
-        session.setAttribute("dto", dto);
-        for (ChartDTO item : chartDTOs) {
-            session.setAttribute("month" + item.getMonth(), item.getTotal());
-        }
-        int underMaintainRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 3
-        ).toList().size();
-        int availableRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 1
-        ).toList().size();
-        int occupiedRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 2
-        ).toList().size();
-        //get session 
-        session.setAttribute("maintaince", underMaintainRoom);
-        session.setAttribute("available", availableRoom);
-        session.setAttribute("occupied", occupiedRoom);
-        response.sendRedirect("dashboard.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
