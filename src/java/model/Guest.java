@@ -17,13 +17,13 @@ public class Guest {
     int Sex;
     String Address;
     String Phone;
-    int Identification;
+    String Identification;
     String Nationality;
 
     public Guest() {
     }
 
-    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Address, String Phone, int Identification, String Nationality) {
+    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Address, String Phone, String Identification, String Nationality) {
         this.GuestID = GuestID;
         this.Name = Name;
         this.DateOfBirth = DateOfBirth;
@@ -82,11 +82,11 @@ public class Guest {
         this.Phone = Phone;
     }
 
-    public int getIdentification() {
+    public String getIdentification() {
         return Identification;
     }
 
-    public void setIdentification(int Identification) {
+    public void setIdentification(String Identification) {
         this.Identification = Identification;
     }
 
@@ -103,7 +103,5 @@ public class Guest {
         return "Guest{" + "GuestID=" + GuestID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Nationality=" + Nationality + '}';
     }
 
-
-    
     
 }
