@@ -63,7 +63,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     User user = userDAO.getUserByUsername(username);
 
     // Kiểm tra nếu tài khoản không tồn tại
-    if (user == null) {
+    if (user.getUsername() == null) {
         request.setAttribute("error", "Invalid username or password!!!");
         request.getRequestDispatcher("login.jsp").forward(request, response);
         return;

@@ -60,6 +60,10 @@
         <servlet-name>searchUser</servlet-name>
         <servlet-class>control.searchUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>listGuest</servlet-name>
+        <servlet-class>control.listGuest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -104,7 +108,6 @@
         <servlet-name>editAmenity</servlet-name>
         <servlet-class>control.editAmenity</servlet-class>
     </servlet>
- 
     <servlet>
         <servlet-name>NewsServlet</servlet-name>
         <servlet-class>control.NewsServlet</servlet-class>
@@ -113,7 +116,6 @@
         <servlet-name>CreateNewsServlets</servlet-name>
         <servlet-class>control.CreateNewsServlet</servlet-class>
     </servlet>
-  
     <servlet>
         <servlet-name>changePassword</servlet-name>
         <servlet-class>control.changePassword</servlet-class>
@@ -202,7 +204,6 @@
         <servlet-name>editAmenity</servlet-name>
         <url-pattern>/editAmenity</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -211,7 +212,6 @@
         <servlet-name>CreateNewsServlets</servlet-name>
         <url-pattern>/CreateNewsServlets</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>ViewProfileServlet</servlet-name>
         <url-pattern>/ViewProfileServlet</url-pattern>
@@ -227,6 +227,10 @@
     <servlet-mapping>
         <servlet-name>searchUser</servlet-name>
         <url-pattern>/searchUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listGuest</servlet-name>
+        <url-pattern>/listGuest</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
