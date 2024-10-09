@@ -169,7 +169,7 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public void editUser(User u) {
+    public void editUser(User u, int userid) {
         String sql = """
                      UPDATE [dbo].[User]
                           SET [Name] = ?
@@ -203,7 +203,7 @@ public class UserDAO extends DBContext {
             st.setInt(12, u.getRole());
             st.setString(13, u.getEmail());
             st.setInt(14, u.getStatus());
-            st.setInt(15, u.getUserID());
+            st.setInt(15, userid);
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -366,9 +366,9 @@ public class UserDAO extends DBContext {
 
     public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
-        User u = userDAO.getUserByUsername("admin");
-        System.out.println(u);
-//        userDAO.addUser(new User(7,
+        User u = userDAO.getUserByID(12);
+
+//        userDAO.editUser(new User(7,
 //                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
 //                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
     }

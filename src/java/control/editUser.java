@@ -47,6 +47,7 @@ public class editUser extends HttpServlet {
         if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
         }
         try {
             int userid = Integer.parseInt(request.getParameter("userid"));
@@ -97,32 +98,23 @@ public class editUser extends HttpServlet {
             if (request.getParameter("password") != null) {
                 user.setPassword(hashPassword(password));
             }
-            String email = request.getParameter("email");
-            user.setEmail(email);
-            int role = Integer.parseInt(request.getParameter("role"));
-            user.setRole(role);
-            int status = Integer.parseInt(request.getParameter("status"));
-            user.setStatus(status);
-            String Name = request.getParameter("name");
-            user.setName(Name);
-            String DateOfBirth = request.getParameter("birthday");
-            user.setDateOfBirth(DateOfBirth);
-            int Sex = Integer.parseInt(request.getParameter("sex"));
-            user.setSex(Sex);
-            String Address = request.getParameter("address");
-            user.setAddress(Address);
-            String Phone = request.getParameter("phone");
-            user.setPhone(Phone);
-            String Identification = request.getParameter("identification");
-            user.setIdentification(Identification);
-            String StartDate = request.getParameter("startdate");
-            user.setStartDate(StartDate);
-            int Salary = Integer.parseInt(request.getParameter("salary"));
-            user.setSalary(Salary);
-            List<User> listUser = udao.getAllUser();
-            request.setAttribute("user", user);
             int userid = Integer.parseInt(request.getParameter("userid"));
+            String Name = request.getParameter("name");user.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");user.setDateOfBirth(DateOfBirth);
+             int Sex = Integer.parseInt(request.getParameter("sex"));user.setSex(Sex);
+            String Address = request.getParameter("address");user.setAddress(Address);
+            String Phone = request.getParameter("phone");user.setPhone(Phone);
+             String Identification = request.getParameter("identification"); user.setIdentification(Identification);
+            String StartDate = request.getParameter("startdate");user.setStartDate(StartDate);
+            int Salary = Integer.parseInt(request.getParameter("salary"));user.setSalary(Salary);
+            int role = Integer.parseInt(request.getParameter("role"));user.setRole(role);
+            String email = request.getParameter("email");user.setEmail(email);
+            int status = Integer.parseInt(request.getParameter("status"));user.setStatus(status);
+            List<User> listUser = udao.getAllUser();
+            
+            
             User oldUser = udao.getUserByID(userid);// old user
+            
             String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Save successfully!</div>";
             for (User u : listUser) {
                 if (!oldUser.getUsername().equals(username)) {
@@ -150,12 +142,11 @@ public class editUser extends HttpServlet {
                     }
                 }
             }
-            udao.editUser(user);
-            request.setAttribute("user", user);
+            udao.editUser(user, userid);
+            request.setAttribute("user", udao.getUserByID(userid));
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("editUser.jsp").forward(request, response);
-
-        } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             out.print(e);
         }
     }

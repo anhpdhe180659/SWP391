@@ -122,6 +122,7 @@
                                                                         name="name"
                                                                         value="${u.name}"
                                                                         type="text"
+                                                                        maxlength="100"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -134,6 +135,7 @@
                                                                         value="${u.address}"
                                                                         name="address"
                                                                         type="text"
+                                                                        maxlength="200"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -146,6 +148,7 @@
                                                                         value="${u.phone}"
                                                                         id="phone"
                                                                         name="phone"
+                                                                        maxlength="50"
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
@@ -160,6 +163,7 @@
                                                                         id="identification"
                                                                         name="identification"
                                                                         type="text"
+                                                                        maxlength="100"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -192,7 +196,7 @@
                                                                     <label>Salary</label>
                                                                     <input type="number" name="salary"
                                                                            value="${u.salary}"
-                                                                           min="0" max="2000000000" required
+                                                                           min="0" max="1000000000" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
@@ -204,7 +208,6 @@
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-
                                                             <div class="col-sm-3">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Username</label>
