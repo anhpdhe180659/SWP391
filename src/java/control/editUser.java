@@ -91,12 +91,8 @@ public class editUser extends HttpServlet {
             UserDAO udao = new UserDAO();
             User user = new User();
             String username = request.getParameter("username");
-            if (request.getParameter("username") != null) {
+            if (request.getParameter("username").length()>0) {
                 user.setUsername(username);
-            }
-            String password = request.getParameter("password");
-            if (request.getParameter("password") != null) {
-                user.setPassword(hashPassword(password));
             }
             int userid = Integer.parseInt(request.getParameter("userid"));
             String Name = request.getParameter("name");user.setName(Name);
