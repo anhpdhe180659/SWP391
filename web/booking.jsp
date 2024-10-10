@@ -90,107 +90,79 @@
 
                 <div class="container">
                     <div class="page-inner">
-                        <div class="page-header">
-                            <h3 class="fw-bold mb-3">Forms</h3>
-                            <ul class="breadcrumbs mb-3">
-                                <li class="nav-home">
-                                    <a href="#">
-                                        <i class="icon-home"></i>
-                                    </a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Forms</a>
-                                </li>
-                                <li class="separator">
-                                    <i class="icon-arrow-right"></i>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Basic Form</a>
-                                </li>
-                            </ul>
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <div class="card-title">Form Elements</div>
+                                        <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
+
                                             <div class="col-md-6 col-lg-4">
+                                                <label style="margin: 0px 81px "><b style="font-size: 24px; color: #00aaff">Guest information</b></label>
+                                                
                                                 <div class="form-group">
-                                                    <label for="email2">Email Address</label>
-                                                    <input
-                                                        type="email"
-                                                        class="form-control"
-                                                        id="email2"
-                                                        placeholder="Enter Email"
-                                                        />
-                                                    <small id="emailHelp2" class="form-text text-muted"
-                                                           >We'll never share your email with anyone
-                                                        else.</small
-                                                    >
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="password">Password</label>
-                                                    <input
-                                                        type="password"
-                                                        class="form-control"
-                                                        id="password"
-                                                        placeholder="Password"
-                                                        />
-                                                </div>
-                                                <div class="form-group form-inline">
-                                                    <label
-                                                        for="inlineinput"
-                                                        class="col-md-3 col-form-label"
-                                                        >Inline Input</label
-                                                    >
-                                                    <div class="col-md-9 p-0">
-                                                        <input
-                                                            type="text"
-                                                            class="form-control input-full"
-                                                            id="inlineinput"
-                                                            placeholder="Enter Input"
-                                                            />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group has-success">
-                                                    <label for="successInput">Success Input</label>
-                                                    <input
-                                                        type="text"
-                                                        id="successInput"
-                                                        value="Success"
-                                                        class="form-control"
-                                                        />
-                                                </div>
-                                                <div class="form-group has-error has-feedback">
-                                                    <label for="errorInput">Error Input</label>
-                                                    <input
-                                                        type="text"
-                                                        id="errorInput"
-                                                        value="Error"
-                                                        class="form-control"
-                                                        />
-                                                    <small id="emailHelp" class="form-text text-muted"
-                                                           >Please provide a valid informations.</small
-                                                    >
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="disableinput">Disable Input</label>
+                                                    <label for="name"><i class="fas fa-address-book"></i> Name </label>
                                                     <input
                                                         type="text"
                                                         class="form-control"
-                                                        id="disableinput"
-                                                        placeholder="Enter Input"
-                                                        disabled
+                                                        id="name"
+                                                        name="name"
+                                                        placeholder="Enter guest's full name"
                                                         />
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Gender</label><br />
+                                                    <label for="iden"><i class="fas fa-address-card"></i> Identification</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="iden"
+                                                        name="identification"
+                                                        placeholder="Enter identification"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone"><i class="fas fa-phone"></i> Phone</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="phone"
+                                                        name="phone"
+                                                        placeholder="Enter phone number"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address"><i class="fas fa-map-marker-alt"></i> Address</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="address"
+                                                        name="address"
+                                                        placeholder="Enter address"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nationality"><i class="fas fa-globe"></i> Nationality</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="nationality"
+                                                        name="nationality"
+                                                        placeholder="Enter nationality"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="dob"><i class="fas fa-birthday-cake"></i> Date of birth</label>
+                                                    <input
+                                                        type="date"
+                                                        class="form-control"
+                                                        id="dob"
+                                                        name="dob"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label><i class="fas fa-transgender"></i> Gender</label><br />
                                                     <div class="d-flex">
                                                         <div class="form-check">
                                                             <input
@@ -223,70 +195,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label"> Static </label>
-                                                    <p class="form-control-static">hello@example.com</p>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlSelect1"
-                                                           >Example select</label
-                                                    >
-                                                    <select
-                                                        class="form-select"
-                                                        id="exampleFormControlSelect1"
-                                                        >
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlSelect2"
-                                                           >Example multiple select</label
-                                                    >
-                                                    <select
-                                                        multiple
-                                                        class="form-control"
-                                                        id="exampleFormControlSelect2"
-                                                        >
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlFile1"
-                                                           >Example file input</label
-                                                    >
-                                                    <input
-                                                        type="file"
-                                                        class="form-control-file"
-                                                        id="exampleFormControlFile1"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="comment">Comment</label>
-                                                    <textarea class="form-control" id="comment" rows="5">
-                                                    </textarea>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                        value=""
-                                                        id="flexCheckDefault"
-                                                        />
-                                                    <label
-                                                        class="form-check-label"
-                                                        for="flexCheckDefault"
-                                                        >
-                                                        Agree with terms and conditions
-                                                    </label>
-                                                </div>
+                                                
                                             </div>
                                             <div class="col-md-6 col-lg-4">
                                                 <div class="form-group">
