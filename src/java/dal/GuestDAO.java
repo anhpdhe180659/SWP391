@@ -15,6 +15,7 @@ import model.Guest;
  * @author phand
  */
 public class GuestDAO extends DBContext {
+    
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
         List<Guest> l = dao.getAllGuests();
@@ -22,6 +23,7 @@ public class GuestDAO extends DBContext {
             System.out.println(guest);
         }
     }
+    
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();
         String sql = "SELECT [GuestID]\n"
@@ -32,11 +34,12 @@ public class GuestDAO extends DBContext {
                 + "      ,[Phone]\n"
                 + "      ,[Identification]\n"
                 + "      ,[Nationality]\n"
-                + "  FROM [dbo].[Guest]\n";
+                + "      ,[isHidden]\n"
+                + "  FROM [dbo].[Guest]";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
-
+            
             while (rs.next()) {
                 Guest guest = new Guest();
                 guest.setGuestID(rs.getInt("GuestID"));
@@ -47,6 +50,7 @@ public class GuestDAO extends DBContext {
                 guest.setPhone(rs.getString("Phone"));
                 guest.setIdentification(rs.getString("Identification"));
                 guest.setNationality(rs.getString("Nationality"));
+                guest.setIsHidden(rs.getInt("isHidden"));
                 guests.add(guest);
             }
         } catch (Exception e) {
