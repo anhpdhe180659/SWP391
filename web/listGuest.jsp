@@ -30,7 +30,7 @@
     </head>
     <body>
         <div class="wrapper">
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
             <div class="main-panel">
                 <div class="main-header">
                     <jsp:include page="navbar-header.jsp"/>
