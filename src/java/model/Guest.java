@@ -19,11 +19,12 @@ public class Guest {
     String Phone;
     String Identification;
     String Nationality;
+    int isHidden;
 
     public Guest() {
     }
 
-    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Address, String Phone, String Identification, String Nationality) {
+    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Address, String Phone, String Identification, String Nationality, int isHidden) {
         this.GuestID = GuestID;
         this.Name = Name;
         this.DateOfBirth = DateOfBirth;
@@ -32,6 +33,7 @@ public class Guest {
         this.Phone = Phone;
         this.Identification = Identification;
         this.Nationality = Nationality;
+        this.isHidden = isHidden;
     }
 
     public int getGuestID() {
@@ -98,10 +100,17 @@ public class Guest {
         this.Nationality = Nationality;
     }
 
-    @Override
-    public String toString() {
-        return "Guest{" + "GuestID=" + GuestID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Nationality=" + Nationality + '}';
+    public int getIsHidden() {
+        return isHidden;
     }
 
-    
+    public void setIsHidden(int isHidden) {
+        this.isHidden = isHidden;
+    }
+
+    @Override
+    public String toString() {
+        return "Guest{" + "GuestID=" + GuestID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Nationality=" + Nationality + ", isHidden=" + isHidden + '}';
+    }
+
 }
