@@ -3,8 +3,8 @@ package util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordUtils {
-
+public class PasswordUtils { 
+   
     // Hàm để băm mật khẩu sử dụng SHA-256
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         // Chọn thuật toán SHA-256
