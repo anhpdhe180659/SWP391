@@ -23,6 +23,7 @@
 
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+
         <script>
             WebFont.load({
                 google: {families: ["Public Sans:300,400,500,600,700"]},
@@ -45,7 +46,7 @@
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
         <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
-
+        <link rel="stylesheet" href="/CSS/receptionHome.css"/>
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <!--<link rel="stylesheet" href="assets/css/demo.css" />-->
     </head>
@@ -82,7 +83,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                   <jsp:include page="navbar-header.jsp"/>
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
@@ -166,30 +167,7 @@
                                 <div class="card-header">
                                     <div class="card-head-row card-tools-still-right">
                                         <div class="card-title">Transaction History</div>
-                                        <div class="card-tools">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn btn-icon btn-clean me-0"
-                                                    type="button"
-                                                    id="dropdownMenuButton"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false"
-                                                    >
-                                                    <i class="fas fa-ellipsis-h"></i>
-                                                </button>
-                                                <div
-                                                    class="dropdown-menu"
-                                                    aria-labelledby="dropdownMenuButton"
-                                                    >
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#"
-                                                       >Something else here</a
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="card-body p-0">
@@ -224,6 +202,22 @@
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Room Statistics</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas
+                                            id="myChart"
+                                            style="width: 50%; height: 50%"
+                                            ></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -314,6 +308,34 @@
                 lineColor: "#ffa534",
                 fillColor: "rgba(255, 165, 52, .14)",
             });
+    </script>
+    <script>
+        const underMaintenance = ${sessionScope.maintaince};
+        const available = ${sessionScope.available};
+        const occupied = ${sessionScope.occupied};
+        console.log(available);
+        var ctx = document.getElementById('myChart').getContext('2d');
+        const data_chart = {
+            labels: [
+                'Under Maintenance',
+                'Available',
+                'Occupied'
+            ],
+            datasets: [{
+                    data: [underMaintenance, available, occupied],
+                    backgroundColor: [
+                        '#FEFFA7', // Màu đỏ cho giá trị 10
+                        '#B6FFA1', // Màu xanh cho giá trị 20
+                        '#C96868' // Màu vàng cho giá trị 30
+                    ],
+                    borderWidth: 1
+                }]
+        };
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data_chart
+        });
+
     </script>
 </body>
 </html>

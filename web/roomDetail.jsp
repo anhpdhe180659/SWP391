@@ -129,7 +129,7 @@
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Clean Status</label>                  
-                                                                    <select name="cleanId" class="form-control">
+                                                                    <select name="cleanId" class="form-control" readonly>
                                                                         <option value="3"
                                                                                 <c:if test="${u.cleanId == 3}">
                                                                                     selected
@@ -217,7 +217,7 @@
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Status</label>                  
-                                                                    <select name="statusId" class="form-control">
+                                                                    <select name="statusId" class="form-control" readonly> 
                                                                         <option class="text-warning" value="3"
                                                                                 <c:if test="${u.statusId == 3}">
                                                                                     selected
@@ -247,16 +247,6 @@
                                                         <c:if test="${noti != 'Update status successful !'}" >
                                                             <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
                                                         </c:if>
-                                                        <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary">
-                                                            Update
-                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

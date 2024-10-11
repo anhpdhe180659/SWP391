@@ -488,21 +488,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Doughnut Chart</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas
-                                                id="doughnutChart"
-                                                style="width: 50%; height: 50%"
-                                                ></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
                             <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">
