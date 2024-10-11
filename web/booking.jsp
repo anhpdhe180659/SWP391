@@ -97,105 +97,216 @@
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row">
-
-                                            <div class="col-md-6 col-lg-4">
-                                                <label style="margin: 0px 81px "><b style="font-size: 24px; color: #00aaff">Guest information</b></label>
-                                                
-                                                <div class="form-group">
-                                                    <label for="name"><i class="fas fa-address-book"></i> Name </label>
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="name"
-                                                        name="name"
-                                                        placeholder="Enter guest's full name"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="iden"><i class="fas fa-address-card"></i> Identification</label>
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="iden"
-                                                        name="identification"
-                                                        placeholder="Enter identification"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="phone"><i class="fas fa-phone"></i> Phone</label>
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="phone"
-                                                        name="phone"
-                                                        placeholder="Enter phone number"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="address"><i class="fas fa-map-marker-alt"></i> Address</label>
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="address"
-                                                        name="address"
-                                                        placeholder="Enter address"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="nationality"><i class="fas fa-globe"></i> Nationality</label>
-                                                    <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="nationality"
-                                                        name="nationality"
-                                                        placeholder="Enter nationality"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="dob"><i class="fas fa-birthday-cake"></i> Date of birth</label>
-                                                    <input
-                                                        type="date"
-                                                        class="form-control"
-                                                        id="dob"
-                                                        name="dob"
-                                                        />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label><i class="fas fa-transgender"></i> Gender</label><br />
-                                                    <div class="d-flex">
-                                                        <div class="form-check">
-                                                            <input
-                                                                class="form-check-input"
-                                                                type="radio"
-                                                                name="flexRadioDefault"
-                                                                id="flexRadioDefault1"
-                                                                />
-                                                            <label
-                                                                class="form-check-label"
-                                                                for="flexRadioDefault1"
-                                                                >
-                                                                Male
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input
-                                                                class="form-check-input"
-                                                                type="radio"
-                                                                name="flexRadioDefault"
-                                                                id="flexRadioDefault2"
-                                                                checked
-                                                                />
-                                                            <label
-                                                                class="form-check-label"
-                                                                for="flexRadioDefault2"
-                                                                >
-                                                                Female
-                                                            </label>
+                                        <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="pills-guest-tab" data-bs-toggle="pill" href="#pills-guest" role="tab" aria-controls="pills-guest" aria-selected="true">Guest information</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-room-tab" data-bs-toggle="pill" href="#pills-room" role="tab" aria-controls="pills-room" aria-selected="false">Select room</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content mt-2 mb-3" id="pills-tabContent">
+                                            <div class="row tab-pane fade show active" id="pills-guest" role="tabpanel" aria-labelledby="pills-guest-tab" style="display: flex;">
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="name"><i class="fas fa-address-book"></i> Name </label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="name"
+                                                            name="name"
+                                                            placeholder="Enter guest's full name"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="phone"><i class="fas fa-phone"></i> Phone</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="phone"
+                                                            name="phone"
+                                                            placeholder="Enter phone number"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nationality"><i class="fas fa-globe"></i> Nationality</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="nationality"
+                                                            name="nationality"
+                                                            placeholder="Enter nationality"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label><i class="fas fa-transgender"></i> Gender</label><br />
+                                                        <div class="d-flex">
+                                                            <div class="form-check">
+                                                                <input
+                                                                    class="form-check-input"
+                                                                    type="radio"
+                                                                    name="flexRadioDefault"
+                                                                    id="flexRadioDefault1"
+                                                                    />
+                                                                <label
+                                                                    class="form-check-label"
+                                                                    for="flexRadioDefault1"
+                                                                    >
+                                                                    Male
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input
+                                                                    class="form-check-input"
+                                                                    type="radio"
+                                                                    name="flexRadioDefault"
+                                                                    id="flexRadioDefault2"
+                                                                    checked
+                                                                    />
+                                                                <label
+                                                                    class="form-check-label"
+                                                                    for="flexRadioDefault2"
+                                                                    >
+                                                                    Female
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="iden"><i class="fas fa-address-card"></i> Identification</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="iden"
+                                                            name="identification"
+                                                            placeholder="Enter identification"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="address"><i class="fas fa-map-marker-alt"></i> Address</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="address"
+                                                            name="address"
+                                                            placeholder="Enter address"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dob"><i class="fas fa-birthday-cake"></i> Date of birth</label>
+                                                        <input
+                                                            type="date"
+                                                            class="form-control"
+                                                            id="dob"
+                                                            name="dob"
+                                                            />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row tab-pane fade" id="pills-room" role="tabpanel" aria-labelledby="pills-room-tab">
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="name"><i class="fas fa-address-book"></i> Name </label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="name"
+                                                            name="name"
+                                                            placeholder="Enter guest's full name"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="phone"><i class="fas fa-phone"></i> Phone</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="phone"
+                                                            name="phone"
+                                                            placeholder="Enter phone number"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nationality"><i class="fas fa-globe"></i> Nationality</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="nationality"
+                                                            name="nationality"
+                                                            placeholder="Enter nationality"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label><i class="fas fa-transgender"></i> Gender</label><br />
+                                                        <div class="d-flex">
+                                                            <div class="form-check">
+                                                                <input
+                                                                    class="form-check-input"
+                                                                    type="radio"
+                                                                    name="gender"
+                                                                    id="maleRadio"
+                                                                    value="1"
+                                                                    />
+                                                                <label
+                                                                    class="form-check-label"
+                                                                    for="male" checked
+                                                                    >
+                                                                    Male
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input
+                                                                    class="form-check-input"
+                                                                    type="radio"
+                                                                    name="gender"
+                                                                    id="femaleRadio"
+                                                                    value="0"
+                                                                    />
+                                                                <label
+                                                                    class="form-check-label"
+                                                                    for="femaleRadio"
+                                                                    >
+                                                                    Female
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="iden"><i class="fas fa-address-card"></i> Identification</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="iden"
+                                                            name="identification"
+                                                            placeholder="Enter identification"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="address"><i class="fas fa-map-marker-alt"></i> Address</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="address"
+                                                            name="address"
+                                                            placeholder="Enter address"
+                                                            />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dob"><i class="fas fa-birthday-cake"></i> Date of birth</label>
+                                                        <input
+                                                            type="date"
+                                                            class="form-control"
+                                                            id="dob"
+                                                            name="dob"
+                                                            />
+                                                    </div>
+                                                </div>
                                             </div>
                                             
                                         </div>
