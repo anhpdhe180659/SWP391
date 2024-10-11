@@ -246,11 +246,10 @@
                                                                 </a>
                                                             </td>
                                                             <td style="text-align: center">
-                                                                <a style="color:red" 
-                                                                   href="deleteRoom?id=${s.roomId}"
-                                                                   onclick="return confirm('Do you want to delete this room?')"
-                                                                   <i class="far fa-trash-alt me-3"></i>&nbsp;&nbsp;Delete
-                                                                </a>
+                                                                <div class="form-check form-switch">
+                                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
+                                                                    <label class="form-check-label text-danger" for="flexSwitchCheckDefault">Active/De-active</label>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
@@ -344,48 +343,48 @@
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
         <script>
-            function addRoom(){
-                window.location='addRoom';
-            }
+                                                    function addRoom() {
+                                                        window.location = 'addRoom';
+                                                    }
         </script>
         <script>
-                                                                       $(document).ready(function () {
-                                                                           $("#basic-datatables").DataTable({
-                                                                           });
-                                                                           $("#multi-filter-select").DataTable({
-                                                                               pageLength: 10,
-                                                                               initComplete: function () {
-                                                                                   this.api()
-                                                                                           .columns()
-                                                                                           .every(function () {
-                                                                                               var column = this;
-                                                                                               var select = $(
-                                                                                                       '<select class="form-select"><option value=""></option></select>'
-                                                                                                       )
-                                                                                                       .appendTo($(column.footer()).empty())
-                                                                                                       .on("change", function () {
-                                                                                                           var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                                                                           column
-                                                                                                                   .search(val ? "^" + val + "$" : "", true, false)
-                                                                                                                   .draw();
-                                                                                                       });
+            $(document).ready(function () {
+                $("#basic-datatables").DataTable({
+                });
+                $("#multi-filter-select").DataTable({
+                    pageLength: 10,
+                    initComplete: function () {
+                        this.api()
+                                .columns()
+                                .every(function () {
+                                    var column = this;
+                                    var select = $(
+                                            '<select class="form-select"><option value=""></option></select>'
+                                            )
+                                            .appendTo($(column.footer()).empty())
+                                            .on("change", function () {
+                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                                column
+                                                        .search(val ? "^" + val + "$" : "", true, false)
+                                                        .draw();
+                                            });
 
-                                                                                               column
-                                                                                                       .data()
-                                                                                                       .unique()
-                                                                                                       .sort()
-                                                                                                       .each(function (d, j) {
-                                                                                                           select.append(
-                                                                                                                   '<option value="' + d + '">' + d + "</option>"
-                                                                                                                   );
-                                                                                                       });
-                                                                                           });
-                                                                               },
-                                                                           });
+                                    column
+                                            .data()
+                                            .unique()
+                                            .sort()
+                                            .each(function (d, j) {
+                                                select.append(
+                                                        '<option value="' + d + '">' + d + "</option>"
+                                                        );
+                                            });
+                                });
+                    },
+                });
 
-                                                                           //             Add Row
+                //             Add Row
 
-                                                                       });
+            });
         </script>
     </body>
 </html>

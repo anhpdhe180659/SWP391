@@ -64,7 +64,7 @@ public class listRoomAdmin extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if ((int)session.getAttribute("role") !=1) {
+        } else if (session.getAttribute("role").equals("2")) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
