@@ -146,7 +146,7 @@
                                                                     placeholder="Enter nationality"
                                                                     />
                                                             </div>
-                                                            
+
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
                                                             <div class="form-group">
@@ -299,10 +299,9 @@
                                                                                 <option value="3" ${s.statusId == 3 ? 'selected' : ''}>Under Maintenance</option>
                                                                             </select>
                                                                         </td>
-
                                                                         <!-- View Details Button -->
                                                                         <td style="text-align: center">
-                                                                            <input type="checkbox" name="roomSelected" value="ON" />
+                                                                            <input type="checkbox" name="roomSelected" value="${s.roomId}" class="row-checkbox"/>
                                                                         </td>
                                                                     </tr>
                                                                 </c:forEach>
@@ -367,6 +366,19 @@
 
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo2.js"></script>
+        <script>
+            document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
+                row.addEventListener('click', function (e) {
+                    // Nếu click vào chính checkbox thì không thay đổi trạng thái checked nữa
+                    if (e.target.tagName !== 'INPUT') {
+                        // Lấy checkbox trong hàng được click
+                        let checkbox = this.querySelector('.row-checkbox');
+                        // Đổi trạng thái của checkbox
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            });
+        </script>
         <script>
             $(document).ready(function () {
                 $("#basic-datatables").DataTable({});
