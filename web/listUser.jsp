@@ -1,4 +1,4 @@
-<<<<<<< OURS
+
 <%-- 
     Document   : listEmployee
     Created on : Sep 21, 2024, 7:31:52 PM
@@ -7,8 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -40,7 +39,7 @@
                 },
                 active: function () {
                     sessionStorage.fonts = true;
-                },
+                }
             });
         </script>
 
@@ -143,10 +142,11 @@
                                                         </td>
                                                         <td>${s.address}</td>
                                                         <td>${s.phone}</td>
-                                                        <td>${s.salary}</td>
                                                         <td>
-                                                            <%--<fmt:formatDate pattern="" value="${s.startDate}" />--%>
+                                                            <fmt:formatNumber value="${s.salary}" type="number" groupingUsed="true" pattern="#,###"/> ₫</td>
+                                                        <td>
                                                             ${s.startDate}
+                                                            
                                                             </td>
                                                         <td>
                                                             <c:if test="${s.status == 0}">
@@ -250,11 +250,10 @@
 
             </footer>
         </div>
-
+</body>
         <!-- Custom template | don't include it in your project! -->
 
         <!-- End Custom template -->
-    </div>
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>

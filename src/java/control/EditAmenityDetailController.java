@@ -2,69 +2,53 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package control;
 
-import dal.UserDAO;
+import dal.AmenityDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.User;
+import model.AmenityDetail;
 
 /**
  *
- * @author nhatk
+ * @author admin
  */
-public class listUser extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+@WebServlet(name="EditAmenityDetailController", urlPatterns={"/editAmenityDetail"})
+public class EditAmenityDetailController extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        } else if ((int)session.getAttribute("role") !=1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet EditAmenityDetailController</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet EditAmenityDetailController at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        UserDAO udao = new UserDAO();
-        int index = 1;
-        int NoPage = getNoPage(udao.getAllUser());
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        List<User> listUser = udao.getNext5User(index);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        session.setAttribute("listUser", listUser);
-        response.sendRedirect("listUser.jsp");
-    }
-
-    public int getNoPage(List<User> list) {
-        double page = (double) list.size() / 5;
-        page = Math.ceil(page);
-        return (int) page;
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -72,13 +56,17 @@ public class listUser extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+    throws ServletException, IOException {
+    String roomID = request.getParameter("roomid");
+        AmenityDAO amenityDao = new AmenityDAO();
+    
+    AmenityDetail detail = amenityDao.findByRoomID(roomID);
+    request.setAttribute("amenityDetail", detail);
+    request.getRequestDispatcher("editAmenitDetail.jsp").forward(request, response);
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -86,13 +74,18 @@ public class listUser extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    throws ServletException, IOException {
+         String roomID = request.getParameter("roomid");
+    int quantity = Integer.parseInt(request.getParameter("quantity"));
+    
+    AmenityDAO amenityDao = new AmenityDAO();
+    amenityDao.updateAmenityDetail(roomID, quantity);
+    
+    response.sendRedirect("listAmenityDetail");
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

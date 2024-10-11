@@ -4,22 +4,24 @@
  */
 package control;
 
-import dal.UserDAO;
+import dal.AmenityDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.User;
+import model.Amenity;
+import model.AmenityDetail;
 
 /**
  *
- * @author nhatk
+ * @author admin
  */
-public class searchUser extends HttpServlet {
+@WebServlet(name = "AmenityDetailController", urlPatterns = {"/amenity-detail"})
+public class AmenityDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,38 +35,18 @@ public class searchUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        UserDAO udao = new UserDAO();
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        } else if ((int)session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AmenityDetailController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AmenityDetailController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        int index = 1;
-        String name = request.getParameter("name");
-        name = name.trim();
-        int NoPage = getNoPage(udao.findUserByName(name));
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        if(NoPage == 0){
-            request.setAttribute("noti", "No user found");
-        }
-        List<User> listUser = udao.getNext5SearchUser(index, name);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        session.setAttribute("listUser", listUser);
-        request.setAttribute("searchName", name);
-//        response.sendRedirect("listUser.jsp");
-        request.getRequestDispatcher("listUser.jsp").forward(request, response);
-    }
-
-    public int getNoPage(List<User> list) {
-        double page = (double) list.size() / 5;
-        page = Math.ceil(page);
-        return (int) page;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -79,7 +61,13 @@ public class searchUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+  
+        AmenityDAO amenityDao = new AmenityDAO();
+        List<AmenityDetail> listAmenity = amenityDao.findByID();
+      
+        request.setAttribute("listAmenityDetail", listAmenity);
+      
+        request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);
     }
 
     /**

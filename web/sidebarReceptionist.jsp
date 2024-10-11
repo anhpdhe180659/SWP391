@@ -82,7 +82,7 @@
                             <div class="collapse" id="sidebarLayouts">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="sidebar-style-2.jsp">
+                                        <a href="booking">
                                             <span class="sub-item">Create booking</span>
                                         </a>
                                     </li>

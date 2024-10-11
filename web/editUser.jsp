@@ -19,7 +19,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
@@ -113,7 +113,7 @@
                                                 <form action="editUser"  method="POST"  onsubmit="return validate()">
                                                     <c:set value="${requestScope.user}" var="u"/>
                                                     <div class="modal-body">
-                                                        
+
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
@@ -122,6 +122,7 @@
                                                                         name="name"
                                                                         value="${u.name}"
                                                                         type="text"
+                                                                        maxlength="100"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -134,6 +135,7 @@
                                                                         value="${u.address}"
                                                                         name="address"
                                                                         type="text"
+                                                                        maxlength="200"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -146,6 +148,7 @@
                                                                         value="${u.phone}"
                                                                         id="phone"
                                                                         name="phone"
+                                                                        maxlength="50"
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
@@ -160,6 +163,7 @@
                                                                         id="identification"
                                                                         name="identification"
                                                                         type="text"
+                                                                        maxlength="20"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -184,7 +188,7 @@
                                                                     <input 
                                                                         value="${u.dateOfBirth}"
                                                                         type="date" name="birthday" required
-                                                                           style="width: 100%; border: none; "/>
+                                                                        style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-4" >
@@ -204,7 +208,6 @@
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-
                                                             <div class="col-sm-3">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Username</label>
@@ -248,23 +251,45 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Status</label>
-                                                                    <select name="status" class="form-control">
-                                                                        <option value="1"
-                                                                                <c:if test="${u.status == 1}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                style="color: green;font-weight: bold" >active</option>
-                                                                        <option value="0"
-                                                                                <c:if test="${u.status == 0}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                style="color: red;font-weight: bold">inactive</option>
-                                                                    </select>
+                                                            <c:if test="${u.role != 1}">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Status</label>
+                                                                        <select name="status" class="form-control">
+                                                                            <option value="1"
+                                                                                    <c:if test="${u.status == 1}">
+                                                                                        selected
+                                                                                    </c:if>
+                                                                                    style="color: green;font-weight: bold" >active</option>
+                                                                            <option value="0"
+                                                                                    <c:if test="${u.status == 0}">
+                                                                                        selected
+                                                                                    </c:if>
+                                                                                    style="color: red;font-weight: bold">inactive</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            </c:if>
+                                                            <c:if test="${u.role == 1}">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group form-group-default" >
+                                                                        <label>Status</label>
+                                                                        <c:if test="${u.status == 1}">
+                                                                        <div style="margin:5px 0px;color: green;font-weight: bold">active</div>
+                                                                        </c:if>
+                                                                        <c:if test="${u.status == 0}">
+                                                                        <div style="margin:5px 0px;color: red;font-weight: bold">inactive</div>
+                                                                        </c:if>
+                                                                        <input
+                                                                        name="status"
+                                                                        type="text"
+                                                                        value="${u.status}"
+                                                                        class="form-control"
+                                                                        hidden
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                     <input type="text" name="userid" value="${u.userID}" hidden="">
@@ -317,9 +342,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-        document.querySelector('.close').editEventListener('click', function () {
-            $('#editUserModal').modal('hide');
-        });
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editUserModal').modal('hide');
+                                                    });
     </script>
     <script>
         function doClose() {
@@ -334,11 +359,24 @@
     <script>
         function validate() {
             var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-            if (!regex1.test(email)) {
+            var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!regex.test(email)) {
                 alert("Please enter a valid Email address (example@gmail.com)");
                 document.getElementById("email").focus();
+                return false;
+            }
+            var phone = document.getElementById("phone").value;
+            var regex1 = /^\d{10}$/;
+            var identification = document.getElementById("identification").value;
+            var regex2 = /^\d{12}$/;
+            if (!regex1.test(phone)) {
+                alert("Please enter a valid phone number with 10 digit");
+                document.getElementById("phone").focus();
+                return false;
+            }
+            if (!regex2.test(identification)) {
+                alert("Please enter a valid identification number with 12 digit");
+                document.getElementById("identification").focus();
                 return false;
             }
             return true;

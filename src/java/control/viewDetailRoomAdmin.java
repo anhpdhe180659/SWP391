@@ -63,8 +63,7 @@ public class viewDetailRoomAdmin extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        }
-        if (session.getAttribute("role") != null && session.getAttribute("role").equals("2")) {
+        } else if ((int)session.getAttribute("role") !=1) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

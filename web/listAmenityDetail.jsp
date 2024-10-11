@@ -152,8 +152,6 @@
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer border-0">
@@ -189,14 +187,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${sessionScope.listAmenityDetail}" var="a">
+                                                  <c:forEach items="${listAmenityDetail}" var="a">
                                                     <tr>
-                                                        <td>${a.RoomID}</td>
-                                                        <td>${a.Quantity}</td>
+                                                        <td>${a.roomID}</td>
+                                                        <td>${a.quantity}</td>
                                                         
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="editAmenityDetail?roomid=${a.RoomID}" >
+                                                                <a href="editAmenityDetail?roomid=${a.roomID}" >
                                                                     <button
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
@@ -212,7 +210,7 @@
                                                                     title=""
                                                                     class="btn btn-link btn-danger"
                                                                     data-original-title="Remove"
-                                                                    onclick="doDelete(${a.RoomID})"
+                                                                    onclick="doDelete(${a.roomID})"
                                                                     >
                                                                     <i class="fa fa-times"></i>
                                                                 </button>
@@ -221,57 +219,8 @@
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
-                                        </table>
+                                        </table>                               
                                     </div>
-                                </div>
-                                <c:set value="${sessionScope.currentindex}" var="index" />
-                                <c:set value="${sessionScope.Nopage}" var="Nopage" />
-                                <div class="card-body" >
-                                    <div class="demo">
-                                        <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
-                                            <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
-                                            <li class="page-item ${index < 2 ? 'disabled' :'' } ">
-                                                <a class="page-link" href="listUser?index=${index-1}" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                    <span class="sr-only">Previous</span>
-                                                </a>
-                                            </li>
-                                            <c:choose>
-                                                <c:when test="${index <= 3}">
-                                                    <c:set var="startPage" value="1" />
-                                                    <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
-                                                </c:when>
-                                                <c:when test="${index > Nopage - 3}">
-                                                    <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
-                                                    <c:set var="endPage" value="${Nopage}" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="startPage" value="${index - 2}" />
-                                                    <c:set var="endPage" value="${index + 2}" />
-                                                </c:otherwise>
-                                            </c:choose>
-
-                                            <c:forEach var="p" begin="${startPage}" end="${endPage}">
-                                                <c:if test="${index == p}">
-                                                    <li class="page-item active">
-                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
-                                                    </li>
-                                                </c:if>
-                                                <c:if test="${index != p}">
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="listUser?index=${p}">${p}</a>
-                                                    </li>
-                                                </c:if>
-                                            </c:forEach>
-                                            <li class="page-item ${index < Nopage ? '' :'disabled' }" >
-                                                <a class="page-link" href="listUser?index=${index+1}" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                    <span class="sr-only">Next</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -328,7 +277,7 @@
         function doDelete(userid) {
             var option = confirm("Are you sure to unactive this?");
             if (option === true) {
-                window.location = "deleteUser?userid=" + userid;
+                window.location = "deleteAmenityDetail?roomid=" + userid;
             }
         }
     </script>

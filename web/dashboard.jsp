@@ -20,6 +20,7 @@
             href="img/logo/favicon.png"
             type="image/x-icon"
             />
+        
 
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
@@ -164,7 +165,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-secondary bubble-shadow-small"
+                                                    class="icon-big text-center icon-secondary bubble-shadow-small" 
                                                     >
                                                     <i class="far fa-check-circle"></i>
                                                 </div>
@@ -228,7 +229,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-secondary bubble-shadow-small"style="background-color: #f25285"
+                                                    class="icon-big text-center icon-secondary bubble-shadow-small"style="background-color: slateblue"
                                                     >
                                                     <i class="fas fa-user-check"></i>
                                                 </div>

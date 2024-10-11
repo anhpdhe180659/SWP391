@@ -136,7 +136,7 @@
                             </tr>
                         </table> 
 
-                        <a href="updateProfileUser?empid=${requestScope.employee.empID}">Update Profile</a>
+                        <a href="updateProfileUser?userId=${requestScope.e.UserID}">Update Profile</a>
                     </div>
                 </div>
             </div>
