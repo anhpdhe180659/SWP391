@@ -3,6 +3,7 @@ package util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+   
 public class PasswordUtils {
     public static void main(String[] args) throws NoSuchAlgorithmException {
         String pass = hashPassword("1");

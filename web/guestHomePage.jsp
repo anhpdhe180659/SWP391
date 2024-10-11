@@ -55,18 +55,21 @@
             <div class="header-container">
                 <nav class="navbar">
                     <div class="container-fluid row">
-                        <div class="logo col-md-3 col-sm-12">
+                        <div class="logo col-md-2 col-sm-12">
                             <a href="#">
                                 <img src="img/logo/logo.png" alt="logo" width="120" >
                             </a>
                         </div>
-                        <div class="navbar-link col-md-3 col-sm-12">
+                        <div class="navbar-link col-md-2 col-sm-12">
                             <a href="#about">About Us</a>
                         </div>
-                        <div class="navbar-link col-md-3 col-sm-12">
+                        <div class="navbar-link col-md-2 col-sm-12">
                             <a href="#contact">For Booking</a>
+                        </div> 
+                          <div class="navbar-link col-md-2 col-sm-12">
+                            <a href="#contact">FeedBack</a>
                         </div>
-                        <div class="login-area col-md-3 col-sm-12">
+                        <div class="login-area col-md-2 col-sm-12">
                             <a href="login.jsp" role="button" class="btn btn-outline-primary">Login</a>
                         </div>
                     </div>
