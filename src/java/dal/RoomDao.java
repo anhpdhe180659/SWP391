@@ -38,6 +38,33 @@ public class RoomDao extends DBContext {
         return allRoom;
     }
 
+    public List<Room> getAllRoomsAvailable() {
+        List<Room> allRoom = new ArrayList<>();
+        String query = """
+                       SELECT [RoomID]
+                             ,[RoomNumber]
+                             ,[CleanID]
+                             ,[TypeID]
+                             ,r.[StatusID]
+                             , rs.StatusName
+                         FROM [Room] r INNER JOIN RoomStatus rs
+                         ON rs.StatusID = r.StatusID
+                         WHERE rs.StatusName like 'Available'""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allRoom.add(new Room(rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allRoom;
+    }
+
     public List<Room> loadMore(int index, int typeId, int statusId, int cleanId) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
