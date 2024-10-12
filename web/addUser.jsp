@@ -207,7 +207,6 @@
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
-
                                                             <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Username</label>
@@ -353,7 +352,7 @@
             var phone = document.getElementById("phone").value;
             var regex1 = /^\d{10}$/;
             var identification = document.getElementById("identification").value;
-            var regex2 = /^\d{12}$/;
+            var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
             if (!regex1.test(phone)) {
                 alert("Please enter a valid phone number with 10 digit");
                 document.getElementById("phone").focus();

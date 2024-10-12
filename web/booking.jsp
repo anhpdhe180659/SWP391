@@ -96,7 +96,7 @@
                                     <div class="card-header">
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
-                                    <form action="booking" method="POST">
+                                    <form action="booking" method="POST" onsubmit="return validate()">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
@@ -123,7 +123,9 @@
                                                                     class="form-control"
                                                                     id="name"
                                                                     name="name"
+                                                                    maxlength="100"
                                                                     placeholder="Enter guest's full name"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -133,7 +135,9 @@
                                                                     class="form-control"
                                                                     id="phone"
                                                                     name="phone"
+                                                                    maxlength="50"
                                                                     placeholder="Enter phone number"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -143,10 +147,11 @@
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
+                                                                    maxlength="50"
                                                                     placeholder="Enter nationality"
+                                                                    required
                                                                     />
                                                             </div>
-
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
                                                             <div class="form-group">
@@ -154,9 +159,11 @@
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
-                                                                    id="iden"
+                                                                    id="identification"
                                                                     name="identification"
+                                                                    maxlength="20"
                                                                     placeholder="Enter identification"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -166,7 +173,9 @@
                                                                     class="form-control"
                                                                     id="address"
                                                                     name="address"
+                                                                    maxlength="200"
                                                                     placeholder="Enter address"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -174,8 +183,9 @@
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
-                                                                    id="dob"
-                                                                    name="dob"
+                                                                    id="birthday"
+                                                                    name="birthday"
+                                                                    required
                                                                     />
                                                             </div>
                                                         </div>
@@ -187,6 +197,7 @@
                                                                     class="form-control"
                                                                     name="checkindate"
                                                                     placeholder="Enter identification"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -196,6 +207,7 @@
                                                                     class="form-control"
                                                                     name="checkoutdate"
                                                                     placeholder="Enter address"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -207,6 +219,7 @@
                                                                             type="radio"
                                                                             name="gender"
                                                                             id="flexRadioDefault1"
+                                                                            value="1"
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
@@ -222,6 +235,7 @@
                                                                             name="gender"
                                                                             id="flexRadioDefault2"
                                                                             checked
+                                                                            value="0"
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
@@ -240,6 +254,7 @@
                                                                     type="time"
                                                                     class="form-control"
                                                                     name="checkintime"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -248,6 +263,7 @@
                                                                     type="time"
                                                                     class="form-control"
                                                                     name="checkouttime"
+                                                                    required
                                                                     />
                                                             </div>
                                                         </div>
@@ -366,6 +382,32 @@
 
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo2.js"></script>
+        <script>
+        function validate() {
+            var email = document.getElementById("email").value;
+            var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!regex.test(email)) {
+                alert("Please enter a valid Email address (example@gmail.com)");
+                document.getElementById("email").focus();
+                return false;
+            }
+            var phone = document.getElementById("phone").value;
+            var regex1 = /^\d{10}$/;
+            var identification = document.getElementById("identification").value;
+            var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+            if (!regex1.test(phone)) {
+                alert("Please enter a valid phone number with 10 digit");
+                document.getElementById("phone").focus();
+                return false;
+            }
+            if (!regex2.test(identification)) {
+                alert("Please enter a valid identification number with 12 digit");
+                document.getElementById("identification").focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
                 row.addEventListener('click', function (e) {
