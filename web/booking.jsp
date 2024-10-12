@@ -266,6 +266,17 @@
                                                                     required
                                                                     />
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
+                                                                <input
+                                                                    type="number"
+                                                                    class="form-control"
+                                                                    min="0"
+                                                                    max="2000000000"
+                                                                    name="deposit"
+                                                                    required
+                                                                    />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

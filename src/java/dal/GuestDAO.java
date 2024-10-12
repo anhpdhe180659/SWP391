@@ -60,6 +60,40 @@ public class GuestDAO extends DBContext {
         return guests;
     }
 
+    public Guest getNewGuest() {
+        Guest guest = new Guest();
+        String sql = """
+                     SELECT TOP(1) [GuestID]
+                           ,[Name]
+                           ,[DateOfBirth]
+                           ,[Sex]
+                           ,[Address]
+                           ,[Phone]
+                           ,[Identification]
+                           ,[Nationality]
+                           ,[isHidden]
+                       FROM [HotelManagement].[dbo].[Guest]
+                       ORDER BY [GuestID] DESC;""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                guest.setGuestID(rs.getInt("GuestID"));
+                guest.setName(rs.getString("Name"));
+                guest.setDateOfBirth(rs.getDate("DateOfBirth").toLocalDate());
+                guest.setSex(rs.getInt("Sex"));
+                guest.setAddress(rs.getString("Address"));
+                guest.setPhone(rs.getString("Phone"));
+                guest.setIdentification(rs.getString("Identification"));
+                guest.setNationality(rs.getString("Nationality"));
+                guest.setIsHidden(rs.getInt("isHidden"));
+            }
+        } catch (Exception e) {
+            System.out.println("Connect error");
+        }
+        return guest;
+    }
+
     public void addGuest(Guest guest) {
         String query = """
                        INSERT INTO [dbo].[Guest]

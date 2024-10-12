@@ -5,6 +5,7 @@
 package control;
 
 import dal.BookingDAO;
+import dal.GuestDAO;
 import dal.RoomDao;
 import dal.UserDAO;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import model.Guest;
 import model.Room;
 import model.User;
 
@@ -86,52 +88,34 @@ public class booking extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             HttpSession session = request.getSession();
-            UserDAO udao = new UserDAO();
+            User receptionist = (User) session.getAttribute("user");
+            GuestDAO gdao= new GuestDAO();
+            BookingDAO bdao = new BookingDAO();
+            Guest guest = new Guest();
+            String Name = request.getParameter("name");guest.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");guest.setDateOfBirth(LocalDate.parse(DateOfBirth));
+            int Sex = Integer.parseInt(request.getParameter("gender"));guest.setSex(Sex);
+            String Address = request.getParameter("address");guest.setAddress(Address);
+            String Phone = request.getParameter("phone");guest.setPhone(Phone);
+            String Identification = request.getParameter("identification");guest.setIdentification(Identification);
+            String Nationality = request.getParameter("nationality");guest.setNationality(Nationality);
+            gdao.addGuest(guest);
+            Guest newGuest = gdao.getNewGuest();
+            List<Guest> listGuest = gdao.getAllGuests();
             
-            User user = new User();
-            String email = request.getParameter("email");
-            user.setEmail(email);
-            int role = Integer.parseInt(request.getParameter("role"));
-            user.setRole(role);
-            int status = Integer.parseInt(request.getParameter("status"));
-            user.setStatus(status);
-            String Name = request.getParameter("name");
-            user.setName(Name);
-            String DateOfBirth = request.getParameter("birthday");
-            user.setDateOfBirth(DateOfBirth);
-            int Sex = Integer.parseInt(request.getParameter("sex"));
-            user.setSex(Sex);
-            String Address = request.getParameter("address");
-            user.setAddress(Address);
-            String Phone = request.getParameter("phone");
-            user.setPhone(Phone);
-            String Identification = request.getParameter("identification");
-            user.setIdentification(Identification);
-            String StartDate = request.getParameter("startdate");
-            user.setStartDate(StartDate);
-            int Salary = Integer.parseInt(request.getParameter("salary"));
-            user.setSalary(Salary);
-
-            List<User> listUser = udao.getAllUser();
-
             String checkindate = request.getParameter("checkindate");
             String checkoutdate = request.getParameter("checkoutdate");
             String checkintime = request.getParameter("checkintime");
             String checkouttime = request.getParameter("checkouttime");
-            // Chuyển đổi thành LocalDate và LocalTime
+            // Chuyen đoi thanh LocalDate và LocalTime
             LocalDate inDate = LocalDate.parse(checkindate);
             LocalDate outDate = LocalDate.parse(checkoutdate);
-            
             LocalTime inTime = LocalTime.parse(checkintime);
             LocalTime outTime = LocalTime.parse(checkouttime);
-            
-//            Timestamp a = Timestamp.class.cast(out);
             LocalDateTime checkInDateTime = LocalDateTime.of(inDate, inTime);
             LocalDateTime checkOutDateTime = LocalDateTime.of(outDate, outTime);
-//            out.print("Combined date time checkin: " + checkInDateTime);
-//            out.print("Combined date time checkout: " + checkOutDateTime);
+            int deposit = Integer.parseInt(request.getParameter("deposit"));
             
-            BookingDAO bdao = new BookingDAO();
             
             bdao.addBookingRoom(3, 1, 2, checkInDateTime, checkOutDateTime);
             
