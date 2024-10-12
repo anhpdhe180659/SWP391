@@ -6,6 +6,7 @@ package control;
 
 import dal.BookingDAO;
 import dal.GuestDAO;
+import dal.RoomDao;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import java.util.List;
 import model.Booking;
 import model.BookingRoom;
 import model.Guest;
+import model.Room;
 import model.User;
 
 /**
@@ -42,14 +44,26 @@ public class bookingDetail extends HttpServlet {
         BookingDAO bdao = new BookingDAO();
         GuestDAO gdao = new GuestDAO();
         UserDAO udao = new UserDAO();
+        RoomDao rdao = new RoomDao();
         int bookingid = 0;
+        
         if(request.getParameter("bookingid") != null){
             bookingid = Integer.parseInt(request.getParameter("bookingid"));
         }
+        Booking booking = bdao.getBookingByBookingID(bookingid);
         List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
         
-        session.setAttribute("BookingDetail", listBookingRoom);
+        for (BookingRoom book : listBookingRoom) {
+            Room room = rdao.findRoomById(book.getRoomID());
+            room.getRoomNumber();
+            book.getCheckInDate();
+            book.getCheckOutDate();
+            
+        }
         
+        Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
+        session.setAttribute("guest", guest);
+        session.setAttribute("listBookingRoom", listBookingRoom);
         
         response.sendRedirect("bookingDetail.jsp");
     }

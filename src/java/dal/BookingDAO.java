@@ -111,7 +111,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("RoomID"),
                         rs.getInt("Hour"),
                         rs.getTimestamp("CheckInDate").toLocalDateTime(),
-                        rs.getTimestamp("CheckInDate").toLocalDateTime())
+                        rs.getTimestamp("CheckOutDate").toLocalDateTime())
                 );
             }
         } catch (SQLException e) {
@@ -203,6 +203,37 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return bookingid;
+    }
+
+    public Booking getBookingByBookingID(int bookingid) {
+        Booking booking = null;
+        String query = """
+                       SELECT [BookingID]
+                             ,[GuestID]
+                             ,[Deposit]
+                             ,[CheckInStatus]
+                             ,[PaidStatus]
+                             ,[UserID]
+                         FROM [Booking]
+                       WHERE BookingID = ?
+                       """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                booking = new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return booking;
+        
     }
 
 }

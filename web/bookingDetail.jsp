@@ -8,6 +8,8 @@
 <%@page import="model.*" %>
 <%@page import="dal.*" %>
 <%@page import="java.util.*" %>
+<%@ page import="java.time.LocalDateTime"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
 <!DOCTYPE html> 
 <html lang="en">
     <head>
@@ -58,8 +60,11 @@
                         </div>
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header"><% Guest guest = (Guest) session.getAttribute("guest"); %>
                                     <div class="d-flex align-items-center">
+                                        <div class="card-header">
+                                            <h4 class="card-title" style="color: blueviolet">  Guest Name: <%= guest.getName()%></h4>
+                                        </div>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
                                             <i class="fas fa-angle-left "></i> Back to List
                                         </button>
@@ -74,43 +79,43 @@
                                             >
                                             <thead>
                                                 <tr>
-                                                    <th>BookingID</th>
-                                                    <th>Guest Name</th>
-                                                    <th>Receptionist</th>
-                                                    <th>Paid Status</th>
+                                                    <th>Number</th>
+                                                    <th>ROOMNAME</th>
+                                                    <th>CHECKIN DATE</th>
+                                                    <th>CHECKOUT DATE</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <%
-                                                    GuestDAO gdao = new GuestDAO();UserDAO udao = new UserDAO();
-                                                    List<Booking> listBooking = (List<Booking>) session.getAttribute("BookingDetail");
-                                                    
-                                                    for (Booking book : listBooking) {
-                                                    Guest guest = gdao.getGuestByGuestID(book.getGuestID());
-                                                    User user = udao.getUserByID(book.getUserID());
+                                                    GuestDAO gdao = new GuestDAO();UserDAO udao = new UserDAO();RoomDao rdao = new RoomDao();
+                                                    List<BookingRoom> listBookingRoom = (List<BookingRoom>) session.getAttribute("listBookingRoom");
+                                                    int i = 1;
+                                                    for (BookingRoom book : listBookingRoom) {
+                                                    Room room = rdao.findRoomById(book.getRoomID());
                                                 %>
                                                 <tr>
-                                                    <td><%= book.getBookingID()%></td>
+                                                    <td><%= i %></td>
+                                                    <td><%= room.getRoomNumber() %></td>
                                                     <!-- Room Type -->
+                                                    <% 
+                                                        // Assuming book.getCheckInDate() returns a LocalDateTime
+                                                        LocalDateTime checkInDate = book.getCheckInDate();  
+                                                        LocalDateTime CheckOutDate = book.getCheckOutDate();  
+                                                        // Define the desired formatter
+                                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                                                        // Format the LocalDateTime to the desired string format
+                                                        String indate = checkInDate.format(formatter);
+                                                        String outdate = CheckOutDate.format(formatter);
+                                                    %>
                                                     <td>
-                                                        <select disabled class="form-select update text-bg-light" name="typeId" data-field="typeId">
-                                                            <option value="1" ><%= guest.getName()%></option>
-                                                        </select>
+                                                        <%= indate %>
                                                     </td>
-                                                    <!-- Room Capacity -->
                                                     <td>
-                                                        <select disabled class="form-select update text-bg-light" name="cleanId" data-field="cleanId">
-                                                            <option value="1"><%= user.getName()%></option>
-                                                        </select>
-                                                    </td>
-                                                    <!-- Room Status -->
-                                                    <td>
-                                                        <select disabled class="form-select update text-bg-light" name="statusId" data-field="statusId">
-                                                            <option value="hello"><%= (book.getPaidStatus() == 1) ? "Paid" : "Unpaid" %></option>
-                                                        </select>
+                                                        <%= outdate %>
                                                     </td>
                                                 </tr>
                                                 <%
+                                                    i++;
                                                     }
 
                                                 %>
