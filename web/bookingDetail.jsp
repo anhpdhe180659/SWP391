@@ -1,3 +1,8 @@
+<%-- 
+    Document   : bookingDetail
+    Created on : Oct 12, 2024, 7:32:03 PM
+    Author     : nhatk
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="model.*" %>
@@ -7,7 +12,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Booking</title>
+        <title>Booking Detail</title>
         <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
         <link rel="icon" href="img/logo/favicon.png" type="image/x-icon" />
 
@@ -49,19 +54,17 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Booking List</h3>
+                            <h3 class="fw-bold mb-3">Booking Detail</h3>
                         </div>
-
                         <div class="col-md-12">
                             <div class="card">
-                                <!--                                <div class="card-header">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <h4 class="card-title">Add New Booking</h4>
-                                                                        <button class="btn btn-primary btn-round ms-auto" onclick="addBooking()">
-                                                                            <i class="fa fa-plus"></i> Add Booking
-                                                                        </button>
-                                                                    </div>
-                                                                </div>-->
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left "></i> Back to List
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table
@@ -75,13 +78,12 @@
                                                     <th>Guest Name</th>
                                                     <th>Receptionist</th>
                                                     <th>Paid Status</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <%
                                                     GuestDAO gdao = new GuestDAO();UserDAO udao = new UserDAO();
-                                                    List<Booking> listBooking = (List<Booking>) session.getAttribute("listBooking");
+                                                    List<Booking> listBooking = (List<Booking>) session.getAttribute("BookingDetail");
                                                     
                                                     for (Booking book : listBooking) {
                                                     Guest guest = gdao.getGuestByGuestID(book.getGuestID());
@@ -106,13 +108,6 @@
                                                         <select disabled class="form-select update text-bg-light" name="statusId" data-field="statusId">
                                                             <option value="hello"><%= (book.getPaidStatus() == 1) ? "Paid" : "Unpaid" %></option>
                                                         </select>
-                                                    </td>
-
-                                                    <!-- View Details Button -->
-                                                    <td style="text-align: center">
-                                                        <a href="bookingDetail?bookingid=<%= book.getBookingID()%>">
-                                                            <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
-                                                        </a>
                                                     </td>
                                                 </tr>
                                                 <%
@@ -144,6 +139,11 @@
         <script src="assets/js/plugin/datatables/datatables.min.js"></script>
         <!-- Kaiadmin JS -->
         <script src="assets/js/kaiadmin.min.js"></script>
+        <script>
+                                            function BackToList() {
+                                                window.location = "bookingList";
+                                            }
+        </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
                 row.addEventListener('click', function (e) {

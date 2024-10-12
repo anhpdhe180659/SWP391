@@ -94,6 +94,8 @@ public class BookingDAO extends DBContext {
         }
         return allBookingRoom;
     }
+
+
     public List<BookingRoom> getAllBookingRoomByBookingID(int bookingid) {
         List<BookingRoom> allBookingRoom = new ArrayList<>();
         String query = """
@@ -177,8 +179,8 @@ public class BookingDAO extends DBContext {
 
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();
-        System.out.println(bdao.getAllBooking());
-        
+        System.out.println(bdao.getAllBookingRoomByBookingID(3));
+
     }
 
     public int getNewBookingID() {
