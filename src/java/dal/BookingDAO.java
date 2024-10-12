@@ -49,13 +49,18 @@ public class BookingDAO extends DBContext {
                                   ,[CheckInDate]
                                   ,[CheckOutDate])
                             VALUES
-                                  (?,?,?,?,?)""";
+                                  (?,?,?,?,?);
+                       UPDATE [dbo].[Room]
+                          SET [StatusID] = 2
+                        WHERE RoomID = ?
+                       """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);
             pre.setInt(2, roomid);
             pre.setInt(3, numOfNight);
             pre.setTimestamp(4, Timestamp.valueOf(datein));
             pre.setTimestamp(5, Timestamp.valueOf(dateout));
+            pre.setInt(6, roomid);
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

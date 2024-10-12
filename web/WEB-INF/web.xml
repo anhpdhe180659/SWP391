@@ -68,6 +68,10 @@
         <servlet-name>booking</servlet-name>
         <servlet-class>control.booking</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>bookingList</servlet-name>
+        <servlet-class>control.bookingList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -239,6 +243,10 @@
     <servlet-mapping>
         <servlet-name>booking</servlet-name>
         <url-pattern>/booking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>bookingList</servlet-name>
+        <url-pattern>/bookingList</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

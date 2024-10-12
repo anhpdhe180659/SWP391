@@ -87,8 +87,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="icon-menu.jsp">
-                                            <span class="sub-item">Check in</span>
+                                        <a href="bookingList">
+                                            <span class="sub-item">View booking</span>
                                         </a>
                                     </li>
                                 </ul>

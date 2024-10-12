@@ -131,7 +131,6 @@ public class booking extends HttpServlet {
                 }
             }
             
-            
             response.sendRedirect("booking.jsp");
 
         } catch (Exception e) {
