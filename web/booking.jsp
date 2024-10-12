@@ -7,7 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -274,6 +274,7 @@
                                                                     min="0"
                                                                     max="2000000000"
                                                                     name="deposit"
+                                                                    placeholder="Enter deposit"
                                                                     required
                                                                     />
                                                             </div>
@@ -290,9 +291,9 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Room Number</th>
-                                                                    <th>Clean Status</th>
                                                                     <th>Type</th>
-                                                                    <th>Room Status</th>
+                                                                    <th>Capacity</th>
+                                                                    <th>Price/day</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
@@ -300,14 +301,6 @@
                                                                 <c:forEach items="${sessionScope.listRoomAvailable}" var="s">
                                                                     <tr>
                                                                         <td>${s.roomNumber}</td>
-                                                                        <!-- Clean Status -->
-                                                                        <td>
-                                                                            <select disabled class="form-select update text-bg-light" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
-                                                                                <option value="1" ${s.cleanId == 1 ? 'selected' : ''}>Not cleaned</option>
-                                                                                <option value="2" ${s.cleanId == 2 ? 'selected' : ''}>In progress</option>
-                                                                                <option value="3" ${s.cleanId == 3 ? 'selected' : ''}>Cleaned</option>
-                                                                            </select>
-                                                                        </td>
                                                                         <!-- Room Type -->
                                                                         <td>
                                                                             <select disabled class="form-select update text-bg-light" name="typeId" data-room-id="${s.roomId}" data-field="typeId">
@@ -318,12 +311,24 @@
                                                                                 <option value="5" ${s.typeId == 5 ? 'selected' : ''}>President Room</option>
                                                                             </select>
                                                                         </td>
+                                                                        <!-- Room Capacity -->
+                                                                        <td>
+                                                                            <select disabled class="form-select update text-bg-light" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
+                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}>1 bed</option>
+                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}>2 beds</option>
+                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}>4 beds</option>
+                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}>2 beds</option>
+                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}>2 beds</option>
+                                                                            </select>
+                                                                        </td>
                                                                         <!-- Room Status -->
                                                                         <td>
                                                                             <select disabled class="form-select update text-bg-light" name="statusId" data-room-id="${s.roomId}" data-field="statusId">
-                                                                                <option value="1" ${s.statusId == 1 ? 'selected' : ''}>Available</option>
-                                                                                <option value="2" ${s.statusId == 2 ? 'selected' : ''}>Occupied</option>
-                                                                                <option value="3" ${s.statusId == 3 ? 'selected' : ''}>Under Maintenance</option>
+                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}><fmt:formatNumber value="500000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}><fmt:formatNumber value="800000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}><fmt:formatNumber value="1500000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}><fmt:formatNumber value="2000000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}><fmt:formatNumber value="5000000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
                                                                             </select>
                                                                         </td>
                                                                         <!-- View Details Button -->

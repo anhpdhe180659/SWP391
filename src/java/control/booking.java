@@ -99,6 +99,7 @@ public class booking extends HttpServlet {
             String Phone = request.getParameter("phone");guest.setPhone(Phone);
             String Identification = request.getParameter("identification");guest.setIdentification(Identification);
             String Nationality = request.getParameter("nationality");guest.setNationality(Nationality);
+            // add new guest in database
             gdao.addGuest(guest);
             Guest newGuest = gdao.getNewGuest();
             List<Guest> listGuest = gdao.getAllGuests();
@@ -115,16 +116,22 @@ public class booking extends HttpServlet {
             LocalDateTime checkInDateTime = LocalDateTime.of(inDate, inTime);
             LocalDateTime checkOutDateTime = LocalDateTime.of(outDate, outTime);
             int deposit = Integer.parseInt(request.getParameter("deposit"));
+            // add information into booking table
+            bdao.addBooking(newGuest.getGuestID(), deposit, 1, receptionist.getUserID());
             
-            
-            bdao.addBookingRoom(3, 1, 2, checkInDateTime, checkOutDateTime);
-            
+            int bookingid = bdao.getNewBookingID();
+            out.print("Bookingid: " + bookingid);
             String[] selectedRoom = request.getParameterValues("roomSelected");
+            
             if (selectedRoom != null) {
-                
-                
-                
+                for (String roomID : selectedRoom) {
+                    int roomid = Integer.parseInt(roomID);
+                    // add information into bookingRoom table
+                    bdao.addBookingRoom(bookingid, roomid, 0, checkInDateTime, checkOutDateTime);
+                }
             }
+            
+            
             response.sendRedirect("booking.jsp");
 
         } catch (Exception e) {
