@@ -15,7 +15,7 @@ import model.Guest;
  * @author phand
  */
 public class GuestDAO extends DBContext {
-    
+
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
         List<Guest> l = dao.getAllGuests();
@@ -23,23 +23,24 @@ public class GuestDAO extends DBContext {
             System.out.println(guest);
         }
     }
-    
+
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();
-        String sql = "SELECT [GuestID]\n"
-                + "      ,[Name]\n"
-                + "      ,[DateOfBirth]\n"
-                + "      ,[Sex]\n"
-                + "      ,[Address]\n"
-                + "      ,[Phone]\n"
-                + "      ,[Identification]\n"
-                + "      ,[Nationality]\n"
-                + "      ,[isHidden]\n"
-                + "  FROM [dbo].[Guest]";
+        String sql = """
+                     SELECT [GuestID]
+                           ,[Name]
+                           ,[DateOfBirth]
+                           ,[Sex]
+                           ,[Address]
+                           ,[Phone]
+                           ,[Identification]
+                           ,[Nationality]
+                           ,[isHidden]
+                       FROM [dbo].[Guest]""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
-            
+
             while (rs.next()) {
                 Guest guest = new Guest();
                 guest.setGuestID(rs.getInt("GuestID"));
@@ -58,4 +59,33 @@ public class GuestDAO extends DBContext {
         }
         return guests;
     }
+
+    public void addGuest(Guest guest) {
+        String query = """
+                       INSERT INTO [dbo].[Guest]
+                                  ([Name]
+                                  ,[DateOfBirth]
+                                  ,[Sex]
+                                  ,[Address]
+                                  ,[Phone]
+                                  ,[Identification]
+                                  ,[Nationality]
+                                  ,[isHidden])
+                            VALUES
+                                  (?,?,?,?,?,?,?,?)""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setString(1, guest.getName());
+            pre.setString(2, guest.getDateOfBirth().toString());
+            pre.setInt(3, guest.getSex());
+            pre.setString(4, guest.getAddress());
+            pre.setString(5, guest.getPhone());
+            pre.setString(6, guest.getIdentification());
+            pre.setString(7, guest.getNationality());
+            pre.setInt(8, 0);
+            pre.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

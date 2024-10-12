@@ -132,6 +132,7 @@ public class booking extends HttpServlet {
 //            out.print("Combined date time checkout: " + checkOutDateTime);
             
             BookingDAO bdao = new BookingDAO();
+            
             bdao.addBookingRoom(3, 1, 2, checkInDateTime, checkOutDateTime);
             
             String[] selectedRoom = request.getParameterValues("roomSelected");
