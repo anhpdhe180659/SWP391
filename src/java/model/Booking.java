@@ -13,18 +13,29 @@ public class Booking {
     int GuestID;
     int Deposit;
     int CheckInStatus;
+    int PaidStatus;
     int UserID;
 
     public Booking() {
     }
 
-    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int UserID) {
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID) {
         this.BookingID = BookingID;
         this.GuestID = GuestID;
         this.Deposit = Deposit;
         this.CheckInStatus = CheckInStatus;
+        this.PaidStatus = PaidStatus;
         this.UserID = UserID;
     }
+
+    public int getPaidStatus() {
+        return PaidStatus;
+    }
+
+    public void setPaidStatus(int PaidStatus) {
+        this.PaidStatus = PaidStatus;
+    }
+
 
     public int getBookingID() {
         return BookingID;
@@ -68,8 +79,9 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", UserID=" + UserID + '}';
+        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", PaidStatus=" + PaidStatus + ", UserID=" + UserID + '}';
     }
+
 
     
 }

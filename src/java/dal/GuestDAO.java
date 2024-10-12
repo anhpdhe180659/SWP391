@@ -18,10 +18,7 @@ public class GuestDAO extends DBContext {
 
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
-        List<Guest> l = dao.getAllGuests();
-        for (Guest guest : l) {
-            System.out.println(guest);
-        }
+        System.out.println(dao.getGuestByGuestID(8));
     }
 
     public List<Guest> getAllGuests() {
@@ -76,6 +73,41 @@ public class GuestDAO extends DBContext {
                        ORDER BY [GuestID] DESC;""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                guest.setGuestID(rs.getInt("GuestID"));
+                guest.setName(rs.getString("Name"));
+                guest.setDateOfBirth(rs.getDate("DateOfBirth").toLocalDate());
+                guest.setSex(rs.getInt("Sex"));
+                guest.setAddress(rs.getString("Address"));
+                guest.setPhone(rs.getString("Phone"));
+                guest.setIdentification(rs.getString("Identification"));
+                guest.setNationality(rs.getString("Nationality"));
+                guest.setIsHidden(rs.getInt("isHidden"));
+            }
+        } catch (Exception e) {
+            System.out.println("Connect error");
+        }
+        return guest;
+    }
+
+    public Guest getGuestByGuestID(int guestid) {
+        Guest guest = new Guest();
+        String sql = """
+                     SELECT  [GuestID]
+                           ,[Name]
+                           ,[DateOfBirth]
+                           ,[Sex]
+                           ,[Address]
+                           ,[Phone]
+                           ,[Identification]
+                           ,[Nationality]
+                           ,[isHidden]
+                       FROM [Guest]
+                       WHERE GuestID = ?""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, guestid);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 guest.setGuestID(rs.getInt("GuestID"));

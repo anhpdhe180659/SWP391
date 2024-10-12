@@ -6,7 +6,9 @@
 package control;
 
 import dal.BookingDAO;
+import dal.GuestDAO;
 import dal.RoomDao;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +19,9 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Booking;
 import model.BookingRoom;
+import model.Guest;
 import model.Room;
+import model.User;
 
 /**
  *
@@ -37,7 +41,8 @@ public class bookingList extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         BookingDAO bdao = new BookingDAO();
-
+        GuestDAO gdao = new GuestDAO();
+        UserDAO udao = new UserDAO();
         List<Booking> listBooking = bdao.getAllBooking();
         session.setAttribute("listBooking", listBooking);
         List<BookingRoom> listBookingRoom = bdao.getAllBookingRoom();
@@ -45,10 +50,16 @@ public class bookingList extends HttpServlet {
         
         for (Booking book : listBooking) {
             book.getBookingID();
-            book.getDeposit();
-            book.getUserID();
-            book.getGuestID();
-            book.getCheckInStatus();
+            Guest guest = gdao.getGuestByGuestID(book.getGuestID());
+            guest.getName();
+            
+            if(book.getPaidStatus() == 1){
+            }else{
+                
+            }
+                    
+            User user = udao.getUserByID(book.getUserID());
+            user.getName();
         }
         
         

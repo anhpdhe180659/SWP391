@@ -49,6 +49,7 @@ public class BookingDAO extends DBContext {
                              ,[GuestID]
                              ,[Deposit]
                              ,[CheckInStatus]
+                             ,[PaidStatus]
                              ,[UserID]
                          FROM [Booking]""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -59,6 +60,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("GuestID"),
                         rs.getInt("Deposit"),
                         rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
                         rs.getInt("UserID")));
             }
         } catch (SQLException e) {
@@ -77,6 +79,29 @@ public class BookingDAO extends DBContext {
                              ,[CheckOutDate]
                          FROM [BookingRoom]""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBookingRoom.add(new BookingRoom(
+                        rs.getInt("BookingID"),
+                        rs.getInt("RoomID"),
+                        rs.getInt("Hour"),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime(),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime())
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBookingRoom;
+    }
+    public List<BookingRoom> getAllBookingRoomByBookingID(int bookingid) {
+        List<BookingRoom> allBookingRoom = new ArrayList<>();
+        String query = """
+                       SELECT [BookingID],[RoomID],[Hour],[CheckInDate],[CheckOutDate]
+                       FROM [BookingRoom]
+                       WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 allBookingRoom.add(new BookingRoom(
@@ -135,9 +160,10 @@ public class BookingDAO extends DBContext {
                                   ([GuestID]
                                   ,[Deposit]
                                   ,[CheckInStatus]
+                                  ,[PaidStatus]
                                   ,[UserID])
                             VALUES
-                                  (?,?,?,?)""";
+                                  (?,?,?,0,?)""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, guestid);
             pre.setInt(2, deposit);
@@ -152,6 +178,7 @@ public class BookingDAO extends DBContext {
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();
         System.out.println(bdao.getAllBooking());
+        
     }
 
     public int getNewBookingID() {
@@ -161,9 +188,10 @@ public class BookingDAO extends DBContext {
                              ,[GuestID]
                              ,[Deposit]
                              ,[CheckInStatus]
+                             ,[PaidStatus]
                              ,[UserID]
-                         FROM [dbo].[Booking]
-                        ORDER BY BookingID DESC""";
+                         FROM [Booking]
+                         ORDER BY BookingID DESC""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
