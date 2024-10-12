@@ -107,6 +107,8 @@
                                                         <a class="nav-link" id="pills-room-tab" data-bs-toggle="pill" href="#pills-room" role="tab" aria-controls="pills-room" aria-selected="false">Select room</a>
                                                     </li>
                                                 </ul>
+                                                <c:set value="${requestScope.noti}" var="noti"/>
+                                                <span style="margin-left: 25px; font-weight: bold;color: red">${noti}</span>
                                                 <button class="btn btn-primary btn-round ms-auto" type="submit">
                                                     Save
                                                 </button>
@@ -124,6 +126,8 @@
                                                                     id="name"
                                                                     name="name"
                                                                     maxlength="100"
+                                                                    pattern="^[A-Za-zÀ-ÿ\s'-]{1,100}$"
+                                                                    title="Name contains only character, length should less than 100"
                                                                     placeholder="Enter guest's full name"
                                                                     required
                                                                     />
@@ -147,6 +151,7 @@
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
+                                                                    pattern="[A-Za-z\s]{1,50}" title="Nationality contains only characters, spaces"
                                                                     maxlength="50"
                                                                     placeholder="Enter nationality"
                                                                     required
@@ -399,31 +404,39 @@
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo2.js"></script>
         <script>
-        function validate() {
-            var email = document.getElementById("email").value;
-            var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-            if (!regex.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                document.getElementById("email").focus();
-                return false;
+                                        // Get today's date in yyyy-mm-dd format
+                                        const today = new Date().toISOString().split('T')[0];
+
+                                        // Set the max attribute for the birthday input to today's date
+                                        document.getElementById("birthday").setAttribute("max", today);
+        </script>
+        <script>
+            function validate() {
+                var email = document.getElementById("email").value;
+                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                if (!regex.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    document.getElementById("email").focus();
+                    return false;
+                }
+                var phone = document.getElementById("phone").value;
+                var regex1 = /^\d{10}$/;
+
+                if (!regex1.test(phone)) {
+                    alert("Please enter a valid phone number with 10 digit");
+                    document.getElementById("phone").focus();
+                    return false;
+                }
+                var identification = document.getElementById("identification").value;
+                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+                if (!regex2.test(identification)) {
+                    alert("Please enter a valid identification number with 12 digit");
+                    document.getElementById("identification").focus();
+                    return false;
+                }
+                return true;
             }
-            var phone = document.getElementById("phone").value;
-            var regex1 = /^\d{10}$/;
-            var identification = document.getElementById("identification").value;
-            var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-            if (!regex1.test(phone)) {
-                alert("Please enter a valid phone number with 10 digit");
-                document.getElementById("phone").focus();
-                return false;
-            }
-            if (!regex2.test(identification)) {
-                alert("Please enter a valid identification number with 12 digit");
-                document.getElementById("identification").focus();
-                return false;
-            }
-            return true;
-        }
-    </script>
+        </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
                 row.addEventListener('click', function (e) {

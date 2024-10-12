@@ -89,21 +89,44 @@ public class booking extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User receptionist = (User) session.getAttribute("user");
-            GuestDAO gdao= new GuestDAO();
+            GuestDAO gdao = new GuestDAO();
             BookingDAO bdao = new BookingDAO();
             Guest guest = new Guest();
-            String Name = request.getParameter("name");guest.setName(Name);
-            String DateOfBirth = request.getParameter("birthday");guest.setDateOfBirth(LocalDate.parse(DateOfBirth));
-            int Sex = Integer.parseInt(request.getParameter("gender"));guest.setSex(Sex);
-            String Address = request.getParameter("address");guest.setAddress(Address);
-            String Phone = request.getParameter("phone");guest.setPhone(Phone);
-            String Identification = request.getParameter("identification");guest.setIdentification(Identification);
-            String Nationality = request.getParameter("nationality");guest.setNationality(Nationality);
-            // add new guest in database
-            gdao.addGuest(guest);
-            Guest newGuest = gdao.getNewGuest();
+            String Name = request.getParameter("name");
+            guest.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");
+            guest.setDateOfBirth(LocalDate.parse(DateOfBirth));
+            int Sex = Integer.parseInt(request.getParameter("gender"));
+            guest.setSex(Sex);
+            String Address = request.getParameter("address");
+            guest.setAddress(Address);
+            String Phone = request.getParameter("phone");
+            guest.setPhone(Phone);
+            String Identification = request.getParameter("identification");
+            guest.setIdentification(Identification);
+            String Nationality = request.getParameter("nationality");
+            guest.setNationality(Nationality);
+            int deposit = Integer.parseInt(request.getParameter("deposit"));
+            String noti = "Booking successfully!";
+
             List<Guest> listGuest = gdao.getAllGuests();
-            
+            for (Guest g : listGuest) {
+                if (g.getIdentification().equals(Identification)) {
+                    noti = "Identification has existed, please try again!";
+                    request.setAttribute("noti", noti);
+                    request.getRequestDispatcher("booking.jsp").forward(request, response);
+                    return;
+                }
+                if (g.getPhone().equals(Phone)) {
+                    noti = "Phonenumber has existed, please try again!";
+                    request.setAttribute("noti", noti);
+                    request.getRequestDispatcher("booking.jsp").forward(request, response);
+                    return;
+                }
+            }
+
+//            gdao.addGuest(guest);// add new guest in database 
+            Guest newGuest = gdao.getNewGuest();
             String checkindate = request.getParameter("checkindate");
             String checkoutdate = request.getParameter("checkoutdate");
             String checkintime = request.getParameter("checkintime");
@@ -115,13 +138,21 @@ public class booking extends HttpServlet {
             LocalTime outTime = LocalTime.parse(checkouttime);
             LocalDateTime checkInDateTime = LocalDateTime.of(inDate, inTime);
             LocalDateTime checkOutDateTime = LocalDateTime.of(outDate, outTime);
-            int deposit = Integer.parseInt(request.getParameter("deposit"));
-            // add information into booking table
-            bdao.addBooking(newGuest.getGuestID(), deposit, 1, receptionist.getUserID());
-            
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            if (checkInDateTime.isAfter(checkOutDateTime)) {
+                noti = "Check-in date/time cannot be after check-out date/time";
+                request.setAttribute("noti", noti);
+                request.getRequestDispatcher("booking.jsp").forward(request, response);
+                return;
+            } else if (checkInDateTime.isBefore(currentDateTime)) {
+                noti = "Check-in date/time cannot be before the current date/time";
+                request.setAttribute("noti", noti);
+                request.getRequestDispatcher("booking.jsp").forward(request, response);
+                return;
+            }
+            bdao.addBooking(newGuest.getGuestID(), deposit, 1, receptionist.getUserID());// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
-            
             if (selectedRoom != null) {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
@@ -129,10 +160,13 @@ public class booking extends HttpServlet {
                     bdao.addBookingRoom(bookingid, roomid, 0, checkInDateTime, checkOutDateTime);
                     bdao.updateStatusRoom(roomid);
                 }
+            }else{
+                noti = "Please select at least 1 room for booking!";
+                request.setAttribute("noti", noti);
+                request.getRequestDispatcher("booking.jsp").forward(request, response);
+                return;
             }
-            
-            response.sendRedirect("booking.jsp");
-
+            response.sendRedirect("bookingList");
         } catch (Exception e) {
             out.print(e);
         }

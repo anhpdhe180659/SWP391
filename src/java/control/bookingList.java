@@ -47,23 +47,6 @@ public class bookingList extends HttpServlet {
         session.setAttribute("listBooking", listBooking);
         List<BookingRoom> listBookingRoom = bdao.getAllBookingRoom();
         session.setAttribute("listBookingRoom", listBookingRoom);
-        
-        for (Booking book : listBooking) {
-            book.getBookingID();
-            Guest guest = gdao.getGuestByGuestID(book.getGuestID());
-            guest.getName();
-            
-            if(book.getPaidStatus() == 1){
-            }else{
-                
-            }
-                    
-            User user = udao.getUserByID(book.getUserID());
-            user.getName();
-        }
-        
-        
-        
         response.sendRedirect("listBooking.jsp");
     }
 
