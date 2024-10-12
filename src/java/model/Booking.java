@@ -9,5 +9,67 @@ package model;
  * @author phand
  */
 public class Booking {
+    int BookingID;
+    int GuestID;
+    int Deposit;
+    int CheckInStatus;
+    int UserID;
+
+    public Booking() {
+    }
+
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int UserID) {
+        this.BookingID = BookingID;
+        this.GuestID = GuestID;
+        this.Deposit = Deposit;
+        this.CheckInStatus = CheckInStatus;
+        this.UserID = UserID;
+    }
+
+    public int getBookingID() {
+        return BookingID;
+    }
+
+    public void setBookingID(int BookingID) {
+        this.BookingID = BookingID;
+    }
+
+    public int getGuestID() {
+        return GuestID;
+    }
+
+    public void setGuestID(int GuestID) {
+        this.GuestID = GuestID;
+    }
+
+    public int getDeposit() {
+        return Deposit;
+    }
+
+    public void setDeposit(int Deposit) {
+        this.Deposit = Deposit;
+    }
+
+    public int getCheckInStatus() {
+        return CheckInStatus;
+    }
+
+    public void setCheckInStatus(int CheckInStatus) {
+        this.CheckInStatus = CheckInStatus;
+    }
+
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int UserID) {
+        this.UserID = UserID;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", UserID=" + UserID + '}';
+    }
+
     
 }

@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import model.Booking;
+import model.BookingRoom;
 
 /**
  *
@@ -38,6 +40,57 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return allRoom;
+    }
+
+    public List<Booking> getAllBooking() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT [BookingID]
+                             ,[GuestID]
+                             ,[Deposit]
+                             ,[CheckInStatus]
+                             ,[UserID]
+                         FROM [Booking]""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("UserID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<BookingRoom> getAllBookingRoom() {
+        List<BookingRoom> allBookingRoom = new ArrayList<>();
+        String query = """
+                       SELECT  [BookingID]
+                             ,[RoomID]
+                             ,[Hour]
+                             ,[CheckInDate]
+                             ,[CheckOutDate]
+                         FROM [BookingRoom]""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBookingRoom.add(new BookingRoom(
+                        rs.getInt("BookingID"),
+                        rs.getInt("RoomID"),
+                        rs.getInt("Hour"),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime(),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime())
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBookingRoom;
     }
 
     public void addBookingRoom(int bookingid, int roomid, int hour, LocalDateTime datein, LocalDateTime dateout) {
@@ -98,8 +151,7 @@ public class BookingDAO extends DBContext {
 
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();
-        int bookingid = bdao.getNewBookingID();
-        System.out.println(bookingid);
+        System.out.println(bdao.getAllBooking());
     }
 
     public int getNewBookingID() {

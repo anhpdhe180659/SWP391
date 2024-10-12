@@ -5,12 +5,19 @@
 
 package control;
 
+import dal.BookingDAO;
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Booking;
+import model.BookingRoom;
+import model.Room;
 
 /**
  *
@@ -28,6 +35,23 @@ public class bookingList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        BookingDAO bdao = new BookingDAO();
+
+        List<Booking> listBooking = bdao.getAllBooking();
+        session.setAttribute("listBooking", listBooking);
+        List<BookingRoom> listBookingRoom = bdao.getAllBookingRoom();
+        session.setAttribute("listBookingRoom", listBookingRoom);
+        
+        for (Booking book : listBooking) {
+            book.getBookingID();
+            book.getDeposit();
+            book.getUserID();
+            book.getGuestID();
+            book.getCheckInStatus();
+        }
+        
+        
         
         response.sendRedirect("listBooking.jsp");
     }
