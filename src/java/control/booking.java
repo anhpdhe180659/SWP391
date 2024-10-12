@@ -120,7 +120,6 @@ public class booking extends HttpServlet {
             bdao.addBooking(newGuest.getGuestID(), deposit, 1, receptionist.getUserID());
             
             int bookingid = bdao.getNewBookingID();
-            out.print("Bookingid: " + bookingid);
             String[] selectedRoom = request.getParameterValues("roomSelected");
             
             if (selectedRoom != null) {
@@ -128,6 +127,7 @@ public class booking extends HttpServlet {
                     int roomid = Integer.parseInt(roomID);
                     // add information into bookingRoom table
                     bdao.addBookingRoom(bookingid, roomid, 0, checkInDateTime, checkOutDateTime);
+                    bdao.updateStatusRoom(roomid);
                 }
             }
             

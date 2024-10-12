@@ -40,27 +40,36 @@ public class BookingDAO extends DBContext {
         return allRoom;
     }
 
-    public void addBookingRoom(int bookingid, int roomid,  int numOfNight, LocalDateTime datein, LocalDateTime dateout) {
+    public void addBookingRoom(int bookingid, int roomid, int hour, LocalDateTime datein, LocalDateTime dateout) {
         String query = """
                        INSERT INTO [dbo].[BookingRoom]
                                   ([BookingID]
                                   ,[RoomID]
-                                  ,[NumOfNight]
+                                  ,[Hour]
                                   ,[CheckInDate]
                                   ,[CheckOutDate])
                             VALUES
-                                  (?,?,?,?,?);
-                       UPDATE [dbo].[Room]
-                          SET [StatusID] = 2
-                        WHERE RoomID = ?
+                                  (?,?,?,?,?)
                        """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);
             pre.setInt(2, roomid);
-            pre.setInt(3, numOfNight);
+            pre.setInt(3, hour);
             pre.setTimestamp(4, Timestamp.valueOf(datein));
             pre.setTimestamp(5, Timestamp.valueOf(dateout));
-            pre.setInt(6, roomid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateStatusRoom(int roomid) {
+        String query = """
+                       UPDATE [dbo].[Room]
+                        SET [StatusID] = 2
+                        WHERE RoomID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -111,7 +120,7 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return  bookingid;
+        return bookingid;
     }
 
 }
