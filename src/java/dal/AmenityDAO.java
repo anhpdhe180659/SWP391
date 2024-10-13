@@ -154,13 +154,15 @@ public void deleteAmenityDetailByRoomNumber(String roomNumber) {
     }
 }
 
-public AmenityDetail findByAmenityID(int amenID) {
-    String query = "SELECT * FROM AmenityDetail WHERE amenID = ?";
+public AmenityDetail findByAmenityIDAndRoomId(int roomId, int amenId) {
+    String query = "SELECT * FROM AmenityDetail WHERE roomID = ? and amenID = ?";
     AmenityDetail detail = null;
-
+    System.out.println("Room"+roomId);
+    System.out.println("amen"+amenId);
     try {
         PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, amenID);
+        ps.setInt(1, roomId);
+        ps.setInt(2,amenId);
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
@@ -228,7 +230,7 @@ public AmenityDetail findByRoomNumber(int roomNumber) {
 
 
     public static void main(String[] args) {
-        new AmenityDAO().deleteAmenity(1);
+       System.out.println( new AmenityDAO().findByAmenityIDAndRoomId(32, 7).getAmenID());
     }
 
 }

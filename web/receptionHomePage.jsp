@@ -158,70 +158,86 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <!--Transaction history-->
+                            <div class="col-md-12">
+                                <div class="card card-round">
+                                    <div class="card-header">
+                                        <div class="card-head-row card-tools-still-right">
+                                            <div class="card-title">Transaction History</div>
 
-
-                        <!--Transaction history-->
-                        <div class="col-md-12">
-                            <div class="card card-round">
-                                <div class="card-header">
-                                    <div class="card-head-row card-tools-still-right">
-                                        <div class="card-title">Transaction History</div>
-
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="table-responsive">
-                                        <!-- Projects table -->
-                                        <table class="table align-items-center mb-0">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th scope="col">Invoice Number</th>
-                                                    <th scope="col" class="text-end">Date & Time</th>
-                                                    <th scope="col" class="text-end">Amount</th>
-                                                    <th scope="col" class="text-end">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="${sessionScope.listInvoice}" var="i">
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <!-- Projects table -->
+                                            <table class="table align-items-center mb-0">
+                                                <thead class="thead-light">
                                                     <tr>
-                                                        <th scope="row">
-                                                            <button
-                                                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                                                                >
-                                                                <i class="fa fa-check"></i>
-                                                            </button>
-                                                            Payment from ${i.invoiceNo}
-                                                        </th>
-                                                        <td class="text-end">${i.paymentDate}</td>
-                                                        <td class="text-end">${i.finalAmount} VND</td>
-                                                        <td class="text-end">
-                                                            <span class="badge badge-success">Completed</span>
-                                                        </td>
+                                                        <th scope="col">Invoice Number</th>
+                                                        <th scope="col" class="text-end">Date & Time</th>
+                                                        <th scope="col" class="text-end">Amount</th>
+                                                        <th scope="col" class="text-end">Status</th>
                                                     </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items="${sessionScope.listInvoice}" var="i">
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <button
+                                                                    class="btn btn-icon btn-round btn-success btn-sm me-2"
+                                                                    >
+                                                                    <i class="fa fa-check"></i>
+                                                                </button>
+                                                                Payment from ${i.invoiceNo}
+                                                            </th>
+                                                            <td class="text-end">${i.paymentDate}</td>
+                                                            <td class="text-end">${i.finalAmount} VND</td>
+                                                            <td class="text-end">
+                                                                <span class="badge badge-success">Completed</span>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">Room Statistics</div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Room Statistics</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas
+                                                id="myChart"
+                                                style="width: 50%; height: 50%"
+                                                ></canvas>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="chart-container">
-                                        <canvas
-                                            id="myChart"
-                                            style="width: 50%; height: 50%"
-                                            ></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Guest Statistics</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas
+                                                id="guestChart"
+                                                style="width: 50%; height: 50%"
+                                                ></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
@@ -281,61 +297,100 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo.js"></script>
     <script src="assets/js/demo.js"></script>
+
     <script>
-            $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-                type: "line",
-                height: "70",
-                width: "100%",
-                lineWidth: "2",
-                lineColor: "#177dff",
-                fillColor: "rgba(23, 125, 255, 0.14)",
+            const underMaintenance = ${sessionScope.maintaince};
+            const available = ${sessionScope.available};
+            const occupied = ${sessionScope.occupied};
+            const cleaned = ${sessionScope.cleaned};
+            const notCleaned = ${sessionScope.notCleaned};
+            const inProgress = ${sessionScope.inProgress};
+            console.log(available);
+            var roomChart = document.getElementById('myChart').getContext('2d');
+            const data_chart = {
+                labels: [
+                    'Under Maintenance',
+                    'Available',
+                    'Occupied',
+                    'Not Cleaned',
+                    'Cleaned',
+                    'In Progress'
+                ],
+                datasets: [{
+                        axis: 'y',
+                        label: 'Room Statistics',
+                        data: [underMaintenance, available, occupied, notCleaned, cleaned, inProgress],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)', // Màu vàng cho giá trị 30
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+            };
+            var myChart = new Chart(roomChart, {
+                type: 'bar',
+                data: data_chart,
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
             });
 
-            $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-                type: "line",
-                height: "70",
-                width: "100%",
-                lineWidth: "2",
-                lineColor: "#f3545d",
-                fillColor: "rgba(243, 84, 93, .14)",
-            });
-
-            $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-                type: "line",
-                height: "70",
-                width: "100%",
-                lineWidth: "2",
-                lineColor: "#ffa534",
-                fillColor: "rgba(255, 165, 52, .14)",
-            });
     </script>
     <script>
-        const underMaintenance = ${sessionScope.maintaince};
-        const available = ${sessionScope.available};
-        const occupied = ${sessionScope.occupied};
-        console.log(available);
-        var ctx = document.getElementById('myChart').getContext('2d');
-        const data_chart = {
-            labels: [
-                'Under Maintenance',
-                'Available',
-                'Occupied'
-            ],
+        var guestChart = document.getElementById('guestChart').getContext('2d');
+        const guestData = ${sessionScope.guestByMonth};
+        if(guestData.length < 7){
+            for(let i = guestData.length; i <= 7; i++){
+                guestData.push(0);
+            }
+        }
+        guestData = guestData.toReversed();
+        console.log(guestData)
+    
+        function getLastMonths(count) {
+            const date = new Date();
+            const months = [];
+            for (let i = 0; i < count; i++) {
+                months.push(date.toLocaleString('default', {month: 'long'}));
+                date.setMonth(date.getMonth() - 1);
+            }
+            return months.reverse(); // Reverse to get chronological order
+        }
+
+        const labels = getLastMonths(7);
+        const data = {
+            labels: labels,
             datasets: [{
-                    data: [underMaintenance, available, occupied],
-                    backgroundColor: [
-                        '#FEFFA7', // Màu đỏ cho giá trị 10
-                        '#B6FFA1', // Màu xanh cho giá trị 20
-                        '#C96868' // Màu vàng cho giá trị 30
-                    ],
-                    borderWidth: 1
+                    label: 'My First Dataset',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
                 }]
         };
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: data_chart
-        });
-
+        const config = {
+            type: 'line',
+            data: data
+        };
+        var guest = new Chart(guestChart, config);
     </script>
 </body>
 </html>

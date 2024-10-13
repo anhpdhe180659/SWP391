@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
 import dal.AmenityDAO;
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,36 +19,39 @@ import model.AmenityDetail;
  *
  * @author admin
  */
-@WebServlet(name="EditAmenityDetailController", urlPatterns={"/editAmenityDetail"})
+@WebServlet(name = "EditAmenityDetailController", urlPatterns = {"/editAmenityDetail"})
 public class EditAmenityDetailController extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EditAmenityDetailController</title>");  
+            out.println("<title>Servlet EditAmenityDetailController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EditAmenityDetailController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet EditAmenityDetailController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -56,20 +59,23 @@ public class EditAmenityDetailController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-   String room = request.getParameter("roomid");
-             int      roomID = Integer.parseInt(room);
-        System.out.println("roomID in edit ========================"+roomID);
+            throws ServletException, IOException {
+        String room = request.getParameter("roomid");
+        int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
+        System.out.println("roomID in edit ========================" + roomID);
         AmenityDAO amenityDao = new AmenityDAO();
-    
-    AmenityDetail detail = amenityDao.findByAmenityID(roomID);
-        System.out.println(detail.getQuantity()+"=45454");
-    request.setAttribute("amenityDetail", detail);
-    request.getRequestDispatcher("editAmenitDetail.jsp").forward(request, response);
-    } 
+        int amenID = Integer.parseInt(request.getParameter("amenId"));
+        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID,amenID);
+        System.out.println(detail.getQuantity() + "=45454");
+        System.out.println(detail.getAmenID() + "sm");
+        System.out.println(detail.getRoomID() + "rm");
+        request.setAttribute("amenityDetail", detail);
+        request.getRequestDispatcher("editAmenitDetail.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -77,9 +83,9 @@ public class EditAmenityDetailController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-   String amenId = request.getParameter("amenid");
-   String roomId = request.getParameter("roomid");
+            throws ServletException, IOException {
+        String amenId = request.getParameter("amenid");
+        String roomId = request.getParameter("roomid");
         String quantityStr = request.getParameter("quantity");
         int quantity = 0;
         String message = "";
@@ -92,11 +98,11 @@ public class EditAmenityDetailController extends HttpServlet {
             request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
             return;
         }
-
+        System.out.println("amenid" + amenId);
+        System.out.println("sda" + roomId);
         AmenityDAO amenityDao = new AmenityDAO();
-
         try {
-            boolean success = amenityDao.updateQuantity(roomId,amenId, quantity);
+            boolean success = amenityDao.updateQuantity(roomId, amenId, quantity);
             if (success) {
                 message = "Quantity updated successfully.";
             } else {
@@ -108,11 +114,12 @@ public class EditAmenityDetailController extends HttpServlet {
 
         request.setAttribute("noti", message);
         request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-    
+
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

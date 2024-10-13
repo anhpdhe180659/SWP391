@@ -245,7 +245,6 @@
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
         <script src="assets/js/core/bootstrap.min.js"></script>
-
         <!-- jQuery Scrollbar -->
         <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
@@ -306,6 +305,7 @@
 
             });
         </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('.update').on('change', function () {
@@ -323,8 +323,12 @@
                             value: value
                         },
                         success: function (response) {
+                            console.log(swal);
                             // Handle success, you can show a notification or update the UI
-                            alert('Update successfully');
+                            swal({
+                                icon: "success",
+                                text: 'Update successful'
+                            });
                         },
                         error: function (xhr, status, error) {
                             // Handle error
@@ -333,6 +337,9 @@
                     });
                 });
             });
+        </script>
+        <script>
+            
         </script>
     </body>
 </html>

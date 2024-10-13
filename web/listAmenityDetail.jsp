@@ -195,7 +195,7 @@
                     <td style="display: none;">${a.amenID}</td> <!-- Hidden Amenity ID -->
                     <td>
                         <div class="form-button-action">
-                            <a href="editAmenityDetail?roomid=${a.amenID}">
+                            <a href="editAmenityDetail?roomid=${a.roomNumber}&amenId=${a.amenID}">
                                 <button
                                     type="button"
                                     data-bs-toggle="tooltip"

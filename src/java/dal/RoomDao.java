@@ -16,7 +16,28 @@ import java.util.ArrayList;
  * @author phand
  */
 public class RoomDao extends DBContext {
+    public Room getRoomByRoomNumber(String roomNum){
+        String query = """
+                            SELECT * FROM  Room WHERE  RoomNumber = ?
+                           """;
 
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setString(1, roomNum);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Room(
+                        rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
     public List<Room> getAllRooms() {
         List<Room> allRoom = new ArrayList<>();
         String query = """
@@ -149,6 +170,7 @@ public class RoomDao extends DBContext {
 
     public static void main(String[] args) {
         RoomDao dao = new RoomDao();
+        System.out.println("dsfsd"+dao.getRoomByRoomNumber("101").getRoomId());
         dao.loadMore(1, 0, 0, 0).forEach(System.out::println);
         System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1) / 5));
         Room room = new Room();
