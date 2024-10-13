@@ -16,7 +16,6 @@ public class NewsItem {
     private String content;
     private int userID;
     private Timestamp publishDate;
-    private Timestamp postDate;
     private String category;
     private boolean isActive;
     private Timestamp lastModified;
@@ -26,13 +25,12 @@ public class NewsItem {
 
     // Constructor with all fields
     public NewsItem(int newsID, String title, String content, int userID, Timestamp publishDate,
-                    Timestamp postDate, String category, boolean isActive, Timestamp lastModified) {
+                     String category, boolean isActive, Timestamp lastModified) {
         this.newsID = newsID;
         this.title = title;
         this.content = content;
         this.userID = userID;
         this.publishDate = publishDate;
-        this.postDate = postDate;
         this.category = category;
         this.isActive = isActive;
         this.lastModified = lastModified;
@@ -79,14 +77,6 @@ public class NewsItem {
         this.publishDate = publishDate;
     }
 
-    public Timestamp getPostDate() {
-        return postDate;
-    }
-
-    public void setPostDate(Timestamp postDate) {
-        this.postDate = postDate;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -119,7 +109,6 @@ public class NewsItem {
                 ", content='" + content + '\'' +
                 ", userID=" + userID +
                 ", publishDate=" + publishDate +
-                ", postDate=" + postDate +
                 ", category='" + category + '\'' +
                 ", isActive=" + isActive +
                 ", lastModified=" + lastModified +

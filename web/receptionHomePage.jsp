@@ -202,7 +202,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="col-md-6">
                                 <div class="card">
@@ -215,6 +214,29 @@
                                                 id="myChart"
                                                 style="width: 50%; height: 50%"
                                                 ></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Newest Notifications</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <ul>
+                                                <c:forEach var="news" items="${sessionScope.newsList}">
+                                                    <li>
+                                                        <span class="date">${news.publishDate}</span>
+                                                        <p><b>${news.title}</b></p>
+                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
+                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
+                                                           text-overflow: ellipsis;
+                                                           font-size:10px/* Hiển thị dấu ba chấm */">${news.content}</p>
+                                                    </li>
+                                                </c:forEach>
+                                            </ul> 
                                         </div>
                                     </div>
                                 </div>
@@ -235,40 +257,9 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
-
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="http://www.themekita.com">
-                                    ThemeKita
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Help </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Licenses </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright">
-                        2024, made with <i class="fa fa-heart heart text-danger"></i> by
-                        <a href="http://www.themekita.com">ThemeKita</a>
-                    </div>
-                    <div>
-                        Distributed by
-                        <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
     <!--   Core JS Files   -->
@@ -358,7 +349,7 @@
         var guestChart = document.getElementById('guestChart').getContext('2d');
         const guestData = ${sessionScope.guestByMonth};
         if (guestData.length < 7) {
-            for (let i = guestData.length+1; i <= 7; i++) {
+            for (let i = guestData.length + 1; i <= 7; i++) {
                 guestData.push(0);
             }
         }

@@ -11,14 +11,14 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Guest</title><!--  page only for manager  -->
+        <title>Notifications</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
             />
-        <link
+       <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -101,7 +101,7 @@
                                         <ul>
                                             <c:forEach var="news" items="${newsList}">
                                                 <li>
-                                                    <span class="date">${news.postDate}</span>
+                                                    <span class="date">${news.publishDate}</span>
                                                     <a href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
                                                 </li>
                                             </c:forEach>

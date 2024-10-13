@@ -40,11 +40,10 @@ public class CreateNewsServlet extends HttpServlet {
 
         // Assume publishDate is set to current time when the news is created
         Timestamp publishDate = new Timestamp(System.currentTimeMillis());
-        Timestamp postDate = publishDate;  // Same as publishDate for now
         Timestamp lastModified = publishDate;
 
         // Create a new NewsItem object with the form data
-        NewsItem newsItem = new NewsItem(0, title, content, userID, publishDate, postDate, category, isActive, lastModified);
+        NewsItem newsItem = new NewsItem(0, title, content, userID, publishDate, category, isActive, lastModified);
 
         // Save the news item using the DAO
         newsDAO.addNews(newsItem);
