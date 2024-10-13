@@ -6,6 +6,7 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import model.Guest;
@@ -19,6 +20,20 @@ public class GuestDAO extends DBContext {
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
         System.out.println(dao.getGuestByGuestID(8));
+//        Guest newGuest = new Guest();
+//        newGuest.setName("Nguyễn Văn SONNNNN");
+//        newGuest.setDateOfBirth(LocalDate.of(1990, 5, 20));
+//        newGuest.setSex(1); // Giới tính nam
+//        newGuest.setAddress("123 Đường ABC, Quận 1, TP.HCM");
+//        newGuest.setPhone("0909123456");
+//        newGuest.setIdentification("123456789");
+//        newGuest.setNationality("Việt Nam");
+//        newGuest.setIsHidden(0);
+//        dao.addGuest(newGuest);
+//        List<Guest> l = dao.getAllGuests();
+//        for (Guest guest : l) {
+//            System.out.println(guest);
+//        }
     }
 
     public List<Guest> getAllGuests() {
