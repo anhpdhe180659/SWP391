@@ -86,8 +86,13 @@
 
                 <div class="container">
                     <div class="page-inner">
+                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                            <i class="fas fa-angle-left"></i>
+                                            Back to list
+                                        </button>
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Amenity Detail</h3>
+                            
                         </div>
 
 <!--                        <div class="col-md-12">
@@ -337,6 +342,11 @@
                 $("#addUserModal").modal("hide");
             });
         });
+    </script>
+    <script>
+        function BackToList() {
+            window.location = "listAmenity";
+        }
     </script>
 
 </body>
