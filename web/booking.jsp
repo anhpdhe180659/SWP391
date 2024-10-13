@@ -7,7 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -96,7 +96,7 @@
                                     <div class="card-header">
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
-                                    <form action="booking" method="POST">
+                                    <form action="booking" method="POST" onsubmit="return validate()">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
@@ -107,6 +107,8 @@
                                                         <a class="nav-link" id="pills-room-tab" data-bs-toggle="pill" href="#pills-room" role="tab" aria-controls="pills-room" aria-selected="false">Select room</a>
                                                     </li>
                                                 </ul>
+                                                <c:set value="${requestScope.noti}" var="noti"/>
+                                                <span style="margin-left: 25px; font-weight: bold;color: red">${noti}</span>
                                                 <button class="btn btn-primary btn-round ms-auto" type="submit">
                                                     Save
                                                 </button>
@@ -123,7 +125,11 @@
                                                                     class="form-control"
                                                                     id="name"
                                                                     name="name"
+                                                                    maxlength="100"
+                                                                    pattern="^[A-Za-zÀ-ÿ\s'-]{1,100}$"
+                                                                    title="Name contains only character, length should less than 100"
                                                                     placeholder="Enter guest's full name"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -133,7 +139,9 @@
                                                                     class="form-control"
                                                                     id="phone"
                                                                     name="phone"
+                                                                    maxlength="50"
                                                                     placeholder="Enter phone number"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -143,10 +151,12 @@
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
+                                                                    pattern="[A-Za-z\s]{1,50}" title="Nationality contains only characters, spaces"
+                                                                    maxlength="50"
                                                                     placeholder="Enter nationality"
+                                                                    required
                                                                     />
                                                             </div>
-
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
                                                             <div class="form-group">
@@ -154,9 +164,11 @@
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
-                                                                    id="iden"
+                                                                    id="identification"
                                                                     name="identification"
+                                                                    maxlength="20"
                                                                     placeholder="Enter identification"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -166,7 +178,9 @@
                                                                     class="form-control"
                                                                     id="address"
                                                                     name="address"
+                                                                    maxlength="200"
                                                                     placeholder="Enter address"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -174,8 +188,9 @@
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
-                                                                    id="dob"
-                                                                    name="dob"
+                                                                    id="birthday"
+                                                                    name="birthday"
+                                                                    required
                                                                     />
                                                             </div>
                                                         </div>
@@ -187,6 +202,7 @@
                                                                     class="form-control"
                                                                     name="checkindate"
                                                                     placeholder="Enter identification"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -196,6 +212,7 @@
                                                                     class="form-control"
                                                                     name="checkoutdate"
                                                                     placeholder="Enter address"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -207,6 +224,7 @@
                                                                             type="radio"
                                                                             name="gender"
                                                                             id="flexRadioDefault1"
+                                                                            value="1"
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
@@ -222,6 +240,7 @@
                                                                             name="gender"
                                                                             id="flexRadioDefault2"
                                                                             checked
+                                                                            value="0"
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
@@ -240,6 +259,7 @@
                                                                     type="time"
                                                                     class="form-control"
                                                                     name="checkintime"
+                                                                    required
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -248,6 +268,19 @@
                                                                     type="time"
                                                                     class="form-control"
                                                                     name="checkouttime"
+                                                                    required
+                                                                    />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
+                                                                <input
+                                                                    type="number"
+                                                                    class="form-control"
+                                                                    min="0"
+                                                                    max="2000000000"
+                                                                    name="deposit"
+                                                                    placeholder="Enter deposit"
+                                                                    required
                                                                     />
                                                             </div>
                                                         </div>
@@ -263,9 +296,9 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Room Number</th>
-                                                                    <th>Clean Status</th>
                                                                     <th>Type</th>
-                                                                    <th>Room Status</th>
+                                                                    <th>Capacity</th>
+                                                                    <th>Price/day</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
@@ -273,14 +306,6 @@
                                                                 <c:forEach items="${sessionScope.listRoomAvailable}" var="s">
                                                                     <tr>
                                                                         <td>${s.roomNumber}</td>
-                                                                        <!-- Clean Status -->
-                                                                        <td>
-                                                                            <select disabled class="form-select update text-bg-light" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
-                                                                                <option value="1" ${s.cleanId == 1 ? 'selected' : ''}>Not cleaned</option>
-                                                                                <option value="2" ${s.cleanId == 2 ? 'selected' : ''}>In progress</option>
-                                                                                <option value="3" ${s.cleanId == 3 ? 'selected' : ''}>Cleaned</option>
-                                                                            </select>
-                                                                        </td>
                                                                         <!-- Room Type -->
                                                                         <td>
                                                                             <select disabled class="form-select update text-bg-light" name="typeId" data-room-id="${s.roomId}" data-field="typeId">
@@ -291,12 +316,24 @@
                                                                                 <option value="5" ${s.typeId == 5 ? 'selected' : ''}>President Room</option>
                                                                             </select>
                                                                         </td>
+                                                                        <!-- Room Capacity -->
+                                                                        <td>
+                                                                            <select disabled class="form-select update text-bg-light" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
+                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}>1 bed</option>
+                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}>2 beds</option>
+                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}>4 beds</option>
+                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}>2 beds</option>
+                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}>2 beds</option>
+                                                                            </select>
+                                                                        </td>
                                                                         <!-- Room Status -->
                                                                         <td>
                                                                             <select disabled class="form-select update text-bg-light" name="statusId" data-room-id="${s.roomId}" data-field="statusId">
-                                                                                <option value="1" ${s.statusId == 1 ? 'selected' : ''}>Available</option>
-                                                                                <option value="2" ${s.statusId == 2 ? 'selected' : ''}>Occupied</option>
-                                                                                <option value="3" ${s.statusId == 3 ? 'selected' : ''}>Under Maintenance</option>
+                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}><fmt:formatNumber value="500000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}><fmt:formatNumber value="800000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}><fmt:formatNumber value="1500000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}><fmt:formatNumber value="2000000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
+                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}><fmt:formatNumber value="5000000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
                                                                             </select>
                                                                         </td>
                                                                         <!-- View Details Button -->
@@ -366,6 +403,40 @@
 
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo2.js"></script>
+        <script>
+                                        // Get today's date in yyyy-mm-dd format
+                                        const today = new Date().toISOString().split('T')[0];
+
+                                        // Set the max attribute for the birthday input to today's date
+                                        document.getElementById("birthday").setAttribute("max", today);
+        </script>
+        <script>
+            function validate() {
+                var email = document.getElementById("email").value;
+                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                if (!regex.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    document.getElementById("email").focus();
+                    return false;
+                }
+                var phone = document.getElementById("phone").value;
+                var regex1 = /^\d{10}$/;
+
+                if (!regex1.test(phone)) {
+                    alert("Please enter a valid phone number with 10 digit");
+                    document.getElementById("phone").focus();
+                    return false;
+                }
+                var identification = document.getElementById("identification").value;
+                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+                if (!regex2.test(identification)) {
+                    alert("Please enter a valid identification number with 12 digit");
+                    document.getElementById("identification").focus();
+                    return false;
+                }
+                return true;
+            }
+        </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
                 row.addEventListener('click', function (e) {

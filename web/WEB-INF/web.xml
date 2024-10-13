@@ -71,6 +71,32 @@
     <servlet>
         <servlet-name>listRoomHK</servlet-name>
         <servlet-class>control.listRoomHK</servlet-class>
+        <servlet-name>bookingList</servlet-name>
+        <servlet-class>control.bookingList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>bookingDetail</servlet-name>
+        <servlet-class>control.bookingDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addGuest</servlet-name>
+        <servlet-class>control.addGuest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>hideGuest</servlet-name>
+        <servlet-class>control.hideGuest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>hiddenListGuest</servlet-name>
+        <servlet-class>control.hiddenListGuest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>restoreGuest</servlet-name>
+        <servlet-class>control.restoreGuest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewGuest</servlet-name>
+        <servlet-class>control.viewGuest</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
@@ -247,6 +273,32 @@
     <servlet-mapping>
         <servlet-name>listRoomHK</servlet-name>
         <url-pattern>/listRoomHK</url-pattern>
+        <servlet-name>bookingList</servlet-name>
+        <url-pattern>/bookingList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>bookingDetail</servlet-name>
+        <url-pattern>/bookingDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addGuest</servlet-name>
+        <url-pattern>/addGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>hideGuest</servlet-name>
+        <url-pattern>/hideGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>hiddenListGuest</servlet-name>
+        <url-pattern>/hiddenListGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>restoreGuest</servlet-name>
+        <url-pattern>/restoreGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewGuest</servlet-name>
+        <url-pattern>/viewGuest</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
