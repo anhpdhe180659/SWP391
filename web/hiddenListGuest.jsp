@@ -94,13 +94,8 @@
                                                     <td style="border-right: 1px solid #ddd;">${g.phone}</td>
                                                     <td style="border-right: 1px solid #ddd;">
                                                         <div class="form-button-action">
-                                                            <a href="restoreGuest?guestID=${g.guestID}">
-                                                                <button type="button" class="btn btn-link btn-success btn-lg">
-                                                                    <i class="fa fa-check"></i> Restore
-                                                                </button>
-                                                            </a>
-                                                            <button type="button" class="btn btn-link btn-danger" onclick="doDelete(${g.guestID})">
-                                                                <i class="fa fa-times"></i> Delete
+                                                            <button type="button" class="btn btn-link btn-success btn-lg" onclick="doRestore(${g.guestID})">
+                                                                <i class="fa fa-undo"></i> Restore
                                                             </button>
                                                             <a href="viewGuest?guestID=${g.guestID}">
                                                                 <button type="button" class="btn btn-link btn-info">
@@ -136,10 +131,10 @@
         <script src="assets/js/kaiadmin.min.js"></script>
 
         <script>
-            function doDelete(guestID) {
-                var option = confirm("Are you sure to delete this guest?");
+            function doRestore(guestID) {
+                var option = confirm("Are you sure to restore this guest?");
                 if (option === true) {
-                    window.location = "deleteGuest?guestID=" + guestID;
+                    window.location = "restoreGuest?guestID=" + guestID;
                 }
             }
 

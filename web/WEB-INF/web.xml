@@ -88,6 +88,10 @@
         <servlet-name>hiddenListGuest</servlet-name>
         <servlet-class>control.hiddenListGuest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>restoreGuest</servlet-name>
+        <servlet-class>control.restoreGuest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -279,6 +283,10 @@
     <servlet-mapping>
         <servlet-name>hiddenListGuest</servlet-name>
         <url-pattern>/hiddenListGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>restoreGuest</servlet-name>
+        <url-pattern>/restoreGuest</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
