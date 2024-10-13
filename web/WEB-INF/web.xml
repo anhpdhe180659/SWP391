@@ -92,6 +92,10 @@
         <servlet-name>restoreGuest</servlet-name>
         <servlet-class>control.restoreGuest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewGuest</servlet-name>
+        <servlet-class>control.viewGuest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -287,6 +291,10 @@
     <servlet-mapping>
         <servlet-name>restoreGuest</servlet-name>
         <url-pattern>/restoreGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewGuest</servlet-name>
+        <url-pattern>/viewGuest</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
