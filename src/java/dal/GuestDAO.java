@@ -19,21 +19,13 @@ public class GuestDAO extends DBContext {
 
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
-        System.out.println(dao.getGuestByGuestID(8));
-//        Guest newGuest = new Guest();
-//        newGuest.setName("Nguyễn Văn SONNNNN");
-//        newGuest.setDateOfBirth(LocalDate.of(1990, 5, 20));
-//        newGuest.setSex(1); // Giới tính nam
-//        newGuest.setAddress("123 Đường ABC, Quận 1, TP.HCM");
-//        newGuest.setPhone("0909123456");
-//        newGuest.setIdentification("123456789");
-//        newGuest.setNationality("Việt Nam");
-//        newGuest.setIsHidden(0);
-//        dao.addGuest(newGuest);
-//        List<Guest> l = dao.getAllGuests();
-//        for (Guest guest : l) {
-//            System.out.println(guest);
-//        }
+//        dao.updateGuestHiddenStatus(11, 1);       
+        List<Guest> l = dao.getHiddenGuest();
+        for (Guest guest : l) {
+            System.out.println(guest);
+        }
+//        System.out.println(dao.getGuestByGuestID(8));
+
     }
 
     public List<Guest> getAllGuests() {
@@ -167,6 +159,56 @@ public class GuestDAO extends DBContext {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void updateGuestHiddenStatus(int guestID, int isHidden) {
+        String query = """
+                   UPDATE [dbo].[Guest]
+                   SET [isHidden] = ?
+                   WHERE [GuestID] = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, isHidden); // 0: không ẩn, 1: ẩn
+            pre.setInt(2, guestID);
+            pre.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public List<Guest> getHiddenGuest() {
+        List<Guest> hiddenGuests = new ArrayList<>();
+        String sql = """
+                 SELECT  [GuestID]
+                       ,[Name]
+                       ,[DateOfBirth]
+                       ,[Sex]
+                       ,[Address]
+                       ,[Phone]
+                       ,[Identification]
+                       ,[Nationality]
+                       ,[isHidden]
+                 FROM [Guest]
+                 WHERE isHidden = 1""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Guest guest = new Guest();
+                guest.setGuestID(rs.getInt("GuestID"));
+                guest.setName(rs.getString("Name"));
+                guest.setDateOfBirth(rs.getDate("DateOfBirth").toLocalDate());
+                guest.setSex(rs.getInt("Sex"));
+                guest.setAddress(rs.getString("Address"));
+                guest.setPhone(rs.getString("Phone"));
+                guest.setIdentification(rs.getString("Identification"));
+                guest.setNationality(rs.getString("Nationality"));
+                guest.setIsHidden(rs.getInt("isHidden"));
+                hiddenGuests.add(guest);  // Add the hidden guest to the list
+            }
+        } catch (Exception e) {
+            System.out.println("Connect error: " + e.getMessage());
+        }
+        return hiddenGuests;
     }
 
 }

@@ -4,43 +4,35 @@
  */
 package control;
 
+import dal.GuestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Guest;
 
 /**
  *
  * @author LENOVO
  */
-public class deleteGuest extends HttpServlet {
+public class hideGuest extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet deleteGuest</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet deleteGuest at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+        GuestDAO dao = new GuestDAO();
+        int guestID = Integer.parseInt(request.getParameter("guestID"));
+        dao.updateGuestHiddenStatus(guestID, 1);
+        List<Guest> listGuest = dao.getAllGuests();
+        session.setAttribute("listGuest", listGuest);
+        response.sendRedirect("listGuest");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

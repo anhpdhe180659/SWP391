@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,10 +54,13 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
                                         <!--<h4 class="card-title">Add New Guest</h4>-->
-                                        <button class="btn btn-primary btn-round ms-auto" onclick="addGuest()">
+                                        <button class="btn btn-primary btn-round" onclick="addGuest()">
                                             <i class="fa fa-plus"></i> Add Guest
+                                        </button>
+                                        <button class="btn btn-primary btn-round" onclick="viewHiddenGuests()()">
+                                            <i class="fa fa-eye"></i> View Hidden Guests
                                         </button>
                                     </div>
                                 </div>
@@ -74,40 +79,43 @@
                                             </thead>
                                             <tbody>
                                                 <c:forEach items="${listGuest}" var="g">
-                                                    <tr>
-                                                        <td style="border-right: 1px solid #ddd;">${g.guestID}</td>
-                                                        <td style="border-right: 1px solid #ddd;">${g.name}</td>
-                                                        <td style="border-right: 1px solid #ddd;">${g.dateOfBirth}</td>
-                                                        <td style="border-right: 1px solid #ddd;">
-                                                            <c:choose>
-                                                                <c:when test="${g.sex == 1}">
-                                                                    <img src="assets/img/male-icon.png" alt="Male"/>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <img src="assets/img/female-icon.png" alt="Female"/>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </td>
-                                                        <td style="border-right: 1px solid #ddd;">${g.phone}</td>
-                                                        <td style="border-right: 1px solid #ddd;">
-                                                            <div class="form-button-action">
-                                                                <a href="editGuest?guestID=${g.guestID}">
-                                                                    <button type="button" class="btn btn-link btn-primary btn-lg">
-                                                                        <i class="fa fa-edit"></i>
+                                                    <c:if test="${g.isHidden == 0}">
+                                                        <tr>
+                                                            <td style="border-right: 1px solid #ddd;">${g.guestID}</td>
+                                                            <td style="border-right: 1px solid #ddd;">${g.name}</td>
+                                                            <td style="border-right: 1px solid #ddd;">${g.dateOfBirth}</td>
+                                                            <td style="border-right: 1px solid #ddd;">
+                                                                <c:choose>
+                                                                    <c:when test="${g.sex == 1}">
+                                                                        <img src="assets/img/male-icon.png" alt="Male"/>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <img src="assets/img/female-icon.png" alt="Female"/>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td style="border-right: 1px solid #ddd;">${g.phone}</td>
+                                                            <td style="border-right: 1px solid #ddd;">
+                                                                <div class="form-button-action">
+                                                                    <a href="editGuest?guestID=${g.guestID}">
+                                                                        <button type="button" class="btn btn-link btn-primary btn-lg">
+                                                                            <i class="fa fa-edit"></i>
+                                                                        </button>
+                                                                    </a>
+                                                                    <button type="button" class="btn btn-link btn-danger" onclick="doHidden(${g.guestID})">
+                                                                        <i class="fa fa-times"></i>
                                                                     </button>
-                                                                </a>
-                                                                <button type="button" class="btn btn-link btn-danger" onclick="doDelete(${g.guestID})">
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                                <a href="viewGuest?guestID=${g.guestID}">
-                                                                    <button type="button" class="btn btn-link btn-info">
-                                                                        <i class="fa fa-eye"></i> View Details
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                                    <a href="viewGuest?guestID=${g.guestID}">
+                                                                        <button type="button" class="btn btn-link btn-info">
+                                                                            <i class="fa fa-eye"></i> View Details
+                                                                        </button>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
                                                 </c:forEach>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -133,16 +141,20 @@
         <script src="assets/js/kaiadmin.min.js"></script>
 
         <script>
-                                            function doDelete(guestID) {
-                                                var option = confirm("Are you sure to delete this guest?");
-                                                if (option === true) {
-                                                    window.location = "deleteGuest?guestID=" + guestID;
-                                                }
-                                            }
+                        function doHidden(guestID) {
+                            var option = confirm("Are you sure to hide this guest?");
+                            if (option === true) {
+                                window.location = "hideGuest?guestID=" + guestID;
+                            }
+                        }
 
-                                            function addGuest() {
-                                                window.location = "addGuest";
-                                            }
+                        function addGuest() {
+                            window.location = "addGuest";
+                        }
+                        function viewHiddenGuests() {
+                            window.location = "hiddenListGuest.jsp";
+                        }
+                        
         </script>
     </body>
 </html>
