@@ -129,7 +129,7 @@
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Clean Status</label>                  
-                                                                    <select name="cleanId" class="form-control">
+                                                                    <select disabled="" name="cleanId" class="form-control">
                                                                         <option value="3"
                                                                                 <c:if test="${u.cleanId == 3}">
                                                                                     selected
@@ -152,7 +152,7 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Type Room</label>                  
                                                                     <td>
-                                                                        <select name="typeId" class="form-control">
+                                                                        <select disabled="" name="typeId" class="form-control">
                                                                             <option value="1" ${u.typeId == 1 ? 'selected' : ''}>Single Room</option>
                                                                             <option value="2" ${u.typeId == 2 ? 'selected' : ''}>Double Room</option>
                                                                             <option value="3" ${u.typeId == 3 ? 'selected' : ''}>Family Room</option>
@@ -181,7 +181,7 @@
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Status</label>                  
-                                                                    <select name="statusId" class="form-control">
+                                                                    <select disabled="" name="statusId" class="form-control">
                                                                         <option class="text-warning" value="3"
                                                                                 <c:if test="${u.statusId == 3}">
                                                                                     selected
@@ -222,16 +222,8 @@
                                                             </div>
                                                         </c:if>
 
-                                                        <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary">
-                                                            Update
-                                                        </button>
+                                                        
+                                                        
                                                     </div>
                                                 </form>
                                             </div>
@@ -260,7 +252,7 @@
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap.min.js"></script>
-
+     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- jQuery Scrollbar -->
     <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Datatables -->
