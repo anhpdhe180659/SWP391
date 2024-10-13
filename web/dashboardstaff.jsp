@@ -1,7 +1,7 @@
 <%-- 
-    Document   : dashboard
-    Created on : Sep 21, 2024, 7:57:19 PM
-    Author     : nhatk
+    Document   : dashboardstaff
+    Created on : Oct 12, 2024, 1:11:32 AM
+    Author     : LENOVO
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -161,56 +161,14 @@
                         </div>
 
 
-                        <!--Transaction history-->
-                        <div class="col-md-12">
-                            <div class="card card-round">
-                                <div class="card-header">
-                                    <div class="card-head-row card-tools-still-right">
-                                        <div class="card-title">Transaction History</div>
-
-                                    </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="table-responsive">
-                                        <!-- Projects table -->
-                                        <table class="table align-items-center mb-0">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th scope="col">Invoice Number</th>
-                                                    <th scope="col" class="text-end">Date & Time</th>
-                                                    <th scope="col" class="text-end">Amount</th>
-                                                    <th scope="col" class="text-end">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="${sessionScope.listInvoice}" var="i">
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <button
-                                                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                                                                >
-                                                                <i class="fa fa-check"></i>
-                                                            </button>
-                                                            Payment from ${i.invoiceNo}
-                                                        </th>
-                                                        <td class="text-end">${i.paymentDate}</td>
-                                                        <td class="text-end">${i.finalAmount} VND</td>
-                                                        <td class="text-end">
-                                                            <span class="badge badge-success">Completed</span>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                       
+                      
 
                         </div>
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="card-title">Room Statistics</div>
+                                    <div class="card-title">Cleaned Statistics</div>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-container">
@@ -339,4 +297,5 @@
     </script>
 </body>
 </html>
+
 

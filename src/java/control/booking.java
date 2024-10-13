@@ -5,12 +5,16 @@
 
 package control;
 
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Room;
 
 /**
  *
@@ -29,7 +33,18 @@ public class booking extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+        RoomDao rd = new RoomDao();
         
+        List<Room> listRoomAvailable = rd.getAllRoomsAvailable();
+        
+        session.setAttribute("listRoomAvailable", listRoomAvailable);
         response.sendRedirect("booking.jsp");
     } 
 

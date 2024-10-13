@@ -1,8 +1,10 @@
 <%-- 
-    Document   : dashboard
-    Created on : Sep 21, 2024, 7:57:19 PM
-    Author     : nhatk
+    Document   : listRoomHK
+    Created on : Oct 12, 2024, 12:20:57 AM
+    Author     : LENOVO
 --%>
+
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -52,7 +54,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -88,58 +90,14 @@
                 <div class="container">
                     <div class="container">
                         <div class="page-inner">
-                            <div class="page-header row">
-                                <h2 class="fw-bold mb-3 col-12">Room</h2>
+                            <div class="page-header">
+                                <h2 class="fw-bold mb-3">Room Status</h2>
                             </div>
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-flex align-items-center">
-                                            <nav
-                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-                                                >
-                                                <c:set value="${requestScope.searchName} " var="n"/>
-                                                <form action="searchUser">
-                                                    <div class="input-group" >
-                                                        <div class="input-group-prepend">
-                                                            <button type="submit" class="btn btn-search pe-1">
-                                                                <i class="fa fa-search search-icon"></i>
-                                                            </button>
-                                                        </div>
-                                                        <c:if test="${n.length() < 2}">
-                                                            <input
-                                                                type="text"
-                                                                name="username"
-                                                                placeholder="Search room..."
-                                                                class="form-control"
-                                                                />
-                                                        </c:if>
-                                                        <c:if test="${n.length() > 1}">
-                                                            <input
-                                                                type="text"
-                                                                name="username"
-                                                                value="${n}"
-                                                                placeholder="Search room..."
-                                                                class="form-control"
-                                                                />
-                                                        </c:if>
-                                                    </div>
-                                                </form>
-                                            </nav>
-                                            <c:set value="${requestScope.noti}" var="noti" />
-
-                                            <button
-                                                class="btn btn-primary btn-round ms-auto"
-                                                onclick="addRoom()">
-                                                <i class="fa fa-plus"></i>
-                                                Add Room
-                                            </button>
-                                        </div>
-                                    </div>
                                     <div class="card-body row">
-
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
-                                        <form action="listRoomAdmin">
+                                        <form action="listRoom">
                                             <span>Type</span>
                                             <select class="form-select-sm col-2 me-3" name="typeId">
                                                 <option value="0" ${requestScope.typeId == '0' ? 'selected' : ''}>All</option>
@@ -174,34 +132,32 @@
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table id="add-user" class="display table table-striped table-hover" >
+                                                <!--                                            <div class="table-responsive">
+                                                                                        <table id="add-user" class="display table table-striped table-hover" >-->
                                                 <thead>
                                                     <tr>
                                                         <th>Room Number</th>
                                                         <th>Clean Status</th>
                                                         <th>Type</th>
                                                         <th>Room Status</th>
-                                                        <th style="text-align: center" colspan="2">Action</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <c:forEach items="${sessionScope.listRoom}" var="s">
                                                         <tr>
                                                             <td>${s.roomNumber}</td>
-                                                            <c:if test="${s.cleanId == 1}">
-                                                                <td class="text-warning">
-                                                                    Not cleaned
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.cleanId == 2}">
-                                                                <td class="text-info">
-                                                                    In progress
-                                                                </td>
-                                                            </c:if><c:if test="${s.cleanId == 3}">
-                                                                <td class="text-success">
-                                                                    Cleaned
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 1}">
+                                                            <!-- Clean Status -->
+                                                            <td>
+                                                                <select class="form-select update" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
+                                                                    <option value="1" ${s.cleanId == 1 ? 'selected' : ''}>Not cleaned</option>
+                                                                    <option value="2" ${s.cleanId == 2 ? 'selected' : ''}>In progress</option>
+                                                                    <option value="3" ${s.cleanId == 3 ? 'selected' : ''}>Cleaned</option>
+                                                                </select>
+                                                            </td>
+
+                                                            <!-- Room Type -->
+                                                           <c:if test="${s.typeId == 1}">
                                                                 <td>
                                                                     Single Room
                                                                 </td>
@@ -240,23 +196,15 @@
                                                                     Occupied
                                                                 </td>
                                                             </c:if>
+
+                                                            <!-- View Details Button -->
                                                             <td style="text-align: center">
-                                                                <a href="viewDetailAdmin?id=${s.roomId}"
-                                                                   <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
+                                                                <a href="viewDetail?id=${s.roomId}">
+                                                                    <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
                                                                 </a>
-                                                            </td>
-                                                            <td style="text-align: center">
-                                                                <div class="form-check form-switch">
-                                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                                                                    <label class="form-check-label text-danger" for="flexSwitchCheckDefault">Active/De-active</label>
-                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
-                                                    <c:if test="${requestScope.noti != null}">
-                                                        <tr >
-                                                            <td style="text-align: center" colspan="5"><p class="text-warning">${requestScope.noti}</p></td><!-- comment --></tr>
-                                                            </c:if>
                                                 </tbody>
                                             </table>
                                             <c:set value="${sessionScope.currentindex}" var="index" />
@@ -266,7 +214,7 @@
                                                     <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
                                                         <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
                                                         <li class="page-item ${index < 2 ? 'disabled' :'' } ">
-                                                            <a class="page-link" href="listRoomAdmin?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
+                                                            <a class="page-link" href="listRoom?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                                 <span class="sr-only">Previous</span>
                                                             </a>
@@ -288,17 +236,17 @@
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">
                                                             <c:if test="${index == p}">
                                                                 <li class="page-item active">
-                                                                    <a class="page-link" href="listRoomAdmin?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${index != p}">
                                                                 <li class="page-item">
-                                                                    <a class="page-link" href="listRoomAdmin?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
                                                         <li class="page-item ${index < Nopage ? '' :'disabled' }" >
-                                                            <a class="page-link" href="listRoomAdmin?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
+                                                            <a class="page-link" href="listRoom?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                                 <span class="sr-only">Next</span>
                                                             </a>
@@ -343,11 +291,6 @@
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
         <script>
-                                                    function addRoom() {
-                                                        window.location = 'addRoom';
-                                                    }
-        </script>
-        <script>
             $(document).ready(function () {
                 $("#basic-datatables").DataTable({
                 });
@@ -386,6 +329,35 @@
 
             });
         </script>
+        <script>
+            $(document).ready(function () {
+                $('.update').on('change', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = $(this).data('field'); // Get field name from data attribute
+                    const value = $(this).val(); // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            // Handle success, you can show a notification or update the UI
+                            alert('Update successfully');
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed:');
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
+
 

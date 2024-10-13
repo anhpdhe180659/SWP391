@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package control;
 
 import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,20 +18,17 @@ import model.Room;
 
 /**
  *
- * @author phand
+ * @author LENOVO
  */
-@WebServlet(name = "listRoomAdmin", urlPatterns = {"/listRoomAdmin"})
-public class listRoomAdmin extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class listRoomHK extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     */
+     */ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -64,8 +61,8 @@ public class listRoomAdmin extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
-            request.setAttribute("error", "Please sign in with admin account !");
+        } else if (session.getAttribute("role").equals("3")) {
+            request.setAttribute("error", "Please sign in with staff account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         RoomDao roomDao = new RoomDao();
@@ -98,7 +95,7 @@ public class listRoomAdmin extends HttpServlet {
         request.setAttribute("typeId", typeId);
         request.setAttribute("statusId", statusId);
         request.setAttribute("cleanId", cleanId);
-        request.getRequestDispatcher("listRoomAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("listRoomHK.jsp").forward(request, response);
     }
 
     /**
@@ -124,5 +121,4 @@ public class listRoomAdmin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
