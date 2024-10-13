@@ -107,7 +107,7 @@
                             <tr>
                                 <th style="text-align: left; color: #555; font-weight: 600; padding: 10px; background-color: #f5f5f5; border-radius: 8px 0 0 8px;">Date of Birth</th>
                                 <td style="text-align: right; padding: 10px; background-color: #fafafa; border-radius: 0 8px 8px 0;">${e.dateOfBirth}</td>
-                            </tr>
+                            </tr>   
                             <tr>
                                 <th style="text-align: left; color: #555; font-weight: 600; padding: 10px; background-color: #f5f5f5; border-radius: 8px 0 0 8px;">Sex</th>
                                 <td style="text-align: right; padding: 10px; background-color: #fafafa; border-radius: 0 8px 8px 0;">${(s.sex == 1?
@@ -136,7 +136,7 @@
                             </tr>
                         </table> 
 
-                        <a href="updateProfileUser?userId=${requestScope.e.UserID}">Update Profile</a>
+                                <a href="updateProfileUser?userId=${sessionScope.user.userID}">Update Profile</a>
                     </div>
                 </div>
             </div>

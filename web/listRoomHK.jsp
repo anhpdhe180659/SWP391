@@ -1,8 +1,10 @@
 <%-- 
-    Document   : dashboard
-    Created on : Sep 21, 2024, 7:57:19 PM
-    Author     : nhatk
+    Document   : listRoomHKHK
+    Created on : Oct 12, 2024, 12:20:57 AM
+    Author     : LENOVO
 --%>
+
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -95,7 +97,7 @@
                                 <div class="card">
                                     <div class="card-body row">
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
-                                        <form action="listRoom">
+                                        <form action="listRoomHK">
                                             <span>Type</span>
                                             <select class="form-select-sm col-2 me-3" name="typeId">
                                                 <option value="0" ${requestScope.typeId == '0' ? 'selected' : ''}>All</option>
@@ -155,24 +157,45 @@
                                                             </td>
 
                                                             <!-- Room Type -->
-                                                            <td>
-                                                                <select disabled class="form-select update" name="typeId" data-room-id="${s.roomId}" data-field="typeId">
-                                                                    <option value="1" ${s.typeId == 1 ? 'selected' : ''}>Single Room</option>
-                                                                    <option value="2" ${s.typeId == 2 ? 'selected' : ''}>Double Room</option>
-                                                                    <option value="3" ${s.typeId == 3 ? 'selected' : ''}>Family Room</option>
-                                                                    <option value="4" ${s.typeId == 4 ? 'selected' : ''}>Deluxe Room</option>
-                                                                    <option value="5" ${s.typeId == 5 ? 'selected' : ''}>President Room</option>
-                                                                </select>
-                                                            </td>
-
-                                                            <!-- Room Status -->
-                                                            <td>
-                                                                <select class="form-select update text-bg-light" name="statusId" data-room-id="${s.roomId}" data-field="statusId">
-                                                                    <option value="1" ${s.statusId == 1 ? 'selected' : ''}>Available</option>
-                                                                    <option value="2" ${s.statusId == 2 ? 'selected' : ''}>Occupied</option>
-                                                                    <option value="3" ${s.statusId == 3 ? 'selected' : ''}>Under Maintenance</option>
-                                                                </select>
-                                                            </td>
+                                                           <c:if test="${s.typeId == 1}">
+                                                                <td>
+                                                                    Single Room
+                                                                </td>
+                                                            </c:if>
+                                                            <c:if test="${s.typeId == 2}">
+                                                                <td>
+                                                                    Double Room
+                                                                </td>
+                                                            </c:if>
+                                                            <c:if test="${s.typeId == 3}">
+                                                                <td>
+                                                                    Family Room
+                                                                </td>
+                                                            </c:if>
+                                                            <c:if test="${s.typeId == 4}">
+                                                                <td>
+                                                                    Deluxe Room
+                                                                </td>
+                                                            </c:if>
+                                                            <c:if test="${s.typeId == 5}">
+                                                                <td>
+                                                                    President Room
+                                                                </td>
+                                                            </c:if>
+                                                            <c:if test="${s.statusId == 1}">
+                                                                <td class="text-bg-success">
+                                                                    Available
+                                                                </td>
+                                                            </c:if>
+                                                            <c:if test="${s.statusId == 3}">
+                                                                <td class="text-bg-warning">
+                                                                    Under Maintenance
+                                                                </td>
+                                                            </c:if><c:if test="${s.statusId == 2}">
+                                                                <td class="text-bg-info">
+                                                                    Occupied
+                                                                </td>
+                                                            </c:if>
 
                                                             <!-- View Details Button -->
                                                             <td style="text-align: center">
@@ -191,7 +214,7 @@
                                                     <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
                                                         <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
                                                         <li class="page-item ${index < 2 ? 'disabled' :'' } ">
-                                                            <a class="page-link" href="listRoom?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
+                                                            <a class="page-link" href="listRoomHK?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                                 <span class="sr-only">Previous</span>
                                                             </a>
@@ -213,17 +236,17 @@
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">
                                                             <c:if test="${index == p}">
                                                                 <li class="page-item active">
-                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoomHK?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${index != p}">
                                                                 <li class="page-item">
-                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoomHK?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
                                                         <li class="page-item ${index < Nopage ? '' :'disabled' }" >
-                                                            <a class="page-link" href="listRoom?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
+                                                            <a class="page-link" href="listRoomHK?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                                 <span class="sr-only">Next</span>
                                                             </a>
@@ -245,6 +268,7 @@
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
         <script src="assets/js/core/bootstrap.min.js"></script>
+
         <!-- jQuery Scrollbar -->
         <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
@@ -305,7 +329,6 @@
 
             });
         </script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
             $(document).ready(function () {
                 $('.update').on('change', function () {
@@ -323,12 +346,8 @@
                             value: value
                         },
                         success: function (response) {
-                            console.log(swal);
                             // Handle success, you can show a notification or update the UI
-                            swal({
-                                icon: "success",
-                                text: 'Update successful'
-                            });
+                            alert('Update successfully');
                         },
                         error: function (xhr, status, error) {
                             // Handle error
@@ -338,9 +357,7 @@
                 });
             });
         </script>
-        <script>
-            
-        </script>
     </body>
 </html>
+
 

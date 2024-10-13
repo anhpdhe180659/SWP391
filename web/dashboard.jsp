@@ -146,7 +146,7 @@
                                                 <div
                                                     class="icon-big text-center icon-success bubble-shadow-small"
                                                     >
-                                                    <i class="fas fa-luggage-cart"></i>
+                                                    <i class="fas fa-file-invoice-dollar"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
@@ -229,7 +229,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-secondary bubble-shadow-small"style="background-color: slateblue"
+                                                    class="icon-big text-center icon-secondary bubble-shadow-small"style="background-color:#286090 "
                                                     >
                                                     <i class="fas fa-user-check"></i>
                                                 </div>
@@ -244,10 +244,95 @@
                                     </div>
                                 </div>
                             </div>
+                                                
+                            <div class="col-sm-6 col-md-3">
+
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-success bubble-shadow-small"style="background-color: #20c997"
+                                                    >
+                                                    <i class="fas fa-share-alt-square"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Amenity</p>
+                                                    <h4 class="card-title">${sessionScope.amenityCount}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                
+                            <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Room Statistics</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas
+                                            id="myChart"
+                                            style="width: 50%; height: 50%"
+                                            ></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+    <div class="col-md-4">
+        <canvas id="maintenanceChart"></canvas>
+    </div>
+    <div class="col-md-4">
+        <canvas id="availableChart"></canvas>
+    </div>
+    <div class="col-md-4">
+        <canvas id="occupiedChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var maintenanceData = {
+        labels: ["Under Maintenance", "Available", "Occupied"],
+        datasets: [{
+            label: 'Room Status',
+            data: [<%= session.getAttribute("maintaince") %>, <%= session.getAttribute("available") %>, <%= session.getAttribute("occupied") %>],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    var maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
+    var maintenanceChart = new Chart(maintenanceCtx, {
+        type: 'bar',
+        data: maintenanceData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
             <!--   Core JS Files   -->
             <script src="assets/js/core/jquery-3.7.1.min.js"></script>
             <script src="assets/js/core/popper.min.js"></script>
@@ -308,6 +393,35 @@
                 fillColor: "rgba(255, 165, 52, .14)",
             });
             </script>
+            
+    <script>
+        const underMaintenance = ${sessionScope.maintaince};
+        const available = ${sessionScope.available};
+        const occupied = ${sessionScope.occupied};
+        console.log(available);
+        var ctx = document.getElementById('myChart').getContext('2d');
+        const data_chart = {
+            labels: [
+                'Under Maintenance',
+                'Available',
+                'Occupied'
+            ],
+            datasets: [{
+                    data: [underMaintenance, available, occupied],
+                    backgroundColor: [
+                        'orange', // Màu đỏ cho giá trị 10
+                        'greenyellow', // Màu xanh cho giá trị 20
+                        '#286090' // Màu vàng cho giá trị 30
+                    ],
+                    borderWidth: 1
+                }]
+        };
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data_chart
+        });
+
+    </script>
     </body>
 </html>
 
