@@ -184,7 +184,7 @@
                                             <tbody>
                                                 <c:forEach items="${sessionScope.listAmenity}" var="a">
                                                     <tr>
-                                                        <td><a href="amenity-detail">${a.amenName}</a></td>
+<td><a href="amenity-detail?amenityId=${a.amenID}">${a.amenName}</a></td>
                                                         
                                                         <td>
                                                             <div class="form-button-action">

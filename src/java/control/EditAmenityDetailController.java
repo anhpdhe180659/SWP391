@@ -57,10 +57,13 @@ public class EditAmenityDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-    String roomID = request.getParameter("roomid");
+   String room = request.getParameter("roomid");
+             int      roomID = Integer.parseInt(room);
+        System.out.println("roomID in edit ========================"+roomID);
         AmenityDAO amenityDao = new AmenityDAO();
     
-    AmenityDetail detail = amenityDao.findByRoomID(roomID);
+    AmenityDetail detail = amenityDao.findByAmenityID(roomID);
+        System.out.println(detail.getQuantity()+"=45454");
     request.setAttribute("amenityDetail", detail);
     request.getRequestDispatcher("editAmenitDetail.jsp").forward(request, response);
     } 
@@ -75,13 +78,37 @@ public class EditAmenityDetailController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         String roomID = request.getParameter("roomid");
-    int quantity = Integer.parseInt(request.getParameter("quantity"));
+   String amenId = request.getParameter("amenid");
+   String roomId = request.getParameter("roomid");
+        String quantityStr = request.getParameter("quantity");
+        int quantity = 0;
+        String message = "";
+
+        try {
+            quantity = Integer.parseInt(quantityStr);
+        } catch (NumberFormatException e) {
+            message = "Invalid quantity format.";
+            request.setAttribute("noti", message);
+            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+            return;
+        }
+
+        AmenityDAO amenityDao = new AmenityDAO();
+
+        try {
+            boolean success = amenityDao.updateQuantity(roomId,amenId, quantity);
+            if (success) {
+                message = "Quantity updated successfully.";
+            } else {
+                message = "Failed to update quantity.";
+            }
+        } catch (Exception e) {
+            message = "An error occurred: " + e.getMessage();
+        }
+
+        request.setAttribute("noti", message);
+        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
     
-    AmenityDAO amenityDao = new AmenityDAO();
-    amenityDao.updateAmenityDetail(roomID, quantity);
-    
-    response.sendRedirect("listAmenityDetail");
     }
 
     /** 

@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Amenity;
 import model.AmenityDetail;
+import model.RoomAmenity;
 
 /**
  *
@@ -61,10 +62,22 @@ public class AmenityDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-  
+            String amenityIdParam = request.getParameter("amenityId");
+        int amenityId = 1; // Default value
+        
+        // Check if the parameter is not null and is a valid integer
+        if (amenityIdParam != null) {
+            try {
+                amenityId = Integer.parseInt(amenityIdParam);
+            } catch (NumberFormatException e) {
+                // Handle invalid format, e.g., log the error or set a default
+                e.printStackTrace();
+            }
+        }
+
         AmenityDAO amenityDao = new AmenityDAO();
-        List<AmenityDetail> listAmenity = amenityDao.findByID();
-      
+        List<RoomAmenity> listAmenity = amenityDao.getRoomAmenitiesByAmenityId(amenityId);
+        System.out.println("list Count"+listAmenity.size());
         request.setAttribute("listAmenityDetail", listAmenity);
       
         request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);

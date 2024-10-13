@@ -90,7 +90,7 @@
                             <h3 class="fw-bold mb-3">Amenity Detail</h3>
                         </div>
 
-                        <div class="col-md-12">
+<!--                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
@@ -106,15 +106,15 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!-- Modal -->
+                                     Modal 
                                     <div
                                         class="modal fade"
                                         id="addUserModal"
                                         tabindex="-1"
                                         role="dialog"
                                         aria-hidden="true"
-                                        >
-                                        <div class="modal-dialog" role="document">
+                                        >-->
+<!--                                        <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header border-0">
                                                     <h5 class="modal-title">
@@ -173,53 +173,54 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
 
 
-                                    <div class="table-responsive">
-                                        <table class="display table table-striped table-hover" >
-                                            <thead>
-                                                <tr>
-                                                    <th>Room ID</th>
-                                                    <th>Quantity</th>
-                                                    <th style="width: 10%">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                  <c:forEach items="${listAmenityDetail}" var="a">
-                                                    <tr>
-                                                        <td>${a.roomID}</td>
-                                                        <td>${a.quantity}</td>
-                                                        
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="editAmenityDetail?roomid=${a.roomID}" >
-                                                                    <button
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task"
-                                                                        >
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <button
-                                                                    type="button"
-                                                                    title=""
-                                                                    class="btn btn-link btn-danger"
-                                                                    data-original-title="Remove"
-                                                                    onclick="doDelete(${a.roomID})"
-                                                                    >
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>                               
+                                 <div class="table-responsive">
+    <table id="add-user" class="display table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Room Number</th>
+                <th>Quantity</th>
+                <th style="display: none;">Amenity ID</th> <!-- Hidden column -->
+                <th style="width: 10%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${listAmenityDetail}" var="a">
+                <tr>
+                    <td>${a.roomNumber}</td> <!-- Changed to roomNumber -->
+                    <td>${a.quantity}</td>
+                    <td style="display: none;">${a.amenID}</td> <!-- Hidden Amenity ID -->
+                    <td>
+                        <div class="form-button-action">
+                            <a href="editAmenityDetail?roomid=${a.amenID}">
+                                <button
+                                    type="button"
+                                    data-bs-toggle="tooltip"
+                                    title=""
+                                    class="btn btn-link btn-primary btn-lg"
+                                    data-original-title="Edit Task">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+                            <button
+                                type="button"
+                                title=""
+                                class="btn btn-link btn-danger"
+                                data-original-title="Remove"
+                                onclick="doDelete(${a.roomNumber})">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
+                              
                                     </div>
                                 </div>
                             </div>
