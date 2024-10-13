@@ -87,7 +87,7 @@
                                             </tbody>
                                         </table>
                                         <div class="form-group mt-4">
-                                            <a href="listGuest.jsp" class="btn btn-secondary" style="border-radius: 5px;">Back to Guest List</a>
+                                            <a href="listGuest" class="btn btn-secondary" style="border-radius: 5px;">Back to Guest List</a>
                                         </div>
                                     </c:if>
                                 </div>

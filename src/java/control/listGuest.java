@@ -25,18 +25,24 @@ public class listGuest extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        if (session == null) {
+         if (session == null) {
             response.sendRedirect("login.jsp");
         } else if (session.getAttribute("role") != null && (session.getAttribute("role").equals("1")||session.getAttribute("role").equals("2"))) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else {
-            GuestDAO guestDao = new GuestDAO();
-            List<Guest> listGuest = guestDao.getAllGuests();  // Fetch the list of guests from the database
-
-            session.setAttribute("listGuest", listGuest);     // Set the list in the session
-            response.sendRedirect("listGuest.jsp");           // Redirect to the JSP page for guest listing
         }
+
+        GuestDAO guestDao = new GuestDAO();
+        List<Guest> listGuest = guestDao.getAllGuests();  // Fetch the list of guests from the database
+
+        if (listGuest == null) {
+            request.setAttribute("error", "Unable to retrieve guests. Please try again later.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("listGuest", listGuest);  // Set the list in the request
+        request.getRequestDispatcher("listGuest.jsp").forward(request, response);  // Forward to JSP page
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
