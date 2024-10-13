@@ -94,6 +94,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 switch (user.getRole()) {
                     case 1 -> response.sendRedirect("/SWP391/dashboard");
                     case 2 -> response.sendRedirect("/SWP391/receptionDashboard");
+                    case 3 -> response.sendRedirect("/SWP391/dashboardstaff");
                     default -> response.sendRedirect("guestHomePage.jsp");
                 }
             } else {

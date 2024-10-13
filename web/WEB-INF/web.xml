@@ -71,6 +71,8 @@
     <servlet>
         <servlet-name>listRoomHK</servlet-name>
         <servlet-class>control.listRoomHK</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>bookingList</servlet-name>
         <servlet-class>control.bookingList</servlet-class>
     </servlet>
@@ -273,6 +275,8 @@
     <servlet-mapping>
         <servlet-name>listRoomHK</servlet-name>
         <url-pattern>/listRoomHK</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping> 
         <servlet-name>bookingList</servlet-name>
         <url-pattern>/bookingList</url-pattern>
     </servlet-mapping>

@@ -1,5 +1,5 @@
 <%-- 
-    Document   : listRoomHK
+    Document   : listRoomHKHK
     Created on : Oct 12, 2024, 12:20:57 AM
     Author     : LENOVO
 --%>
@@ -97,7 +97,7 @@
                                 <div class="card">
                                     <div class="card-body row">
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
-                                        <form action="listRoom">
+                                        <form action="listRoomHK">
                                             <span>Type</span>
                                             <select class="form-select-sm col-2 me-3" name="typeId">
                                                 <option value="0" ${requestScope.typeId == '0' ? 'selected' : ''}>All</option>
@@ -214,7 +214,7 @@
                                                     <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
                                                         <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
                                                         <li class="page-item ${index < 2 ? 'disabled' :'' } ">
-                                                            <a class="page-link" href="listRoom?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
+                                                            <a class="page-link" href="listRoomHK?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                                 <span class="sr-only">Previous</span>
                                                             </a>
@@ -236,17 +236,17 @@
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">
                                                             <c:if test="${index == p}">
                                                                 <li class="page-item active">
-                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoomHK?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${index != p}">
                                                                 <li class="page-item">
-                                                                    <a class="page-link" href="listRoom?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
+                                                                    <a class="page-link" href="listRoomHK?index=${p}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}">${p}</a>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
                                                         <li class="page-item ${index < Nopage ? '' :'disabled' }" >
-                                                            <a class="page-link" href="listRoom?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
+                                                            <a class="page-link" href="listRoomHK?index=${index+1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                                 <span class="sr-only">Next</span>
                                                             </a>
