@@ -357,14 +357,14 @@
     <script>
         var guestChart = document.getElementById('guestChart').getContext('2d');
         const guestData = ${sessionScope.guestByMonth};
-        if(guestData.length < 7){
-            for(let i = guestData.length; i <= 7; i++){
+        if (guestData.length < 7) {
+            for (let i = guestData.length+1; i <= 7; i++) {
                 guestData.push(0);
             }
         }
-        guestData = guestData.toReversed();
-        console.log(guestData)
-    
+        const guestData2 = guestData.toReversed();
+        console.log(guestData2);
+
         function getLastMonths(count) {
             const date = new Date();
             const months = [];
@@ -379,11 +379,10 @@
         const data = {
             labels: labels,
             datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    label: 'Guest in 7 month',
+                    data: guestData2,
                     fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    borderColor: 'rgb(75, 192, 192)'
                 }]
         };
         const config = {
