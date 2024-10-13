@@ -29,9 +29,9 @@ public class hideGuest extends HttpServlet {
         GuestDAO dao = new GuestDAO();
         int guestID = Integer.parseInt(request.getParameter("guestID"));
         dao.updateGuestHiddenStatus(guestID, 1);
-        List<Guest> listGuest = dao.getAllGuests();
-        session.setAttribute("listGuest", listGuest);
-        response.sendRedirect("listGuest");
+        List<Guest> hiddenListGuest = dao.getHiddenGuest();
+        session.setAttribute("hiddenListGuest", hiddenListGuest);
+        response.sendRedirect("hiddenListGuest");
         
     }
 
