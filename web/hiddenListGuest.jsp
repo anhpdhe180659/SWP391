@@ -76,6 +76,7 @@
                                         </thead>
                                         <tbody>
                                             <c:forEach items="${hiddenGuestList}" var="g">
+                                                <%--<c:if test="${g.isHidden == 1}">--%>
                                                 <tr>
                                                     <td style="border-right: 1px solid #ddd;">${g.guestID}</td>
                                                     <td style="border-right: 1px solid #ddd;">${g.name}</td>
@@ -109,6 +110,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <%--</c:if>--%>
                                             </c:forEach>
                                         </tbody>
                                     </table>

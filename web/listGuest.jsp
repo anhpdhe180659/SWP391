@@ -152,7 +152,7 @@
                             window.location = "addGuest";
                         }
                         function viewHiddenGuests() {
-                            window.location = "hiddenListGuest.jsp";
+                            window.location = "hiddenListGuest";
                         }
                         
         </script>

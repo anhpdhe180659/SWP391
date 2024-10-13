@@ -41,8 +41,8 @@ public class hiddenListGuest extends HttpServlet {
         // Đặt danh sách hidden guests vào session attribute
         session.setAttribute("hiddenGuestList", hiddenGuestList); 
 
-        // Chuyển hướng tới trang hiddenGuest.jsp để hiển thị danh sách khách ẩn
-        response.sendRedirect("hiddenGuest.jsp");
+        // Chuyển hướng tới trang hiddenListGuest.jsp để hiển thị danh sách khách ẩn
+        response.sendRedirect("hiddenListGuest.jsp");
     }
 }
 

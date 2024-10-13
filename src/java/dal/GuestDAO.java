@@ -19,7 +19,7 @@ public class GuestDAO extends DBContext {
 
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
-//        dao.updateGuestHiddenStatus(11, 1);       
+//        dao.updateGuestHiddenStatus(11, 0);       
         List<Guest> l = dao.getHiddenGuest();
         for (Guest guest : l) {
             System.out.println(guest);
