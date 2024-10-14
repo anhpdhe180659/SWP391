@@ -9,6 +9,8 @@ import model.Room;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +18,8 @@ import java.util.ArrayList;
  * @author phand
  */
 public class RoomDao extends DBContext {
-    public Room getRoomByRoomNumber(String roomNum){
+
+    public Room getRoomByRoomNumber(String roomNum) {
         String query = """
                             SELECT * FROM  Room WHERE  RoomNumber = ?
                            """;
@@ -38,6 +41,7 @@ public class RoomDao extends DBContext {
         }
         return null;
     }
+
     public List<Room> getAllRooms() {
         List<Room> allRoom = new ArrayList<>();
         String query = """
@@ -72,6 +76,36 @@ public class RoomDao extends DBContext {
                          ON rs.StatusID = r.StatusID
                          WHERE rs.StatusName like 'Available'""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allRoom.add(new Room(rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allRoom;
+    }
+
+    public List<Room> getNext5RoomsAvailable(int index) {
+        List<Room> allRoom = new ArrayList<>();
+        String query = """
+                       SELECT [RoomID]
+                             ,[RoomNumber]
+                             ,[CleanID]
+                             ,[TypeID]
+                             ,r.[StatusID]
+                             , rs.StatusName
+                        FROM [Room] r INNER JOIN RoomStatus rs
+                        ON rs.StatusID = r.StatusID
+                        WHERE rs.StatusName like 'Available'
+                        ORDER BY RoomID
+                        OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, 5 * (index - 1));
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 allRoom.add(new Room(rs.getInt("RoomID"),
@@ -166,6 +200,25 @@ public class RoomDao extends DBContext {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public int getPriceByRoomID(int roomid) {
+        int price = 0;
+        String query = """
+                       select Price from Room r inner join RoomType rt
+                       on r.TypeID = rt.TypeID
+                       where RoomID = ?""";
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                price = rs.getInt("Price");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return price;
     }
 
     public static void main(String[] args) {

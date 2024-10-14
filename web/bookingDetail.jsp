@@ -7,9 +7,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="model.*" %>
 <%@page import="dal.*" %>
+<%@page import="java.text.NumberFormat" %>
+<%@page import="java.util.Locale" %>
 <%@page import="java.util.*" %>
-<%@ page import="java.time.LocalDateTime"%>
-<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <!DOCTYPE html> 
 <html lang="en">
     <head>
@@ -73,28 +75,26 @@
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table
-                                            id="multi-filter-select"
                                             class="display table table-striped table-hover" 
                                             style="text-align: center"
                                             >
                                             <thead>
                                                 <tr>
-                                                    <th>Number</th>
                                                     <th>ROOMNAME</th>
+                                                    <th>Number of night</th>
                                                     <th>CHECKIN DATE</th>
                                                     <th>CHECKOUT DATE</th>
+                                                    <th>PRICE</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <%
                                                     GuestDAO gdao = new GuestDAO();UserDAO udao = new UserDAO();RoomDao rdao = new RoomDao();
                                                     List<BookingRoom> listBookingRoom = (List<BookingRoom>) session.getAttribute("listBookingRoom");
-                                                    int i = 1;
                                                     for (BookingRoom book : listBookingRoom) {
                                                     Room room = rdao.findRoomById(book.getRoomID());
                                                 %>
                                                 <tr>
-                                                    <td><%= i %></td>
                                                     <td><%= room.getRoomNumber() %></td>
                                                     <!-- Room Type -->
                                                     <% 
@@ -102,20 +102,35 @@
                                                         LocalDateTime checkInDate = book.getCheckInDate();  
                                                         LocalDateTime CheckOutDate = book.getCheckOutDate();  
                                                         // Define the desired formatter
-                                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                                                         // Format the LocalDateTime to the desired string format
                                                         String indate = checkInDate.format(formatter);
                                                         String outdate = CheckOutDate.format(formatter);
                                                     %>
+                                                    <td>
+                                                        <%= book.getNumOfNight() %> nights
+                                                    </td>
                                                     <td>
                                                         <%= indate %>
                                                     </td>
                                                     <td>
                                                         <%= outdate %>
                                                     </td>
+                                                    <% 
+                                                        double price = book.getPrice();
+                                                         Locale localeVN = new Locale("vi", "VN");
+                                                            // Create a currency instance for the Vietnamese Dong
+                                                            Currency vnd = Currency.getInstance(localeVN);
+                                                            // Create a NumberFormat instance
+                                                            NumberFormat formatterPrice = NumberFormat.getCurrencyInstance(localeVN);
+                                                            // Format the price
+                                                            String formattedPrice = formatterPrice.format(price);
+                                                    %>
+                                                    <td>
+                                                        <%= formattedPrice %>
+                                                    </td>
                                                 </tr>
                                                 <%
-                                                    i++;
                                                     }
 
                                                 %>
@@ -123,7 +138,55 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <c:set value="${sessionScope.currentindex}" var="index" />
+                                    <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                    <div class="card-body" >
+                                        <div class="demo">
+                                            <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
+                                                <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
+                                                <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                    <a class="page-link" href="bookingDetail?index=${index-1}" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                                <c:choose>
+                                                    <c:when test="${index <= 3}">
+                                                        <c:set var="startPage" value="1" />
+                                                        <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                    </c:when>
+                                                    <c:when test="${index > Nopage - 3}">
+                                                        <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                        <c:set var="endPage" value="${Nopage}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="startPage" value="${index - 2}" />
+                                                        <c:set var="endPage" value="${index + 2}" />
+                                                    </c:otherwise>
+                                                </c:choose>
 
+                                                <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                                                    <c:if test="${index == p}">
+                                                        <li class="page-item active">
+                                                            <a class="page-link" href="bookingDetail?index=${p}">${p}</a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${index != p}">
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="bookingDetail?index=${p}">${p}</a>
+                                                        </li>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <li class="page-item ${index < Nopage ? '' :'disabled' }" >
+                                                    <a class="page-link" href="bookingDetail?index=${index+1}" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

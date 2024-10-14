@@ -8,6 +8,7 @@ import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.RoomDao;
 import dal.UserDAO;
+import util.pagination;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,6 +24,7 @@ import java.util.List;
 import model.Guest;
 import model.Room;
 import model.User;
+import static util.pagination.getNoPage;
 
 /**
  *
@@ -51,9 +53,7 @@ public class booking extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         RoomDao rd = new RoomDao();
-
         List<Room> listRoomAvailable = rd.getAllRoomsAvailable();
-
         session.setAttribute("listRoomAvailable", listRoomAvailable);
         response.sendRedirect("booking.jsp");
     }
@@ -91,6 +91,7 @@ public class booking extends HttpServlet {
             User receptionist = (User) session.getAttribute("user");
             GuestDAO gdao = new GuestDAO();
             BookingDAO bdao = new BookingDAO();
+            RoomDao rdao = new RoomDao();
             Guest guest = new Guest();
             String Name = request.getParameter("name");
             guest.setName(Name);
@@ -108,7 +109,8 @@ public class booking extends HttpServlet {
             guest.setNationality(Nationality);
             int deposit = Integer.parseInt(request.getParameter("deposit"));
             String noti = "Booking successfully!";
-
+            int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
+            int paidstatus = Integer.parseInt(request.getParameter("paidstatus"));
             List<Guest> listGuest = gdao.getAllGuests();
             for (Guest g : listGuest) {
                 if (g.getIdentification().equals(Identification)) {
@@ -124,8 +126,8 @@ public class booking extends HttpServlet {
                     return;
                 }
             }
-
-//            gdao.addGuest(guest);// add new guest in database 
+            // add new guest in database 
+            gdao.addGuest(guest);// success
             Guest newGuest = gdao.getNewGuest();
             String checkindate = request.getParameter("checkindate");
             String checkoutdate = request.getParameter("checkoutdate");
@@ -138,6 +140,7 @@ public class booking extends HttpServlet {
             LocalTime outTime = LocalTime.parse(checkouttime);
             LocalDateTime checkInDateTime = LocalDateTime.of(inDate, inTime);
             LocalDateTime checkOutDateTime = LocalDateTime.of(outDate, outTime);
+            int numberOfNight =(int) (checkOutDateTime.toLocalDate().toEpochDay() - checkInDateTime.toLocalDate().toEpochDay());
             LocalDateTime currentDateTime = LocalDateTime.now();
             if (checkInDateTime.isAfter(checkOutDateTime)) {
                 noti = "Check-in date/time cannot be after check-out date/time";
@@ -150,14 +153,14 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            bdao.addBooking(newGuest.getGuestID(), deposit, 1, receptionist.getUserID());// add information into booking table
+            bdao.addBooking(newGuest.getGuestID(), deposit, checkinstatus, receptionist.getUserID(),paidstatus);// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
             if (selectedRoom != null) {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
                     // add information into bookingRoom table
-                    bdao.addBookingRoom(bookingid, roomid, 0, checkInDateTime, checkOutDateTime);
+                    bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime,rdao.getPriceByRoomID(roomid));
                     bdao.updateStatusRoom(roomid);
                 }
             }else{
