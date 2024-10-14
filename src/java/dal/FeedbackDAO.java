@@ -23,7 +23,7 @@ public class FeedbackDAO extends DBContext {
     // Phương thức kiểm tra GuestID có tồn tại hay không
     public boolean checkGuestExists(String GuestID) {
         boolean exists = false;
-        String checkGuestQuery = "SELECT * FROM Guests WHERE GuestID = ?";
+        String checkGuestQuery = "SELECT * FROM Guest WHERE GuestID = ?";
         
         try (
              PreparedStatement pstmt = connection.prepareStatement(checkGuestQuery)) {
@@ -68,14 +68,14 @@ public class FeedbackDAO extends DBContext {
              ResultSet rs = pstmt.executeQuery()) {
              
             while (rs.next()) {
-                int id = rs.getInt("id");
+                
                 String name = rs.getString("name");
                 String GuestID = rs.getString("GuestID");
                 String feedback = rs.getString("feedback");
                 int rating = rs.getInt("rating");
-                java.util.Date createdAt = rs.getTimestamp("created_at");
                 
-                Feedback fb = new Feedback(id, name, GuestID, feedback, rating, createdAt);
+                
+                Feedback fb = new Feedback( name, GuestID, feedback, rating);
                 feedbackList.add(fb);
             }
         } catch (SQLException e) {
@@ -83,6 +83,35 @@ public class FeedbackDAO extends DBContext {
         }
         
         return feedbackList;
+    } 
+    public static void main(String[] args) {
+        FeedbackDAO feedbackDAO = new FeedbackDAO();
+
+        // Example values for adding a new feedback
+        String name = "John Doe";
+        String guestID = "2";
+        String feedbackContent = "Great service!";
+        int rating = 5;
+
+        // First, check if the guest exists in the database
+        if (feedbackDAO.checkGuestExists(guestID)) {
+            // Add feedback if guest exists
+            feedbackDAO.addFeedback(name, guestID, feedbackContent, rating);
+            System.out.println("Feedback added successfully.");
+
+            // Fetch all feedbacks to verify if the new feedback is added
+            List<Feedback> feedbackList = feedbackDAO.getAllFeedback();
+            for (Feedback fb : feedbackList) {
+                System.out.println(
+                                   ", Name: " + fb.getName() +
+                                   ", GuestID: " + fb.getGuestID() +
+                                   ", Feedback: " + fb.getFeedback() +
+                                   ", Rating: " + fb.getRating()
+                                   );
+            }
+        } else {
+            System.out.println("Guest with ID " + guestID + " does not exist.");
+        }
     }
 }
 

@@ -36,19 +36,12 @@ public class feedbackcontroller extends HttpServlet {
             if (guestExists) {
                 // Nếu guestID tồn tại, thêm phản hồi
                 dao.addFeedback(name, GuestID, feedbackText, rating);
-                out.println("<h2>Thank you for your feedback!</h2>");
-                
+               request.setAttribute("noti", "Thank for you feedback");
+                request.getRequestDispatcher("feedback.jsp").forward(request, response);
                 // Lấy tất cả phản hồi sau khi thêm
-                List<Feedback> feedbackList = dao.getAllFeedback();
-                out.println("<h3>Previous Feedback:</h3>");
-                out.println("<ul>");
-                for (Feedback feedback : feedbackList) {
-                    out.println("<li>" + feedback.getName() + " (" + feedback.getGuestID() + "): " + feedback.getFeedback() + " - Rating: " + feedback.getRating() + "</li>");
-                }
-                out.println("</ul>");
-            } else {
-                // Nếu guestID không tồn tại
-                out.println("<h2>GuestID not found. Please try again.</h2>");
+            }else{
+                request.setAttribute("noti", "Guest not exist");
+                request.getRequestDispatcher("feedback.jsp").forward(request, response);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
