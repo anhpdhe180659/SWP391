@@ -231,28 +231,13 @@
             <script src="assets/js/kaiadmin.min.js"></script>
             <!-- Kaiadmin DEMO methods, don't include it in your project! -->
             <script src="assets/js/setting-demo2.js"></script>
-            <script>
-                                            const togglePassword = document.querySelector('#togglePassword');
-                                            const password = document.querySelector('#password');
-                                            togglePassword.addEventListener('click', function () {
-                                                // Toggle the type attribute
-                                                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                password.setAttribute('type', type);
-
-                                                // Toggle the icon (optional)
-                                                this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
-                                            });
-            </script>
+           
             <script>
                 document.querySelector('.close').editEventListener('click', function () {
                     $('#editUserModal').modal('hide');
                 });
             </script>
-            <script>
-                function doClose() {
-                    $('#editUserModal').modal('hide');
-                }
-            </script>
+           
             <script>
                 function BackToList() {
                     window.location = "listRoomAdmin";

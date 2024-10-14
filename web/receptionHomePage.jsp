@@ -158,8 +158,29 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-danger bubble-shadow-small"
+                                                    >
+                                                    <i class="far fa-bell"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">In-house Guest</p>
+                                                    <h4 class="card-title">0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!--Transaction history-->
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="card card-round">
                                     <div class="card-header">
                                         <div class="card-head-row card-tools-still-right">
@@ -206,6 +227,30 @@
                             <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">
+                                        <div class="card-title">Newest Notifications</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <ul>
+                                                <c:forEach var="news" items="${sessionScope.newsList}">
+                                                    <li>
+                                                        <span style="font-size: 21px" class="date">${news.publishDate}</span>
+                                                        <a style="font-size: 22px" href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
+                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
+                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
+                                                           text-overflow: ellipsis;
+                                                           font-size:16px/* Hiển thị dấu ba chấm */">${news.content}</p>
+                                                    </li>
+                                                </c:forEach>
+                                                <li><a href="viewNotification">View all notification</a></li>
+                                            </ul> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
                                         <div class="card-title">Room Statistics</div>
                                     </div>
                                     <div class="card-body">
@@ -218,29 +263,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Newest Notifications</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="container">
-                                            <ul>
-                                                <c:forEach var="news" items="${sessionScope.newsList}">
-                                                    <li>
-                                                        <span class="date">${news.publishDate}</span>
-                                                        <p><b>${news.title}</b></p>
-                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
-                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
-                                                           text-overflow: ellipsis;
-                                                           font-size:10px/* Hiển thị dấu ba chấm */">${news.content}</p>
-                                                    </li>
-                                                </c:forEach>
-                                            </ul> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">

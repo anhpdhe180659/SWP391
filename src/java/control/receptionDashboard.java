@@ -76,7 +76,7 @@ public class receptionDashboard extends HttpServlet {
         }
         User user = (User) session.getAttribute("user");
 //        //get room
-        List<NewsItem> newsList = new NewsDAO().getTop5();
+        List<NewsItem> newsList = new NewsDAO().getTop3();
         session.setAttribute("newsList", newsList);
         RoomDao roomDao = new RoomDao();
         List<Room> listRoom = roomDao.getAllRooms();

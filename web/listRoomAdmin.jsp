@@ -98,8 +98,8 @@
                                             <nav
                                                 class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
                                                 >
-                                                <c:set value="${requestScope.searchName} " var="n"/>
-                                                <form action="searchUser">
+                                                <c:set value="${requestScope.keyword} " var="n"/>
+                                                <form action="searchRoom">
                                                     <div class="input-group" >
                                                         <div class="input-group-prepend">
                                                             <button type="submit" class="btn btn-search pe-1">
@@ -109,7 +109,7 @@
                                                         <c:if test="${n.length() < 2}">
                                                             <input
                                                                 type="text"
-                                                                name="username"
+                                                                name="keyword"
                                                                 placeholder="Search room..."
                                                                 class="form-control"
                                                                 />
@@ -117,7 +117,7 @@
                                                         <c:if test="${n.length() > 1}">
                                                             <input
                                                                 type="text"
-                                                                name="username"
+                                                                name="keyword"
                                                                 value="${n}"
                                                                 placeholder="Search room..."
                                                                 class="form-control"

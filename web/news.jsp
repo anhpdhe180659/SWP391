@@ -48,10 +48,15 @@
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <!--        <link rel="stylesheet" href="assets/css/demo.css" />-->
     </head>
-    <body>
+    <body style="padding: 0px;">
         <div class="wrapper">
             <!-- Sidebar -->
+            <c:if test="${sessionScope.user.role == 1}">
             <jsp:include page="sidebarManager.jsp"/>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 2}">
+                <jsp:include page="sidebarReceptionist.jsp"/>
+            </c:if>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -126,27 +131,36 @@
                                 font-size: 0.9em;
                             }
                         </style>
-                        </head>
-                        <body>
-                            <div class="container">
-                                <h1>News</h1>
-                                <ul>
+                        <div class="container">
+                            <div class="page-inner">
+                                <div class="page-header">
+                                    <h3 class="fw-bold mb-3">Notifications</h3>
+                                </div>
 
-                                    <li>
-                                        <h3 style="color: #0062cc" ${news.newsID}>${news.title}</h3>
-                                        <span class="date">${news.postDate}</span>
-                                        <div class="news-content">
-                                            <p>${news.content}</p> <!-- This line will print the content of the news -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 style="color: #0062cc" ${news.newsID}>${news.title}</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <span class="date">${news.publishDate}</span>
+                                                <div class="news-content">
+                                                    <p>${news.content}</p> <!-- This line will print the content of the news -->
+                                                </div>
+                                                <c:if test="${sessionScope.user.role == 1}">
+                                                    <a href="NewsServlet?action=delete&id=${news.newsID}" 
+                                                       onclick="return confirm('Are you sure you want to delete this news item?');" 
+                                                       class="btn btn-danger">
+                                                        Delete
+                                                    </a>
+                                                </c:if>
+                                            </div>
                                         </div>
-                                       <a href="NewsServlet?action=delete&id=${news.newsID}" 
-               onclick="return confirm('Are you sure you want to delete this news item?');" 
-               class="btn btn-danger">
-               Delete
-            </a>
-                                    </li>
-
-                                </ul>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
                     </div>
                 </div> 
             </div>

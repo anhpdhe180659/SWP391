@@ -15,10 +15,10 @@ import model.NewsItem;
 
 public class NewsDAO extends DBContext {
 
-    public List<NewsItem> getTop5() {
+    public List<NewsItem> getTop3() {
         List<NewsItem> newsList = new ArrayList<>();
         try (
-                Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT Top(5) * FROM News ORDER BY Publish_date DESC")) {
+                Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT Top(3) * FROM News ORDER BY Publish_date DESC")) {
 
             while (rs.next()) {
                 NewsItem news = new NewsItem();
@@ -85,17 +85,17 @@ public class NewsDAO extends DBContext {
     }
 
     public void addNews(NewsItem news) {
-        String sql = "INSERT INTO News (title, content, userID, publish_date, post_date, category, is_active, last_modified) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO News (title, content, userID, publish_date, category, is_active, last_modified) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, news.getTitle());
             pstmt.setString(2, news.getContent());
             pstmt.setInt(3, news.getUserID());
             pstmt.setTimestamp(4, news.getPublishDate());
-            pstmt.setString(6, news.getCategory());
-            pstmt.setBoolean(7, news.isActive());
-            pstmt.setTimestamp(8, news.getLastModified());
+            pstmt.setString(5, news.getCategory());
+            pstmt.setBoolean(6, news.isActive());
+            pstmt.setTimestamp(7, news.getLastModified());
 
             // Execute the update
             pstmt.executeUpdate();
