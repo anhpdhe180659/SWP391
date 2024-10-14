@@ -16,7 +16,7 @@ public class Feedback {
     private String feedback;
     private int rating;
 //
-//    // Constructor
+    // Constructor
 //    public Feedback(int rating, String name, String guestID, String feedback, int rating1, Date createdAt) {
 //        this.name = name;
 //        this.guestID = guestID;
