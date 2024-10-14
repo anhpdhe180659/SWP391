@@ -124,6 +124,7 @@
                                                                         maxlength="100"
                                                                         class="form-control"
                                                                         required
+                                                                        placeholder="Enter user's fullname"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -137,6 +138,7 @@
                                                                         class="form-control"
                                                                         maxlength="200"
                                                                         required
+                                                                        placeholder="Enter address"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -150,6 +152,7 @@
                                                                         type="text"
                                                                         maxlength="50"
                                                                         class="form-control"
+                                                                        placeholder="Enter phone number"
                                                                         required
                                                                         />
                                                                 </div>
@@ -165,6 +168,7 @@
                                                                         maxlength="20"
                                                                         class="form-control"
                                                                         required
+                                                                        placeholder="Enter Identification"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -196,6 +200,7 @@
                                                                     <input type="number" name="salary"
                                                                            value="${u.salary}"
                                                                            min="0" max="2000000000" required
+                                                                           placeholder="Enter salary"
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
@@ -214,6 +219,7 @@
                                                                         value="${u.username}"
                                                                         name="username"
                                                                         type="text"
+                                                                        placeholder="Enter username"
                                                                         pattern="[a-zA-Z0-9]{6,12}$" title="length should be 6-12, no spaces, unsigned"
                                                                         class="form-control"
                                                                         required
@@ -228,6 +234,7 @@
                                                                         type="text" pattern="[a-zA-Z0-9]{3,18}$" title="length should be 3-18, no spaces, unsigned"
                                                                         class="form-control"
                                                                         style="width: 50%"
+                                                                        placeholder="Enter password"
                                                                         required
                                                                         />
                                                                 </div>
@@ -241,6 +248,7 @@
                                                                         type="text"
                                                                         value="${u.email}"
                                                                         class="form-control"
+                                                                        placeholder="Enter email"
                                                                         required
                                                                         />
                                                                 </div>

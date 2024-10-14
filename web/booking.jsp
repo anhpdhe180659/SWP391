@@ -101,10 +101,10 @@
                                             <div class="d-flex align-items-center">
                                                 <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
                                                     <li class="nav-item">
-                                                        <a class="nav-link active" id="pills-guest-tab" data-bs-toggle="pill" href="#pills-guest" role="tab" aria-controls="pills-guest" aria-selected="true">Guest information</a>
+                                                        <a class="nav-link active" id="pills-guest-tab" data-bs-toggle="pill" href="#pills-guest" role="tab" aria-controls="pills-guest" aria-selected="true">Select room</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" id="pills-room-tab" data-bs-toggle="pill" href="#pills-room" role="tab" aria-controls="pills-room" aria-selected="false">Select room</a>
+                                                        <a class="nav-link" id="pills-room-tab" data-bs-toggle="pill" href="#pills-room" role="tab" aria-controls="pills-room" aria-selected="false">Guest information</a>
                                                     </li>
                                                 </ul>
                                                 <c:set value="${requestScope.noti}" var="noti"/>
@@ -116,6 +116,90 @@
                                             <div class="tab-content mt-2 mb-3" id="pills-tabContent">
                                                 <div class="row tab-pane fade show active" id="pills-guest" role="tabpanel" aria-labelledby="pills-guest-tab"
                                                      >
+                                                    <div>
+                                                        <table
+                                                            class="display table table-striped table-hover"
+                                                            style="text-align: center"
+                                                            >
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Room Number</th>
+                                                                    <th>Type</th>
+                                                                    <th>Capacity</th>
+                                                                    <th>Price/day</th>
+                                                                    <th>Select</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <c:forEach items="${sessionScope.listRoomAvailable}" var="s">
+                                                                    <tr>
+                                                                        <td>${s.roomNumber}</td>
+                                                                        <!-- Room Type -->
+                                                                        <td>
+                                                                            <c:if test="${s.typeId == 1}">
+                                                                                Single Room
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 2}">
+                                                                                Double Room
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 3}">
+                                                                                Family Room
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 4}">
+                                                                                Deluxe Room
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 5}">
+                                                                                President Room
+                                                                            </c:if>
+                                                                        </td>
+                                                                        <!-- Room Capacity -->
+                                                                        <td>
+                                                                            <c:if test="${s.typeId == 1}">
+                                                                                1 bed
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 2}">
+                                                                                2 beds
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 3}">
+                                                                                4 beds
+                                                                            </c:if><c:if test="${s.typeId == 4}">
+                                                                                2 beds
+                                                                            </c:if><c:if test="${s.typeId == 5}">
+                                                                                2 beds
+                                                                            </c:if>
+
+                                                                        </td>
+                                                                        <!-- Room Status -->
+                                                                        <td>
+                                                                            <c:if test="${s.typeId == 1}">
+                                                                                <fmt:formatNumber value="500000" type="number" groupingUsed="true" pattern="#,###"/> ₫
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 2}">
+                                                                                <fmt:formatNumber value="800000" type="number" groupingUsed="true" pattern="#,###"/> ₫
+                                                                            </c:if>
+                                                                            <c:if test="${s.typeId == 3}">
+                                                                                <fmt:formatNumber value="1500000" type="number" groupingUsed="true" pattern="#,###"/> ₫
+                                                                            </c:if><c:if test="${s.typeId == 4}">
+                                                                                <fmt:formatNumber value="2000000" type="number" groupingUsed="true" pattern="#,###"/> ₫
+                                                                            </c:if><c:if test="${s.typeId == 5}">
+                                                                                <fmt:formatNumber value="5000000" type="number" groupingUsed="true" pattern="#,###"/> ₫
+                                                                            </c:if>
+                                                                        </td>
+                                                                        <!-- View Details Button -->
+                                                                        <td style="text-align: center">
+
+                                                                            <input type="checkbox" name="roomSelected" value="${s.roomId}" class="row-checkbox"/>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row tab-pane fade" id="pills-room" role="tabpanel" aria-labelledby="pills-room-tab">
                                                     <div style="display: flex">
                                                         <div class="col-md-3 col-lg-3">
                                                             <div class="form-group">
@@ -214,6 +298,7 @@
                                                                     placeholder="Enter address"
                                                                     required
                                                                     />
+                                                                <!--datetime-local-->
                                                             </div>
                                                             <div class="form-group">
                                                                 <label><i class="fas fa-transgender"></i> Gender</label><br />
@@ -225,6 +310,7 @@
                                                                             name="gender"
                                                                             id="flexRadioDefault1"
                                                                             value="1"
+                                                                            checked
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
@@ -239,7 +325,7 @@
                                                                             type="radio"
                                                                             name="gender"
                                                                             id="flexRadioDefault2"
-                                                                            checked
+
                                                                             value="0"
                                                                             />
                                                                         <label
@@ -253,24 +339,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
-                                                            <div class="form-group">
-                                                                <label><i class="far fa-clock"></i> Check-in time</label>
-                                                                <input
-                                                                    type="time"
-                                                                    class="form-control"
-                                                                    name="checkintime"
-                                                                    required
-                                                                    />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label><i class="far fa-clock"></i> Check-out time</label>
-                                                                <input
-                                                                    type="time"
-                                                                    class="form-control"
-                                                                    name="checkouttime"
-                                                                    required
-                                                                    />
-                                                            </div>
+
                                                             <div class="form-group">
                                                                 <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
                                                                 <input
@@ -283,69 +352,101 @@
                                                                     required
                                                                     />
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label><i class="fas fa-user-check"></i> Check-in</label><br />
+                                                                <div class="d-flex">
+                                                                    <div class="form-check">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="checkinstatus"
+                                                                            id="check1"
+                                                                            value="1"
+                                                                            checked
+                                                                            />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="check1"
+                                                                            >
+                                                                            Now
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="checkinstatus"
+                                                                            id="check2"
+                                                                            value="0"
+                                                                            />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="check2"
+                                                                            >
+                                                                            Later
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label><i class="fab fa-amazon-pay"></i> Paid status</label><br />
+                                                                <div class="d-flex">
+                                                                    <div class="form-check">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="paidstatus"
+                                                                            id="check3"
+                                                                            value="0"
+                                                                            checked
+                                                                            />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="check3"
+                                                                            >
+                                                                            Not yet
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="paidstatus"
+                                                                            id="check4"
+                                                                            value="1"
+                                                                            />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="check4"
+                                                                            >
+                                                                            Paid
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group"> 
+                                                            <input
+                                                                type="time"
+                                                                class="form-control"
+                                                                name="checkintime"
+                                                                value="14:00"
+                                                                required
+                                                                readonly=""
+                                                                hidden=""
+                                                                />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input
+                                                                type="time"
+                                                                class="form-control"
+                                                                name="checkouttime"
+                                                                value="12:00"
+                                                                readonly=""
+                                                                hidden=""
+                                                                />
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="row tab-pane fade" id="pills-room" role="tabpanel" aria-labelledby="pills-room-tab">
-                                                    <div class="table-responsive">
-                                                        <table
-                                                            id="multi-filter-select"
-                                                            class="display table table-striped table-hover"
-                                                            >
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Room Number</th>
-                                                                    <th>Type</th>
-                                                                    <th>Capacity</th>
-                                                                    <th>Price/day</th>
-                                                                    <th>Action</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <c:forEach items="${sessionScope.listRoomAvailable}" var="s">
-                                                                    <tr>
-                                                                        <td>${s.roomNumber}</td>
-                                                                        <!-- Room Type -->
-                                                                        <td>
-                                                                            <select disabled class="form-select update text-bg-light" name="typeId" data-room-id="${s.roomId}" data-field="typeId">
-                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}>Single Room</option>
-                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}>Double Room</option>
-                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}>Family Room</option>
-                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}>Deluxe Room</option>
-                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}>President Room</option>
-                                                                            </select>
-                                                                        </td>
-                                                                        <!-- Room Capacity -->
-                                                                        <td>
-                                                                            <select disabled class="form-select update text-bg-light" name="cleanId" data-room-id="${s.roomId}" data-field="cleanId">
-                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}>1 bed</option>
-                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}>2 beds</option>
-                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}>4 beds</option>
-                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}>2 beds</option>
-                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}>2 beds</option>
-                                                                            </select>
-                                                                        </td>
-                                                                        <!-- Room Status -->
-                                                                        <td>
-                                                                            <select disabled class="form-select update text-bg-light" name="statusId" data-room-id="${s.roomId}" data-field="statusId">
-                                                                                <option value="1" ${s.typeId == 1 ? 'selected' : ''}><fmt:formatNumber value="500000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
-                                                                                <option value="2" ${s.typeId == 2 ? 'selected' : ''}><fmt:formatNumber value="800000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
-                                                                                <option value="3" ${s.typeId == 3 ? 'selected' : ''}><fmt:formatNumber value="1500000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
-                                                                                <option value="4" ${s.typeId == 4 ? 'selected' : ''}><fmt:formatNumber value="2000000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
-                                                                                <option value="5" ${s.typeId == 5 ? 'selected' : ''}><fmt:formatNumber value="5000000" type="number" groupingUsed="true" pattern="#,###"/> ₫</option>
-                                                                            </select>
-                                                                        </td>
-                                                                        <!-- View Details Button -->
-                                                                        <td style="text-align: center">
-                                                                            <input type="checkbox" name="roomSelected" value="${s.roomId}" class="row-checkbox"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
                                                 </div>
 
                                             </div>
