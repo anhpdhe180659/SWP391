@@ -15,14 +15,14 @@ public class Feedback {
     private String guestID;
     private String feedback;
     private int rating;
-
-    // Constructor
-    public Feedback(int rating, String name, String guestID, String feedback, int rating1, Date createdAt) {
-        this.name = name;
-        this.guestID = guestID;
-        this.feedback = feedback;
-        this.rating = rating;
-    }
+//
+//    // Constructor
+//    public Feedback(int rating, String name, String guestID, String feedback, int rating1, Date createdAt) {
+//        this.name = name;
+//        this.guestID = guestID;
+//        this.feedback = feedback;
+//        this.rating = rating;
+//    }
 
     // Getters and Setters
     public String getName() {

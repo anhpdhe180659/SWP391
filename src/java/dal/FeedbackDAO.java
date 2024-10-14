@@ -75,8 +75,8 @@ public class FeedbackDAO extends DBContext {
                 int rating = rs.getInt("rating");
                 java.util.Date createdAt = rs.getTimestamp("created_at");
                 
-                Feedback fb = new Feedback(id, name, GuestID, feedback, rating, createdAt);
-                feedbackList.add(fb);
+//                Feedback fb = new Feedback(id, name, GuestID, feedback, rating, createdAt);
+//                feedbackList.add(fb);
             }
         } catch (SQLException e) {
             e.printStackTrace();
