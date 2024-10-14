@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import model.User;
 
-public class addGuest extends HttpServlet {
+public class editGuest extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -23,8 +23,27 @@ public class addGuest extends HttpServlet {
             request.setAttribute("error", "Please sign in with receptionist account!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
-            // Chuyển hướng tới trang addGuest.jsp nếu đã đăng nhập
-            request.getRequestDispatcher("addGuest.jsp").forward(request, response);
+            try {
+                // Lấy ID của guest từ request
+                int guestID = Integer.parseInt(request.getParameter("guestID"));
+                
+                // Tạo GuestDAO để lấy thông tin guest
+                GuestDAO gdao = new GuestDAO();
+                Guest guest = gdao.getGuestByGuestID(guestID);
+                
+                if (guest == null) {
+                    // Nếu không tìm thấy guest
+                    request.setAttribute("error", "Guest not found!");
+                    request.getRequestDispatcher("listGuest").forward(request, response);
+                } else {
+                    // Nếu tìm thấy guest, chuyển hướng tới trang editGuest.jsp với thông tin guest
+                    request.setAttribute("guest", guest);
+                    request.getRequestDispatcher("editGuest.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                request.setAttribute("error", "Invalid Guest ID.");
+                request.getRequestDispatcher("listGuest").forward(request, response);
+            }
         }
     }
 
@@ -42,8 +61,9 @@ public class addGuest extends HttpServlet {
             GuestDAO gdao = new GuestDAO();
 
             // Retrieve form data
+            int guestID = Integer.parseInt(request.getParameter("guestID")); // Lấy guestID từ form
             String name = request.getParameter("name");
-            String dateOfBirth = request.getParameter("dateOfBirth"); // Make sure to use the correct input name
+            String dateOfBirth = request.getParameter("dateOfBirth");
             int sex = Integer.parseInt(request.getParameter("sex"));
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
@@ -51,40 +71,40 @@ public class addGuest extends HttpServlet {
             String nationality = request.getParameter("nationality");
 
             // Validate guest information
-            String validationError = validateGuestInformation(gdao, name, dateOfBirth, sex, address, phone, identification, nationality);
+            String validationError = validateGuestInformation(gdao, guestID, name, dateOfBirth, sex, address, phone, identification, nationality);
 
             if (validationError != null) {
-                // If validation fails, display error message and return to addGuest page
+                // If validation fails, display error message and return to editGuest page
                 request.setAttribute("noti", validationError);
-                request.getRequestDispatcher("addGuest.jsp").forward(request, response);
+                request.getRequestDispatcher("editGuest.jsp").forward(request, response);
                 return;
             }
 
-            // Guest object creation and setting parameters
+            // Guest object update and setting parameters
             Guest guest = new Guest();
+            guest.setGuestID(guestID); // Set guestID
             guest.setName(name);
-            guest.setDateOfBirth(LocalDate.parse(dateOfBirth)); // Set the parsed date of birth
+            guest.setDateOfBirth(LocalDate.parse(dateOfBirth));
             guest.setSex(sex);
             guest.setAddress(address);
             guest.setPhone(phone);
             guest.setIdentification(identification);
             guest.setNationality(nationality);
-            guest.setIsHidden(0);
 
-            // Add the new guest to the database
-            gdao.addGuest(guest);
+            // Update the guest in the database
+            gdao.updateGuest(guest);
 
-            // Redirect to the guest list after successful addition
+            // Redirect to the guest list after successful update
             response.sendRedirect("listGuest");
 
         } catch (Exception e) {
             out.print(e);
-            request.setAttribute("noti", "An error occurred while adding the guest.");
-            request.getRequestDispatcher("addGuest.jsp").forward(request, response);
+            request.setAttribute("noti", "An error occurred while editing the guest.");
+            request.getRequestDispatcher("editGuest.jsp").forward(request, response);
         }
     }
 
-    private String validateGuestInformation(GuestDAO gdao, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality) {
+    private String validateGuestInformation(GuestDAO gdao, int guestID, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality) {
         // Kiểm tra thông tin như trước
         if (name.isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
             return "Full Name cannot be null, blank, or contain special characters.";
@@ -102,18 +122,19 @@ public class addGuest extends HttpServlet {
             return "Nationality cannot be blank.";
         }
 
-        // Kiểm tra trùng lặp
+        // Kiểm tra trùng lặp nhưng bỏ qua khách hiện tại (guestID)
         List<Guest> listGuest = gdao.getAllGuests();
         for (Guest g : listGuest) {
-            if (g.getIdentification().equals(identification)) {
-                return "Identification has existed, please try again!";
-            }
-            if (g.getPhone().equals(phone)) {
-                return "Phone number has existed, please try again!";
+            if (g.getGuestID() != guestID) {
+                if (g.getIdentification().equals(identification)) {
+                    return "Identification has existed, please try again!";
+                }
+                if (g.getPhone().equals(phone)) {
+                    return "Phone number has existed, please try again!";
+                }
             }
         }
 
         return null; // Không có lỗi
     }
-
 }

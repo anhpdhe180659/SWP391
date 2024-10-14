@@ -105,11 +105,11 @@
                                                                 <div class="form-button-action">
                                                                     <a href="editGuest?guestID=${g.guestID}">
                                                                         <button type="button" class="btn btn-link btn-primary btn-lg">
-                                                                            <i class="fa fa-edit"></i>
+                                                                            <i class="fa fa-edit"></i>Edit
                                                                         </button>
                                                                     </a>
                                                                     <button type="button" class="btn btn-link btn-danger" onclick="doHidden(${g.guestID})">
-                                                                        <i class="fa fa-times"></i>
+                                                                        <i class="fa fa-times"></i>Hide
                                                                     </button>
                                                                     <a href="viewGuest?guestID=${g.guestID}">
                                                                         <button type="button" class="btn btn-link btn-info">
@@ -158,6 +158,11 @@
                                                                         function doHidden(guestID) {
                                                                             if (confirm('Are you sure you want to hide this guest?')) {
                                                                                 window.location.href = "hideGuest?guestID=" + guestID;
+                                                                            }
+                                                                        }
+                                                                        function doEdit(guestID) {
+                                                                            if (confirm('Are you sure you want to edit this guest?')) {
+                                                                                window.location.href = "editGuest?guestID=" + guestID;
                                                                             }
                                                                         }
 //                                                                        document.addEventListener("DOMContentLoaded", function() {

@@ -19,11 +19,20 @@ public class GuestDAO extends DBContext {
 
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
-//        dao.updateGuestHiddenStatus(11, 0);       
+        Guest guest = new Guest();
+        guest.setGuestID(1); // Giả định rằng chúng ta đang cập nhật khách hàng với ID 1
+        guest.setName("Nguyễn Văn An");
+        guest.setDateOfBirth(LocalDate.of(1985, 3, 15)); // Thiết lập ngày sinh
+        guest.setSex(1); // Giả định rằng 1 đại diện cho nam
+        guest.setAddress("123 Đường Lê Lợi, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh");
+        guest.setPhone("0901234567");
+        guest.setIdentification("CMND 079085001234");
+        guest.setNationality("Việt Nam");
+//        dao.editGuest(guest,1);
         List<Guest> l = dao.getHiddenGuest();
-        for (Guest guest : l) {
-            System.out.println(guest);
-        }
+//        for (Guest g : l) {
+//            System.out.println(g);
+//        }
 //        System.out.println(dao.getGuestByGuestID(8));
 
     }
@@ -182,6 +191,36 @@ public class GuestDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+
+    public void updateGuest(Guest guest) {
+    String query = """
+                   UPDATE [dbo].[Guest]
+                   SET [Name] = ?,
+                       [DateOfBirth] = ?,
+                       [Sex] = ?,
+                       [Address] = ?,
+                       [Phone] = ?,
+                       [Identification] = ?,
+                       [Nationality] = ?,
+                       [isHidden] = ?
+                   WHERE [GuestID] = ?""";
+    try (PreparedStatement pre = connection.prepareStatement(query)) {
+        pre.setString(1, guest.getName());
+        pre.setString(2, guest.getDateOfBirth().toString()); // Chuyển đổi LocalDate sang chuỗi
+        pre.setInt(3, guest.getSex());
+        pre.setString(4, guest.getAddress());
+        pre.setString(5, guest.getPhone());
+        pre.setString(6, guest.getIdentification());
+        pre.setString(7, guest.getNationality());
+        pre.setInt(8, guest.getIsHidden()); // Giá trị ẩn (isHidden)
+        pre.setInt(9, guest.getGuestID());  // Đặt GuestID cho điều kiện WHERE
+
+        pre.executeUpdate();
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+}
+
 
     public void updateGuestHiddenStatus(int guestID, int isHidden) {
         String query = """

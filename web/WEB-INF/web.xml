@@ -280,7 +280,7 @@
         <servlet-name>listRoomHK</servlet-name>
         <url-pattern>/listRoomHK</url-pattern>
     </servlet-mapping>
-    <servlet-mapping> 
+    <servlet-mapping>
         <servlet-name>bookingList</servlet-name>
         <url-pattern>/bookingList</url-pattern>
     </servlet-mapping>
