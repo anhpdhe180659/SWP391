@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author LENOVO
