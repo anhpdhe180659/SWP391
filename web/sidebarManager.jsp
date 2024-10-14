@@ -101,6 +101,11 @@
                                             <span class="sub-item">Room Type</span>
                                         </a>
                                     </li>
+                                     <li>
+                                        <a href="addRoomType">
+                                            <span class="sub-item">Add Room Type</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>   
