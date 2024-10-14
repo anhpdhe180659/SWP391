@@ -67,7 +67,7 @@
                             <a href="#contact">For Booking</a>
                         </div> 
                           <div class="navbar-link col-md-2 col-sm-12">
-                            <a href="#contact">FeedBack</a>
+                            <a href="feedback.jsp">FeedBack</a>
                         </div>
                         <div class="login-area col-md-2 col-sm-12">
                             <a href="login.jsp" role="button" class="btn btn-outline-primary">Login</a>

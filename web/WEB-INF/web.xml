@@ -100,6 +100,10 @@
         <servlet-name>viewGuest</servlet-name>
         <servlet-class>control.viewGuest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>feedbackcontroller</servlet-name>
+        <servlet-class>control.feedbackcontroller</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -276,7 +280,7 @@
         <servlet-name>listRoomHK</servlet-name>
         <url-pattern>/listRoomHK</url-pattern>
     </servlet-mapping>
-    <servlet-mapping> 
+    <servlet-mapping>
         <servlet-name>bookingList</servlet-name>
         <url-pattern>/bookingList</url-pattern>
     </servlet-mapping>
@@ -303,6 +307,10 @@
     <servlet-mapping>
         <servlet-name>viewGuest</servlet-name>
         <url-pattern>/viewGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>feedbackcontroller</servlet-name>
+        <url-pattern>/feedbackcontroller</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
