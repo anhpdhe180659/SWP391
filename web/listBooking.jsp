@@ -8,14 +8,11 @@
 <%@page import="java.util.*" %>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
-<%@page import="java.time.LocalDateTime" %>
-<%@page import="java.time.ZoneId" %>
-<%@page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html> 
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Booking</title>
+        <title>Booking List</title>
         <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
         <link rel="icon" href="img/logo/favicon.png" type="image/x-icon" />
 
