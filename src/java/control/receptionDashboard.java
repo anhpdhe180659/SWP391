@@ -6,6 +6,7 @@ package control;
 
 import dal.GuestDAO;
 import dal.InvoiceDAO;
+import dal.NewsDAO;
 import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Guest;
 import model.Invoice;
+import model.NewsItem;
 import model.Room;
 import model.User;
 
@@ -74,6 +76,8 @@ public class receptionDashboard extends HttpServlet {
         }
         User user = (User) session.getAttribute("user");
 //        //get room
+        List<NewsItem> newsList = new NewsDAO().getTop3();
+        session.setAttribute("newsList", newsList);
         RoomDao roomDao = new RoomDao();
         List<Room> listRoom = roomDao.getAllRooms();
         //get invoice

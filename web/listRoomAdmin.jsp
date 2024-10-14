@@ -98,8 +98,8 @@
                                             <nav
                                                 class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
                                                 >
-                                                <c:set value="${requestScope.searchName} " var="n"/>
-                                                <form action="searchUser">
+                                                <c:set value="${requestScope.keyword} " var="n"/>
+                                                <form action="searchRoom">
                                                     <div class="input-group" >
                                                         <div class="input-group-prepend">
                                                             <button type="submit" class="btn btn-search pe-1">
@@ -109,7 +109,7 @@
                                                         <c:if test="${n.length() < 2}">
                                                             <input
                                                                 type="text"
-                                                                name="username"
+                                                                name="keyword"
                                                                 placeholder="Search room..."
                                                                 class="form-control"
                                                                 />
@@ -117,7 +117,7 @@
                                                         <c:if test="${n.length() > 1}">
                                                             <input
                                                                 type="text"
-                                                                name="username"
+                                                                name="keyword"
                                                                 value="${n}"
                                                                 placeholder="Search room..."
                                                                 class="form-control"
@@ -201,56 +201,31 @@
                                                                     Cleaned
                                                                 </td>
                                                             </c:if>
-                                                            <c:if test="${s.typeId == 1}">
-                                                                <td>
-                                                                    Single Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 2}">
-                                                                <td>
-                                                                    Double Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 3}">
-                                                                <td>
-                                                                    Family Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 4}">
-                                                                <td>
-                                                                    Deluxe Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.typeId == 5}">
-                                                                <td>
-                                                                    President Room
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.statusId == 1}">
-                                                                <td class="text-bg-success">
-                                                                    Available
-                                                                </td>
-                                                            </c:if>
-                                                            <c:if test="${s.statusId == 3}">
-                                                                <td class="text-bg-warning">
-                                                                    Under Maintenance
-                                                                </td>
-                                                            </c:if><c:if test="${s.statusId == 2}">
-                                                                <td class="text-bg-info">
-                                                                    Occupied
-                                                                </td>
-                                                            </c:if>
+                                                            <!-- Room Type -->
+                                                            <td>
+                                                                <select class="form-select update" name="typeId" data-room-id="${s.roomId}" data-field="typeId">
+                                                                    <option value="1" ${s.typeId == 1 ? 'selected' : ''}>Single Room</option>
+                                                                    <option value="2" ${s.typeId == 2 ? 'selected' : ''}>Double Room</option>
+                                                                    <option value="3" ${s.typeId == 3 ? 'selected' : ''}>Family Room</option>
+                                                                    <option value="4" ${s.typeId == 4 ? 'selected' : ''}>Deluxe Room</option>
+                                                                    <option value="5" ${s.typeId == 5 ? 'selected' : ''}>President Room</option>
+                                                                </select>
+                                                            </td>
+
+                                                            <!-- Room Status -->
+                                                            <td>
+                                                                <select class="form-select update text-bg-light" name="statusId" data-room-id="${s.roomId}" data-field="statusId">
+                                                                    <option value="1" ${s.statusId == 1 ? 'selected' : ''}>Available</option>
+                                                                    <option value="2" ${s.statusId == 2 ? 'selected' : ''}>Occupied</option>
+                                                                    <option value="3" ${s.statusId == 3 ? 'selected' : ''}>Under Maintenance</option>
+                                                                </select>
+                                                            </td>
                                                             <td style="text-align: center">
                                                                 <a href="viewDetailAdmin?id=${s.roomId}"
                                                                    <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
                                                                 </a>
                                                             </td>
-                                                            <td style="text-align: center">
-                                                                <div class="form-check form-switch">
-                                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                                                                    <label class="form-check-label text-danger" for="flexSwitchCheckDefault">Active/De-active</label>
-                                                                </div>
-                                                            </td>
+
                                                         </tr>
                                                     </c:forEach>
                                                     <c:if test="${requestScope.noti != null}">
@@ -314,8 +289,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
+        </div>                                                                
         <!--   Core JS Files   -->
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
@@ -342,6 +316,39 @@
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
+        <script>
+                                                    $(document).ready(function () {
+                                                        $('.update').on('change', function () {
+                                                            const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                                                            const field = $(this).data('field'); // Get field name from data attribute
+                                                            const value = $(this).val(); // Get selected value
+                                                            console.log(field);
+                                                            // AJAX call to update the database
+                                                            $.ajax({
+                                                                url: 'updateRoomDetail', // Your servlet URL
+                                                                method: 'POST',
+                                                                data: {
+                                                                    roomId: roomId,
+                                                                    field: field,
+                                                                    value: value
+                                                                },
+                                                                success: function (response) {
+                                                                    console.log(swal);
+                                                                    // Handle success, you can show a notification or update the UI
+                                                                    swal({
+                                                                        icon: "success",
+                                                                        text: 'Update successful'
+                                                                    });
+                                                                },
+                                                                error: function (xhr, status, error) {
+                                                                    // Handle error
+                                                                    alert('Update failed:');
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+        </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
                                                     function addRoom() {
                                                         window.location = 'addRoom';

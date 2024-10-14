@@ -158,8 +158,29 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-danger bubble-shadow-small"
+                                                    >
+                                                    <i class="far fa-bell"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">In-house Guest</p>
+                                                    <h4 class="card-title">0</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!--Transaction history-->
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="card card-round">
                                     <div class="card-header">
                                         <div class="card-head-row card-tools-still-right">
@@ -202,7 +223,30 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Newest Notifications</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <ul>
+                                                <c:forEach var="news" items="${sessionScope.newsList}">
+                                                    <li>
+                                                        <span style="font-size: 21px" class="date">${news.publishDate}</span>
+                                                        <a style="font-size: 22px" href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
+                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
+                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
+                                                           text-overflow: ellipsis;
+                                                           font-size:16px/* Hiển thị dấu ba chấm */">${news.content}</p>
+                                                    </li>
+                                                </c:forEach>
+                                                <li><a href="viewNotification">View all notification</a></li>
+                                            </ul> 
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="card">
@@ -219,6 +263,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">
@@ -235,40 +280,9 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
-
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="http://www.themekita.com">
-                                    ThemeKita
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Help </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Licenses </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright">
-                        2024, made with <i class="fa fa-heart heart text-danger"></i> by
-                        <a href="http://www.themekita.com">ThemeKita</a>
-                    </div>
-                    <div>
-                        Distributed by
-                        <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
     <!--   Core JS Files   -->
@@ -357,14 +371,14 @@
     <script>
         var guestChart = document.getElementById('guestChart').getContext('2d');
         const guestData = ${sessionScope.guestByMonth};
-        if(guestData.length < 7){
-            for(let i = guestData.length; i <= 7; i++){
+        if (guestData.length < 7) {
+            for (let i = guestData.length + 1; i <= 7; i++) {
                 guestData.push(0);
             }
         }
-        guestData = guestData.toReversed();
-        console.log(guestData)
-    
+        const guestData2 = guestData.toReversed();
+        console.log(guestData2);
+
         function getLastMonths(count) {
             const date = new Date();
             const months = [];
@@ -379,11 +393,10 @@
         const data = {
             labels: labels,
             datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    label: 'Guest in 7 month',
+                    data: guestData2,
                     fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    borderColor: 'rgb(75, 192, 192)'
                 }]
         };
         const config = {

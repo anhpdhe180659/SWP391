@@ -4,7 +4,7 @@
  */
 package control;
 
-import dal.RoomDao;
+import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Room;
+import java.util.List;
+import model.RoomType;
 
 /**
  *
  * @author phand
  */
-@WebServlet(name = "addRoom", urlPatterns = {"/addRoom"})
-public class addRoom extends HttpServlet {
+@WebServlet(name = "listRoomType", urlPatterns = {"/listRoomType"})
+public class listRoomType extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +40,10 @@ public class addRoom extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet addRoom</title>");
+            out.println("<title>Servlet listRoomType</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet addRoom at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet listRoomType at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,11 +64,19 @@ public class addRoom extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("2")) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            System.out.println("sasd");
+            response.getWriter().print("dasdasd");
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            RoomTypeDAO roomDao = new RoomTypeDAO();
+            List<RoomType> listRoom = roomDao.getAll();
+            session.setAttribute("listRoomType", listRoom);
+            request.getRequestDispatcher("listRoomType.jsp").forward(request, response);
         }
-        response.sendRedirect("addRoom.jsp");
     }
 
     /**
@@ -81,40 +90,7 @@ public class addRoom extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        }
-        if (session.getAttribute("user") == null || session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-        try {
-            String roomNumber = request.getParameter("roomNumber");
-            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
-            int statusId = Integer.parseInt(request.getParameter("statusId"));
-            int typeId = Integer.parseInt(request.getParameter("typeId"));
-            RoomDao roomDao = new RoomDao();
-
-            Room room = roomDao.getRoomByRoomNumber(roomNumber);
-            if (room != null) {
-                request.setAttribute("noti", "Room number is existed !");
-                request.getRequestDispatcher("addRoom.jsp").forward(request, response);
-                return;
-            } else {
-                room = new Room();
-                room.setRoomNumber(roomNumber);
-                room.setCleanId(cleanId);
-                room.setStatusId(statusId);
-                room.setTypeId(typeId);
-                roomDao.addRoom(room);
-            }
-            System.out.println(room.getTypeId() + "/" + room.getRoomNumber() + "/" + room.getStatusId() + "/" + room.getCleanId());
-            request.setAttribute("noti", "Add room successful !");
-            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
+        processRequest(request, response);
     }
 
     /**

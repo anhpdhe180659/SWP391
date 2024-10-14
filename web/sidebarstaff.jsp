@@ -1,8 +1,10 @@
 <%-- 
-    Document   : managerSidebar
-    Created on : Sep 21, 2024, 7:33:50 PM
-    Author     : nhatk
+    Document   : feedback
+    Created on : Oct 13, 2024, 10:40:07 PM
+    Author     : LENOVO
 --%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -55,7 +57,7 @@
                             <span class="sidebar-mini-icon">
                                 <i class="fa fa-ellipsis-h"></i>
                             </span>
-                            <h4 class="text-section">Manage</h4>
+                            <h4 class="text-section">Staff</h4>
                         </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#base">
@@ -66,35 +68,14 @@
                             <div class="collapse" id="base">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="listRoom">
-                                            <span class="sub-item">View Room</span>
+                                        <a href="listRoomHK">
+                                            <span class="sub-item">View Room Status</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                                <i class="fas fa-address-book"></i>
-                                <p>Booking</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="sidebarLayouts">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="booking">
-                                            <span class="sub-item">Create booking</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="bookingList">
-                                            <span class="sub-item">View booking</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                         <li class="nav-item">
+                                               <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#forms">
                                 <i class="fas fa-pen-square"></i>
                                 <p>Guest</p>
@@ -110,45 +91,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#tables">
-                                <i class="fas fa-money-bill"></i>
-                                <p>Invoice</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="tables">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="tables.jsp">
-                                            <span class="sub-item">Invoice</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="datatables.jsp">
-                                            <span class="sub-item">Invoice</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#C">
-                                <i class="fas fa-bell"></i>
-                                <p>Notifications</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="C">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="viewNotification">
-                                            <span class="sub-item">All Notifications</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                        </li>
+                       
                     </ul>
                 </div>
             </div>
@@ -156,3 +99,4 @@
         <!-- End Sidebar -->
     </body>
 </html>
+

@@ -53,7 +53,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <jsp:include page="sidebarstaff.jsp"/>
             <!-- End Sidebar -->
 
             <div class="main-panel">
