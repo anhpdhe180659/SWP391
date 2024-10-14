@@ -130,6 +130,24 @@
                                     </li>
                                 </ul>
                             </div>
+                            
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#C">
+                                <i class="fas fa-bell"></i>
+                                <p>Notifications</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="C">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="viewNotification">
+                                            <span class="sub-item">All Notifications</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
                         </li>
                     </ul>
                 </div>

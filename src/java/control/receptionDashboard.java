@@ -4,7 +4,9 @@
  */
 package control;
 
+import dal.GuestDAO;
 import dal.InvoiceDAO;
+import dal.NewsDAO;
 import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Guest;
 import model.Invoice;
+import model.NewsItem;
 import model.Room;
 import model.User;
 
@@ -64,21 +68,26 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        }
-        else if (session.getAttribute("role").equals("1")) {
+        } else if (session.getAttribute("role").equals("1")) {
             response.sendRedirect("login.jsp");
         }
         User user = (User) session.getAttribute("user");
 //        //get room
+        List<NewsItem> newsList = new NewsDAO().getTop3();
+        session.setAttribute("newsList", newsList);
         RoomDao roomDao = new RoomDao();
         List<Room> listRoom = roomDao.getAllRooms();
         //get invoice
         InvoiceDAO invoiceDao = new InvoiceDAO();
         List<Invoice> listInvoice = invoiceDao.getAll();
-
+        //get guest 
+        GuestDAO guestDao = new GuestDAO();
+        List<Guest> guestList = guestDao.getAllGuests();
+        List<Integer> numGuestByMonth = guestDao.getNumberGuestByMonth();
+        int numGuest = guestList.size();
         int underMaintainRoom = listRoom.stream().filter(
                 room -> room.getStatusId() == 3
         ).toList().size();
@@ -88,7 +97,20 @@ public class receptionDashboard extends HttpServlet {
         int occupiedRoom = listRoom.stream().filter(
                 room -> room.getStatusId() == 2
         ).toList().size();
-        //get session 
+        int cleaned = listRoom.stream().filter(
+                room -> room.getCleanId() == 3
+        ).toList().size();
+        int notCleaned = listRoom.stream().filter(
+                room -> room.getCleanId() == 1
+        ).toList().size();
+        int inProgress = listRoom.stream().filter(
+                room -> room.getCleanId() == 2
+        ).toList().size();
+        session.setAttribute("numberGuest", numGuest);
+        session.setAttribute("guestByMonth", numGuestByMonth);
+        session.setAttribute("cleaned", cleaned);
+        session.setAttribute("notCleaned", notCleaned);
+        session.setAttribute("inProgress", inProgress);
         session.setAttribute("maintaince", underMaintainRoom);
         session.setAttribute("available", availableRoom);
         session.setAttribute("occupied", occupiedRoom);

@@ -61,7 +61,6 @@
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Add Guest</h3>
                         </div>
-
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -73,7 +72,8 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form action="addGuest" method="POST" onsubmit="return validate()">
+
+                                    <form action="addGuest" method="POST">
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
@@ -108,22 +108,39 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
-                                                <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-venus-mars"></i> Gender
-                                                    </label>
+                                                <div class="form-group">
+                                                    <label><i class="fas fa-transgender"></i> Gender</label><br />
                                                     <div class="d-flex">
-                                                        <div class="form-check me-3">
-                                                            <input class="form-check-input" type="radio" name="sex" id="male" value="1" required />
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="radio"
+                                                                name="sex"
+                                                                id="male"
+                                                                value="1"
+                                                                required
+                                                                />
                                                             <label class="form-check-label" for="male">Male</label>
                                                         </div>
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="sex" id="female" value="0" required />
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="radio"
+                                                                name="sex"
+                                                                id="female"
+                                                                value="2"
+                                                                required
+                                                                />
                                                             <label class="form-check-label" for="female">Female</label>
                                                         </div>
                                                     </div>
+                                                    <div class="invalid-feedback">
+                                                        Please select a gender.
+                                                    </div>
                                                 </div>
+
                                             </div>
+
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label>
@@ -149,6 +166,10 @@
                                         </div>
                                     </form>
 
+                                    <c:if test="${not empty noti}">
+                                        <h4><div class="noti" style="color: red">${noti}</div></h4>
+                                    </c:if>
+
 
                                 </div>
                             </div>
@@ -169,9 +190,9 @@
 
             <script>
                                         function validate() {
-                                            // Add your validation logic here if needed
-                                            return true; // Return true to submit the form
                                         }
+
             </script>
+
     </body>
 </html>

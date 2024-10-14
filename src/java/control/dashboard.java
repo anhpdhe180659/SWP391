@@ -4,6 +4,7 @@
  */
 package control;
 
+import dal.AmenityDAO;
 import dal.DashboardDAO;
 import dal.RoomDao;
 import dto.ChartDTO;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Amenity;
 import model.Room;
 import model.User;
 
@@ -63,10 +65,14 @@ public class dashboard extends HttpServlet {
             int occupiedRoom = listRoom.stream().filter(
                     room -> room.getStatusId() == 2
             ).toList().size();
+            AmenityDAO amenityDao = new AmenityDAO();
+            List<Amenity> listAmenity = amenityDao.getAllAmenities();
+            
             //get session 
             session.setAttribute("maintaince", underMaintainRoom);
             session.setAttribute("available", availableRoom);
             session.setAttribute("occupied", occupiedRoom);
+            session.setAttribute("amenityCount", listAmenity.size());
             response.sendRedirect("dashboard.jsp");
         }
     }

@@ -82,19 +82,22 @@ public class updateRoomDetail extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         try {
+             RoomDao roomDao = new RoomDao();
             int roomId = Integer.parseInt(request.getParameter("roomId"));
-            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
-            int statusId = Integer.parseInt(request.getParameter("statusId"));
-            int typeId =  Integer.parseInt(request.getParameter("typeId"));
-            response.getWriter().print(roomId+"/"+cleanId+"."+statusId+"/"+typeId);
-            RoomDao roomDao = new RoomDao();
+            String field = request.getParameter("field");
+            String value = request.getParameter("value");
             Room room = roomDao.findRoomById(roomId);
-            room.setCleanId(cleanId);
-            room.setStatusId(statusId);
-            room.setTypeId(typeId);
+            int vl = Integer.parseInt(value);
+            switch (field) {
+                case "typeId" -> {
+                    room.setTypeId(vl);
+                }
+                case "statusId" -> {
+                    room.setStatusId(vl);
+                }
+            }
             roomDao.updateRoom(room);
             System.out.println(room.getTypeId()+"/"+room.getRoomNumber()+"/"+room.getStatusId()+"/"+room.getCleanId());
-            session.setAttribute("detailRoomAdmin", room);
             request.setAttribute("noti", "Update room successful !");
             request.getRequestDispatcher("roomDetailAdmin.jsp").forward(request, response);
         } catch (NumberFormatException e) {

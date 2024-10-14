@@ -57,8 +57,9 @@ public class DeleteAmenityDetailConatroller extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
        String roomID = request.getParameter("roomid");
+        System.out.println("RoomId ============="+roomID);
         AmenityDAO amenityDao = new AmenityDAO();
-        amenityDao.deleteAmenityDetail(roomID);
+        amenityDao.deleteAmenityDetailByRoomNumber(roomID);
     
     response.sendRedirect("amenity-detail");
     } 

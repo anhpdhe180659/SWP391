@@ -24,9 +24,33 @@ public class GuestDAO extends DBContext {
         for (Guest guest : l) {
             System.out.println(guest);
         }
+        System.out.println(dao.getNumberGuestByMonth());
 //        System.out.println(dao.getGuestByGuestID(8));
 
     }
+
+    public List<Integer> getNumberGuestByMonth() {
+        List<Integer> numberGuest = new ArrayList<>();
+        String sql = "SELECT\n"
+                + "    FORMAT(CheckInDate, 'yyyy-MM') AS month,\n"
+                + "    COUNT(DISTINCT BookingID) AS booking_count\n"
+                + "FROM BookingRoom\n"
+                + "WHERE CheckInDate >= DATEADD(MONTH, -7, GETDATE())\n"
+                + "GROUP BY  FORMAT(CheckInDate, 'yyyy-MM')\n"
+                + "ORDER BY month DESC";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                numberGuest.add(rs.getInt("booking_count"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return numberGuest;
+    }
+    
 
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();

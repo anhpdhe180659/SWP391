@@ -38,7 +38,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
             <!-- End Sidebar -->
             <div class="main-panel">
                 <div class="main-header">
@@ -51,15 +51,21 @@
                             <h3 class="fw-bold mb-3">Guest List</h3>
                         </div>
 
+                        <!-- Thông báo -->
+                        <c:if test="${not empty success}">
+                            <div id="success-alert" class="alert alert-success">
+                                ${success}
+                            </div>
+                        </c:if>
+
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <!--<h4 class="card-title">Add New Guest</h4>-->
                                         <button class="btn btn-primary btn-round" onclick="addGuest()">
                                             <i class="fa fa-plus"></i> Add Guest
                                         </button>
-                                        <button class="btn btn-primary btn-round" onclick="viewHiddenGuests()()">
+                                        <button class="btn btn-primary btn-round" onclick="viewHiddenGuests()">
                                             <i class="fa fa-eye"></i> View Hidden Guests
                                         </button>
                                     </div>
@@ -87,10 +93,10 @@
                                                             <td style="border-right: 1px solid #ddd;">
                                                                 <c:choose>
                                                                     <c:when test="${g.sex == 1}">
-                                                                        <img src="assets/img/male-icon.png" alt="Male"/>
+                                                                        <img src="assets/img/male-icon.png" alt="Male" title="Male"/>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <img src="assets/img/female-icon.png" alt="Female"/>
+                                                                        <img src="assets/img/female-icon.png" alt="Female" title="Female"/>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </td>
@@ -115,7 +121,6 @@
                                                         </tr>
                                                     </c:if>
                                                 </c:forEach>
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -131,30 +136,40 @@
             </footer>
         </div>
 
-        <!-- Core JS Files -->
-        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
+        <!-- Scripts -->
+        <script src="assets/js/core/jquery.3.2.1.min.js"></script>
+        <script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
         <script src="assets/js/core/bootstrap.min.js"></script>
-        <!-- Datatables -->
         <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-        <!-- Kaiadmin JS -->
-        <script src="assets/js/kaiadmin.min.js"></script>
 
         <script>
-                        function doHidden(guestID) {
-                            var option = confirm("Are you sure to hide this guest?");
-                            if (option === true) {
-                                window.location = "hideGuest?guestID=" + guestID;
-                            }
-                        }
+                                                                        $(document).ready(function () {
+                                                                            $('.table').DataTable();
+                                                                        });
 
-                        function addGuest() {
-                            window.location = "addGuest";
-                        }
-                        function viewHiddenGuests() {
-                            window.location = "hiddenListGuest";
-                        }
-                        
+                                                                        function addGuest() {
+                                                                            window.location.href = "addGuest";
+                                                                        }
+
+                                                                        function viewHiddenGuests() {
+                                                                            window.location.href = "hiddenListGuest";
+                                                                        }
+
+                                                                        function doHidden(guestID) {
+                                                                            if (confirm('Are you sure you want to hide this guest?')) {
+                                                                                window.location.href = "hideGuest?guestID=" + guestID;
+                                                                            }
+                                                                        }
+//                                                                        document.addEventListener("DOMContentLoaded", function() {
+//                                                                        // Sau 30 giây (30000ms), ẩn thông báo thành công
+//                                                                        setTimeout(function() {
+//                                                                        var successAlert = document.getElementById("success-alert");
+//                                                                                if (successAlert) {
+//                                                                        successAlert.style.display = 'none'; // Ẩn thông báo
+//                                                                        }
+//                                                                        },
+//                                                                        5000);
+
         </script>
     </body>
 </html>

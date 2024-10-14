@@ -100,7 +100,7 @@
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
                                         </button>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -109,7 +109,7 @@
                                     <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="editService"  method="POST"  onsubmit="return validate()">
+                                                <form id="myForm" onsubmit="return validate()">
                                                     <c:set value="${requestScope.service}" var="s"/>
                                                     <div class="modal-body">
                                                         <div class="row">
@@ -137,11 +137,11 @@
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+
+
                                                         </div>
                                                     </div>
-                                                    <input type="text" name="serviceid" value="${s.serviceID}" hidden="">
+                                                    <input type="text" name="serviceid"  value="${s.serviceID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
                                                         <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
@@ -152,7 +152,7 @@
                                                         </button>&nbsp;
                                                         <button
                                                             type="submit"
-                                                            class="btn btn-primary">
+                                                            class="btn btn-primary update">
                                                             Save
                                                         </button>
                                                     </div>
@@ -181,7 +181,7 @@
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap.min.js"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- jQuery Scrollbar -->
     <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Datatables -->
@@ -218,63 +218,35 @@
             window.location = "listService";
         }
     </script>
-
     <script>
         $(document).ready(function () {
-            $("#basic-datatables").DataTable({});
-
-            $("#multi-filter-select").DataTable({
-                pageLength: 5,
-                initComplete: function () {
-                    this.api()
-                            .columns()
-                            .every(function () {
-                                var column = this;
-                                var select = $(
-                                        '<select class="form-select"><option value=""></option></select>'
-                                        )
-                                        .appendTo($(column.footer()).empty())
-                                        .on("change", function () {
-                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                            column
-                                                    .search(val ? "^" + val + "$" : "", true, false)
-                                                    .draw();
-                                        });
-
-                                column
-                                        .data()
-                                        .unique()
-                                        .sort()
-                                        .each(function (d, j) {
-                                            select.append(
-                                                    '<option value="' + d + '">' + d + "</option>"
-                                                    );
-                                        });
-                            });
-                },
-            });
-
-            // edit Row
-            $("#edit-user").DataTable({
-                pageLength: 5,
-            });
-
-            var action =
-                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-            $("#editUserButton").click(function () {
-                $("#edit-user")
-                        .dataTable()
-                        .fneditData([
-                            $("#editName").val(),
-                            $("#editPosition").val(),
-                            $("#editOffice").val(),
-                            action,
-                        ]);
-                $("#editUserModal").modal("hide");
+            $('#myForm').on('submit', function (e) {
+                e.preventDefault(); // Prevent the form from submitting the traditional way
+                var formData = $(this).serialize(); // Serialize the form data
+                $.ajax({
+                    type: 'POST',
+                    url: '/SWP391/editService', // Your server endpoint
+                    data: formData,
+                    success: function (response) {
+                        console.log(swal);
+                        // Handle success, you can show a notification or update the UI
+                        swal({
+                            icon: "success",
+                            text: 'Update successful'
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        swal({
+                            icon: "fail",
+                            text: 'Update fail'
+                        });
+                    }
+                });
             });
         });
     </script>
+
 
 </body>
 </html>

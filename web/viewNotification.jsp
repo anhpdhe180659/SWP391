@@ -53,7 +53,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
 
             <!-- End Sidebar -->
             <div class="main-panel">
@@ -106,7 +106,6 @@
                                                 </li>
                                             </c:forEach>
                                         </ul> 
-                                        <a href="CreateNewsServlets">Create News</a>
                                     </div>
                                 </div>
                             </div>
