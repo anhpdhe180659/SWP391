@@ -74,9 +74,11 @@ public class FeedbackDAO extends DBContext {
                 String feedback = rs.getString("feedback");
                 int rating = rs.getInt("rating");
                 
+
                 
                 Feedback fb = new Feedback( name, GuestID, feedback, rating);
                 feedbackList.add(fb);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
