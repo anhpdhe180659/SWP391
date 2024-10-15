@@ -10,7 +10,7 @@
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
             WebFont.load({
-                google: { families: ["Public Sans:300,400,500,600,700"] },
+                google: {families: ["Public Sans:300,400,500,600,700"]},
                 custom: {
                     families: ["Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
                     urls: ["assets/css/fonts.min.css"],
@@ -78,7 +78,8 @@
                                                                 </div>
                                                                 <div class="form-group form-group-default">
                                                                     <label>Image</label>
-                                                                    <input type="file" name="image" class="form-control" required />
+                                                                    <input type="file" name="image" class="form-control image-input" required />
+                                                                    <img height="300px" class="preview-img" style="display: none" src="#" alt="alt"/>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer border-0">
@@ -104,37 +105,45 @@
                 <script src="assets/js/core/jquery-3.7.1.min.js"></script>
                 <script src="assets/js/core/popper.min.js"></script>
                 <script src="assets/js/core/bootstrap.min.js"></script>
- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                 <script>
-                    function BackToList() {
-                        window.location = "listRoomType.jsp";
-                    }
+                                            function BackToList() {
+                                                window.location = "listRoomType.jsp";
+                                            }
+                                            $('.image-input').on('change', function () {
+                                                const input = document.querySelector('.image-input');
+                                                const [file] = input.files;
+                                                const img = document.querySelector('.preview-img');
+                                                if (file) {
+                                                    img.src = URL.createObjectURL(file);
+                                                }
+                                                img.style.display='block';
+                                            });
+                                            // Form submission via AJAX
+                                            $('#addForm').on('submit', function (e) {
+                                                e.preventDefault(); // Prevent default form submission
 
-                    // Form submission via AJAX
-                    $('#addForm').on('submit', function (e) {
-                        e.preventDefault(); // Prevent default form submission
+                                                const formData = new FormData(this); // FormData for file uploads
+                                                $('#loadingSpinner').show(); // Show loading spinner
 
-                        const formData = new FormData(this); // FormData for file uploads
-                        $('#loadingSpinner').show(); // Show loading spinner
-
-                        $.ajax({
-                            url: 'addRoomType', // Servlet URL
-                            method: 'POST',
-                            data: formData,
-                            processData: false, // Important for file uploads
-                            contentType: false, // Important for file uploads
-                            success: function (response) {
-                                $('#loadingSpinner').hide(); // Hide spinner on success
-                                swal({ icon: "success", text: "Add successful!" }).then(() => {
-                                    window.location = 'listRoomType';
-                                });
-                            },
-                            error: function (xhr, status, error) {
-                                $('#loadingSpinner').hide(); // Hide spinner on error
-                                alert('Failed to add room type: ' + xhr.responseText);
-                            }
-                        });
-                    });
+                                                $.ajax({
+                                                    url: 'addRoomType', // Servlet URL
+                                                    method: 'POST',
+                                                    data: formData,
+                                                    processData: false, // Important for file uploads
+                                                    contentType: false, // Important for file uploads
+                                                    success: function (response) {
+                                                        $('#loadingSpinner').hide(); // Hide spinner on success
+                                                        swal({icon: "success", text: "Add successful!"}).then(() => {
+                                                            window.location = 'listRoomType';
+                                                        });
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        $('#loadingSpinner').hide(); // Hide spinner on error
+                                                        alert('Failed to add room type: ' + xhr.responseText);
+                                                    }
+                                                });
+                                            });
                 </script>
             </div>
         </div>
