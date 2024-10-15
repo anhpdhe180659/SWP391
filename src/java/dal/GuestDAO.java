@@ -59,7 +59,6 @@ public class GuestDAO extends DBContext {
         }
         return numberGuest;
     }
-    
 
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();
@@ -195,7 +194,7 @@ public class GuestDAO extends DBContext {
     }
 
     public void updateGuest(Guest guest) {
-    String query = """
+        String query = """
                    UPDATE [dbo].[Guest]
                    SET [Name] = ?,
                        [DateOfBirth] = ?,
@@ -206,23 +205,22 @@ public class GuestDAO extends DBContext {
                        [Nationality] = ?,
                        [isHidden] = ?
                    WHERE [GuestID] = ?""";
-    try (PreparedStatement pre = connection.prepareStatement(query)) {
-        pre.setString(1, guest.getName());
-        pre.setString(2, guest.getDateOfBirth().toString()); // Chuyển đổi LocalDate sang chuỗi
-        pre.setInt(3, guest.getSex());
-        pre.setString(4, guest.getAddress());
-        pre.setString(5, guest.getPhone());
-        pre.setString(6, guest.getIdentification());
-        pre.setString(7, guest.getNationality());
-        pre.setInt(8, guest.getIsHidden()); // Giá trị ẩn (isHidden)
-        pre.setInt(9, guest.getGuestID());  // Đặt GuestID cho điều kiện WHERE
+        try (PreparedStatement pre = connection.prepareStatement(query)) {
+            pre.setString(1, guest.getName());
+            pre.setString(2, guest.getDateOfBirth().toString()); // Chuyển đổi LocalDate sang chuỗi
+            pre.setInt(3, guest.getSex());
+            pre.setString(4, guest.getAddress());
+            pre.setString(5, guest.getPhone());
+            pre.setString(6, guest.getIdentification());
+            pre.setString(7, guest.getNationality());
+            pre.setInt(8, guest.getIsHidden()); // Giá trị ẩn (isHidden)
+            pre.setInt(9, guest.getGuestID());  // Đặt GuestID cho điều kiện WHERE
 
-        pre.executeUpdate();
-    } catch (Exception e) {
-        System.out.println(e.getMessage());
+            pre.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-}
-
 
     public void updateGuestHiddenStatus(int guestID, int isHidden) {
         String query = """
@@ -274,4 +272,90 @@ public class GuestDAO extends DBContext {
         return hiddenGuests;
     }
 
+    public List<Guest> getPagedAndFilteredGuests(int offset, int noOfRecords, String guestName, String nationality) {
+        List<Guest> guests = new ArrayList<>();
+        String sql = """
+                     SELECT [GuestID], [Name], [DateOfBirth], [Sex], [Address], [Phone], [Identification], [Nationality], [isHidden]
+                     FROM [dbo].[Guest]
+                     WHERE 1=1
+                     """;
+
+        if (guestName != null && !guestName.trim().isEmpty()) {
+            sql += " AND [Name] LIKE ?";
+        }
+        if (nationality != null && !nationality.trim().isEmpty()) {
+            sql += " AND [Nationality] = ?";
+        }
+
+        sql += " ORDER BY [GuestID] OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int paramIndex = 1;
+
+            if (guestName != null && !guestName.trim().isEmpty()) {
+                pre.setString(paramIndex++, "%" + guestName + "%");
+            }
+            if (nationality != null && !nationality.trim().isEmpty()) {
+                pre.setString(paramIndex++, nationality);
+            }
+
+            pre.setInt(paramIndex++, offset);
+            pre.setInt(paramIndex, noOfRecords);
+
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Guest guest = new Guest();
+                guest.setGuestID(rs.getInt("GuestID"));
+                guest.setName(rs.getString("Name"));
+                guest.setDateOfBirth(rs.getDate("DateOfBirth").toLocalDate());
+                guest.setSex(rs.getInt("Sex"));
+                guest.setAddress(rs.getString("Address"));
+                guest.setPhone(rs.getString("Phone"));
+                guest.setIdentification(rs.getString("Identification"));
+                guest.setNationality(rs.getString("Nationality"));
+                guest.setIsHidden(rs.getInt("isHidden"));
+                guests.add(guest);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return guests;
+    }
+
+    public int getNumberOfRecords(String guestName, String nationality) {
+        int count = 0;
+        String sql = """
+                     SELECT COUNT(*) as total
+                     FROM [dbo].[Guest]
+                     WHERE 1=1
+                     """;
+
+        if (guestName != null && !guestName.trim().isEmpty()) {
+            sql += " AND [Name] LIKE ?";
+        }
+        if (nationality != null && !nationality.trim().isEmpty()) {
+            sql += " AND [Nationality] = ?";
+        }
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int paramIndex = 1;
+
+            if (guestName != null && !guestName.trim().isEmpty()) {
+                pre.setString(paramIndex++, "%" + guestName + "%");
+            }
+            if (nationality != null && !nationality.trim().isEmpty()) {
+                pre.setString(paramIndex, nationality);
+            }
+
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

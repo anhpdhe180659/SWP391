@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="display table table-striped table-hover">
+                                        <table id="basic-datatables" class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Guest ID</th>
@@ -80,8 +80,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${hiddenGuestList}" var="g">
-                                                    <%--<c:if test="${g.isHidden == 1}">--%>
+                                                <c:forEach items="${sessionScope.hiddenGuestList}" var="g">
                                                     <tr>
                                                         <td style="border-right: 1px solid #ddd;">${g.guestID}</td>
                                                         <td style="border-right: 1px solid #ddd;">${g.name}</td>
@@ -110,10 +109,10 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <%--</c:if>--%>
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+
                                     </div>
                                 </div>
                             </div>
@@ -133,19 +132,75 @@
             <!-- Datatables -->
             <script src="assets/js/plugin/datatables/datatables.min.js"></script>
             <!-- Kaiadmin JS -->
-            <script src="assets/js/kaiadmin.min.js"></script>
+            <!-- DataTables CSS -->
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+            <!-- jQuery -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+            <!-- DataTables JS -->
+            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
             <script>
-                                                                    function doRestore(guestID) {
-                                                                        var option = confirm("Are you sure to restore this guest?");
-                                                                        if (option === true) {
-                                                                            window.location = "restoreGuest?guestID=" + guestID;
-                                                                        }
-                                                                    }
+                            function doRestore(guestID) {
+                                var option = confirm("Are you sure to restore this guest?");
+                                if (option === true) {
+                                    window.location = "restoreGuest?guestID=" + guestID;
+                                }
+                            }
 
-                                                                    function viewAllGuests() {
-                                                                        window.location = "listGuest";
-                                                                    }
+                            function viewAllGuests() {
+                                window.location = "listGuest";
+                            }
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $("#basic-datatables").DataTable({
+                        "pageLength": 5,
+                        "lengthMenu": [5, 10, 25, 50]
+                    });
+                    $('#entryInput').on('change', function () {
+                        var value = $(this).val();
+                        table.page.len(value).draw(); // Cập nhật số entries hiển thị
+                    });
+                    $("#multi-filter-select").DataTable({
+                        pageLength: 5,
+                        initComplete: function () {
+                            this.api()
+                                    .columns()
+                                    .every(function () {
+                                        var column = this;
+                                        var select = $(
+                                                '<select class="form-select"><option value=""></option></select>'
+                                                )
+                                                .appendTo($(column.footer()).empty())
+                                                .on("change", function () {
+                                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                                    column
+                                                            .search(val ? "^" + val + "$" : "", true, false)
+                                                            .draw();
+                                                });
+
+                                        column
+                                                .data()
+                                                .unique()
+                                                .sort()
+                                                .each(function (d, j) {
+                                                    select.append(
+                                                            '<option value="' + d + '">' + d + "</option>"
+                                                            );
+                                                });
+                                    });
+                        },
+                    });
+
+
+
+                    var action =
+                            '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+
+                });
             </script>
     </body>
 </html>
