@@ -2,7 +2,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="model.*" %>
 <%@page import="dal.*" %>
-<%@page import="java.util.*" %>
 <%@page import="java.text.NumberFormat" %>
 <%@page import="java.util.Locale" %>
 <%@page import="java.util.*" %>
