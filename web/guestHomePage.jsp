@@ -23,10 +23,10 @@
         <link rel="stylesheet" href="CSS/bootstrap.min.css">
         <script defer src="JS/guestHomePage.js"></script>
 
-        <!-- Fonts and icons -->
+        <!-- Fonts and icons
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
-            WebFont.load({
+            WebFont.load(
                 google: {families: ["Public Sans:300,400,500,600,700"]},
                 custom: {
                     families: [

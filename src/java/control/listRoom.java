@@ -67,7 +67,7 @@ public class listRoom extends HttpServlet {
             cleanId = Integer.parseInt(request.getParameter("cleanId"));
         }
         List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId);
-        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId) / 5);
+        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId) / 6);
         System.out.println(noPage);
         if (noPage == 0) {
             request.setAttribute("noti", "No room found");
