@@ -12,14 +12,14 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Edit user</title><!--  page only for manager  -->
+        <title>View Room</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
             />
         <link
             rel="icon"
-            href="assets/img/kaiadmin/favicon.ico"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
         <!-- Fonts and icons -->
@@ -82,7 +82,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                   <jsp:include page="navbar-header.jsp"/>
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
@@ -149,70 +149,39 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Type Room</label>                  
-                                                                    <c:if test="${u.typeId == 5}">
-                                                                        <input
-                                                                            name="typeId"
-                                                                            type="text"
-                                                                            class="form-control room-type"
-                                                                            value="President"
-                                                                            readonly
-                                                                            />
+                                                                <c:forEach var="type" items="${sessionScope.roomType}">
+                                                                    <c:if test="${u.typeId == type.typeId}">
+                                                                        <div class="form-group form-group-default">
+                                                                            <label>Type Room</label>                  
+                                                                            <input
+                                                                                name="typeId"
+                                                                                type="text"
+                                                                                class="form-control room-type"
+                                                                                value="${type.typeName}"
+                                                                                readonly
+                                                                                />
+                                                                        </div>
+                                                                        <!-- Hiển thị Capacity và Price tương ứng -->
+                                                                        <div class="form-group form-group-default">
+                                                                            <label>Capacity</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control capacity"
+                                                                                value="${type.capacity}"
+                                                                                readonly
+                                                                                />
+                                                                        </div>
+                                                                        <div class="form-group form-group-default">
+                                                                            <label>Price</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control price"
+                                                                                value="${type.price}"
+                                                                                readonly
+                                                                                />
+                                                                        </div>
                                                                     </c:if>
-                                                                    <c:if test="${u.typeId == 4}">
-                                                                        <input
-                                                                            name="typeId"
-                                                                            type="text"
-                                                                            class="form-control room-type"
-                                                                            value="Deluxe Room"
-                                                                            readonly
-                                                                            />
-                                                                    </c:if>
-                                                                    <c:if test="${u.typeId == 3}">
-                                                                        <input
-                                                                            name="typeId"
-                                                                            type="text"
-                                                                            class="form-control room-type"
-                                                                            value="Family Room"
-                                                                            readonly
-                                                                            />
-                                                                    </c:if>
-                                                                    <c:if test="${u.typeId == 2}">
-                                                                        <input
-                                                                            name="typeId"
-                                                                            type="text"
-                                                                            class="form-control room-type"
-                                                                            value="Double Room"
-                                                                            readonly
-                                                                            />
-                                                                    </c:if>
-                                                                    <c:if test="${u.typeId == 1}">
-                                                                        <input
-                                                                            name="typeId"
-                                                                            type="text"
-                                                                            class="form-control room-type"
-                                                                            value="Single Room"
-                                                                            readonly
-                                                                            />
-                                                                    </c:if>
-                                                                </div>
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Capacity</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control capacity"
-                                                                        readonly
-                                                                        />
-                                                                </div>
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Price</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control price"
-                                                                        readonly
-                                                                        />
-                                                                </div>
+                                                                </c:forEach>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
@@ -288,35 +257,7 @@
                                             });
 
     </script>
-    <script>
-        var capacity = document.querySelector('.capacity');
-        var price = document.querySelector('.price');
-        var type = document.querySelector('.room-type');
-        console.log(price);
-        console.log(capacity);
-        switch (type.value) {
-            case 'Single Room' :
-                capacity.value = 1;
-                price.value = 500000;
-                break;
-            case 'Double Room' :
-                capacity.value = 2;
-                price.value = 800000;
-                break;
-            case 'Family Room' :
-                capacity.value = 4;
-                price.value = 1500000;
-                break;
-            case 'Deluxe Room' :
-                capacity.value = 2;
-                price.value = 2000000;
-                break;
-            case 'President' :
-                capacity.value = 2;
-                price.value = 5000000;
-                break;
-        }
-    </script>
+
     <script>
         function doClose() {
             $('#editUserModal').modal('hide');

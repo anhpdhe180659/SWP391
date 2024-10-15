@@ -8,6 +8,7 @@ import dal.GuestDAO;
 import dal.InvoiceDAO;
 import dal.NewsDAO;
 import dal.RoomDao;
+import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -21,6 +22,7 @@ import model.Guest;
 import model.Invoice;
 import model.NewsItem;
 import model.Room;
+import model.RoomType;
 import model.User;
 
 /**
@@ -68,6 +70,7 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //authen
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
@@ -88,6 +91,7 @@ public class receptionDashboard extends HttpServlet {
         List<Guest> guestList = guestDao.getAllGuests();
         List<Integer> numGuestByMonth = guestDao.getNumberGuestByMonth();
         int numGuest = guestList.size();
+        //get data to display in dashboard
         int underMaintainRoom = listRoom.stream().filter(
                 room -> room.getStatusId() == 3
         ).toList().size();
@@ -106,6 +110,7 @@ public class receptionDashboard extends HttpServlet {
         int inProgress = listRoom.stream().filter(
                 room -> room.getCleanId() == 2
         ).toList().size();
+        
         session.setAttribute("numberGuest", numGuest);
         session.setAttribute("guestByMonth", numGuestByMonth);
         session.setAttribute("cleaned", cleaned);

@@ -99,12 +99,13 @@
                                             <span>Type</span>
                                             <select class="form-select-sm col-2 me-3" name="typeId">
                                                 <option value="0" ${requestScope.typeId == '0' ? 'selected' : ''}>All</option>
-                                                <option value="1" ${requestScope.typeId == '1' ? 'selected' : ''}>Single Room</option>
-                                                <option value="2" ${requestScope.typeId == '2' ? 'selected' : ''}>Double Room</option>
-                                                <option value="3" ${requestScope.typeId == '3' ? 'selected' : ''}>Family Room</option>
-                                                <option value="4" ${requestScope.typeId == '4' ? 'selected' : ''}>Deluxe Room</option>
-                                                <option value="5" ${requestScope.typeId == '5' ? 'selected' : ''}>President Room</option>
+                                                <c:forEach var="type" items="${sessionScope.roomType}">
+                                                    <option value="${type.typeId}" ${requestScope.typeId == type.typeId ? 'selected' : ''}>
+                                                        ${type.typeName}
+                                                    </option>
+                                                </c:forEach>
                                             </select>
+
 
                                             <span>Status</span>
                                             <select class="form-select-sm col-2 me-3" name="statusId">
@@ -132,20 +133,46 @@
                                             <div class="card col-3 m-5 p-3">
                                                 <div style="border-radius: 10px" class="card-header">
                                                     <h1 class="text-danger"><i class="fas fa-home"> Room: ${s.roomNumber}</i></h1>
-                                                    <h3>Type: ${s.typeId}</h3>
                                                     <c:choose>
                                                         <c:when test="${s.statusId == 1}">
-                                                            <p>Available</p>
                                                             <a role="button" class="btn btn-danger" href="booking">Book now</a>
+                                                        </c:when>
+                                                        <c:when test="${s.statusId == 2}">
+                                                            <c:forEach items="${sessionScope.bookingRooms}" var="b">
+                                                                <c:if test="${s.roomId == b.roomID}"> 
+                                                                    <c:forEach items="${sessionScope.bookings}" var="bk">
+                                                                        <c:if test="${b.bookingID == bk.bookingID}">
+                                                                            <c:forEach items="${sessionScope.guests}" var="g">
+                                                                                <c:if test="${bk.guestID == g.guestID}">
+                                                                                    <h5><i class="fas fa-user-alt"> ${g.name}</i></h5>
+                                                                                </c:if>
+                                                                            </c:forEach>
+                                                                        </c:if>
+                                                                    </c:forEach>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                            <!--<a role="button" class="btn btn-secondary" href="checkIn?roomId=${s.roomId}">Check in</a>-->
+                                                            <a role="button" class="btn btn-success" href="checkOut?roomId=${s.roomId}">Check out</a>
+                                                        </c:when>
+                                                        <c:when test="${s.statusId == 3}">
+                                                            <p class="text text-uppercase text-warning"><b>Under maintaince</b></p>
+                                                        </c:when>
+                                                    </c:choose>
+                                                    <a role="button" class="btn btn-info " href="viewDetail?roomId=${s.roomId}">View detail</a>
+                                                </div> 
+                                                <div class="card-body">
+                                                    <c:choose>
+                                                        <c:when test="${s.cleanId == 1}">
+                                                            <p><b>Cleaning status: </b>Not Cleaned</p>
+                                                        </c:when>
+                                                        <c:when test="${s.cleanId == 2}">
+                                                            <p><b>Cleaning status: </b>In progress</p>
+                                                        </c:when>
+                                                        <c:when test="${s.cleanId == 3}">
+                                                            <p><b>Cleaning status: </b>Cleaned</p>
                                                         </c:when>
                                                     </c:choose>
                                                 </div>
-                                                <div class="card-body">
-
-                                                    <p>Clean Status : ${s.cleanId}</p>
-                                                    <a role="button" class="btn-link" href="viewDetail?roomId=${s.roomId}">View detail</a>
-                                                </div>
-
                                             </div>
                                         </c:forEach>
                                         <c:set value="${sessionScope.currentindex}" var="index" />
