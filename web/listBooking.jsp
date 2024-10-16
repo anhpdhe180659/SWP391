@@ -59,6 +59,38 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
+                                        <nav
+                                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                            >
+                                            <c:set value="${requestScope.searchCode} " var="n"/>
+                                            <form action="searchBooking">
+                                                <div class="input-group" >
+                                                    <div class="input-group-prepend">
+                                                        <button type="submit" class="btn btn-search pe-1">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                    <c:if test="${n.length() < 2}">
+                                                        <input
+                                                            type="text"
+                                                            name="bookingcode"
+                                                            placeholder="Search by bookingcode..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                    <c:if test="${n.length() > 1}">
+                                                        <input
+                                                            type="text"
+                                                            name="bookingcode"
+                                                            value="${n}"
+                                                            placeholder="Search by bookingcode..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                </div>
+                                            </form>
+                                        </nav>
+                                        <c:set value="${requestScope.noti}" var="noti" />
                                         <button class="btn btn-primary btn-round ms-auto" onclick="addBooking()">
                                             <i class="fa fa-plus"></i> New booking
                                         </button>
@@ -153,7 +185,10 @@
                                                     }
 
                                                 %>
-
+                                                <c:if test="${requestScope.noti != null}">
+                                                    <tr >
+                                                        <td style="text-align: center; font-weight: bold" colspan="9"><p class="text-danger">${requestScope.noti}</p></td><!-- comment --></tr>
+                                                        </c:if>
                                             </tbody>
                                         </table>
                                     </div>
@@ -232,7 +267,7 @@
         <script src="assets/js/setting-demo2.js"></script>
         <script>
                                                                     function addBooking() {
-                                                                             window.location = "booking";
+                                                                        window.location = "booking";
                                                                     }
         </script>
 

@@ -200,6 +200,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+    
     public void updateStatusRoomAvailable(int roomid) {
         String query = """
                        UPDATE [dbo].[Room]
@@ -344,6 +345,40 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return booking;
+
+    }
+    public List<Booking> findBookingByBookingID(int bookingid) {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT [BookingID]
+                             ,[GuestID]
+                             ,[Deposit]
+                             ,[CheckInStatus]
+                             ,[PaidStatus]
+                             ,[UserID]
+                             ,[BookingDate]
+                             ,[TotalPrice]
+                         FROM [Booking]
+                       WHERE BookingID = ?
+                       """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
 
     }
 
