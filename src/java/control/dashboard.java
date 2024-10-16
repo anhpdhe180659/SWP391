@@ -6,6 +6,7 @@ package control;
 
 import dal.AmenityDAO;
 import dal.DashboardDAO;
+import dal.NewsDAO;
 import dal.RoomDao;
 import dto.ChartDTO;
 import dto.StasticDto;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Amenity;
+import model.NewsItem;
 import model.Room;
 import model.User;
 
@@ -50,6 +52,8 @@ public class dashboard extends HttpServlet {
             RoomDao roomDao = new RoomDao();
             List<Room> listRoom = roomDao.getAllRooms();
             DashboardDAO dashboardDAO = new DashboardDAO();
+            List<NewsItem> newsList = new NewsDAO().getTop3();
+            session.setAttribute("newsList", newsList);
             StasticDto dto = dashboardDAO.getStasticDto();
             List<ChartDTO> chartDTOs = dashboardDAO.getData();
             session.setAttribute("dto", dto);

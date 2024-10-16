@@ -81,45 +81,44 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                     <jsp:include page="navbar-header.jsp"/>
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
-                    <div class="page-inner">
-                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
-                                            <i class="fas fa-angle-left"></i>
-                                            Back to list
-                                        </button>
+                    <div class="page-inner">                       
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Amenity Detail</h3>
-                            
+                            <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
+                                <i class="fas fa-angle-left"></i>
+                                Back to list
+                            </button>
                         </div>
 
-<!--                        <div class="col-md-12">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Add Amenity Detail</h4>
-                                        <c:set value="${requestScope.noti}" var="noti" />
-                                        
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
-                                            onclick="addAmenityDetail()">
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addUserModal"
+                                            >
                                             <i class="fa fa-plus"></i>
                                             Add Amenity Detail
                                         </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                     Modal 
+                                    <!-- Modal -->
                                     <div
                                         class="modal fade"
                                         id="addUserModal"
                                         tabindex="-1"
                                         role="dialog"
                                         aria-hidden="true"
-                                        >-->
-<!--                                        <div class="modal-dialog" role="document">
+                                        >
+                                        <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header border-0">
                                                     <h5 class="modal-title">
@@ -127,7 +126,7 @@
                                                         <span class="fw-light"> Amenity Detail </span>
                                                     </h5>
                                                 </div>
-                                                <form action="addUser" onsubmit="return validate()">
+                                                <form class="form-add">
                                                     <div class="modal-body">
                                                         <p class="small">
                                                             Create a new amenity detail, make sure you
@@ -137,28 +136,38 @@
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
-                                                                    <label>RoomID</label>
+                                                                    <label>Room Number</label>
                                                                     <input
-                                                                        name="roomid"
+                                                                        onchange="validate()"
+                                                                        name="roomnumber"
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Quantity</label>
-                                                                    <input
+                                                                    <input onchange="validate()"
                                                                         name="quantity"
-                                                                        type="text"
+                                                                        type="number"
                                                                         class="form-control"
                                                                         required
                                                                         />
                                                                 </div>
+                                                                <input
+                                                                    hidden=""
+                                                                    name="amenId"
+                                                                    value="${requestScope.amenId}"
+                                                                    type="number"
+                                                                    class="form-control"
+                                                                    required
+                                                                    />
                                                             </div>
-                                                        </div>
+                                                        </div>  
                                                     </div>
+
+
+
                                                     <div class="modal-footer border-0">
                                                         <button
                                                             type="button submit"
@@ -178,176 +187,202 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>-->
+                                        </div>
                                     </div>
 
 
-                                 <div class="table-responsive">
-    <table id="add-user" class="display table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Room Number</th>
-                <th>Quantity</th>
-                <th style="display: none;">Amenity ID</th> <!-- Hidden column -->
-                <th style="width: 10%">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${listAmenityDetail}" var="a">
-                <tr>
-                    <td>${a.roomNumber}</td> <!-- Changed to roomNumber -->
-                    <td>${a.quantity}</td>
-                    <td style="display: none;">${a.amenID}</td> <!-- Hidden Amenity ID -->
-                    <td>
-                        <div class="form-button-action">
-                            <a href="editAmenityDetail?roomid=${a.roomNumber}&amenId=${a.amenID}">
-                                <button
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    title=""
-                                    class="btn btn-link btn-primary btn-lg"
-                                    data-original-title="Edit Task">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                            </a>
-                            <button
-                                type="button"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove"
-                                onclick="doDelete(${a.roomNumber})">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-</div>
-                              
+                                    <div class="table-responsive">
+                                        <table id="add-user" class="display table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Room Number</th>
+                                                    <th>Quantity</th>
+                                                    <th style="display: none;">Amenity ID</th> <!-- Hidden column -->
+                                                    <th style="width: 10%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${listAmenityDetail}" var="a">
+                                                    <tr>
+                                                        <td>${a.roomNumber}</td> <!-- Changed to roomNumber -->
+                                                        <td>${a.quantity}</td>
+                                                        <td style="display: none;">${a.amenID}</td> <!-- Hidden Amenity ID -->
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <a href="editAmenityDetail?roomid=${a.roomNumber}&amenId=${a.amenID}">
+                                                                    <button
+                                                                        type="button"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title=""
+                                                                        class="btn btn-link btn-primary btn-lg"
+                                                                        data-original-title="Edit Task">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                                <button
+                                                                    type="button"
+                                                                    title=""
+                                                                    class="btn btn-link btn-danger"
+                                                                    data-original-title="Remove"
+                                                                    onclick="doDelete(${a.roomNumber})">
+                                                                    <i class="fa fa-times"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <footer class="footer">
-
-            </footer>
         </div>
 
-        <!-- Custom template | don't include it in your project! -->
+        <footer class="footer">
 
-        <!-- End Custom template -->
+        </footer>
     </div>
-    <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/core/popper.min.js"></script>
-    <script src="assets/js/core/bootstrap.min.js"></script>
 
-    <!-- jQuery Scrollbar -->
-    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-    <!-- Datatables -->
-    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-    <!-- Kaiadmin JS -->
-    <script src="assets/js/kaiadmin.min.js"></script>
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="assets/js/setting-demo2.js"></script>
-    <script>
+    <!-- Custom template | don't include it in your project! -->
+
+    <!-- End Custom template -->
+</div>
+<!--   Core JS Files   -->
+<script src="assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="assets/js/core/popper.min.js"></script>
+<script src="assets/js/core/bootstrap.min.js"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- Datatables -->
+<script src="assets/js/plugin/datatables/datatables.min.js"></script>
+<!-- Kaiadmin JS -->
+<script src="assets/js/kaiadmin.min.js"></script>
+<!-- Kaiadmin DEMO methods, don't include it in your project! -->
+<script src="assets/js/setting-demo2.js"></script>
+<script>
                                                                         document.querySelector('.close').addEventListener('click', function () {
                                                                             $('#addUserModal').modal('hide');
-                                                                        });
-    </script>
-    <script>
-        function doClose() {
-            $('#addUserModal').modal('hide');
+                                                                        });</script>
+<script>
+    function doClose() {
+        $('#addUserModal').modal('hide');
+    }
+</script>
+<script>
+    function validate() {
+        var email = document.querySelector('input[name="roomnumber"]').value;
+        var quantity = document.querySelector('input[name="quantity"]').value;
+        var regex1 = /^[0-9]+$/;
+        if (!regex1.test(email)) {
+            alert("Please enter a valid room number");
+            document.querySelector('input[name="roomnumber"]').focus();
+            return false;
         }
-    </script>
-    <script>
-        function validate() {
-            var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-            if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                document.getElementById("email").focus();
-                return false;
-            }
-            return true;
+        
+        return true;
+    }
+</script>
+<script>
+    function doDelete(userid) {
+        var option = confirm("Are you sure to unactive this?");
+        if (option === true) {
+            window.location = "deleteAmenityDetail?roomid=" + userid;
         }
-    </script>
-    <script>
-        function doDelete(userid) {
-            var option = confirm("Are you sure to unactive this?");
-            if (option === true) {
-                window.location = "deleteAmenityDetail?roomid=" + userid;
-            }
-        }
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("#basic-datatables").DataTable({});
-
-            $("#multi-filter-select").DataTable({
-                pageLength: 5,
-                initComplete: function () {
-                    this.api()
-                            .columns()
-                            .every(function () {
-                                var column = this;
-                                var select = $(
-                                        '<select class="form-select"><option value=""></option></select>'
-                                        )
-                                        .appendTo($(column.footer()).empty())
-                                        .on("change", function () {
-                                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                            column
-                                                    .search(val ? "^" + val + "$" : "", true, false)
-                                                    .draw();
-                                        });
-
-                                column
-                                        .data()
-                                        .unique()
-                                        .sort()
-                                        .each(function (d, j) {
-                                            select.append(
-                                                    '<option value="' + d + '">' + d + "</option>"
-                                                    );
-                                        });
-                            });
-                },
-            });
-
-            // Add Row
-            $("#add-user").DataTable({
-                pageLength: 5,
-            });
-
-            var action =
-                    '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-            $("#addUserButton").click(function () {
-                $("#add-user")
-                        .dataTable()
-                        .fnAddData([
-                            $("#addName").val(),
-                            $("#addPosition").val(),
-                            $("#addOffice").val(),
-                            action,
-                        ]);
-                $("#addUserModal").modal("hide");
-            });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#basic-datatables").DataTable({});
+        $("#multi-filter-select").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                        .columns()
+                        .every(function () {
+                            var column = this;
+                            var select = $(
+                                    '<select class="form-select"><option value=""></option></select>'
+                                    )
+                                    .appendTo($(column.footer()).empty())
+                                    .on("change", function () {
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        column
+                                                .search(val ? "^" + val + "$" : "", true, false)
+                                                .draw();
+                                    });
+                            column
+                                    .data()
+                                    .unique()
+                                    .sort()
+                                    .each(function (d, j) {
+                                        select.append(
+                                                '<option value="' + d + '">' + d + "</option>"
+                                                );
+                                    });
+                        });
+            },
         });
-    </script>
-    <script>
-        function BackToList() {
-            window.location = "listAmenity";
-        }
-    </script>
+        // Add Row
+        $("#add-user").DataTable({
+            pageLength: 5,
+        });
+        var action =
+                '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+        $("#addUserButton").click(function () {
+            $("#add-user")
+                    .dataTable()
+                    .fnAddData([
+                        $("#addName").val(),
+                        $("#addPosition").val(),
+                        $("#addOffice").val(),
+                        action,
+                    ]);
+            $("#addUserModal").modal("hide");
+        });
+    });</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    const currentUrl = window.location.href;
+    $('.form-add').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var actionUrl = 'addAmenityDetail';
+        console.log(form.serialize());
+        $.ajax({
+            type: 'POST',
+            url: actionUrl,
+            data: form.serialize(),
+            success: function (response) {
+                swal({
+                    icon: 'success',
+                    text: 'Add successfully'
+                }).then(() => {
+                    window.location = currentUrl;
+                });
+            },
+            error: function (xhr,status,error) {
+                swal({
+                    icon: 'warning',
+                    text: 'Failed to add'
+                }).then(() => {
+                    window.location = currentUrl;
+                });
+            }
+        })
+    })
+
+</script>
+<script>
+    function BackToList() {
+        window.location = "listAmenity";
+    }
+</script>
 
 </body>
 </html>
