@@ -67,7 +67,7 @@ public class viewDetailRoom extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         
-        int roomId = Integer.parseInt(request.getParameter("id"));
+        int roomId = Integer.parseInt(request.getParameter("roomId"));
         RoomDao roomDao = new RoomDao();
         Room room = roomDao.findRoomById(roomId);
         session.setAttribute("detailRoom", room);

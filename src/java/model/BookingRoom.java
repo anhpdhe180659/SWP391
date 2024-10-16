@@ -13,20 +13,31 @@ import java.time.LocalDateTime;
 public class BookingRoom {
     int BookingID;
     int RoomID;
-    int Hour;
+    int NumOfNight;
     LocalDateTime CheckInDate;
     LocalDateTime CheckOutDate;
+    int Price;
 
     public BookingRoom() {
     }
 
-    public BookingRoom(int BookingID, int RoomID, int Hour, LocalDateTime CheckInDate, LocalDateTime CheckOutDate) {
+    public BookingRoom(int BookingID, int RoomID, int NumOfNight, LocalDateTime CheckInDate, LocalDateTime CheckOutDate, int Price) {
         this.BookingID = BookingID;
         this.RoomID = RoomID;
-        this.Hour = Hour;
+        this.NumOfNight = NumOfNight;
         this.CheckInDate = CheckInDate;
         this.CheckOutDate = CheckOutDate;
+        this.Price = Price;
     }
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int Price) {
+        this.Price = Price;
+    }
+
 
     public int getBookingID() {
         return BookingID;
@@ -44,12 +55,12 @@ public class BookingRoom {
         this.RoomID = RoomID;
     }
 
-    public int getHour() {
-        return Hour;
+    public int getNumOfNight() {
+        return NumOfNight;
     }
 
-    public void setHour(int Hour) {
-        this.Hour = Hour;
+    public void setNumOfNight(int NumOfNight) {
+        this.NumOfNight = NumOfNight;
     }
 
     public LocalDateTime getCheckInDate() {
@@ -70,8 +81,8 @@ public class BookingRoom {
 
     @Override
     public String toString() {
-        return "BookingRoom{" + "BookingID=" + BookingID + ", RoomID=" + RoomID + ", Hour=" + Hour + ", CheckInDate=" + CheckInDate + ", CheckOutDate=" + CheckOutDate + '}';
+        return "BookingRoom{" + "BookingID=" + BookingID + ", RoomID=" + RoomID + ", NumOfNight=" + NumOfNight + ", CheckInDate=" + CheckInDate + ", CheckOutDate=" + CheckOutDate + ", Price=" + Price + '}';
     }
-    
+
     
 }

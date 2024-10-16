@@ -9,6 +9,8 @@ import model.Room;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +18,8 @@ import java.util.ArrayList;
  * @author phand
  */
 public class RoomDao extends DBContext {
-    public Room getRoomByRoomNumber(String roomNum){
+
+    public Room getRoomByRoomNumber(String roomNum) {
         String query = """
                             SELECT * FROM  Room WHERE  RoomNumber = ?
                            """;
@@ -38,6 +41,29 @@ public class RoomDao extends DBContext {
         }
         return null;
     }
+    public Room getRoomByRoomID(int roomid) {
+        String query = """
+                            SELECT * FROM  Room WHERE  RoomID = ?
+                           """;
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Room(
+                        rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     public List<Room> getAllRooms() {
         List<Room> allRoom = new ArrayList<>();
         String query = """
@@ -86,6 +112,36 @@ public class RoomDao extends DBContext {
         return allRoom;
     }
 
+    public List<Room> getNext5RoomsAvailable(int index) {
+        List<Room> allRoom = new ArrayList<>();
+        String query = """
+                       SELECT [RoomID]
+                             ,[RoomNumber]
+                             ,[CleanID]
+                             ,[TypeID]
+                             ,r.[StatusID]
+                             , rs.StatusName
+                        FROM [Room] r INNER JOIN RoomStatus rs
+                        ON rs.StatusID = r.StatusID
+                        WHERE rs.StatusName like 'Available'
+                        ORDER BY RoomID
+                        OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, 5 * (index - 1));
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allRoom.add(new Room(rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allRoom;
+    }
+
     public List<Room> loadMore(int index, int typeId, int statusId, int cleanId) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
@@ -94,7 +150,7 @@ public class RoomDao extends DBContext {
                      AND (? = 0 OR StatusID = ?)
                      AND (? = 0 OR CleanID = ?)
                    ORDER BY RoomID 
-                   OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY
+                   OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY
                    """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -104,7 +160,7 @@ public class RoomDao extends DBContext {
             pre.setInt(4, statusId); // Gán giá trị statusId cho điều kiện StatusID
             pre.setInt(5, cleanId);  // Nếu cleanId = 0 thì bỏ qua điều kiện CleanID
             pre.setInt(6, cleanId);  // Gán giá trị cleanId cho điều kiện CleanID
-            pre.setInt(7, 5 * (index - 1));  // Offset
+            pre.setInt(7, 6 * (index - 1));  // Offset
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -166,6 +222,25 @@ public class RoomDao extends DBContext {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public int getPriceByRoomID(int roomid) {
+        int price = 0;
+        String query = """
+                       select Price from Room r inner join RoomType rt
+                       on r.TypeID = rt.TypeID
+                       where RoomID = ?""";
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                price = rs.getInt("Price");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return price;
     }
 
     public static void main(String[] args) {
@@ -236,6 +311,21 @@ public class RoomDao extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+   public int getRoomStatus(int roomID) throws SQLException {
+        String query = "SELECT StatusID FROM Room WHERE RoomID = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, roomID);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("StatusID");
+                }
+            }
+        }
+        throw new SQLException("Room ID not found"); // Ném lỗi nếu không tìm thấy phòng
     }
 
 }

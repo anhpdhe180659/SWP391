@@ -48,6 +48,8 @@ public class listUser extends HttpServlet {
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
+        
+        
         List<User> listUser = udao.getNext5User(index);
         session.setAttribute("Nopage", NoPage);
         session.setAttribute("currentindex", index);

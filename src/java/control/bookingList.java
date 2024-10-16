@@ -43,11 +43,20 @@ public class bookingList extends HttpServlet {
         BookingDAO bdao = new BookingDAO();
         GuestDAO gdao = new GuestDAO();
         UserDAO udao = new UserDAO();
-        List<Booking> listBooking = bdao.getAllBooking();
+        int index = 1;
+        int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        List<Booking> listBooking = bdao.getNext5Booking(index);
+        
         session.setAttribute("listBooking", listBooking);
-        List<BookingRoom> listBookingRoom = bdao.getAllBookingRoom();
-        session.setAttribute("listBookingRoom", listBookingRoom);
+        session.setAttribute("Nopage", NoPage);
+        session.setAttribute("currentindex", index);
         response.sendRedirect("listBooking.jsp");
+        
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
