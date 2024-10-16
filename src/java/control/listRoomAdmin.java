@@ -5,6 +5,7 @@
 package control;
 
 import dal.RoomDao;
+import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Room;
+import model.RoomType;
 
 /**
  *
@@ -91,6 +93,11 @@ public class listRoomAdmin extends HttpServlet {
         if (noPage == 0) {
             request.setAttribute("noti", "No room found");
         }
+        //Get list room type
+        RoomTypeDAO rtDao = new RoomTypeDAO();
+        List<RoomType> roomType = rtDao.getAll();
+        //set attr
+        session.setAttribute("roomType", roomType);
         session.setAttribute("listRoom", listRoom);
         session.setAttribute("Nopage", noPage);
         session.setAttribute("currentindex", index);

@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Amenity;
 import model.AmenityDetail;
@@ -62,25 +63,35 @@ public class AmenityDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String amenityIdParam = request.getParameter("amenityId");
-        int amenityId = 1; // Default value
-        
-        // Check if the parameter is not null and is a valid integer
-        if (amenityIdParam != null) {
-            try {
-                amenityId = Integer.parseInt(amenityIdParam);
-            } catch (NumberFormatException e) {
-                // Handle invalid format, e.g., log the error or set a default
-                e.printStackTrace();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-        }
+            String amenityIdParam = request.getParameter("amenityId");
+            int amenityId = 1; // Default value
 
-        AmenityDAO amenityDao = new AmenityDAO();
-        List<RoomAmenity> listAmenity = amenityDao.getRoomAmenitiesByAmenityId(amenityId);
-        System.out.println("list Count"+listAmenity.size());
-        request.setAttribute("listAmenityDetail", listAmenity);
-      
-        request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);
+            // Check if the parameter is not null and is a valid integer
+            if (amenityIdParam != null) {
+                try {
+                    amenityId = Integer.parseInt(amenityIdParam);
+                } catch (NumberFormatException e) {
+                    // Handle invalid format, e.g., log the error or set a default
+                    e.printStackTrace();
+                }
+            }
+
+            AmenityDAO amenityDao = new AmenityDAO();
+            List<RoomAmenity> listAmenity = amenityDao.getRoomAmenitiesByAmenityId(amenityId);
+            System.out.println("list Count" + listAmenity.size());
+            request.setAttribute("listAmenityDetail", listAmenity);
+            request.setAttribute("amenId", amenityId);
+            request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);
+        }
     }
 
     /**

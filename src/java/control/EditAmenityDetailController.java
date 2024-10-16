@@ -65,7 +65,7 @@ public class EditAmenityDetailController extends HttpServlet {
         System.out.println("roomID in edit ========================" + roomID);
         AmenityDAO amenityDao = new AmenityDAO();
         int amenID = Integer.parseInt(request.getParameter("amenId"));
-        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID,amenID);
+        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
         System.out.println(detail.getQuantity() + "=45454");
         System.out.println(detail.getAmenID() + "sm");
         System.out.println(detail.getRoomID() + "rm");
@@ -111,9 +111,10 @@ public class EditAmenityDetailController extends HttpServlet {
         } catch (Exception e) {
             message = "An error occurred: " + e.getMessage();
         }
-
+        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(Integer.parseInt(roomId), Integer.parseInt(amenId));
+        request.setAttribute("amenityDetail", detail);
         request.setAttribute("noti", message);
-        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+        request.getRequestDispatcher("editAmenitDetail.jsp").forward(request, response);
 
     }
 

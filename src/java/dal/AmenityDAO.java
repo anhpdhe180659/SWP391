@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Amenity; 
+import model.Amenity;
 import model.AmenityDetail;
 import model.*;
 
@@ -17,7 +17,8 @@ import model.*;
  *
  * @author admin
  */
-public class AmenityDAO extends DBContext{
+public class AmenityDAO extends DBContext {
+
     public List<Amenity> getAllAmenities() {
         List<Amenity> amenities = new ArrayList<>();
         try {
@@ -36,6 +37,26 @@ public class AmenityDAO extends DBContext{
         return amenities;
     }
 
+    public List<AmenityDetail> getAllAmenityDetails() {
+        List<AmenityDetail> amenityDetails = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM AmenityDetail";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                AmenityDetail amenityDetail = new AmenityDetail();
+
+                amenityDetail.setAmenID(rs.getInt("AmenId"));
+                amenityDetail.setRoomNumber(rs.getString("RoomNumber"));
+                amenityDetail.setQuantity(rs.getInt("Quantity"));
+                amenityDetails.add(amenityDetail);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return amenityDetails;
+    }
+
     public void addAmenity(Amenity amenity) {
         try {
             String query = "INSERT INTO Amenity (AmenName) VALUES (?)";
@@ -44,6 +65,22 @@ public class AmenityDAO extends DBContext{
             ps.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    public boolean addAmenityDetail(AmenityDetail amenitydetail) {
+        try {
+            String query = "INSERT INTO AmenityDetail (RoomID,AmenID, Quantity) VALUES (?, ?,?)";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, amenitydetail.getRoomID());
+            ps.setInt(2, amenitydetail.getAmenID());
+            ps.setInt(3, amenitydetail.getQuantity());
+            ps.executeUpdate();
+            System.out.println("add successful");
+            return true;
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+            return false;
         }
     }
 
@@ -91,12 +128,12 @@ public class AmenityDAO extends DBContext{
     public List<AmenityDetail> findByID(int id) {
         List<AmenityDetail> amenities = new ArrayList<>();
         try {
-            String query = "SELECT [AmenID]\n" +
-"      ,[RoomID]\n" +
-"      ,[Quantity]\n" +
-"  FROM [dbo].[AmenityDetail] ";
+            String query = "SELECT [AmenID]\n"
+                    + "      ,[RoomID]\n"
+                    + "      ,[Quantity]\n"
+                    + "  FROM [dbo].[AmenityDetail] ";
             PreparedStatement ps = connection.prepareStatement(query);
-             
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 AmenityDetail amenity = new AmenityDetail();
@@ -111,73 +148,74 @@ public class AmenityDAO extends DBContext{
         }
         return amenities;
     }
-    
-public List<RoomAmenity> getRoomAmenitiesByAmenityId(int amenityId) {
-    List<RoomAmenity> roomAmenities = new ArrayList<>();
-    String sql = "SELECT ad.AmenID, r.RoomNumber, ad.Quantity " +
-                 "FROM AmenityDetail ad " +
-                 "JOIN Amenity a ON ad.AmenID = a.AmenID " +
-                 "JOIN Room r ON ad.RoomID = r.RoomID " +
-                 "WHERE a.AmenID = ?";
 
-    try (
-         PreparedStatement statement = connection.prepareStatement(sql)) {
+    public List<RoomAmenity> getRoomAmenitiesByAmenityId(int amenityId) {
+        List<RoomAmenity> roomAmenities = new ArrayList<>();
+        String sql = "SELECT ad.AmenID, r.RoomNumber, ad.Quantity "
+                + "FROM AmenityDetail ad "
+                + "JOIN Amenity a ON ad.AmenID = a.AmenID "
+                + "JOIN Room r ON ad.RoomID = r.RoomID "
+                + "WHERE a.AmenID = ?";
 
-        statement.setInt(1, amenityId);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            int amenID = resultSet.getInt("AmenID");
-            int roomNumber = resultSet.getInt("RoomNumber");
-            int quantity = resultSet.getInt("Quantity");
-            System.out.println("AmenID"+amenID+roomNumber+quantity);
-            RoomAmenity ro =new RoomAmenity(amenID, roomNumber, quantity);
-                        System.out.println(ro);
+        try (
+                PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            roomAmenities.add(ro);
+            statement.setInt(1, amenityId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int amenID = resultSet.getInt("AmenID");
+                int roomNumber = resultSet.getInt("RoomNumber");
+                int quantity = resultSet.getInt("Quantity");
+                System.out.println("AmenID" + amenID + roomNumber + quantity);
+                RoomAmenity ro = new RoomAmenity(amenID, roomNumber, quantity);
+                System.out.println(ro);
+
+                roomAmenities.add(ro);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+            // Optionally re-throw or handle it
         }
-    } catch (SQLException e) {
-        e.printStackTrace(); // Log the exception
-        // Optionally re-throw or handle it
+
+        return roomAmenities;
     }
 
-    return roomAmenities;
-}
-
-public void deleteAmenityDetailByRoomNumber(String roomNumber) {
-    String query = "DELETE FROM AmenityDetail WHERE roomID IN (SELECT roomID FROM Room WHERE roomNumber = ?)";
-    try {
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, roomNumber);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public AmenityDetail findByAmenityIDAndRoomId(int roomId, int amenId) {
-    String query = "SELECT * FROM AmenityDetail WHERE roomID = ? and amenID = ?";
-    AmenityDetail detail = null;
-    System.out.println("Room"+roomId);
-    System.out.println("amen"+amenId);
-    try {
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, roomId);
-        ps.setInt(2,amenId);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            detail = new AmenityDetail();
-            detail.setRoomID(rs.getInt("roomID"));
-            detail.setQuantity(rs.getInt("quantity"));
-            detail.setAmenID(rs.getInt("amenID")); // Assuming you have this setter
-            // Set other fields as needed
+    public void deleteAmenityDetailByRoomNumber(String roomNumber) {
+        String query = "DELETE FROM AmenityDetail WHERE roomID IN (SELECT roomID FROM Room WHERE roomNumber = ?)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, roomNumber);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
 
-    return detail;
-}
+    public AmenityDetail findByAmenityIDAndRoomId(int roomId, int amenId) {
+        String query = "SELECT * FROM AmenityDetail WHERE roomID = ? and amenID = ?";
+        AmenityDetail detail = null;
+        System.out.println("Room" + roomId);
+        System.out.println("amen" + amenId);
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, roomId);
+            ps.setInt(2, amenId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                detail = new AmenityDetail();
+                detail.setRoomID(rs.getInt("roomID"));
+                detail.setQuantity(rs.getInt("quantity"));
+                detail.setAmenID(rs.getInt("amenID")); // Assuming you have this setter
+                // Set other fields as needed
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return detail;
+    }
+
     public boolean updateQuantity(String roomId, String amenId, int quantity) {
         String query = "UPDATE AmenityDetail SET quantity = ? WHERE roomID =? and amenID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -192,45 +230,43 @@ public AmenityDetail findByAmenityIDAndRoomId(int roomId, int amenId) {
         }
     }
 
-public void updateAmenityDetail(String roomID, int quantity) {
-    String query = "UPDATE AmenityDetail SET quantity = ? WHERE roomID = ?";
-    try  {
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, quantity);
-        ps.setString(2, roomID);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public AmenityDetail findByRoomNumber(int roomNumber) {
-    String query = "SELECT ad.* FROM AmenityDetail ad " +
-                   "JOIN Room r ON ad.roomID = r.roomID " +
-                   "WHERE r.roomNumber = ?";
-    AmenityDetail detail = null;
-
-    try {
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, roomNumber);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            detail = new AmenityDetail();
-            detail.setRoomID(rs.getInt("roomID"));
-            detail.setQuantity(rs.getInt("quantity"));
+    public void updateAmenityDetail(String roomID, int quantity) {
+        String query = "UPDATE AmenityDetail SET quantity = ? WHERE roomID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, quantity);
+            ps.setString(2, roomID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
 
-    return detail;
-}
+    public AmenityDetail findByRoomNumber(int roomNumber) {
+        String query = "SELECT ad.* FROM AmenityDetail ad "
+                + "JOIN Room r ON ad.roomID = r.roomID "
+                + "WHERE r.roomNumber = ?";
+        AmenityDetail detail = null;
 
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, roomNumber);
+            ResultSet rs = ps.executeQuery();
 
+            if (rs.next()) {
+                detail = new AmenityDetail();
+                detail.setRoomID(rs.getInt("roomID"));
+                detail.setQuantity(rs.getInt("quantity"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return detail;
+    }
 
     public static void main(String[] args) {
-       System.out.println( new AmenityDAO().findByAmenityIDAndRoomId(32, 7).getAmenID());
+        System.out.println(new AmenityDAO().findByAmenityIDAndRoomId(32, 7).getAmenID());
     }
 
 }

@@ -107,8 +107,8 @@
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Under Maintenance</p>
-                                                    <h4 class="card-title">${sessionScope.maintaince}</h4>
+                                                    <p class="card-category">Not cleaned</p>
+                                                    <h4 class="card-title">${sessionScope.notCleaned}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -129,8 +129,8 @@
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Available</p>
-                                                    <h4 class="card-title">${sessionScope.available}</h4>
+                                                    <p class="card-category">In Progress</p>
+                                                    <h4 class="card-title">${sessionScope.inProgress}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -150,32 +150,99 @@
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Occupied</p>
-                                                    <h4 class="card-title">${sessionScope.occupied}</h4>
+                                                    <p class="card-category">Clean</p>
+                                                    <h4 class="card-title">${sessionScope.cleaned}</h4>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Room Clean Status History</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Room ID</th>
+                            <th>Old Status</th>
+                            <th>New Status</th>
+                            <th>Updated At</th>
+                            <th>Updated By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="history" items="${sessionScope.historyList}">
+                            <tr>
+                                <td>${history.roomID}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${history.oldStatusID == 1}">Not Cleaned</c:when>
+                                        <c:when test="${history.oldStatusID == 2}">In Progress</c:when>
+                                        <c:when test="${history.oldStatusID == 3}">Cleaned</c:when>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${history.newStatusID == 1}">Not Cleaned</c:when>
+                                        <c:when test="${history.newStatusID == 2}">In Progress</c:when>
+                                        <c:when test="${history.newStatusID == 3}">Cleaned</c:when>
+                                    </c:choose>
+                                </td>
+                                <td>${history.updatedAt}</td>
+                                <td>${history.updatedBy}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-                       
-                      
 
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">Cleaned Statistics</div>
+                            <div class=" col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Cleaned Statistics</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas
+                                                id="myChart"
+                                                style="width: 50%; height: 50%"
+                                                ></canvas>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="chart-container">
-                                        <canvas
-                                            id="myChart"
-                                            style="width: 50%; height: 50%"
-                                            ></canvas>
+                            </div> 
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Newest Notifications</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <ul>
+                                                <c:forEach var="news" items="${sessionScope.newsList}">
+                                                    <li>
+                                                        <span style="font-size: 21px" class="date">${news.publishDate}</span>
+                                                        <a style="font-size: 22px" href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
+                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
+                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
+                                                           text-overflow: ellipsis;
+                                                           font-size:16px/* Hiển thị dấu ba chấm */">${news.content}</p>
+                                                    </li>
+                                                </c:forEach>
+                                                <li><a href="viewNotification">View all notification</a></li>
+                                            </ul> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -183,63 +250,36 @@
                     </div>
                 </div>
             </div>
-
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="http://www.themekita.com">
-                                    ThemeKita
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Help </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Licenses </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright">
-                        2024, made with <i class="fa fa-heart heart text-danger"></i> by
-                        <a href="http://www.themekita.com">ThemeKita</a>
-                    </div>
-                    <div>
-                        Distributed by
-                        <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-                    </div>
-                </div>
-            </footer>
         </div>
-    </div>
-    <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/core/popper.min.js"></script>
-    <script src="assets/js/core/bootstrap.min.js"></script>
 
-    <!-- jQuery Scrollbar -->
-    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-    <!-- Chart JS -->
-    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+        <!--   Core JS Files   -->
+        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+        <script src="assets/js/core/popper.min.js"></script>
+        <script src="assets/js/core/bootstrap.min.js"></script>
 
-    <!-- jQuery Sparkline -->
-    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+        <!-- jQuery Scrollbar -->
+        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-    <!-- Chart Circle -->
-    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+        <!-- Chart JS -->
+        <script src="assets/js/plugin/chart.js/chart.min.js"></script>
 
-    <!-- Datatables -->
-    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+        <!-- jQuery Sparkline -->
+        <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
-    <!-- Kaiadmin JS -->
-    <script src="assets/js/kaiadmin.min.js"></script>
+        <!-- Chart Circle -->
+        <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
 
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="assets/js/setting-demo.js"></script>
-    <script src="assets/js/demo.js"></script>
-    <script>
+        <!-- Datatables -->
+        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+        <!-- Kaiadmin JS -->
+        <script src="assets/js/kaiadmin.min.js"></script>
+
+        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+        <script src="assets/js/setting-demo.js"></script>
+        <script src="assets/js/demo.js"></script>
+        <script>
             $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
                 type: "line",
                 height: "70",
@@ -266,36 +306,35 @@
                 lineColor: "#ffa534",
                 fillColor: "rgba(255, 165, 52, .14)",
             });
-    </script>
-    <script>
-        const underMaintenance = ${sessionScope.maintaince};
-        const available = ${sessionScope.available};
-        const occupied = ${sessionScope.occupied};
-        console.log(available);
-        var ctx = document.getElementById('myChart').getContext('2d');
-        const data_chart = {
-            labels: [
-                'Under Maintenance',
-                'Available',
-                'Occupied'
-            ],
-            datasets: [{
-                    data: [underMaintenance, available, occupied],
-                    backgroundColor: [
-                        '#FEFFA7', // Màu đỏ cho giá trị 10
-                        '#B6FFA1', // Màu xanh cho giá trị 20
-                        '#C96868' // Màu vàng cho giá trị 30
-                    ],
-                    borderWidth: 1
-                }]
-        };
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: data_chart
-        });
+        </script>
+        <script>
+            const notCleaned = ${sessionScope.notCleaned};
+            const cleaned = ${sessionScope.cleaned};
+            const inProgress = ${sessionScope.inProgress};
+            var ctx = document.getElementById('myChart').getContext('2d');
+            const data_chart = {
+                labels: [
+                    'Not Cleaned',
+                    'Cleaned',
+                    'In Progress'
+                ],
+                datasets: [{
+                        data: [notCleaned, cleaned, inProgress],
+                        backgroundColor: [
+                            '#FEFFA7', // Màu đỏ cho giá trị 10
+                            '#B6FFA1', // Màu xanh cho giá trị 20
+                            '#C96868' // Màu vàng cho giá trị 30
+                        ],
+                        borderWidth: 1
+                    }]
+            };
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data_chart
+            });
 
-    </script>
-</body>
+        </script>
+    </body>
 </html>
 
 
