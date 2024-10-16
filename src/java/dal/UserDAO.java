@@ -310,6 +310,52 @@ public class UserDAO extends DBContext {
         }
         return user;
     }
+    public User getUserByEmail(String Email) {
+        User user = new User();
+        String sql = """
+                     SELECT [UserID]
+                                 ,[Name]
+                                 ,[DateOfBirth]
+                                 ,[Sex]
+                                 ,[Address]
+                                 ,[Phone]
+                                 ,[Identification]
+                                 ,[StartDate]
+                                 ,[Salary]
+                                 ,[Image]
+                                 ,[Username]
+                                 ,[Password]
+                                 ,[Role]
+                                 ,[Email]
+                                 ,[Status]
+                       FROM [User] 
+                       WHERE Email = ?""";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, Email);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
+                String Username = rs.getString("Username");
+                String Password = rs.getString("Password");
+                int Role = rs.getInt("Role");
+                int Status = rs.getInt("Status");
+                user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connect error");
+        }
+        return user;
+    }
 
     public void updatePassword(String password, String email) {
         String sql = "UPDATE [User] SET Password = ? WHERE Email = ?";
