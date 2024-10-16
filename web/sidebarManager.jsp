@@ -158,7 +158,22 @@
                                 </ul>
                             </div>
                         </li>
-
+                         <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#tables">
+                                <i class="fas fa-bell"></i>
+                                <p>Manage feedback</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="tables">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="feedbackAdmin.jsp">
+                                            <span class="sub-item">Feedback</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#charts">
