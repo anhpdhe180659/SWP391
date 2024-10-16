@@ -5,6 +5,7 @@
 
 package control;
 
+import dal.FeedbackDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name="ToggleFeedbackStatusServlet", urlPatterns={"/ToggleFeedbackStatusServlet"})
 public class ToggleFeedbackStatusServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         int feedbackID = Integer.parseInt(request.getParameter("feedbackID"));

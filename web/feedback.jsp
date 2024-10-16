@@ -154,37 +154,7 @@
             </div>
         </div>  
             
-             <div id="editPopup" class="popup">
-    <div class="popup-content">
-        <span class="close-btn">&times;</span>
-        <h2>Edit Feedback</h2>
-        <form id="editForm" action="editFeedback" method="post">
-            <input type="hidden" id="editGuestID" name="guestID"> <!-- hidden input for guestID -->
-            <div class="form-group">
-                <label for="editName">Your Name:</label>
-                <input type="text" id="editName" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="editFeedback">Your Feedback:</label>
-                <textarea id="editFeedback" name="feedback" rows="5" required></textarea>
-            </div>
-            <div class="form-group">
-                <label>Your Rating:</label>
-                <div class="rating">
-                    <input type="radio" id="editStar5" name="rating" value="5"><label for="editStar5">★</label>
-                    <input type="radio" id="editStar4" name="rating" value="4"><label for="editStar4">★</label>
-                    <input type="radio" id="editStar3" name="rating" value="3"><label for="editStar3">★</label>
-                    <input type="radio" id="editStar2" name="rating" value="2"><label for="editStar2">★</label>
-                    <input type="radio" id="editStar1" name="rating" value="1"><label for="editStar1">★</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="submit">Update Feedback</button>
-            </div>
-        </form>
-    </div>
-</div>
-    
+             
 
         <!-- Form Feedback -->
         <div class="container">
