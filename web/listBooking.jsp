@@ -161,6 +161,17 @@
                                                                     <i class="fa fa-eye"></i>
                                                                 </a>
                                                             </button>
+                                                            <a href="editBooking?bookingid=<%= book.getBookingID()%>" >
+                                                                <button
+                                                                    type="button"
+                                                                    data-bs-toggle="tooltip"
+                                                                    title=""
+                                                                    class="btn btn-link btn-primary btn-lg"
+                                                                    data-original-title="Edit booking"
+                                                                    >
+                                                                    <i class="fa fa-edit"></i>
+                                                                </button>
+                                                            </a>
                                                             <% if(book.getCheckInStatus() == 0){
                                                             %>
                                                             <button
@@ -177,6 +188,8 @@
                                                             <%
                                                                 };
                                                             %>
+
+
                                                         </div>
 
                                                     </td>

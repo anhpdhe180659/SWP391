@@ -68,7 +68,6 @@
                                 </div>
                                 <div class="card-body">
                                     <h4 class="fw-bold mb-3">Booking Code: <span style="color: red">${code}</span></h4>
-                                    <div style="color: orange; font-weight: bold">This will not be printed again, please note this carefully!</div>
                                 </div>
                             </div>
                         </div>

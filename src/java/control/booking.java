@@ -25,7 +25,6 @@ import model.Guest;
 import model.Room;
 import model.User;
 import util.BookingCodeConvert;
-import static util.pagination.getNoPage;
 
 /**
  *
@@ -154,7 +153,6 @@ public class booking extends HttpServlet {
             }
             gdao.addGuest(guest);// add new guest in database 
             Guest newGuest = gdao.getNewGuest();
-
             bdao.addBooking(newGuest.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");

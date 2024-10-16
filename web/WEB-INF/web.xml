@@ -116,6 +116,10 @@
         <servlet-name>searchBooking</servlet-name>
         <servlet-class>control.searchBooking</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>editBooking</servlet-name>
+        <servlet-class>control.editBooking</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -335,6 +339,10 @@
     <servlet-mapping>
         <servlet-name>searchBooking</servlet-name>
         <url-pattern>/searchBooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editBooking</servlet-name>
+        <url-pattern>/editBooking</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

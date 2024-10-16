@@ -281,6 +281,32 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+    public void updateDeposit(int bookingid, int deposit) {
+        String query = """
+                       UPDATE [Booking]
+                          SET [Deposit] = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, deposit);
+            pre.setInt(2, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void updateCheckInStatus(int bookingid, int checkinstatus) {
+        String query = """
+                       UPDATE [Booking]
+                          SET [CheckInStatus] = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, checkinstatus);
+            pre.setInt(2, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();

@@ -68,7 +68,7 @@
                                             <h4 class="card-title" style="color: blueviolet">  Guest Name: <%= guest.getName()%></h4>
                                         </div>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
-                                            <i class="fas fa-angle-left "></i> Back to List
+                                            <i class="fas fa-arrow-circle-left"></i> Back to List
                                         </button>
                                     </div>
                                 </div>
