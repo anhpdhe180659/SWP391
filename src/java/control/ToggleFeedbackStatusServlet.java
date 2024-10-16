@@ -24,12 +24,14 @@ public class ToggleFeedbackStatusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         int feedbackID = Integer.parseInt(request.getParameter("feedbackID"));
-        int feedbackStatus = Integer.parseInt(request.getParameter("feedbackStatus")); // 0 or 1
+        int status = Integer.parseInt(request.getParameter("status"));
 
+        // Update the feedback status in the database
         FeedbackDAO feedbackDAO = new FeedbackDAO();
-        feedbackDAO.updateFeedbackStatus(feedbackID, feedbackStatus); // Toggle status
+        feedbackDAO.updateFeedbackStatus(feedbackID, status);
 
-        // Redirect back to the feedback page
-        response.sendRedirect("feedbackAdmin.jsp");
+        // Respond with success message (you can send JSON if needed)
+        response.setContentType("text/plain");
+        response.getWriter().write("Status updated successfully");
     }
 }
