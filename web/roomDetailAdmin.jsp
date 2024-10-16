@@ -149,34 +149,39 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Type Room</label>                  
-                                                                    <td>
-                                                                        <select disabled="" name="typeId" class="form-control">
-                                                                            <option value="1" ${u.typeId == 1 ? 'selected' : ''}>Single Room</option>
-                                                                            <option value="2" ${u.typeId == 2 ? 'selected' : ''}>Double Room</option>
-                                                                            <option value="3" ${u.typeId == 3 ? 'selected' : ''}>Family Room</option>
-                                                                            <option value="4" ${u.typeId == 4 ? 'selected' : ''}>Deluxe Room</option>
-                                                                            <option value="5" ${u.typeId == 5 ? 'selected' : ''}>President Room</option>
-                                                                        </select>
-                                                                    </td>
-                                                                </div>
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Capacity</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control capacity"
-                                                                        readonly
-                                                                        />
-                                                                </div>
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Price</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        class="form-control price"
-                                                                        readonly
-                                                                        />
-                                                                </div>
+                                                                <c:forEach var="type" items="${sessionScope.roomType}">
+                                                                    <c:if test="${u.typeId == type.typeId}">
+                                                                        <div class="form-group form-group-default">
+                                                                            <label>Type Room</label>                  
+                                                                            <input
+                                                                                name="typeId"
+                                                                                type="text"
+                                                                                class="form-control room-type"
+                                                                                value="${type.typeName}"
+                                                                                readonly
+                                                                                />
+                                                                        </div>
+                                                                        <!-- Hiển thị Capacity và Price tương ứng -->
+                                                                        <div class="form-group form-group-default">
+                                                                            <label>Capacity</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control capacity"
+                                                                                value="${type.capacity}"
+                                                                                readonly
+                                                                                />
+                                                                        </div>
+                                                                        <div class="form-group form-group-default">
+                                                                            <label>Price</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control price"
+                                                                                value="${type.price}"
+                                                                                readonly
+                                                                                />
+                                                                        </div>
+                                                                    </c:if>
+                                                                </c:forEach>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
@@ -222,8 +227,8 @@
                                                             </div>
                                                         </c:if>
 
-                                                        
-                                                        
+
+
                                                     </div>
                                                 </form>
                                             </div>
@@ -252,7 +257,7 @@
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap.min.js"></script>
-     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- jQuery Scrollbar -->
     <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Datatables -->
@@ -283,7 +288,7 @@
                         overlay.classList.remove('show-overlay'); // Hide overlay after the notification disappears
                     }, 1500);
                     break;
-                default: 
+                default:
                     warning.classList.toggle('show');
                     setTimeout(function () {
                         warning.classList.toggle('show');

@@ -27,7 +27,7 @@ import model.User;
  * @author nhatk
  */
 public class bookingDetail extends HttpServlet {
-
+    static int bookingid = 0;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,26 +45,29 @@ public class bookingDetail extends HttpServlet {
         GuestDAO gdao = new GuestDAO();
         UserDAO udao = new UserDAO();
         RoomDao rdao = new RoomDao();
-        int bookingid = 0;
-        
+        int index = 1;
         if(request.getParameter("bookingid") != null){
             bookingid = Integer.parseInt(request.getParameter("bookingid"));
         }
-        Booking booking = bdao.getBookingByBookingID(bookingid);
-        List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
         
+        int NoPage = util.pagination.getNoPageBookingDetail(bdao.getAllBookingRoomByBookingID(bookingid));
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        Booking booking = bdao.getBookingByBookingID(bookingid);
+        List<BookingRoom> listBookingRoom = bdao.getNext5BookingRoomByBookingID(bookingid, index);
         for (BookingRoom book : listBookingRoom) {
             Room room = rdao.findRoomById(book.getRoomID());
             room.getRoomNumber();
             book.getCheckInDate();
             book.getCheckOutDate();
-            
+            book.getNumOfNight();
         }
-        
+        session.setAttribute("listBookingRoom", listBookingRoom);
         Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
         session.setAttribute("guest", guest);
-        session.setAttribute("listBookingRoom", listBookingRoom);
-        
+        session.setAttribute("Nopage", NoPage);
+        session.setAttribute("currentindex", index);
         response.sendRedirect("bookingDetail.jsp");
     }
 

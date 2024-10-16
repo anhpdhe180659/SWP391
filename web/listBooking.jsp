@@ -3,11 +3,16 @@
 <%@page import="model.*" %>
 <%@page import="dal.*" %>
 <%@page import="java.util.*" %>
+<%@page import="java.text.NumberFormat" %>
+<%@page import="java.util.Locale" %>
+<%@page import="java.util.*" %>
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <!DOCTYPE html> 
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Booking</title>
+        <title>Booking List</title>
         <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
         <link rel="icon" href="img/logo/favicon.png" type="image/x-icon" />
 
@@ -53,18 +58,16 @@
 
                         <div class="col-md-12">
                             <div class="card">
-                                <!--                                <div class="card-header">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <h4 class="card-title">Add New Booking</h4>
-                                                                        <button class="btn btn-primary btn-round ms-auto" onclick="addBooking()">
-                                                                            <i class="fa fa-plus"></i> Add Booking
-                                                                        </button>
-                                                                    </div>
-                                                                </div>-->
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-primary btn-round ms-auto" onclick="addBooking()">
+                                            <i class="fa fa-plus"></i> New booking
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table
-                                            id="multi-filter-select"
                                             class="display table table-striped table-hover" 
                                             style="text-align: center"
                                             >
@@ -73,7 +76,10 @@
                                                     <th>BookingID</th>
                                                     <th>Guest Name</th>
                                                     <th>Receptionist</th>
+                                                    <th>Deposit</th>
+                                                    <th>Check-in Status</th>
                                                     <th>Paid Status</th>
+                                                    <th>Booking date</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -89,24 +95,27 @@
                                                 <tr>
                                                     <td><%= book.getBookingID()%></td>
                                                     <!-- Room Type -->
-                                                    <td>
-                                                        <select disabled class="form-select update text-bg-light" name="typeId" data-field="typeId">
-                                                            <option value="1" ><%= guest.getName()%></option>
-                                                        </select>
+                                                    <td><%= guest.getName()%>
                                                     </td>
                                                     <!-- Room Capacity -->
-                                                    <td>
-                                                        <select disabled class="form-select update text-bg-light" name="cleanId" data-field="cleanId">
-                                                            <option value="1"><%= user.getName()%></option>
-                                                        </select>
+                                                    <td><%= user.getName()%>
                                                     </td>
                                                     <!-- Room Status -->
-                                                    <td>
-                                                        <select disabled class="form-select update text-bg-light" name="statusId" data-field="statusId">
-                                                            <option value="hello"><%= (book.getPaidStatus() == 1) ? "Paid" : "Unpaid" %></option>
-                                                        </select>
+                                                    <% 
+                                                        double price = book.getDeposit();
+                                                         Locale localeVN = new Locale("vi", "VN");
+                                                            // Create a currency instance for the Vietnamese Dong
+                                                            Currency vnd = Currency.getInstance(localeVN);
+                                                            // Create a NumberFormat instance
+                                                            NumberFormat formatterPrice = NumberFormat.getCurrencyInstance(localeVN);
+                                                            // Format the price
+                                                            String formattedPrice = formatterPrice.format(price);
+                                                    %>
+                                                    <td><%= formattedPrice %></td>
+                                                    <td><%= (book.getCheckInStatus() == 1) ? "<span style='color: green; font-weight: bold'>Checked-in</span>" : "<span style='color: red; font-weight: bold'>Not yet</span>" %></td>
+                                                    <td><%= (book.getPaidStatus() == 1) ? "<span style='color: green; font-weight: bold'>Paid</span>" : "<span style='color: red; font-weight: bold'>Unpaid</span>" %>
                                                     </td>
-
+                                                    <td><%= book.getBookingDate() %></td>
                                                     <!-- View Details Button -->
                                                     <td style="text-align: center">
                                                         <a href="bookingDetail?bookingid=<%= book.getBookingID()%>">
@@ -122,7 +131,55 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <c:set value="${sessionScope.currentindex}" var="index" />
+                                    <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                    <div class="card-body" >
+                                        <div class="demo">
+                                            <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
+                                                <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
+                                                <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                    <a class="page-link" href="bookingList?index=${index-1}" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                                <c:choose>
+                                                    <c:when test="${index <= 3}">
+                                                        <c:set var="startPage" value="1" />
+                                                        <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                    </c:when>
+                                                    <c:when test="${index > Nopage - 3}">
+                                                        <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                        <c:set var="endPage" value="${Nopage}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="startPage" value="${index - 2}" />
+                                                        <c:set var="endPage" value="${index + 2}" />
+                                                    </c:otherwise>
+                                                </c:choose>
 
+                                                <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                                                    <c:if test="${index == p}">
+                                                        <li class="page-item active">
+                                                            <a class="page-link" href="bookingList?index=${p}">${p}</a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${index != p}">
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="bookingList?index=${p}">${p}</a>
+                                                        </li>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <li class="page-item ${index < Nopage ? '' :'disabled' }" >
+                                                    <a class="page-link" href="bookingList?index=${index+1}" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +200,11 @@
         <script src="assets/js/plugin/datatables/datatables.min.js"></script>
         <!-- Kaiadmin JS -->
         <script src="assets/js/kaiadmin.min.js"></script>
+        <script>
+                                            function addBooking() {
+                                                window.location = "booking";
+                                            }
+        </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
                 row.addEventListener('click', function (e) {

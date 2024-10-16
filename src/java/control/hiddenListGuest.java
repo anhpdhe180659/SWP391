@@ -39,7 +39,7 @@ public class hiddenListGuest extends HttpServlet {
         List<Guest> hiddenGuestList = guestDao.getHiddenGuest();  // Lấy danh sách khách bị ẩn từ database
 
         // Đặt danh sách hidden guests vào session attribute
-        session.setAttribute("hiddenGuestList", hiddenGuestList); 
+        request.getSession().setAttribute("hiddenGuestList", hiddenGuestList); 
 
         // Chuyển hướng tới trang hiddenListGuest.jsp để hiển thị danh sách khách ẩn
         response.sendRedirect("hiddenListGuest.jsp");

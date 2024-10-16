@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author LENOVO
@@ -16,13 +18,13 @@ public class Feedback {
     private String feedback;
     private int rating;
 
-    // Constructor
     public Feedback(String name, String guestID, String feedback, int rating) {
         this.name = name;
         this.guestID = guestID;
         this.feedback = feedback;
         this.rating = rating;
     }
+
 
     // Getters and Setters
     public String getName() {

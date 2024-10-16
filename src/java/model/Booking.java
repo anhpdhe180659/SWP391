@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author phand
@@ -15,18 +17,23 @@ public class Booking {
     int CheckInStatus;
     int PaidStatus;
     int UserID;
-
+    Date BookingDate;
+    int TotalPrice;
+    
     public Booking() {
     }
 
-    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID) {
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice) {
         this.BookingID = BookingID;
         this.GuestID = GuestID;
         this.Deposit = Deposit;
         this.CheckInStatus = CheckInStatus;
         this.PaidStatus = PaidStatus;
         this.UserID = UserID;
+        this.BookingDate = BookingDate;
+        this.TotalPrice = TotalPrice;
     }
+    
 
     public int getPaidStatus() {
         return PaidStatus;
@@ -34,6 +41,22 @@ public class Booking {
 
     public void setPaidStatus(int PaidStatus) {
         this.PaidStatus = PaidStatus;
+    }
+
+    public Date getBookingDate() {
+        return BookingDate;
+    }
+
+    public void setBookingDate(Date BookingDate) {
+        this.BookingDate = BookingDate;
+    }
+
+    public int getTotalPrice() {
+        return TotalPrice;
+    }
+
+    public void setTotalPrice(int TotalPrice) {
+        this.TotalPrice = TotalPrice;
     }
 
 
@@ -79,8 +102,9 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", PaidStatus=" + PaidStatus + ", UserID=" + UserID + '}';
+        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", PaidStatus=" + PaidStatus + ", UserID=" + UserID + ", BookingDate=" + BookingDate + ", TotalPrice=" + TotalPrice + '}';
     }
+
 
 
     
