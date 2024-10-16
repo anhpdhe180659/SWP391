@@ -1,3 +1,9 @@
+<%-- 
+    Document   : feedbackAdmin
+    Created on : Oct 17, 2024, 1:14:35 AM
+    Author     : LENOVO
+--%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
@@ -148,7 +154,19 @@
                     <p>"<%= feedback.getFeedback() %>"</p>
                     <p>Rating: <%= "⭐".repeat(feedback.getRating()) + "☆".repeat(5 - feedback.getRating()) %></p> 
                      
-                    
+                    <% if (feedback.getFeedbackStatus() == 1) { %>
+            <form action="toggleFeedbackStatus" method="post">
+                <input type="hidden" name="feedbackID" value="<%= feedback.getFeedbackid() %>">
+                <input type="hidden" name="feedbackStatus" value="0"> <!-- Hide -->
+                <button type="submit">Hide</button>
+            </form>
+        <% } else { %>
+            <form action="toggleFeedbackStatus" method="post">
+                <input type="hidden" name="feedbackID" value="<%= feedback.getFeedbackid() %>">
+                <input type="hidden" name="feedbackStatus" value="1"> <!-- View -->
+                <button type="submit">View</button>
+            </form>
+        <% } %>
                    </div>
                 <% } %>
             </div>
@@ -241,3 +259,4 @@
 
     </body>
 </html>
+

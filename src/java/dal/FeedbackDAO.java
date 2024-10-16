@@ -114,7 +114,19 @@ public class FeedbackDAO extends DBContext {
         } else {
             System.out.println("Guest with ID " + guestID + " does not exist.");
         }
-    }
+    }  
+        public void updateFeedbackStatus(int Feedbackid, int feedbackStatus) {
+    String sql = "UPDATE Feedback SET feedbackStatus = ? WHERE Feedbackid = ?";
+
+    try (
+         PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, feedbackStatus);
+        ps.setInt(2, Feedbackid);
+        ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }   
+}  
 }
 
 
