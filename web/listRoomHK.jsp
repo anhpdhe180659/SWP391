@@ -338,7 +338,7 @@
                     console.log(field);
                     // AJAX call to update the database
                     $.ajax({
-                        url: 'updateRoomStatus', // Your servlet URL
+                        url: 'updateCleanStatus', // Your servlet URL
                         method: 'POST',
                         data: {
                             roomId: roomId,

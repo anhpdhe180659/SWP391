@@ -238,4 +238,19 @@ public class RoomDao extends DBContext {
         }
     }
 
+   public int getRoomStatus(int roomID) throws SQLException {
+        String query = "SELECT StatusID FROM Room WHERE RoomID = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, roomID);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("StatusID");
+                }
+            }
+        }
+        throw new SQLException("Room ID not found"); // Ném lỗi nếu không tìm thấy phòng
+    }
+
 }
