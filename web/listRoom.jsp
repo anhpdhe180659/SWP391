@@ -45,6 +45,7 @@
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
         <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+        <link rel="stylesheet" href="CSS/listRoom.css"/>
 
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <!--<link rel="stylesheet" href="assets/css/demo.css" />-->
@@ -131,35 +132,42 @@
                                     <div class="card-body row">
                                         <c:forEach items="${sessionScope.listRoom}" var="s">
                                             <div class="card col-3 m-5 p-3">
-                                                <div style="border-radius: 10px" class="card-header">
-                                                    <h1 class="text-danger"><i class="fas fa-home"> Room: ${s.roomNumber}</i></h1>
-                                                    <c:choose>
-                                                        <c:when test="${s.statusId == 1}">
-                                                            <a role="button" class="btn btn-danger" href="booking">Book now</a>
-                                                        </c:when>
-                                                        <c:when test="${s.statusId == 2}">
-                                                            <c:forEach items="${sessionScope.bookingRooms}" var="b">
-                                                                <c:if test="${s.roomId == b.roomID}"> 
-                                                                    <c:forEach items="${sessionScope.bookings}" var="bk">
-                                                                        <c:if test="${b.bookingID == bk.bookingID}">
-                                                                            <c:forEach items="${sessionScope.guests}" var="g">
-                                                                                <c:if test="${bk.guestID == g.guestID}">
-                                                                                    <h5><i class="fas fa-user-alt"> ${g.name}</i></h5>
-                                                                                </c:if>
-                                                                            </c:forEach>
-                                                                        </c:if>
-                                                                    </c:forEach>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                            <!--<a role="button" class="btn btn-secondary" href="checkIn?roomId=${s.roomId}">Check in</a>-->
-                                                            <a role="button" class="btn btn-success" href="checkOut?roomId=${s.roomId}">Check out</a>
-                                                        </c:when>
-                                                        <c:when test="${s.statusId == 3}">
-                                                            <p class="text text-uppercase text-warning"><b>Under maintaince</b></p>
-                                                        </c:when>
-                                                    </c:choose>
-                                                    <a role="button" class="btn btn-info " href="viewDetail?roomId=${s.roomId}">View detail</a>
-                                                </div> 
+                                                <div style="border-radius: 10px" class="card-header-row">
+                                                    <h1 class="text-secondary"><i class="fas fa-home"> Room: ${s.roomNumber}</i></h1>
+                                                    <div class="button-header">
+                                                        <c:choose>
+                                                            <c:when test="${s.statusId == 1}">
+                                                                <a class="button" href="booking">Book now</a>
+                                                                <button class="maintaince button" data-room-id="${s.roomId}" >Maintance</button>
+                                                            </c:when>
+                                                            <c:when test="${s.statusId == 2}">
+                                                                <c:forEach items="${sessionScope.bookingRooms}" var="b">
+                                                                    <c:if test="${s.roomId == b.roomID}"> 
+                                                                        <c:forEach items="${sessionScope.bookings}" var="bk">
+                                                                            <c:if test="${b.bookingID == bk.bookingID}">
+                                                                                <c:forEach items="${sessionScope.guests}" var="g">
+                                                                                    <c:if test="${bk.guestID == g.guestID}">
+                                                                                        <div class="title-header">
+                                                                                            <p><i class="fas fa-user-alt"> ${g.name}</i></p>
+                                                                                        </div>
+                                                                                    </c:if>
+                                                                                </c:forEach>
+                                                                            </c:if>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                                <a class="button" href="checkOut?roomId=${s.roomId}">Check out</a>
+                                                            </c:when>
+                                                            <c:when test="${s.statusId == 3}">
+                                                                <div class="title-card-header">
+                                                                    <p><b>Under maintaince</b></p>
+                                                                </div>
+                                                                <button id="${s.roomId}" data-room-id="${s.roomId}" class="available button">Available</button>
+                                                            </c:when>
+                                                        </c:choose>
+                                                        <a role="button" class="button " href="viewDetail?roomId=${s.roomId}">View detail</a>
+                                                    </div> 
+                                                </div>
                                                 <div class="card-body">
                                                     <c:choose>
                                                         <c:when test="${s.cleanId == 1}">
@@ -297,11 +305,13 @@
         </script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
+            const currentUrl = window.location.href;
+            console.log(currentUrl);
             $(document).ready(function () {
-                $('.update').on('change', function () {
+                $('.available').on('click', function () {
                     const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                    const field = $(this).data('field'); // Get field name from data attribute
-                    const value = $(this).val(); // Get selected value
+                    const field = 'statusId'; // Get field name from data attribute
+                    const value = 1; // Get selected value
                     console.log(field);
                     // AJAX call to update the database
                     $.ajax({
@@ -318,7 +328,43 @@
                             swal({
                                 icon: "success",
                                 text: 'Update successful'
+                            }).then(() => {
+                                window.location = currentUrl;
                             });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed.');
+                        }
+                    });
+                });
+            });
+
+
+            $(document).ready(function () {
+                $('.maintaince').on('click', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = 'statusId'; // Get field name from data attribute
+                    const value = 3; // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            console.log(swal);
+                            // Handle success, you can show a notification or update the UI
+                            swal({
+                                icon: "success",
+                                text: 'Update successful'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            })
                         },
                         error: function (xhr, status, error) {
                             // Handle error

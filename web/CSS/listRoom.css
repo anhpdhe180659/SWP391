@@ -1,0 +1,26 @@
+.button-header {
+    display: flex;
+    flex-direction: row; /* Keeps the buttons in a row */
+    gap:2px;    
+}
+
+.button {
+    display: block;
+    width: fit-content; /* Keeps the width of the button tight around the content */
+    border: 1px solid gray;
+    padding: 5px 10px; /* Add some padding for better spacing inside the button */
+}
+
+.title-card-header {
+    display: block;
+    width: 100%;
+    text-align: center; /* Centers the text content inside */
+}
+
+.warn {
+    background-color: orangered;
+}
+
+.okay {
+    background-color: greenyellow;
+}

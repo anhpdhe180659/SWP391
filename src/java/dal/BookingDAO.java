@@ -200,6 +200,41 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+    
+    public void updateStatusRoomAvailable(int roomid) {
+        String query = """
+                       UPDATE [dbo].[Room]
+                        SET [StatusID] = 1
+                        WHERE RoomID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public List<Integer> getAllRoomIDDelete(int bookingid) {
+        List<Integer> list = new ArrayList<>();
+        String query = """
+                       SELECT [BookingID]
+                             ,[RoomID]
+                             ,[NumOfNight]
+                             ,[CheckInDate]
+                             ,[CheckOutDate]
+                             ,[Price]
+                         FROM [dbo].[BookingRoom]
+                       WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getInt("RoomID"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus) {
         java.util.Date currentDate = new java.util.Date();
@@ -229,10 +264,55 @@ public class BookingDAO extends DBContext {
         }
     }
 
+    public void deleteBooking(int bookingid) {
+        String query = """
+                       DELETE FROM [dbo].[BookingService]
+                             WHERE BookingID = ?
+                       DELETE FROM [dbo].[BookingRoom]
+                             WHERE BookingID = ?
+                       DELETE FROM [dbo].[Booking]
+                             WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            pre.setInt(2, bookingid);
+            pre.setInt(3, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void updateDeposit(int bookingid, int deposit) {
+        String query = """
+                       UPDATE [Booking]
+                          SET [Deposit] = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, deposit);
+            pre.setInt(2, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void updateCheckInStatus(int bookingid, int checkinstatus) {
+        String query = """
+                       UPDATE [Booking]
+                          SET [CheckInStatus] = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, checkinstatus);
+            pre.setInt(2, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();
         Date currentDate = new Date();
-        bdao.addBookingRoom(5, 1, 3, LocalDateTime.MIN, LocalDateTime.MAX, 0);
+//        bdao.addBookingRoom(5, 1, 3, LocalDateTime.MIN, LocalDateTime.MAX, 0);
+        System.out.println(bdao.getAllRoomIDDelete(6));
     }
 
     public int getNewBookingID() {
@@ -291,6 +371,40 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return booking;
+
+    }
+    public List<Booking> findBookingByBookingID(int bookingid) {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT [BookingID]
+                             ,[GuestID]
+                             ,[Deposit]
+                             ,[CheckInStatus]
+                             ,[PaidStatus]
+                             ,[UserID]
+                             ,[BookingDate]
+                             ,[TotalPrice]
+                         FROM [Booking]
+                       WHERE BookingID = ?
+                       """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
 
     }
 

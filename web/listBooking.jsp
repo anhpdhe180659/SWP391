@@ -2,7 +2,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="model.*" %>
 <%@page import="dal.*" %>
-<%@page import="java.util.*" %>
 <%@page import="java.text.NumberFormat" %>
 <%@page import="java.util.Locale" %>
 <%@page import="java.util.*" %>
@@ -60,6 +59,38 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
+                                        <nav
+                                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                            >
+                                            <c:set value="${requestScope.searchCode} " var="n"/>
+                                            <form action="searchBooking">
+                                                <div class="input-group" >
+                                                    <div class="input-group-prepend">
+                                                        <button type="submit" class="btn btn-search pe-1">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                    <c:if test="${n.length() < 2}">
+                                                        <input
+                                                            type="text"
+                                                            name="bookingcode"
+                                                            placeholder="Search by bookingcode..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                    <c:if test="${n.length() > 1}">
+                                                        <input
+                                                            type="text"
+                                                            name="bookingcode"
+                                                            value="${n}"
+                                                            placeholder="Search by bookingcode..."
+                                                            class="form-control"
+                                                            />
+                                                    </c:if>
+                                                </div>
+                                            </form>
+                                        </nav>
+                                        <c:set value="${requestScope.noti}" var="noti" />
                                         <button class="btn btn-primary btn-round ms-auto" onclick="addBooking()">
                                             <i class="fa fa-plus"></i> New booking
                                         </button>
@@ -118,16 +149,59 @@
                                                     <td><%= book.getBookingDate() %></td>
                                                     <!-- View Details Button -->
                                                     <td style="text-align: center">
-                                                        <a href="bookingDetail?bookingid=<%= book.getBookingID()%>">
-                                                            <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
-                                                        </a>
+                                                        <div class="form-button-action">
+                                                            <button
+                                                                type="button"
+                                                                data-bs-toggle="tooltip"
+                                                                title=""
+                                                                class="btn btn-link btn-primary btn-lg"
+                                                                data-original-title="View detail"
+                                                                >
+                                                                <a href="bookingDetail?bookingid=<%= book.getBookingID()%>">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </button>
+                                                            <a href="editBooking?bookingid=<%= book.getBookingID()%>" >
+                                                                <button
+                                                                    type="button"
+                                                                    data-bs-toggle="tooltip"
+                                                                    title=""
+                                                                    class="btn btn-link btn-primary btn-lg"
+                                                                    data-original-title="Edit booking"
+                                                                    >
+                                                                    <i class="fa fa-edit"></i>
+                                                                </button>
+                                                            </a>
+                                                            <% if(book.getCheckInStatus() == 0){
+                                                            %>
+                                                            <button
+                                                                type="button"
+                                                                data-bs-toggle="tooltip"
+                                                                id="alertdelete"
+                                                                class="btn btn-link btn-danger alertdelete"
+                                                                data-original-title="Remove"
+                                                                onclick="confirmDelete(<%= book.getBookingID()%>)"
+                                                                >
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+
+                                                            <%
+                                                                };
+                                                            %>
+
+
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                                 <%
                                                     }
 
                                                 %>
-
+                                                <c:if test="${requestScope.noti != null}">
+                                                    <tr >
+                                                        <td style="text-align: center; font-weight: bold" colspan="9"><p class="text-danger">${requestScope.noti}</p></td><!-- comment --></tr>
+                                                        </c:if>
                                             </tbody>
                                         </table>
                                     </div>
@@ -193,90 +267,59 @@
         </div>
 
         <!-- Core JS Files -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
         <script src="assets/js/core/bootstrap.min.js"></script>
         <!-- Datatables -->
+        <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
         <script src="assets/js/plugin/datatables/datatables.min.js"></script>
         <!-- Kaiadmin JS -->
+        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
         <script src="assets/js/kaiadmin.min.js"></script>
+        <script src="assets/js/setting-demo2.js"></script>
         <script>
-                                            function addBooking() {
-                                                window.location = "booking";
-                                            }
+                                                                    function addBooking() {
+                                                                        window.location = "booking";
+                                                                    }
         </script>
+
         <script>
-            document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {
-                row.addEventListener('click', function (e) {
-                    // Nếu click vào chính checkbox thì không thay đổi trạng thái checked nữa
-                    if (e.target.tagName !== 'INPUT') {
-                        // Lấy checkbox trong hàng được click
-                        let checkbox = this.querySelector('.row-checkbox');
-                        // Đổi trạng thái của checkbox
-                        checkbox.checked = !checkbox.checked;
+            function doDelete(bookingid) {
+                window.location = "deleteBooking?bookingid=" + bookingid;
+            }
+            function confirmDelete(bookingid) {
+                // Hỏi người dùng có chắc chắn muốn xóa hay không
+                swal({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    type: "warning",
+                    buttons: {
+                        confirm: {
+                            text: "Yes, delete it!",
+                            value: true,
+                            visible: true,
+                            className: "btn btn-success",
+                            closeModal: false
+                        }, cancel: {
+                            text: "Cancel",
+                            value: null,
+                            visible: true,
+                            className: "btn btn-danger",
+                            closeModal: true,
+                        }
+
+                    }
+                }).then(function (Delete) {
+                    if (Delete) {
+                        // Nếu người dùng xác nhận, thực hiện xóa
+                        doDelete(bookingid);
+                    } else {
+                        // Nếu người dùng hủy, đóng cảnh báo
+                        swal.close();
                     }
                 });
-            });
-        </script>
-        <script>
-            $(document).ready(function () {
-                $("#basic-datatables").DataTable({});
-
-                $("#multi-filter-select").DataTable({
-                    pageLength: 5,
-                    initComplete: function () {
-                        this.api()
-                                .columns()
-                                .every(function () {
-                                    var column = this;
-                                    var select = $(
-                                            '<select class="form-select"><option value=""></option></select>'
-                                            )
-                                            .appendTo($(column.footer()).empty())
-                                            .on("change", function () {
-                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                                                column
-                                                        .search(val ? "^" + val + "$" : "", true, false)
-                                                        .draw();
-                                            });
-
-                                    column
-                                            .data()
-                                            .unique()
-                                            .sort()
-                                            .each(function (d, j) {
-                                                select.append(
-                                                        '<option value="' + d + '">' + d + "</option>"
-                                                        );
-                                            });
-                                });
-                    },
-                });
-
-                // Add Row
-                $("#add-row").DataTable({
-                    pageLength: 5,
-                });
-
-                var action =
-                        '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-                $("#addRowButton").click(function () {
-                    $("#add-row")
-                            .dataTable()
-                            .fnAddData([
-                                $("#addName").val(),
-                                $("#addPosition").val(),
-                                $("#addOffice").val(),
-                                action,
-                            ]);
-                    $("#addRowModal").modal("hide");
-                });
-            });
-        </script>
-        <script>
-
+            }
         </script>
     </body>
 </html>
