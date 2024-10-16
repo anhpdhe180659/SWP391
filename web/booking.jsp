@@ -12,7 +12,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Booking page</title>
+        <title>Booking</title>
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -126,7 +126,7 @@
                                                                     <th>Room Number</th>
                                                                     <th>Type</th>
                                                                     <th>Capacity</th>
-                                                                    <th>Price/day</th>
+                                                                    <th>Price/night</th>
                                                                     <th>Select</th>
                                                                 </tr>
                                                             </thead>
@@ -284,6 +284,7 @@
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
+                                                                    id="checkindate"
                                                                     name="checkindate"
                                                                     placeholder="Enter identification"
                                                                     required
@@ -294,6 +295,7 @@
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
+                                                                    id="checkoutdate"
                                                                     name="checkoutdate"
                                                                     placeholder="Enter address"
                                                                     required
@@ -507,9 +509,20 @@
         <script>
                                         // Get today's date in yyyy-mm-dd format
                                         const today = new Date().toISOString().split('T')[0];
-
                                         // Set the max attribute for the birthday input to today's date
                                         document.getElementById("birthday").setAttribute("max", today);
+                                        document.getElementById("checkindate").setAttribute("min", today);
+                                        document.getElementById("checkoutdate").setAttribute("min", today);
+                                        document.getElementById("checkindate").addEventListener("change", function () {
+                                            let checkInDate = new Date(this.value);
+                                            let minCheckOutDate = new Date(checkInDate);
+                                            minCheckOutDate.setDate(checkInDate.getDate() + 1);
+                                            // Convert the date back to YYYY-MM-DD format
+                                            let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
+                                            // Set the minimum date for checkout as one day after the check-in date
+                                            let checkOutInput = document.getElementById("checkoutdate");
+                                            checkOutInput.setAttribute("min", formattedCheckOutDate);
+                                        });
         </script>
         <script>
             function validate() {

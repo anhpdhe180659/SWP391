@@ -4,29 +4,24 @@
  */
 package control;
 
-import dal.AmenityDAO;
-import dal.DashboardDAO;
-import dal.NewsDAO;
-import dal.RoomDao;
-import dto.ChartDTO;
-import dto.StasticDto;
+import dal.BookingDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Amenity;
-import model.NewsItem;
-import model.Room;
+import model.Booking;
 import model.User;
+import util.BookingCodeConvert;
 
 /**
  *
  * @author nhatk
  */
-public class dashboard extends HttpServlet {
+public class searchBooking extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,45 +35,35 @@ public class dashboard extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+        BookingDAO bdao = new BookingDAO();
+        BookingCodeConvert uConvert = new BookingCodeConvert();
+        int index = 1;
+        List<Booking> listBooking = bdao.getAllBooking();
+        String bookingcode = request.getParameter("bookingcode");
+        bookingcode = bookingcode.trim(); // 7PY
+        int bookingid = uConvert.fromBase36(bookingcode); //6
+        int NoPage = util.pagination.getNoPageBooking(bdao.findBookingByBookingID(bookingid));
+        if (request.getParameter("bookingcode").length() > 0) {
+            listBooking = bdao.findBookingByBookingID(bookingid);
+            if (NoPage == 0) {
+                request.setAttribute("noti", "No booking found");
+            }
         } else {
-            int role = (Integer)session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            RoomDao roomDao = new RoomDao();
-            List<Room> listRoom = roomDao.getAllRooms();
-            DashboardDAO dashboardDAO = new DashboardDAO();
-            List<NewsItem> newsList = new NewsDAO().getTop3();
-            session.setAttribute("newsList", newsList);
-            StasticDto dto = dashboardDAO.getStasticDto();
-            List<ChartDTO> chartDTOs = dashboardDAO.getData();
-            session.setAttribute("dto", dto);
-            for (ChartDTO item : chartDTOs) {
-                session.setAttribute("month" + item.getMonth(), item.getTotal());
-            }
-            int underMaintainRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 3
-            ).toList().size();
-            int availableRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 1
-            ).toList().size();
-            int occupiedRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 2
-            ).toList().size();
-            AmenityDAO amenityDao = new AmenityDAO();
-            List<Amenity> listAmenity = amenityDao.getAllAmenities();
-            
-            //get session 
-            session.setAttribute("maintaince", underMaintainRoom);
-            session.setAttribute("available", availableRoom);
-            session.setAttribute("occupied", occupiedRoom);
-            session.setAttribute("amenityCount", listAmenity.size());
-            response.sendRedirect("dashboard.jsp");
+            listBooking = bdao.getAllBooking();
+            NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
         }
+
+        out.println("bookingcode: " + bookingcode);
+        out.println("bookingid sau convert: " + bookingid);
+        out.println("NoPage: " + NoPage);
+        session.setAttribute("listBooking", listBooking);
+        session.setAttribute("Nopage", NoPage);
+        session.setAttribute("currentindex", index);
+        request.setAttribute("searchCode", bookingcode);
+        request.getRequestDispatcher("listBooking.jsp").forward(request, response);        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

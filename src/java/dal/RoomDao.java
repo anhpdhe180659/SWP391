@@ -41,6 +41,28 @@ public class RoomDao extends DBContext {
         }
         return null;
     }
+    public Room getRoomByRoomID(int roomid) {
+        String query = """
+                            SELECT * FROM  Room WHERE  RoomID = ?
+                           """;
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Room(
+                        rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
     public List<Room> getAllRooms() {
         List<Room> allRoom = new ArrayList<>();
@@ -289,6 +311,21 @@ public class RoomDao extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+   public int getRoomStatus(int roomID) throws SQLException {
+        String query = "SELECT StatusID FROM Room WHERE RoomID = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, roomID);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("StatusID");
+                }
+            }
+        }
+        throw new SQLException("Room ID not found"); // Ném lỗi nếu không tìm thấy phòng
     }
 
 }

@@ -66,7 +66,7 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Amenity</h3>
+                            <h3 class="fw-bold mb-3">Manage Amenity Detail</h3>
                         </div>
 
                         <div class="col-md-12">
