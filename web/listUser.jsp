@@ -146,8 +146,8 @@
                                                             <fmt:formatNumber value="${s.salary}" type="number" groupingUsed="true" pattern="#,###"/> ₫</td>
                                                         <td>
                                                             ${s.startDate}
-                                                            
-                                                            </td>
+
+                                                        </td>
                                                         <td>
                                                             <c:if test="${s.status == 0}">
                                                                 <span style="color: red; font-weight:bold">inactive</span>
@@ -250,10 +250,10 @@
 
             </footer>
         </div>
-</body>
-        <!-- Custom template | don't include it in your project! -->
+    </body>
+    <!-- Custom template | don't include it in your project! -->
 
-        <!-- End Custom template -->
+    <!-- End Custom template -->
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
