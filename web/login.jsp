@@ -43,16 +43,18 @@
                     </div>
                     <div class="toggle-panel toggle-right">
                         <h1>Hotel Management</h1>
-                        <p>Do you have an account ?</p>
-                        <button class="hidden" id="register">Sign Up</button>
+                        <p>If you already signed up with your email</p>
+                        
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=profile email&redirect_uri=http://localhost:8080/SWP391/loginGoogle&response_type=code
+		   &client_id=251851195797-be94bjjk1t71t8p8ed3ngr6o9dvsg9q5.apps.googleusercontent.com&approval_prompt=force"><button id="register" class="hidden">Login with Google</button></a>
                     </div>
                 </div>
             </div>
         </div>
-        <%                 if (request.getAttribute("error") != null) { %>
+        <% if (request.getAttribute("error") != null) { %>
         <p style="color:red; margin-top: 20px "><%= request.getAttribute("error") %></p>
         <% } %>
-        <%                 if (request.getAttribute("invalid") != null) { %>
+        <% if (request.getAttribute("invalid") != null) { %>
         <p style="color:red; margin-top: 20px "><%= request.getAttribute("invalid") %></p>
         <% } %>
         <script>
@@ -82,9 +84,8 @@
         </script>
         <script type="text/javascript">
             window.onload = function () {
-                // Get the success message from the request attribute
                 var successMessage = '<%= request.getAttribute("success") %>';
-                if(successMessage!=="null"){
+                if (successMessage !== "null") {
                     alert(successMessage);
                 }
             };
