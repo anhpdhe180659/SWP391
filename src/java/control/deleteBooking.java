@@ -6,9 +6,6 @@
 package control;
 
 import dal.BookingDAO;
-import dal.GuestDAO;
-import dal.RoomDao;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,16 +15,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Booking;
-import model.BookingRoom;
-import model.Guest;
-import model.Room;
-import model.User;
 
 /**
  *
  * @author nhatk
  */
-public class bookingList extends HttpServlet {
+public class deleteBooking extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,29 +32,18 @@ public class bookingList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
+        PrintWriter out = response.getWriter();
         BookingDAO bdao = new BookingDAO();
-        GuestDAO gdao = new GuestDAO();
-        UserDAO udao = new UserDAO();
-        int index = 1;
-        int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
+        HttpSession session = request.getSession();
+        int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+        List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
+        for (Integer roomid : list) {
+            bdao.updateStatusRoomAvailable(roomid);
         }
-        List<Booking> listBooking = bdao.getNext5Booking(index);
-        for (Booking book : listBooking) {
-            
-        }
+        bdao.deleteBooking(bookingid);
+        response.sendRedirect("bookingList");
         
-        
-        session.setAttribute("listBooking", listBooking);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        response.sendRedirect("listBooking.jsp");
-        
-        
-        
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

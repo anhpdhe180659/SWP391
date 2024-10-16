@@ -126,7 +126,7 @@
                                                                     <th>Room Number</th>
                                                                     <th>Type</th>
                                                                     <th>Capacity</th>
-                                                                    <th>Price/day</th>
+                                                                    <th>Price/night</th>
                                                                     <th>Select</th>
                                                                 </tr>
                                                             </thead>
