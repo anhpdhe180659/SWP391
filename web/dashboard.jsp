@@ -6,9 +6,11 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Dashboard for manager</title>
         <meta
@@ -267,7 +269,30 @@
                                     </div>
                                 </div>
                             </div>
-                                                
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Newest Notifications</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <ul>
+                                                <c:forEach var="news" items="${sessionScope.newsList}">
+                                                    <li>
+                                                        <span style="font-size: 21px" class="date">${news.publishDate}</span>
+                                                        <a style="font-size: 22px" href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
+                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
+                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
+                                                           text-overflow: ellipsis;
+                                                           font-size:16px/* Hiển thị dấu ba chấm */">${news.content}</p>
+                                                    </li>
+                                                </c:forEach>
+                                                <li><a href="viewNotification">View all notification</a></li>
+                                            </ul> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                    
                             <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
@@ -283,6 +308,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         </div>
                     </div>
                 </div>

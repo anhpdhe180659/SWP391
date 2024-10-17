@@ -150,7 +150,7 @@ public class RoomDao extends DBContext {
                      AND (? = 0 OR StatusID = ?)
                      AND (? = 0 OR CleanID = ?)
                    ORDER BY RoomID 
-                   OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY
+                   OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY
                    """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -160,7 +160,7 @@ public class RoomDao extends DBContext {
             pre.setInt(4, statusId); // Gán giá trị statusId cho điều kiện StatusID
             pre.setInt(5, cleanId);  // Nếu cleanId = 0 thì bỏ qua điều kiện CleanID
             pre.setInt(6, cleanId);  // Gán giá trị cleanId cho điều kiện CleanID
-            pre.setInt(7, 5 * (index - 1));  // Offset
+            pre.setInt(7, 6 * (index - 1));  // Offset
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -311,6 +311,21 @@ public class RoomDao extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+   public int getRoomStatus(int roomID) throws SQLException {
+        String query = "SELECT StatusID FROM Room WHERE RoomID = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, roomID);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("StatusID");
+                }
+            }
+        }
+        throw new SQLException("Room ID not found"); // Ném lỗi nếu không tìm thấy phòng
     }
 
 }

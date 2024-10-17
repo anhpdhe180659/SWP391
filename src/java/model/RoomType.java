@@ -13,15 +13,17 @@ public class RoomType {
     String typeName;
     int capacity;
     int price;
+    String image;
 
     public RoomType() {
     }
 
-    public RoomType(int typeId, String typeName, int capacity, int price) {
+    public RoomType(int typeId, String typeName, int capacity, int price,String image) {
         this.typeId = typeId;
         this.typeName = typeName;
         this.capacity = capacity;
         this.price = price;
+        this.image = image;
     }
 
     public int getTypeId() {
@@ -55,5 +57,14 @@ public class RoomType {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
     
 }

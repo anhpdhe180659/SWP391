@@ -101,6 +101,11 @@
                                             <span class="sub-item">Room Type</span>
                                         </a>
                                     </li>
+                                     <li>
+                                        <a href="addRoomType">
+                                            <span class="sub-item">Add Room Type</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>   
@@ -153,7 +158,22 @@
                                 </ul>
                             </div>
                         </li>
-
+                         <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#h">
+                                <i class="fas fa-bell"></i>
+                                <p>Manage feedback</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="h">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="viewFeedbackAdmin">
+                                            <span class="sub-item">Feedback</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#charts">

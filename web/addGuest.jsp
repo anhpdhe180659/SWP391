@@ -48,9 +48,8 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarManager.jsp"/>
+            <jsp:include page="sidebarReceptionist.jsp"/>
             <!-- End Sidebar -->
-
             <div class="main-panel">
                 <div class="main-header">
                     <jsp:include page="navbar-header.jsp"/>

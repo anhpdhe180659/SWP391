@@ -10,8 +10,6 @@ import java.time.LocalDate;
 import model.Guest;
 import dal.GuestDAO;
 import java.io.PrintWriter;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import model.User;
 
@@ -88,19 +86,19 @@ public class addGuest extends HttpServlet {
 
     private String validateGuestInformation(GuestDAO gdao, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality) {
         // Kiểm tra thông tin như trước
-        if (name.isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
+        if (name.trim().isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
             return "Full Name cannot be null, blank, or contain special characters.";
         }
-        if (address.isEmpty()) {
+        if (address.trim().isEmpty()) {
             return "Address cannot be blank.";
         }
-        if (phone.isEmpty() || !phone.matches("^\\d{10}$")) {
+        if (phone.trim().isEmpty() || !phone.matches("^\\d{10}$")) {
             return "Phone must be exactly 10 digits.";
         }
-        if (identification.isEmpty()) {
+        if (identification.trim().isEmpty()) {
             return "Identification cannot be blank.";
         }
-        if (nationality.isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
+        if (nationality.trim().isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
             return "Nationality cannot be blank.";
         }
 

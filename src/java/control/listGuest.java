@@ -41,7 +41,7 @@ public class listGuest extends HttpServlet {
             return;
         }
 
-        request.setAttribute("listGuest", listGuest);  // Set the list in the request
+        request.getSession().setAttribute("listGuest", listGuest);  // Set the list in the request
         request.getRequestDispatcher("listGuest.jsp").forward(request, response);  // Forward to JSP page
     }
 

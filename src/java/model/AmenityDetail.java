@@ -45,6 +45,10 @@ public class AmenityDetail {
     public void setQuantity(int Quantity) {
         this.Quantity = Quantity;
     }
+
+    public void setRoomNumber(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     
 }
