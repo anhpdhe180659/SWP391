@@ -68,15 +68,15 @@ public class FeedbackDAO extends DBContext {
              ResultSet rs = pstmt.executeQuery()) {
              
             while (rs.next()) {
-                
+                int feedbackid = rs.getInt("Feedbackid");
                 String name = rs.getString("name");
                 String GuestID = rs.getString("GuestID");
                 String feedback = rs.getString("feedback");
                 int rating = rs.getInt("rating");
-                
-
-                
+                int feedbackStatus = rs.getInt("feedbackStatus");
                 Feedback fb = new Feedback( name, GuestID, feedback, rating);
+                fb.setFeedbackStatus(feedbackStatus);
+                fb.setFeedbackid(feedbackid);
                 feedbackList.add(fb);
 
             }
@@ -96,11 +96,7 @@ public class FeedbackDAO extends DBContext {
         int rating = 5;
 
         // First, check if the guest exists in the database
-        if (feedbackDAO.checkGuestExists(guestID)) {
-            // Add feedback if guest exists
-            feedbackDAO.addFeedback(name, guestID, feedbackContent, rating);
-            System.out.println("Feedback added successfully.");
-
+       
             // Fetch all feedbacks to verify if the new feedback is added
             List<Feedback> feedbackList = feedbackDAO.getAllFeedback();
             for (Feedback fb : feedbackList) {
@@ -109,11 +105,10 @@ public class FeedbackDAO extends DBContext {
                                    ", GuestID: " + fb.getGuestID() +
                                    ", Feedback: " + fb.getFeedback() +
                                    ", Rating: " + fb.getRating()
+                                   +", Status: "+fb.getFeedbackStatus()
                                    );
             }
-        } else {
-            System.out.println("Guest with ID " + guestID + " does not exist.");
-        }
+        
     }  
         public void updateFeedbackStatus(int Feedbackid, int feedbackStatus) {
     String sql = "UPDATE Feedback SET feedbackStatus = ? WHERE Feedbackid = ?";
