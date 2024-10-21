@@ -27,7 +27,7 @@ public class listGuest extends HttpServlet {
 
          if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role") != null && (session.getAttribute("role").equals("1")||session.getAttribute("role").equals("2"))) {
+        } else if (session.getAttribute("role") == null || !session.getAttribute("role").equals("3")) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
