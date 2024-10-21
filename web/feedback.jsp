@@ -122,7 +122,7 @@
         <div class="header-container">
             <nav class="navbar">
                 <div class="logo">
-                    <a href="#">
+                    <a href="guestHomePage.jsp">
                         <img src="img/logo/logo.png" alt="logo">
                     </a>
                 </div>
