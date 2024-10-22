@@ -113,18 +113,12 @@ public class booking extends HttpServlet {
             int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
             int paidstatus = Integer.parseInt(request.getParameter("paidstatus"));
             List<Guest> listGuest = gdao.getAllGuests();
+            Guest guestBooking = null;
+            boolean guestExist = false;
             for (Guest g : listGuest) {
                 if (g.getIdentification().equals(Identification)) {
-                    noti = "Identification has existed, please try again!";
-                    request.setAttribute("noti", noti);
-                    request.getRequestDispatcher("booking.jsp").forward(request, response);
-                    return;
-                }
-                if (g.getPhone().equals(Phone)) {
-                    noti = "Phonenumber has existed, please try again!";
-                    request.setAttribute("noti", noti);
-                    request.getRequestDispatcher("booking.jsp").forward(request, response);
-                    return;
+                    guestExist = true;
+                    guestBooking = g;
                 }
             }
             String checkindate = request.getParameter("checkindate");
@@ -151,9 +145,11 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            gdao.addGuest(guest);// add new guest in database 
-            Guest newGuest = gdao.getNewGuest();
-            bdao.addBooking(newGuest.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
+            if (guestExist == false) {
+                gdao.addGuest(guest);// add new guest in database 
+                guestBooking = gdao.getNewGuest();
+            }
+            bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
             if (selectedRoom != null) {
