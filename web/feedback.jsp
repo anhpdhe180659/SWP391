@@ -9,12 +9,12 @@
         <title>Feedback Form with Star Rating</title>
         <style>
             body {
-                 font-family: Arial, sans-serif;
-    background-image: url('https://acihome.vn/uploads/15/thiet-ke-khach-san-ven-bien-dang-cap-nghi-duong-5-sao-tien-nghi-hien-dai-3.jpg');
-    background-size: cover;
-    background-position: center;
-    margin: 0;
-    padding: 0;
+                font-family: Arial, sans-serif;
+                background-image: url('https://acihome.vn/uploads/15/thiet-ke-khach-san-ven-bien-dang-cap-nghi-duong-5-sao-tien-nghi-hien-dai-3.jpg');
+                background-size: cover;
+                background-position: center;
+                margin: 0;
+                padding: 0;
             }
             .header-container {
                 background-color: #333;
@@ -114,9 +114,9 @@
             .rating label:hover,
             .rating label:hover ~ label {
                 color: #f5b301;
-            }  
-            
-           </style>
+            }
+
+        </style>
     </head>
     <body>
         <div class="header-container">
@@ -142,19 +142,22 @@
                     FeedbackDAO feedbackDAO = new FeedbackDAO();
                     List<Feedback> feedbackList = feedbackDAO.getAllFeedback(); // Lấy tất cả phản hồi từ database
                     for (Feedback feedback : feedbackList) {
+                        if (feedback.getFeedbackStatus() == 1) { // Check feedbackStatus
                 %>
                 <div class="feedback-item">
                     <p class="author"><%= feedback.getName() %></p>
                     <p>"<%= feedback.getFeedback() %>"</p>
-                    <p>Rating: <%= "⭐".repeat(feedback.getRating()) + "☆".repeat(5 - feedback.getRating()) %></p> 
-                     
-                    
-                   </div>
-                <% } %>
+                    <p>Rating: <%= "⭐".repeat(feedback.getRating()) + "☆".repeat(5 - feedback.getRating()) %></p>
+                </div>
+                <% 
+                        }
+                    } 
+                %>
             </div>
+
         </div>  
-            
-             
+
+
 
         <!-- Form Feedback -->
         <div class="container">

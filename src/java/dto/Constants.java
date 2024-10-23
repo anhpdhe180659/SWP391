@@ -10,9 +10,9 @@ package dto;
  */
 public class Constants {
 
-    public static final String GOOGLE_CLIENT_ID = null;
+   public static final String GOOGLE_CLIENT_ID = "251851195797-be94bjjk1t71t8p8ed3ngr6o9dvsg9q5.apps.googleusercontent.com";
 
-    public static final String GOOGLE_CLIENT_SECRET = null;
+    public static final String GOOGLE_CLIENT_SECRET = "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";
 
     public static String GOOGLE_REDIRECT_URI = "http://localhost:8080/SWP391/loginGoogle";
 
