@@ -18,7 +18,7 @@ public class NewsDAO extends DBContext {
     public List<NewsItem> getTop3() {
         List<NewsItem> newsList = new ArrayList<>();
         try (
-                Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT Top(3) * FROM News ORDER BY Publish_date DESC")) {
+                Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT * FROM News ORDER BY Publish_date DESC LIMIT 3")) {
 
             while (rs.next()) {
                 NewsItem news = new NewsItem();
@@ -61,7 +61,7 @@ public class NewsDAO extends DBContext {
 
     public NewsItem getNewsById(int newsId) {
         NewsItem news = null;
-        String sql = "SELECT * FROM News WHERE newsID = ?";
+        String sql = "SELECT * FROM News WHERE NewsID = ?";
         try (
                 PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
@@ -85,8 +85,8 @@ public class NewsDAO extends DBContext {
     }
 
     public void addNews(NewsItem news) {
-        String sql = "INSERT INTO News (title, content, userID, publish_date, category, is_active, last_modified) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO News (Title, Content, UserID, Publish_date, Category, Is_active) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, news.getTitle());
@@ -95,7 +95,6 @@ public class NewsDAO extends DBContext {
             pstmt.setTimestamp(4, news.getPublishDate());
             pstmt.setString(5, news.getCategory());
             pstmt.setBoolean(6, news.isActive());
-            pstmt.setTimestamp(7, news.getLastModified());
 
             // Execute the update
             pstmt.executeUpdate();
@@ -105,7 +104,7 @@ public class NewsDAO extends DBContext {
     }
 
     public void deleteNews(int id) {
-        String sql = "DELETE FROM News WHERE newsID = ?";
+        String sql = "DELETE FROM News WHERE NewsID = ?";
         try (
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -121,6 +120,7 @@ public class NewsDAO extends DBContext {
         NewsDAO dao = new NewsDAO();
         dao.deleteNews(3);
         List<NewsItem> list = dao.getAllNews();
+        System.out.println("Main");
         for (NewsItem newsItem : list) {
             System.out.println(newsItem);
         }
