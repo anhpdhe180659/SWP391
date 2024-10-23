@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -86,7 +86,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <jsp:include page="sidebarManager.jsp"/>
             <!-- End Sidebar -->
 
             <div class="main-panel">
