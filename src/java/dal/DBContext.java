@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import java.sql.Connection;
@@ -10,22 +6,21 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class DBContext {
     protected Connection connection;
-    public DBContext()
-    {
-        //@Students: You are allowed to edit user, pass, url variables to fit 
-        //your system configuration
-        //You can also add more methods for Database Interaction tasks. 
-        //But we recommend you to do it in another class
-        // For example : StudentDBContext extends DBContext , 
-        //where StudentDBContext is located in dal package, 
+
+    public DBContext() {
+        // You are allowed to edit user, pass, url variables to fit 
+        // your system configuration.
         try {
-            String user = "sa";
-            String pass = "123";
-            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=HotelManagement";
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String user = "root";  // Your MySQL username
+            String pass = "1234";  // Your MySQL password
+            String url = "jdbc:mysql://localhost:3306/HotelManagement";  // MySQL URL with your database name
+
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");  
+            
+            // Establish the connection to the MySQL database
             connection = DriverManager.getConnection(url, user, pass);
             System.out.println("Connect successful");
         } catch (ClassNotFoundException | SQLException ex) {
@@ -33,7 +28,7 @@ public class DBContext {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void main(String[] args) {
         DBContext db = new DBContext();
         System.out.println(db);
