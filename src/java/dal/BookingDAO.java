@@ -259,7 +259,7 @@ public class BookingDAO extends DBContext {
         java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(timeToCheck);
         String query = """
                        select * from BookingRoom
-                       WHERE DATEDIFF(HOUR, ?, CheckInDate) >= 24
+                       WHERE TIMESTAMPDIFF(HOUR, ?, CheckInDate) >= 24
                        """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setTimestamp(1, sqlTimestamp);
