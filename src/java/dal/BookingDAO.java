@@ -235,6 +235,43 @@ public class BookingDAO extends DBContext {
         }
         return list;
     }
+    public List<Integer> getAllRoomIDToCancelBooking(int bookingid) {
+        
+        List<Integer> list = new ArrayList<>();
+        String query = """
+                       select * from BookingRoom
+                       WHERE DATEDIFF(HOUR, GETDATE(), CheckInDate) >= 24
+                       AND BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getInt("RoomID"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+    public List<Integer> getAllRoomIDInUsed(LocalDateTime timeToCheck) {
+        
+        List<Integer> list = new ArrayList<Integer>();
+        java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(timeToCheck);
+        String query = """
+                       select * from BookingRoom
+                       WHERE DATEDIFF(HOUR, ?, CheckInDate) >= 24
+                       """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setTimestamp(1, sqlTimestamp);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getInt("RoomID"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus) {
         java.util.Date currentDate = new java.util.Date();
@@ -263,14 +300,15 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+    
 
     public void deleteBooking(int bookingid) {
         String query = """
-                       DELETE FROM [dbo].[BookingService]
+                       DELETE FROM BookingService
                              WHERE BookingID = ?
-                       DELETE FROM [dbo].[BookingRoom]
+                       DELETE FROM BookingRoom
                              WHERE BookingID = ?
-                       DELETE FROM [dbo].[Booking]
+                       DELETE FROM Booking
                              WHERE BookingID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);
@@ -312,7 +350,9 @@ public class BookingDAO extends DBContext {
         BookingDAO bdao = new BookingDAO();
         Date currentDate = new Date();
 //        bdao.addBookingRoom(5, 1, 3, LocalDateTime.MIN, LocalDateTime.MAX, 0);
-        System.out.println(bdao.getAllRoomIDDelete(6));
+//        System.out.println(bdao.getAllRoomIDDelete(6));
+        LocalDateTime dateTime = LocalDateTime.now();
+        System.out.println(bdao.getAllRoomIDToCancelBooking(4));
     }
 
     public int getNewBookingID() {
