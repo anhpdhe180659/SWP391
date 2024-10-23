@@ -30,23 +30,23 @@ public class GuestDAO extends DBContext {
         guest.setNationality("Việt Nam");
 //        dao.editGuest(guest,1);
         List<Guest> l = dao.getHiddenGuest();
-//        for (Guest g : l) {
-//            System.out.println(g);
-//        }
+        for (Guest g : l) {
+            System.out.println(g);
+        }
         System.out.println(dao.getNumberGuestByMonth());
-//        System.out.println(dao.getGuestByGuestID(8));
+        System.out.println(dao.getGuestByGuestID(8));
 
     }
 
     public List<Integer> getNumberGuestByMonth() {
         List<Integer> numberGuest = new ArrayList<>();
         String sql = "SELECT\n"
-                + "    FORMAT(CheckInDate, 'yyyy-MM') AS month,\n"
+                + "    DATE_FORMAT(CheckInDate, '%Y-%m') AS month,\n"
                 + "    COUNT(DISTINCT BookingID) AS booking_count\n"
                 + "FROM BookingRoom\n"
-                + "WHERE CheckInDate >= DATEADD(MONTH, -7, GETDATE())\n"
-                + "GROUP BY  FORMAT(CheckInDate, 'yyyy-MM')\n"
-                + "ORDER BY month DESC";
+                + "WHERE CheckInDate >= DATE_SUB(CURDATE(), INTERVAL 7 MONTH)\n"
+                + "GROUP BY DATE_FORMAT(CheckInDate, '%Y-%m')\n"
+                + "ORDER BY month DESC;";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -63,16 +63,16 @@ public class GuestDAO extends DBContext {
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();
         String sql = """
-                     SELECT [GuestID]
-                           ,[Name]
-                           ,[DateOfBirth]
-                           ,[Sex]
-                           ,[Address]
-                           ,[Phone]
-                           ,[Identification]
-                           ,[Nationality]
-                           ,[isHidden]
-                       FROM [dbo].[Guest]""";
+                     SELECT GuestID
+                           ,Name
+                           ,DateOfBirth
+                           ,Sex
+                           ,Address
+                           ,Phone
+                           ,Identification
+                           ,Nationality
+                           ,isHidden
+                       FROM Guest""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -99,17 +99,17 @@ public class GuestDAO extends DBContext {
     public Guest getNewGuest() {
         Guest guest = new Guest();
         String sql = """
-                     SELECT TOP(1) [GuestID]
-                           ,[Name]
-                           ,[DateOfBirth]
-                           ,[Sex]
-                           ,[Address]
-                           ,[Phone]
-                           ,[Identification]
-                           ,[Nationality]
-                           ,[isHidden]
-                       FROM [HotelManagement].[dbo].[Guest]
-                       ORDER BY [GuestID] DESC;""";
+                     SELECT TOP(1) GuestID
+                           ,Name
+                           ,DateOfBirth
+                           ,Sex
+                           ,Address
+                           ,Phone
+                           ,Identification
+                           ,Nationality
+                           ,isHidden
+                       FROM HotelManagement.Guest
+                       ORDER BY GuestID DESC;""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -133,16 +133,16 @@ public class GuestDAO extends DBContext {
     public Guest getGuestByGuestID(int guestid) {
         Guest guest = new Guest();
         String sql = """
-                     SELECT  [GuestID]
-                           ,[Name]
-                           ,[DateOfBirth]
-                           ,[Sex]
-                           ,[Address]
-                           ,[Phone]
-                           ,[Identification]
-                           ,[Nationality]
-                           ,[isHidden]
-                       FROM [Guest]
+                     SELECT  GuestID
+                           ,Name
+                           ,DateOfBirth
+                           ,Sex
+                           ,Address
+                           ,Phone
+                           ,Identification
+                           ,Nationality
+                           ,isHidden
+                       FROM Guest
                        WHERE GuestID = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -167,15 +167,15 @@ public class GuestDAO extends DBContext {
 
     public void addGuest(Guest guest) {
         String query = """
-                       INSERT INTO [dbo].[Guest]
-                                  ([Name]
-                                  ,[DateOfBirth]
-                                  ,[Sex]
-                                  ,[Address]
-                                  ,[Phone]
-                                  ,[Identification]
-                                  ,[Nationality]
-                                  ,[isHidden])
+                       INSERT INTO Guest
+                                  (Name
+                                  ,DateOfBirth
+                                  ,Sex
+                                  ,Address
+                                  ,Phone
+                                  ,Identification
+                                  ,Nationality
+                                  ,isHidden)
                             VALUES
                                   (?,?,?,?,?,?,?,?)""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -195,16 +195,16 @@ public class GuestDAO extends DBContext {
 
     public void updateGuest(Guest guest) {
         String query = """
-                   UPDATE [dbo].[Guest]
-                   SET [Name] = ?,
-                       [DateOfBirth] = ?,
-                       [Sex] = ?,
-                       [Address] = ?,
-                       [Phone] = ?,
-                       [Identification] = ?,
-                       [Nationality] = ?,
-                       [isHidden] = ?
-                   WHERE [GuestID] = ?""";
+                   UPDATE Guest
+                   SET Name = ?,
+                       DateOfBirth = ?,
+                       Sex = ?,
+                       Address = ?,
+                       Phone = ?,
+                       Identification = ?,
+                       Nationality = ?,
+                       isHidden = ?
+                   WHERE GuestID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query)) {
             pre.setString(1, guest.getName());
             pre.setString(2, guest.getDateOfBirth().toString()); // Chuyển đổi LocalDate sang chuỗi
@@ -224,9 +224,9 @@ public class GuestDAO extends DBContext {
 
     public void updateGuestHiddenStatus(int guestID, int isHidden) {
         String query = """
-                   UPDATE [dbo].[Guest]
-                   SET [isHidden] = ?
-                   WHERE [GuestID] = ?""";
+                   UPDATE Guest
+                   SET isHidden = ?
+                   WHERE GuestID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, isHidden); // 0: không ẩn, 1: ẩn
             pre.setInt(2, guestID);
@@ -239,16 +239,16 @@ public class GuestDAO extends DBContext {
     public List<Guest> getHiddenGuest() {
         List<Guest> hiddenGuests = new ArrayList<>();
         String sql = """
-                 SELECT  [GuestID]
-                       ,[Name]
-                       ,[DateOfBirth]
-                       ,[Sex]
-                       ,[Address]
-                       ,[Phone]
-                       ,[Identification]
-                       ,[Nationality]
-                       ,[isHidden]
-                 FROM [Guest]
+                 SELECT  GuestID
+                       ,Name
+                       ,DateOfBirth
+                       ,Sex
+                       ,Address
+                       ,Phone
+                       ,Identification
+                       ,Nationality
+                       ,isHidden
+                 FROM Guest
                  WHERE isHidden = 1""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -275,19 +275,19 @@ public class GuestDAO extends DBContext {
     public List<Guest> getPagedAndFilteredGuests(int offset, int noOfRecords, String guestName, String nationality) {
         List<Guest> guests = new ArrayList<>();
         String sql = """
-                     SELECT [GuestID], [Name], [DateOfBirth], [Sex], [Address], [Phone], [Identification], [Nationality], [isHidden]
-                     FROM [dbo].[Guest]
+                     SELECT GuestID, Name, DateOfBirth, Sex, Address, Phone, Identification, Nationality, isHidden
+                     FROM Guest
                      WHERE 1=1
                      """;
 
         if (guestName != null && !guestName.trim().isEmpty()) {
-            sql += " AND [Name] LIKE ?";
+            sql += " AND Name LIKE ?";
         }
         if (nationality != null && !nationality.trim().isEmpty()) {
-            sql += " AND [Nationality] = ?";
+            sql += " AND Nationality = ?";
         }
 
-        sql += " ORDER BY [GuestID] OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        sql += " ORDER BY GuestID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -327,15 +327,15 @@ public class GuestDAO extends DBContext {
         int count = 0;
         String sql = """
                      SELECT COUNT(*) as total
-                     FROM [dbo].[Guest]
+                     FROM Guest
                      WHERE 1=1
                      """;
 
         if (guestName != null && !guestName.trim().isEmpty()) {
-            sql += " AND [Name] LIKE ?";
+            sql += " AND Name LIKE ?";
         }
         if (nationality != null && !nationality.trim().isEmpty()) {
-            sql += " AND [Nationality] = ?";
+            sql += " AND Nationality = ?";
         }
 
         try {

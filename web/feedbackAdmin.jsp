@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -86,7 +86,7 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <jsp:include page="sidebarManager.jsp"/>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -132,7 +132,6 @@
 
                                 <!-- The checkbox with data attributes to hold feedback ID and current status -->
                                 <div class="form-check form-switch">
-                                    <p>${fb.feedbackStatus}</p>
                                     <input class="form-check-input feedback-status-toggle" type="checkbox" 
                                            data-feedback-id="${fb.feedbackid}"
                                            ${fb.feedbackStatus == 1 ? 'checked' : ''}>
@@ -270,8 +269,6 @@
                                 $(this).next("label").text("View");
                             }
 
-                            // Display success message (optional)
-                            alert("Feedback status updated successfully.");
                         }, // Bind 'this' to maintain context
                         error: function (xhr, status, error) {
                             // Handle error case

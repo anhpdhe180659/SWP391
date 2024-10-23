@@ -172,14 +172,14 @@ public class booking extends HttpServlet {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
                     // add information into bookingRoom table
-                    List<Integer> listRoomInUsed = bdao.getAllRoomIDInUsed(rrentDateTime);
+//                    List<Integer> listRoomInUsed = bdao.getAllRoomIDInUsed(rrentDateTime);
                     // check trung thoi gian booking
-                    for (Integer id : listRoomInUsed) {
-                        if(roomid == id){
-                            anyRoomBooked = true;
-                            roomInUsed += rdao.getRoomByRoomID(id).getRoomNumber();
-                        }
-                    }
+//                    for (Integer id : listRoomInUsed) {
+//                        if(roomid == id){
+//                            anyRoomBooked = true;
+//                            roomInUsed += rdao.getRoomByRoomID(id).getRoomNumber();
+//                        }
+//                    }
                     
                     bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
                     if(checkinstatus == 1){

@@ -128,7 +128,7 @@ public class RoomDao extends DBContext {
                         ON rs.StatusID = r.StatusID
                         WHERE rs.StatusName like 'Available'
                         ORDER BY RoomID
-                        OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+                        LIMIT 5 OFFSET ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, 5 * (index - 1));
             ResultSet rs = pre.executeQuery();
@@ -225,6 +225,82 @@ public class RoomDao extends DBContext {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public int getCapacityByRoomID(int roomid) {
+        int price = 0;
+        String query = """
+                       select * from Room r inner join RoomType rt
+                       on r.TypeID = rt.TypeID
+                       where RoomID = ?""";
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                price = rs.getInt("Capacity");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return price;
+    }
+
+    public String getTypeNameByRoomID(int roomid) {
+        String typeName = null;
+        String query = """
+                       select * from Room r inner join RoomType rt
+                       on r.TypeID = rt.TypeID
+                       where RoomID = ?""";
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                typeName = rs.getString("TypeName");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return typeName;
+    }
+
+    public String getStatusNameByRoomID(int roomID) {
+        String typeName = null;
+        String query = """
+                       select StatusName from Room, RoomStatus
+                       where Room.StatusID = RoomStatus.StatusID
+                       and RoomID = ?""";
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                typeName = rs.getString("StatusName");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return typeName;
+    }
+
+    public String getCleaningStatusNameByRoomID(int roomID) {
+        String typeName = null;
+        String query = """
+                       select CleanStatus from Room, CleaningStatus
+                       where Room.CleanID = CleaningStatus.CleanID
+                       and RoomID = ?""";
+
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                typeName = rs.getString("CleanStatus");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return typeName;
     }
 
     public int getPriceByRoomID(int roomid) {

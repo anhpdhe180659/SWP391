@@ -25,11 +25,14 @@ public class listGuest extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-         if (session == null) {
+        if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role") != null && (session.getAttribute("role").equals("1")||session.getAttribute("role").equals("2"))) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
         }
 
         GuestDAO guestDao = new GuestDAO();

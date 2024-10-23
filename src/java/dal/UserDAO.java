@@ -25,22 +25,22 @@ public class UserDAO extends DBContext {
 
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT [UserID]
-                             ,[Name]
-                             ,[DateOfBirth]
-                             ,[Sex]
-                             ,[Address]
-                             ,[Phone]
-                             ,[Identification]
-                             ,[StartDate]
-                             ,[Salary]
-                             ,[Image]
-                             ,[Username]
-                             ,[Password]
-                             ,[Role]
-                             ,[Email]
-                             ,[Status]
-                         FROM [HotelManagement].[dbo].[User]""";
+                     SELECT UserID
+                             ,Name
+                             ,DateOfBirth
+                             ,Sex
+                             ,Address
+                             ,Phone
+                             ,Identification
+                             ,StartDate
+                             ,Salary
+                             ,Image
+                             ,Username
+                             ,Password
+                             ,Role
+                             ,Email
+                             ,Status
+                         FROM User""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -72,22 +72,22 @@ public class UserDAO extends DBContext {
     public User getUserByID(int userID) {
         User user = new User();
         String sql = """
-                     SELECT [UserID]
-                                 ,[Name]
-                                 ,[DateOfBirth]
-                                 ,[Sex]
-                                 ,[Address]
-                                 ,[Phone]
-                                 ,[Identification]
-                                 ,[StartDate]
-                                 ,[Salary]
-                                 ,[Image]
-                                 ,[Username]
-                                 ,[Password]
-                                 ,[Role]
-                                 ,[Email]
-                                 ,[Status]
-                       FROM [User] 
+                     SELECT UserID
+                                 ,Name
+                                 ,DateOfBirth
+                                 ,Sex
+                                 ,Address
+                                 ,Phone
+                                 ,Identification
+                                 ,StartDate
+                                 ,Salary
+                                 ,Image
+                                 ,Username
+                                 ,Password
+                                 ,Role
+                                 ,Email
+                                 ,Status
+                       FROM User 
                        WHERE UserID = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -119,21 +119,21 @@ public class UserDAO extends DBContext {
 
     public void addUser(User u) {
         String sql = """
-                     INSERT INTO [dbo].[User]
-                                ([Name]
-                                ,[DateOfBirth]
-                                ,[Sex]
-                                ,[Address]
-                                ,[Phone]
-                                ,[Identification]
-                                ,[StartDate]
-                                ,[Salary]
-                                ,[Image]
-                                ,[Username]
-                                ,[Password]
-                                ,[Role]
-                                ,[Email]
-                                ,[Status])
+                     INSERT INTO User
+                                (Name
+                                ,DateOfBirth
+                                ,Sex
+                                ,Address
+                                ,Phone
+                                ,Identification
+                                ,StartDate
+                                ,Salary
+                                ,Image
+                                ,Username
+                                ,Password
+                                ,Role
+                                ,Email
+                                ,Status)
                      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, u.getName());
@@ -162,8 +162,8 @@ public class UserDAO extends DBContext {
             return;
         }
         String sql = """
-                     UPDATE [User] 
-                     SET [Status] = 0
+                     UPDATE User 
+                     SET Status = 0
                      WHERE UserID = ? """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, uid);
@@ -175,20 +175,20 @@ public class UserDAO extends DBContext {
 
     public void editUser(User u, int userid) {
         String sql = """
-                     UPDATE [dbo].[User]
-                          SET [Name] = ?
-                             ,[DateOfBirth] = ?
-                             ,[Sex] = ?
-                             ,[Address] = ?
-                             ,[Phone] = ?
-                             ,[Identification] = ?
-                             ,[StartDate] = ?
-                             ,[Salary] = ?
-                             ,[Image] = ?
-                             ,[Username] = ?
-                             ,[Role] = ?
-                             ,[Email] = ?
-                             ,[Status] = ?
+                     UPDATE User
+                          SET Name = ?
+                             ,DateOfBirth = ?
+                             ,Sex = ?
+                             ,Address = ?
+                             ,Phone = ?
+                             ,Identification = ?
+                             ,StartDate = ?
+                             ,Salary = ?
+                             ,Image = ?
+                             ,Username = ?
+                             ,Role = ?
+                             ,Email = ?
+                             ,Status = ?
                         WHERE UserID = ?
                      """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -216,24 +216,24 @@ public class UserDAO extends DBContext {
 
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT [UserID]
-                                 ,[Name]
-                                 ,[DateOfBirth]
-                                 ,[Sex]
-                                 ,[Address]
-                                 ,[Phone]
-                                 ,[Identification]
-                                 ,[StartDate]
-                                 ,[Salary]
-                                 ,[Image]
-                                 ,[Username]
-                                 ,[Password]
-                                 ,[Role]
-                                 ,[Email]
-                                 ,[Status]
-                       FROM [HotelManagement].[dbo].[User]
+                     SELECT UserID
+                                 ,Name
+                                 ,DateOfBirth
+                                 ,Sex
+                                 ,Address
+                                 ,Phone
+                                 ,Identification
+                                 ,StartDate
+                                 ,Salary
+                                 ,Image
+                                 ,Username
+                                 ,Password
+                                 ,Role
+                                 ,Email
+                                 ,Status
+                       FROM User
                        ORDER BY UserID
-                       OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY """;
+                       LIMIT 5 OFFSET ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, 5 * (index - 1));
@@ -266,22 +266,22 @@ public class UserDAO extends DBContext {
     public User getUserByUsername(String userName) {
         User user = new User();
         String sql = """
-                     SELECT [UserID]
-                                 ,[Name]
-                                 ,[DateOfBirth]
-                                 ,[Sex]
-                                 ,[Address]
-                                 ,[Phone]
-                                 ,[Identification]
-                                 ,[StartDate]
-                                 ,[Salary]
-                                 ,[Image]
-                                 ,[Username]
-                                 ,[Password]
-                                 ,[Role]
-                                 ,[Email]
-                                 ,[Status]
-                       FROM [User] 
+                     SELECT UserID
+                                 ,Name
+                                 ,DateOfBirth
+                                 ,Sex
+                                 ,Address
+                                 ,Phone
+                                 ,Identification
+                                 ,StartDate
+                                 ,Salary
+                                 ,Image
+                                 ,Username
+                                 ,Password
+                                 ,Role
+                                 ,Email
+                                 ,Status
+                       FROM User 
                        WHERE Username = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -313,22 +313,22 @@ public class UserDAO extends DBContext {
     public User getUserByEmail(String Email) {
         User user = new User();
         String sql = """
-                     SELECT [UserID]
-                                 ,[Name]
-                                 ,[DateOfBirth]
-                                 ,[Sex]
-                                 ,[Address]
-                                 ,[Phone]
-                                 ,[Identification]
-                                 ,[StartDate]
-                                 ,[Salary]
-                                 ,[Image]
-                                 ,[Username]
-                                 ,[Password]
-                                 ,[Role]
-                                 ,[Email]
-                                 ,[Status]
-                       FROM [User] 
+                     SELECT UserID
+                                 ,Name
+                                 ,DateOfBirth
+                                 ,Sex
+                                 ,Address
+                                 ,Phone
+                                 ,Identification
+                                 ,StartDate
+                                 ,Salary
+                                 ,Image
+                                 ,Username
+                                 ,Password
+                                 ,Role
+                                 ,Email
+                                 ,Status
+                       FROM User 
                        WHERE Email = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -358,7 +358,7 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePassword(String password, String email) {
-        String sql = "UPDATE [User] SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE User SET Password = ? WHERE Email = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, password);
@@ -371,7 +371,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean emailExists(String email) {
-        String sql = "SELECT TOP 1 1 FROM [User] WHERE Email = ?";
+        String sql = "SELECT TOP 1 1 FROM User WHERE Email = ?";
         try (PreparedStatement st = connection.prepareStatement(sql);) {
             st.setString(1, email);
             try (ResultSet rs = st.executeQuery()) {
@@ -385,8 +385,8 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePasswordsToHashed() {
-        String selectSQL = "SELECT UserID, Password FROM [User]";
-        String updateSQL = "UPDATE [User] SET Password = ? WHERE UserID = ?";
+        String selectSQL = "SELECT UserID, Password FROM User";
+        String updateSQL = "UPDATE User SET Password = ? WHERE UserID = ?";
 
         try (PreparedStatement psSelect = connection.prepareStatement(selectSQL); ResultSet rs = psSelect.executeQuery()) {
 
@@ -412,7 +412,7 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String args) {
         UserDAO userDAO = new UserDAO();
         User u = userDAO.getUserByID(12);
 
@@ -425,22 +425,22 @@ public class UserDAO extends DBContext {
 
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT [UserID]
-                           ,[Name]
-                           ,[DateOfBirth]
-                           ,[Sex]
-                           ,[Address]
-                           ,[Phone]
-                           ,[Identification]
-                           ,[StartDate]
-                           ,[Salary]
-                           ,[Image]
-                           ,[Username]
-                           ,[Password]
-                           ,[Role]
-                           ,[Email]
-                           ,[Status]
-                     FROM [dbo].[User]
+                     SELECT UserID
+                           ,Name
+                           ,DateOfBirth
+                           ,Sex
+                           ,Address
+                           ,Phone
+                           ,Identification
+                           ,StartDate
+                           ,Salary
+                           ,Image
+                           ,Username
+                           ,Password
+                           ,Role
+                           ,Email
+                           ,Status
+                     FROM User
                      WHERE Name like ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -475,25 +475,25 @@ public class UserDAO extends DBContext {
     public List<User> getNext5SearchUser(int index, String name) {
         List<User> sList = new ArrayList<>();
         String sql = """
-                     SELECT [UserID]
-                           ,[Name]
-                           ,[DateOfBirth]
-                           ,[Sex]
-                           ,[Address]
-                           ,[Phone]
-                           ,[Identification]
-                           ,[StartDate]
-                           ,[Salary]
-                           ,[Image]
-                           ,[Username]
-                           ,[Password]
-                           ,[Role]
-                           ,[Email]
-                           ,[Status]
-                     FROM [dbo].[User]
+                     SELECT UserID
+                           ,Name
+                           ,DateOfBirth
+                           ,Sex
+                           ,Address
+                           ,Phone
+                           ,Identification
+                           ,StartDate
+                           ,Salary
+                           ,Image
+                           ,Username
+                           ,Password
+                           ,Role
+                           ,Email
+                           ,Status
+                     FROM User
                      WHERE Name like ?
                      ORDER BY UserID
-                     OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+                     LIMIT 5 OFFSET ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + name + "%");
