@@ -233,7 +233,7 @@ public class UserDAO extends DBContext {
                                  ,Status
                        FROM User
                        ORDER BY UserID
-                       OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY """;
+                       LIMIT 5 OFFSET ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, 5 * (index - 1));
@@ -493,7 +493,7 @@ public class UserDAO extends DBContext {
                      FROM User
                      WHERE Name like ?
                      ORDER BY UserID
-                     OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+                     LIMIT 5 OFFSET ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + name + "%");

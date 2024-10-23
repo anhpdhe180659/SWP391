@@ -87,7 +87,7 @@
                     <jsp:include page="navbar-header.jsp"/>
                     <!-- End Navbar -->
                 </div>
-                
+
 
                 <div class="container">
                     <div class="page-inner">
@@ -164,6 +164,8 @@
                                                             />
                                                         <!--datetime-local-->
                                                     </div>
+                                                    <c:set value="${requestScope.noti}" var="noti"/>
+                                                    <span style="margin-left: 25px; font-weight: bold;color: green">${noti}</span>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3">
                                                     <c:set value="${requestScope.deposit}" var="deposit"/>
@@ -222,8 +224,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="d-flex">
-                                                            <c:set value="${requestScope.noti}" var="noti"/>
-                                                            <span style="margin-left: 25px; font-weight: bold;color: green">${noti}</span>
+
                                                             <button class="btn btn-danger btn-round ms-auto" type="reset">
                                                                 Reset
                                                             </button>

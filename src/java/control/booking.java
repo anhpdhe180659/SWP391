@@ -7,6 +7,7 @@ package control;
 import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.RoomDao;
+import dal.RoomTypeDAO;
 import dal.UserDAO;
 import util.pagination;
 import java.io.IOException;
@@ -53,9 +54,22 @@ public class booking extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         RoomDao rd = new RoomDao();
-        List<Room> listRoomAvailable = rd.getAllRoomsAvailable();
+        List<Room> listRoomAvailable = rd.getAllRoomsAvailable();// tat ca room, ko chi available
         session.setAttribute("listRoomAvailable", listRoomAvailable);
         response.sendRedirect("booking.jsp");
+//
+////        RoomTypeDAO rtdao = new RoomTypeDAO();
+//        List<Room> listRoom = (List<Room>) session.getAttribute("listRoomAvailable");
+//        for (Room room : listRoom) {
+//            int capacity = rd.getCapacityByRoomID(room.getRoomId());
+//            int price = rd.getPriceByRoomID(room.getRoomId());
+//            String typeName = rd.getTypeNameByRoomID(room.getRoomId());
+//            room.getRoomNumber();
+//            String statusName = rd.getStatusNameByRoomID(room.getRoomId());
+//            String cleaningStatus = rd.getCleaningStatusNameByRoomID(room.getRoomId());
+//            room.getStatusId();
+//            room.getCleanId();
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -113,18 +127,12 @@ public class booking extends HttpServlet {
             int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
             int paidstatus = Integer.parseInt(request.getParameter("paidstatus"));
             List<Guest> listGuest = gdao.getAllGuests();
+            Guest guestBooking = null;
+            boolean guestExist = false;
             for (Guest g : listGuest) {
                 if (g.getIdentification().equals(Identification)) {
-                    noti = "Identification has existed, please try again!";
-                    request.setAttribute("noti", noti);
-                    request.getRequestDispatcher("booking.jsp").forward(request, response);
-                    return;
-                }
-                if (g.getPhone().equals(Phone)) {
-                    noti = "Phonenumber has existed, please try again!";
-                    request.setAttribute("noti", noti);
-                    request.getRequestDispatcher("booking.jsp").forward(request, response);
-                    return;
+                    guestExist = true;
+                    guestBooking = g;
                 }
             }
             String checkindate = request.getParameter("checkindate");
@@ -151,17 +159,32 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            gdao.addGuest(guest);// add new guest in database 
-            Guest newGuest = gdao.getNewGuest();
-            bdao.addBooking(newGuest.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
+            if (guestExist == false) {
+                gdao.addGuest(guest);// add new guest in database 
+                guestBooking = gdao.getNewGuest();
+            }
+            bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
+            String roomInUsed = null;
+            boolean anyRoomBooked = false;
             if (selectedRoom != null) {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
                     // add information into bookingRoom table
+//                    List<Integer> listRoomInUsed = bdao.getAllRoomIDInUsed(rrentDateTime);
+                    // check trung thoi gian booking
+//                    for (Integer id : listRoomInUsed) {
+//                        if(roomid == id){
+//                            anyRoomBooked = true;
+//                            roomInUsed += rdao.getRoomByRoomID(id).getRoomNumber();
+//                        }
+//                    }
+                    
                     bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
-                    bdao.updateStatusRoom(roomid);
+                    if(checkinstatus == 1){
+                        bdao.updateStatusRoom(roomid);
+                    }
                 }
             } else {
                 noti = "Please select at least 1 room for booking!";
@@ -169,6 +192,8 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
+            
+            
             String bookingcode = utilConvert.toBase36(bookingid);
             request.setAttribute("code", bookingcode);
             request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
@@ -176,7 +201,6 @@ public class booking extends HttpServlet {
             out.print(e);
         }
 
-//        processRequest(request, response);
     }
 
     /**

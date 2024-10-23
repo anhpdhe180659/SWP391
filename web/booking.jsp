@@ -8,6 +8,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="java.util.*" %>
+<%@page import="model.*" %>
+<%@page import="dal.*" %>
+<%@page import="java.text.NumberFormat" %>
+<%@page import="java.util.Locale" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -127,72 +132,75 @@
                                                                     <th>Type</th>
                                                                     <th>Capacity</th>
                                                                     <th>Price/night</th>
+                                                                    <th>Status</th>
+                                                                    <th>Cleaning</th>
                                                                     <th>Select</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <c:forEach items="${sessionScope.listRoomAvailable}" var="s">
-                                                                    <tr>
-                                                                        <td>${s.roomNumber}</td>
-                                                                        <!-- Room Type -->
-                                                                        <td>
-                                                                            <c:if test="${s.typeId == 1}">
-                                                                                Single Room
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 2}">
-                                                                                Double Room
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 3}">
-                                                                                Family Room
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 4}">
-                                                                                Deluxe Room
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 5}">
-                                                                                President Room
-                                                                            </c:if>
-                                                                        </td>
-                                                                        <!-- Room Capacity -->
-                                                                        <td>
-                                                                            <c:if test="${s.typeId == 1}">
-                                                                                1 bed
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 2}">
-                                                                                2 beds
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 3}">
-                                                                                4 beds
-                                                                            </c:if><c:if test="${s.typeId == 4}">
-                                                                                2 beds
-                                                                            </c:if><c:if test="${s.typeId == 5}">
-                                                                                2 beds
-                                                                            </c:if>
-
-                                                                        </td>
-                                                                        <!-- Room Status -->
-                                                                        <td>
-                                                                            <c:if test="${s.typeId == 1}">
-                                                                                <fmt:formatNumber value="500000" type="number" groupingUsed="true" pattern="#,###"/> ₫
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 2}">
-                                                                                <fmt:formatNumber value="800000" type="number" groupingUsed="true" pattern="#,###"/> ₫
-                                                                            </c:if>
-                                                                            <c:if test="${s.typeId == 3}">
-                                                                                <fmt:formatNumber value="1500000" type="number" groupingUsed="true" pattern="#,###"/> ₫
-                                                                            </c:if><c:if test="${s.typeId == 4}">
-                                                                                <fmt:formatNumber value="2000000" type="number" groupingUsed="true" pattern="#,###"/> ₫
-                                                                            </c:if><c:if test="${s.typeId == 5}">
-                                                                                <fmt:formatNumber value="5000000" type="number" groupingUsed="true" pattern="#,###"/> ₫
-                                                                            </c:if>
-                                                                        </td>
-                                                                        <!-- View Details Button -->
-                                                                        <td style="text-align: center">
-
-                                                                            <input type="checkbox" name="roomSelected" value="${s.roomId}" class="row-checkbox"/>
-
-                                                                        </td>
-                                                                    </tr>
-                                                                </c:forEach>
+                                                                <%
+                                                                    List<Room> listRoom = (List<Room>) session.getAttribute("listRoomAvailable");
+                                                                    RoomDao rdao = new RoomDao();
+                                                                    for (Room room : listRoom) {
+                                                                        int capacity = rdao.getCapacityByRoomID(room.getRoomId());
+                                                                        int price = rdao.getPriceByRoomID(room.getRoomId());
+                                                                        String typeName = rdao.getTypeNameByRoomID(room.getRoomId());
+                                                                        String statusName = rdao.getStatusNameByRoomID(room.getRoomId());
+                                                                        String cleaningStatus = rdao.getCleaningStatusNameByRoomID(room.getRoomId());
+                                                                %>
+                                                                <tr onclick="toggleCheckbox(<%= room.getRoomId() %>)">
+                                                                    <td><%= room.getRoomNumber() %></td>
+                                                                    <!-- Room Type -->
+                                                                    <td><%= typeName %></td>
+                                                                    <!-- Room Capacity -->
+                                                                    <td><%= capacity %> bed(s)</td>
+                                                                    <% 
+                                                     Locale localeVN = new Locale("vi", "VN");
+                                                        // Create a currency instance for the Vietnamese Dong
+                                                        Currency vnd = Currency.getInstance(localeVN);
+                                                        // Create a NumberFormat instance
+                                                        NumberFormat formatterPrice = NumberFormat.getCurrencyInstance(localeVN);
+                                                        // Format the price
+                                                        String formattedPrice = formatterPrice.format(price);
+                                                                    %>
+                                                                    <td><%= formattedPrice %></td>
+                                                                    <td style="
+                                                                        <%
+                                                                            if (room.getStatusId() == 2) {
+                                                                                out.print("color: red;");
+                                                                            } else if (room.getStatusId() == 1) {
+                                                                                out.print("color: green;");
+                                                                            } else if (room.getStatusId() == 3) {
+                                                                                out.print("color: orange;");
+                                                                            }
+                                                                        %>
+                                                                        "><%= statusName %></td>
+                                                                    <td
+                                                                        style="
+                                                                        <%
+                                                                            if (room.getCleanId() == 1) {
+                                                                                out.print("color: red;");
+                                                                            } else if (room.getCleanId() == 3) {
+                                                                                out.print("color: green;");
+                                                                            } else if (room.getCleanId() == 2) {
+                                                                                out.print("color: orange;");
+                                                                            }
+                                                                        %>
+                                                                        "><%= cleaningStatus %></td>
+                                                                    <td style="text-align: center">
+                                                                        <%if (room.getStatusId() != 3) {
+                                                                        %>
+                                                                        <input type="checkbox"
+                                                                               id="checkbox_<%= room.getRoomId() %>" name="roomSelected" value="<%= room.getRoomId()%>" class="row-checkbox"/>
+                                                                        <%
+                                                                           }
+                                                                        %>
+                                                                        
+                                                                    </td>
+                                                                </tr>
+                                                                <%
+                                                                    } 
+                                                                %>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -506,23 +514,30 @@
 
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo2.js"></script>
+        <script></script>
         <script>
-                                        // Get today's date in yyyy-mm-dd format
-                                        const today = new Date().toISOString().split('T')[0];
-                                        // Set the max attribute for the birthday input to today's date
-                                        document.getElementById("birthday").setAttribute("max", today);
-                                        document.getElementById("checkindate").setAttribute("min", today);
-                                        document.getElementById("checkoutdate").setAttribute("min", today);
-                                        document.getElementById("checkindate").addEventListener("change", function () {
-                                            let checkInDate = new Date(this.value);
-                                            let minCheckOutDate = new Date(checkInDate);
-                                            minCheckOutDate.setDate(checkInDate.getDate() + 1);
-                                            // Convert the date back to YYYY-MM-DD format
-                                            let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
-                                            // Set the minimum date for checkout as one day after the check-in date
-                                            let checkOutInput = document.getElementById("checkoutdate");
-                                            checkOutInput.setAttribute("min", formattedCheckOutDate);
-                                        });
+                                                                    // Get today's date in yyyy-mm-dd format
+                                                                    const today = new Date().toISOString().split('T')[0];
+                                                                    // Set the max attribute for the birthday input to today's date
+                                                                    document.getElementById("birthday").setAttribute("max", today);
+                                                                    document.getElementById("checkindate").setAttribute("min", today);
+                                                                    document.getElementById("checkoutdate").setAttribute("min", today);
+                                                                    document.getElementById("checkindate").addEventListener("change", function () {
+                                                                        let checkInDate = new Date(this.value);
+                                                                        let minCheckOutDate = new Date(checkInDate);
+                                                                        minCheckOutDate.setDate(checkInDate.getDate() + 1);
+                                                                        // Convert the date back to YYYY-MM-DD format
+                                                                        let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
+                                                                        // Set the minimum date for checkout as one day after the check-in date
+                                                                        let checkOutInput = document.getElementById("checkoutdate");
+                                                                        checkOutInput.setAttribute("min", formattedCheckOutDate);
+                                                                    });
+        </script>
+        <script>
+            function toggleCheckbox(roomId) {
+                var checkbox = document.getElementById("checkbox_" + roomId);
+                checkbox.checked = !checkbox.checked;
+            }
         </script>
         <script>
             function validate() {
