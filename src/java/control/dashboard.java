@@ -20,7 +20,6 @@ import java.util.List;
 import model.Amenity;
 import model.NewsItem;
 import model.Room;
-import model.User;
 
 /**
  *
@@ -51,15 +50,15 @@ public class dashboard extends HttpServlet {
             }
             RoomDao roomDao = new RoomDao();
             List<Room> listRoom = roomDao.getAllRooms();
-            DashboardDAO dashboardDAO = new DashboardDAO();
             List<NewsItem> newsList = new NewsDAO().getTop3();
             session.setAttribute("newsList", newsList);
-            StasticDto dto = dashboardDAO.getStasticDto();
-            List<ChartDTO> chartDTOs = dashboardDAO.getData();
-            session.setAttribute("dto", dto);
-            for (ChartDTO item : chartDTOs) {
-                session.setAttribute("month" + item.getMonth(), item.getTotal());
-            }
+//            StasticDto dto = dashboardDAO.getStasticDto();
+//            List<ChartDTO> chartDTOs = dashboardDAO.getData();
+//            session.setAttribute("dto", dto);
+//            for (ChartDTO item : chartDTOs) {
+//                session.setAttribute("month" + item.getMonth(), item.getTotal());
+//            }
+
             int underMaintainRoom = listRoom.stream().filter(
                     room -> room.getStatusId() == 3
             ).toList().size();
