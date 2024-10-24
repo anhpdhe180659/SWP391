@@ -265,7 +265,7 @@ public class BookingDAO extends DBContext {
                        SELECT *
                        FROM HotelManagement.BookingRoom
                        WHERE NOT ( ? < CheckOutDate AND ? > CheckInDate )
-                       and RoomID = ?""";
+                       and RoomID = ?  """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setTimestamp(1, newInTime);
             pre.setTimestamp(2, newOutTime);
@@ -277,9 +277,36 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return list.isEmpty();
-        // TH1: chưa ai book phòng đó -> list empty
-        // TH2: da co ng book phong -> empty list la khi phong bi trung tgian, room ko the book
+        if(list.isEmpty()){
+            // empty list -> ko trung lich --> book
+            return false;
+        }else{
+            // not empty --> trung lich vs 1 booking nao do --> ko book dc
+            return true;
+        }
+    }
+    public boolean IsEverBooked(int roomid) {
+        boolean ReadyToBook = false;
+        List<Integer> list = new ArrayList<Integer>();
+        String query = """
+                       SELECT *
+                       FROM HotelManagement.BookingRoom
+                       WHERE RoomID = ?  """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, roomid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getInt("RoomID"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if(list.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+        // empty -> chua ai book phong do bao h
         
         
     }
