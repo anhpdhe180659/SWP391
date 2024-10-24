@@ -40,7 +40,7 @@ public class UserDAO extends DBContext {
                              ,Role
                              ,Email
                              ,Status
-                         FROM User""";
+                         FROM HotelManagement.User""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -87,7 +87,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM User 
+                       FROM HotelManagement.User 
                        WHERE UserID = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -119,7 +119,7 @@ public class UserDAO extends DBContext {
 
     public void addUser(User u) {
         String sql = """
-                     INSERT INTO User
+                     INSERT INTO HotelManagement.User
                                 (Name
                                 ,DateOfBirth
                                 ,Sex
@@ -158,11 +158,11 @@ public class UserDAO extends DBContext {
 
     public void deleteUser(int uid) {
         UserDAO udao = new UserDAO();
-        if (udao.getUserByID(uid).getRole() == 1) {
+        if(udao.getUserByID(uid).getRole() == 1){
             return;
         }
         String sql = """
-                     UPDATE User 
+                     UPDATE HotelManagement.User 
                      SET Status = 0
                      WHERE UserID = ? """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -175,7 +175,7 @@ public class UserDAO extends DBContext {
 
     public void editUser(User u, int userid) {
         String sql = """
-                     UPDATE User
+                     UPDATE HotelManagement.User
                           SET Name = ?
                              ,DateOfBirth = ?
                              ,Sex = ?
@@ -217,23 +217,23 @@ public class UserDAO extends DBContext {
         List<User> sList = new ArrayList<>();
         String sql = """
                      SELECT UserID
-                           ,Name
-                           ,DateOfBirth
-                           ,Sex
-                           ,Address
-                           ,Phone
-                           ,Identification
-                           ,StartDate
-                           ,Salary
-                           ,Image
-                           ,Username
-                           ,Password
-                           ,Role
-                           ,Email
-                           ,Status
-                     FROM User
-                     ORDER BY UserID
-                     LIMIT 5 OFFSET ? """;
+                                 ,Name
+                                 ,DateOfBirth
+                                 ,Sex
+                                 ,Address
+                                 ,Phone
+                                 ,Identification
+                                 ,StartDate
+                                 ,Salary
+                                 ,Image
+                                 ,Username
+                                 ,Password
+                                 ,Role
+                                 ,Email
+                                 ,Status
+                       FROM HotelManagement.User
+                       ORDER BY UserID
+                       LIMIT 5 OFFSET ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, 5 * (index - 1));
@@ -281,7 +281,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM User 
+                       FROM HotelManagement.User 
                        WHERE Username = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -310,7 +310,6 @@ public class UserDAO extends DBContext {
         }
         return user;
     }
-
     public User getUserByEmail(String Email) {
         User user = new User();
         String sql = """
@@ -329,7 +328,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM User 
+                       FROM HotelManagement.User 
                        WHERE Email = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -359,7 +358,7 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePassword(String password, String email) {
-        String sql = "UPDATE User SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE HotelManagement.User SET Password = ? WHERE Email = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, password);
@@ -372,7 +371,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean emailExists(String email) {
-        String sql = "SELECT * FROM User WHERE Email = ? LIMIT 1";
+        String sql = "SELECT TOP 1 1 FROM HotelManagement.User WHERE Email = ?";
         try (PreparedStatement st = connection.prepareStatement(sql);) {
             st.setString(1, email);
             try (ResultSet rs = st.executeQuery()) {
@@ -386,8 +385,8 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePasswordsToHashed() {
-        String selectSQL = "SELECT UserID, Password FROM User";
-        String updateSQL = "UPDATE User SET Password = ? WHERE UserID = ?";
+        String selectSQL = "SELECT UserID, Password FROM HotelManagement.User";
+        String updateSQL = "UPDATE HotelManagement.User SET Password = ? WHERE UserID = ?";
 
         try (PreparedStatement psSelect = connection.prepareStatement(selectSQL); ResultSet rs = psSelect.executeQuery()) {
 
@@ -413,10 +412,10 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String args) {
         UserDAO userDAO = new UserDAO();
         User u = userDAO.getUserByID(12);
-        System.out.println(u);
+
 //        userDAO.editUser(new User(7,
 //                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
 //                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
@@ -441,7 +440,7 @@ public class UserDAO extends DBContext {
                            ,Role
                            ,Email
                            ,Status
-                     FROM User
+                     FROM HotelManagement.User
                      WHERE Name like ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -491,10 +490,10 @@ public class UserDAO extends DBContext {
                            ,Role
                            ,Email
                            ,Status
-                     FROM User
+                     FROM HotelManagement.User
                      WHERE Name like ?
                      ORDER BY UserID
-                     OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY""";
+                     LIMIT 5 OFFSET ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + name + "%");

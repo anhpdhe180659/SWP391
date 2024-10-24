@@ -48,7 +48,7 @@ public class searchBooking extends HttpServlet {
         if (request.getParameter("bookingcode").length() > 0) {
             listBooking = bdao.findBookingByBookingID(bookingid);
             if (NoPage == 0) {
-                request.setAttribute("noti", "No booking found");
+                request.setAttribute("notiSearch", "No booking found");
             }
         } else {
             listBooking = bdao.getAllBooking();
