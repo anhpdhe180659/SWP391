@@ -152,6 +152,8 @@
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
+                                                                        pattern="^\d{10,15}$"
+                                                                        title="Valid phone number must be 10 to 15 digits long"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -166,6 +168,9 @@
                                                                         maxlength="20"
                                                                         class="form-control"
                                                                         required
+                                                                        pattern="(^[A-Z0-9]{10}$)|(^[A-Z0-9]{12}$)" 
+                                                                        
+                                                                        title="Valid ID contains 10 or 12 digits and uppercase letters"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -215,7 +220,7 @@
                                                                         value="${u.username}"
                                                                         name="username"
                                                                         type="text"
-                                                                        pattern="[a-zA-Z0-9]{6,12}$" title="length should be 6-12, no spaces, unsigned"
+                                                                        pattern="[a-zA-Z0-9]{4,12}$" title="length should be 4-12, no spaces, unsigned"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -231,6 +236,8 @@
                                                                         value="${u.email}"
                                                                         class="form-control"
                                                                         required
+                                                                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                                                        title="Invalid email address"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -358,27 +365,8 @@
     </script>
     <script>
         function validate() {
-            var email = document.getElementById("email").value;
-            var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-            if (!regex.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                document.getElementById("email").focus();
-                return false;
-            }
             var phone = document.getElementById("phone").value;
             var regex1 = /^\d{10}$/;
-            var identification = document.getElementById("identification").value;
-            var regex2 = /^\d{12}$/;
-            if (!regex1.test(phone)) {
-                alert("Please enter a valid phone number with 10 digit");
-                document.getElementById("phone").focus();
-                return false;
-            }
-            if (!regex2.test(identification)) {
-                alert("Please enter a valid identification number with 12 digit");
-                document.getElementById("identification").focus();
-                return false;
-            }
             return true;
         }
     </script>

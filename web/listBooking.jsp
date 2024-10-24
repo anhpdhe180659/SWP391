@@ -91,6 +91,9 @@
                                             </form>
                                         </nav>
                                         <c:set value="${requestScope.noti}" var="noti" />
+                                        <c:if test="${requestScope.noti != null}">
+                                            <div style="font-weight: bold; color: red;margin-bottom: -30px;margin-left: 5px " >${requestScope.noti}</div>
+                                        </c:if>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="addBooking()">
                                             <i class="fa fa-plus"></i> New booking
                                         </button>
@@ -198,9 +201,9 @@
                                                     }
 
                                                 %>
-                                                <c:if test="${requestScope.noti != null}">
+                                                <c:if test="${requestScope.notiSearch != null}">
                                                     <tr >
-                                                        <td style="text-align: center; font-weight: bold" colspan="9"><p class="text-danger">${requestScope.noti}</p></td><!-- comment --></tr>
+                                                        <td style="text-align: center; font-weight: bold" colspan="9"><p class="text-danger">${requestScope.notiSearch}</p></td><!-- comment --></tr>
                                                         </c:if>
                                             </tbody>
                                         </table>

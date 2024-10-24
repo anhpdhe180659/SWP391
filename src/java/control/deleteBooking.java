@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
 import dal.BookingDAO;
+import dal.GuestDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import model.Booking;
 
@@ -21,33 +25,55 @@ import model.Booking;
  * @author nhatk
  */
 public class deleteBooking extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         BookingDAO bdao = new BookingDAO();
         HttpSession session = request.getSession();
         int bookingid = Integer.parseInt(request.getParameter("bookingid"));
         List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
-        for (Integer roomid : list) {
-            bdao.updateStatusRoomAvailable(roomid);
+        List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);
+        if (listRoomToCancel.isEmpty()) {
+            String noti = "Cannot cancel booking! You must cancel the booking at least 24 hours before the check-in time.";
+            request.setAttribute("noti", noti);
+        } else {
+            bdao.deleteBooking(bookingid);
         }
-        bdao.deleteBooking(bookingid);
-        response.sendRedirect("bookingList");
+        int index = 1;
+        int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        List<Booking> listBooking = bdao.getNext5Booking(index);
         
-    } 
+        session.setAttribute("listBooking", listBooking);
+        session.setAttribute("Nopage", NoPage);
+        session.setAttribute("currentindex", index);
+        request.getRequestDispatcher("listBooking.jsp").forward(request, response);
+
+    }
+
+    public static void main(String[] args) {
+        Date currentDate = new Date();
+        LocalDateTime dateTime = LocalDateTime.now();
+        System.out.println(dateTime);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -55,12 +81,13 @@ public class deleteBooking extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -68,12 +95,13 @@ public class deleteBooking extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
