@@ -166,27 +166,31 @@ public class booking extends HttpServlet {
             bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
-            String roomNameInUsed = null;
-            boolean roomInUsed = false;
+            boolean bookAllRoom = true;
             if (selectedRoom != null) {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
-                    // gọi hàm check từng roomid một, func(intime, outtime, roomid) trả về true/false;
-                    // if return true --> empty list
-                    
-                    // add information into bookingRoom table
-//                    List<Integer> listRoomInUsed = bdao.getAllRoomIDInUsed(rrentDateTime);
-                    // check trung thoi gian booking
-//                    for (Integer id : listRoomInUsed) {
-//                        if(roomid == id){
-//                            anyRoomBooked = true;
-//                            roomInUsed += rdao.getRoomByRoomID(id).getRoomNumber();
-//                        }
-//                    }
-                    
-                    bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
-                    if(checkinstatus == 1){
-                        bdao.updateStatusRoom(roomid);
+                    if (bdao.IsEverBooked(roomid) == true) {
+                        // if room is booked some time
+                        if (bdao.OverlapTime(checkInDateTime, checkOutDateTime, roomid) == true) {
+                            // if return true --> cannot book
+                            bookAllRoom = false;
+                            String roomNumber = rdao.getRoomByRoomID(roomid).getRoomNumber();
+                            noti = "Room " + roomNumber + " is already booked for the selected dates. Please choose different dates!";
+                            request.setAttribute("noti", noti);
+                            request.getRequestDispatcher("booking.jsp").forward(request, response);
+                            return;
+                        }
+                    }
+                }
+                if (bookAllRoom == true) {
+                    for (String roomID : selectedRoom) {
+                        int roomid = Integer.parseInt(roomID);
+                        // add information into bookingRoom table
+                        bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
+                        if (checkinstatus == 1) {
+                            bdao.updateStatusRoom(roomid);
+                        }
                     }
                 }
             } else {
@@ -195,8 +199,6 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            
-            
             String bookingcode = utilConvert.toBase36(bookingid);
             request.setAttribute("code", bookingcode);
             request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
