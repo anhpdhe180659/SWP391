@@ -131,14 +131,14 @@
                                 <div class="card">
                                     <div class="card-body row">
                                         <c:forEach items="${sessionScope.listRoom}" var="s">
-                                            <div class="card col-3 m-5 p-3">
-                                                <div style="border-radius: 10px" class="card-header-row">
+                                            <div class="card col-3 m-5 p-3" style="border-radius: 10px; box-shadow:  1px 1px 1px 1px grey">
+                                                <div  class="card-header">
                                                     <h1 class="text-secondary"><i class="fas fa-home"> Room: ${s.roomNumber}</i></h1>
                                                     <div class="button-header">
                                                         <c:choose>
                                                             <c:when test="${s.statusId == 1}">
                                                                 <a class="button" href="booking">Book now</a>
-                                                                <button class="maintaince button" data-room-id="${s.roomId}" >Maintance</button>
+                                                                <button class="maintaince button btn-warning" data-room-id="${s.roomId}" >Maintance</button>
                                                             </c:when>
                                                             <c:when test="${s.statusId == 2}">
                                                                 <c:forEach items="${sessionScope.bookingRooms}" var="b">
@@ -159,16 +159,16 @@
                                                                 <a class="button" href="checkOut?roomId=${s.roomId}">Check out</a>
                                                             </c:when>
                                                             <c:when test="${s.statusId == 3}">
-                                                                <div class="title-card-header">
-                                                                    <p><b>Under maintaince</b></p>
-                                                                </div>
-                                                                <button id="${s.roomId}" data-room-id="${s.roomId}" class="available button">Available</button>
+                                                                <button id="${s.roomId}" data-room-id="${s.roomId}" class="available button btn-success">Available</button>
                                                             </c:when>
                                                         </c:choose>
                                                         <a role="button" class="button " href="viewDetail?roomId=${s.roomId}">View detail</a>
                                                     </div> 
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card card-body">
+                                                    <c:if test="${s.statusId == 3}">
+                                                        <p class="text text-warning" style="font-size: 20px"><b>Under maintaince</b></p>
+                                                    </c:if>
                                                     <c:choose>
                                                         <c:when test="${s.cleanId == 1}">
                                                             <p><b>Cleaning status: </b>Not Cleaned</p>

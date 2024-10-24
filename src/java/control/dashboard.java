@@ -6,8 +6,10 @@ package control;
 
 import dal.AmenityDAO;
 import dal.DashboardDAO;
+import dal.GuestDAO;
 import dal.NewsDAO;
 import dal.RoomDao;
+import dal.ServiceDAO;
 import dto.ChartDTO;
 import dto.StasticDto;
 import java.io.IOException;
@@ -16,10 +18,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 import model.Amenity;
+import model.Guest;
 import model.NewsItem;
 import model.Room;
+import model.Service;
 
 /**
  *
@@ -58,7 +63,9 @@ public class dashboard extends HttpServlet {
 //            for (ChartDTO item : chartDTOs) {
 //                session.setAttribute("month" + item.getMonth(), item.getTotal());
 //            }
-
+            GuestDAO guestDao = new GuestDAO();
+            List<Guest> numberOfVisitors = guestDao.getAllGuests();
+            List<Service> services = new ServiceDAO().getAllServices();
             int underMaintainRoom = listRoom.stream().filter(
                     room -> room.getStatusId() == 3
             ).toList().size();
@@ -70,8 +77,10 @@ public class dashboard extends HttpServlet {
             ).toList().size();
             AmenityDAO amenityDao = new AmenityDAO();
             List<Amenity> listAmenity = amenityDao.getAllAmenities();
-            
             //get session 
+            session.setAttribute("totalServices", services.size());
+            session.setAttribute("numberOfRooms", listRoom.size());
+            session.setAttribute("numberOfVisitors", numberOfVisitors.size());
             session.setAttribute("maintaince", underMaintainRoom);
             session.setAttribute("available", availableRoom);
             session.setAttribute("occupied", occupiedRoom);

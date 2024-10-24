@@ -166,11 +166,14 @@ public class booking extends HttpServlet {
             bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
             int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
-            String roomInUsed = null;
-            boolean anyRoomBooked = false;
+            String roomNameInUsed = null;
+            boolean roomInUsed = false;
             if (selectedRoom != null) {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
+                    // gọi hàm check từng roomid một, func(intime, outtime, roomid) trả về true/false;
+                    // if return true --> empty list
+                    
                     // add information into bookingRoom table
 //                    List<Integer> listRoomInUsed = bdao.getAllRoomIDInUsed(rrentDateTime);
                     // check trung thoi gian booking
