@@ -158,7 +158,7 @@ public class UserDAO extends DBContext {
 
     public void deleteUser(int uid) {
         UserDAO udao = new UserDAO();
-        if(udao.getUserByID(uid).getRole() == 1){
+        if (udao.getUserByID(uid).getRole() == 1) {
             return;
         }
         String sql = """
@@ -217,23 +217,23 @@ public class UserDAO extends DBContext {
         List<User> sList = new ArrayList<>();
         String sql = """
                      SELECT UserID
-                                 ,Name
-                                 ,DateOfBirth
-                                 ,Sex
-                                 ,Address
-                                 ,Phone
-                                 ,Identification
-                                 ,StartDate
-                                 ,Salary
-                                 ,Image
-                                 ,Username
-                                 ,Password
-                                 ,Role
-                                 ,Email
-                                 ,Status
-                       FROM User
-                       ORDER BY UserID
-                       OFFSET ? ROWS FETCH NEXT 5 ROWs ONLY """;
+                           ,Name
+                           ,DateOfBirth
+                           ,Sex
+                           ,Address
+                           ,Phone
+                           ,Identification
+                           ,StartDate
+                           ,Salary
+                           ,Image
+                           ,Username
+                           ,Password
+                           ,Role
+                           ,Email
+                           ,Status
+                     FROM User
+                     ORDER BY UserID
+                     LIMIT 5 OFFSET ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, 5 * (index - 1));
@@ -310,6 +310,7 @@ public class UserDAO extends DBContext {
         }
         return user;
     }
+
     public User getUserByEmail(String Email) {
         User user = new User();
         String sql = """
@@ -371,7 +372,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean emailExists(String email) {
-        String sql = "SELECT TOP 1 1 FROM User WHERE Email = ?";
+        String sql = "SELECT * FROM User WHERE Email = ? LIMIT 1";
         try (PreparedStatement st = connection.prepareStatement(sql);) {
             st.setString(1, email);
             try (ResultSet rs = st.executeQuery()) {
@@ -412,10 +413,10 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public static void main(String args) {
+    public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
         User u = userDAO.getUserByID(12);
-
+        System.out.println(u);
 //        userDAO.editUser(new User(7,
 //                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
 //                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
