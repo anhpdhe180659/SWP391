@@ -90,10 +90,11 @@
                     <div class="container">
                         <div class="page-inner">
                             <div class="page-header">
-                                <h2 class="fw-bold mb-3">Room Status</h2>
+                                <h1 class="fw-bold mb-3">Room</h1>
                             </div>
                             <div class="col-md-12">
                                 <div class="card">
+
                                     <div class="card-body row">
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
                                         <form action="listRoom">
@@ -129,6 +130,42 @@
                                     </div>
                                 </div>
                                 <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <nav
+                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                                >
+                                                <c:set value="${requestScope.keyword} " var="n"/>
+                                                <form action="listRoom">
+                                                    <div class="input-group" >
+                                                        <div class="input-group-prepend">
+                                                            <button type="submit" class="btn btn-search pe-1">
+                                                                <i class="fa fa-search search-icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <c:if test="${n.length() < 2}">
+                                                            <input
+                                                                type="text"
+                                                                name="keyword"
+                                                                placeholder="Search room by room number..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                        <c:if test="${n.length() > 1}">
+                                                            <input
+                                                                type="text"
+                                                                name="keyword"
+                                                                value="${n}"
+                                                                placeholder="Search room by room number..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                    </div>
+                                                </form>
+                                            </nav>
+                                            <c:set value="${requestScope.noti}" var="noti" />
+                                        </div>
+                                    </div>
                                     <div class="card-body row">
                                         <c:forEach items="${sessionScope.listRoom}" var="s">
                                             <div class="card col-3 m-5 p-3" style="border-radius: 10px; box-shadow:  1px 1px 1px grey">
@@ -267,114 +304,114 @@
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
         <script>
-            $(document).ready(function () {
-                $("#basic-datatables").DataTable({
+                $(document).ready(function () {
+                    $("#basic-datatables").DataTable({
+                    });
+                    $("#multi-filter-select").DataTable({
+                        pageLength: 10,
+                        initComplete: function () {
+                            this.api()
+                                    .columns()
+                                    .every(function () {
+                                        var column = this;
+                                        var select = $(
+                                                '<select class="form-select"><option value=""></option></select>'
+                                                )
+                                                .appendTo($(column.footer()).empty())
+                                                .on("change", function () {
+                                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                                    column
+                                                            .search(val ? "^" + val + "$" : "", true, false)
+                                                            .draw();
+                                                });
+
+                                        column
+                                                .data()
+                                                .unique()
+                                                .sort()
+                                                .each(function (d, j) {
+                                                    select.append(
+                                                            '<option value="' + d + '">' + d + "</option>"
+                                                            );
+                                                });
+                                    });
+                        },
+                    });
+
+                    //             Add Row
+
                 });
-                $("#multi-filter-select").DataTable({
-                    pageLength: 10,
-                    initComplete: function () {
-                        this.api()
-                                .columns()
-                                .every(function () {
-                                    var column = this;
-                                    var select = $(
-                                            '<select class="form-select"><option value=""></option></select>'
-                                            )
-                                            .appendTo($(column.footer()).empty())
-                                            .on("change", function () {
-                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                column
-                                                        .search(val ? "^" + val + "$" : "", true, false)
-                                                        .draw();
-                                            });
-
-                                    column
-                                            .data()
-                                            .unique()
-                                            .sort()
-                                            .each(function (d, j) {
-                                                select.append(
-                                                        '<option value="' + d + '">' + d + "</option>"
-                                                        );
-                                            });
-                                });
-                    },
-                });
-
-                //             Add Row
-
-            });
         </script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
-            const currentUrl = window.location.href;
-            console.log(currentUrl);
-            $(document).ready(function () {
-                $('.available').on('click', function () {
-                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                    const field = 'statusId'; // Get field name from data attribute
-                    const value = 1; // Get selected value
-                    console.log(field);
-                    // AJAX call to update the database
-                    $.ajax({
-                        url: 'updateRoomStatus', // Your servlet URL
-                        method: 'POST',
-                        data: {
-                            roomId: roomId,
-                            field: field,
-                            value: value
-                        },
-                        success: function (response) {
-                            console.log(swal);
-                            // Handle success, you can show a notification or update the UI
-                            swal({
-                                icon: "success",
-                                text: 'Update successful'
-                            }).then(() => {
-                                window.location = currentUrl;
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            // Handle error
-                            alert('Update failed.');
-                        }
+                const currentUrl = window.location.href;
+                console.log(currentUrl);
+                $(document).ready(function () {
+                    $('.available').on('click', function () {
+                        const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                        const field = 'statusId'; // Get field name from data attribute
+                        const value = 1; // Get selected value
+                        console.log(field);
+                        // AJAX call to update the database
+                        $.ajax({
+                            url: 'updateRoomStatus', // Your servlet URL
+                            method: 'POST',
+                            data: {
+                                roomId: roomId,
+                                field: field,
+                                value: value
+                            },
+                            success: function (response) {
+                                console.log(swal);
+                                // Handle success, you can show a notification or update the UI
+                                swal({
+                                    icon: "success",
+                                    text: 'Update successful'
+                                }).then(() => {
+                                    window.location = currentUrl;
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle error
+                                alert('Update failed.');
+                            }
+                        });
                     });
                 });
-            });
 
 
-            $(document).ready(function () {
-                $('.maintaince').on('click', function () {
-                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                    const field = 'statusId'; // Get field name from data attribute
-                    const value = 3; // Get selected value
-                    console.log(field);
-                    // AJAX call to update the database
-                    $.ajax({
-                        url: 'updateRoomStatus', // Your servlet URL
-                        method: 'POST',
-                        data: {
-                            roomId: roomId,
-                            field: field,
-                            value: value
-                        },
-                        success: function (response) {
-                            console.log(swal);
-                            // Handle success, you can show a notification or update the UI
-                            swal({
-                                icon: "success",
-                                text: 'Update successful'
-                            }).then(() => {
-                                window.location = currentUrl;
-                            })
-                        },
-                        error: function (xhr, status, error) {
-                            // Handle error
-                            alert('Update failed:');
-                        }
+                $(document).ready(function () {
+                    $('.maintaince').on('click', function () {
+                        const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                        const field = 'statusId'; // Get field name from data attribute
+                        const value = 3; // Get selected value
+                        console.log(field);
+                        // AJAX call to update the database
+                        $.ajax({
+                            url: 'updateRoomStatus', // Your servlet URL
+                            method: 'POST',
+                            data: {
+                                roomId: roomId,
+                                field: field,
+                                value: value
+                            },
+                            success: function (response) {
+                                console.log(swal);
+                                // Handle success, you can show a notification or update the UI
+                                swal({
+                                    icon: "success",
+                                    text: 'Update successful'
+                                }).then(() => {
+                                    window.location = currentUrl;
+                                })
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle error
+                                alert('Update failed:');
+                            }
+                        });
                     });
                 });
-            });
         </script>
         <script>
 

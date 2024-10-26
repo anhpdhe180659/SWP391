@@ -93,49 +93,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-flex align-items-center">
-                                            <nav
-                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-                                                >
-                                                <c:set value="${requestScope.keyword} " var="n"/>
-                                                <form action="searchRoom">
-                                                    <div class="input-group" >
-                                                        <div class="input-group-prepend">
-                                                            <button type="submit" class="btn btn-search pe-1">
-                                                                <i class="fa fa-search search-icon"></i>
-                                                            </button>
-                                                        </div>
-                                                        <c:if test="${n.length() < 2}">
-                                                            <input
-                                                                type="text"
-                                                                name="keyword"
-                                                                placeholder="Search room..."
-                                                                class="form-control"
-                                                                />
-                                                        </c:if>
-                                                        <c:if test="${n.length() > 1}">
-                                                            <input
-                                                                type="text"
-                                                                name="keyword"
-                                                                value="${n}"
-                                                                placeholder="Search room..."
-                                                                class="form-control"
-                                                                />
-                                                        </c:if>
-                                                    </div>
-                                                </form>
-                                            </nav>
-                                            <c:set value="${requestScope.noti}" var="noti" />
 
-                                            <button
-                                                class="btn btn-primary btn-round ms-auto"
-                                                onclick="addRoom()">
-                                                <i class="fa fa-plus"></i>
-                                                Add Room
-                                            </button>
-                                        </div>
-                                    </div>
                                     <div class="card-body row">
 
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
@@ -171,6 +129,49 @@
                                     </div>
                                 </div>
                                 <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <nav
+                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                                >
+                                                <c:set value="${requestScope.keyword} " var="n"/>
+                                                <form action="listRoomAdmin">
+                                                    <div class="input-group" >
+                                                        <div class="input-group-prepend">
+                                                            <button type="submit" class="btn btn-search pe-1">
+                                                                <i class="fa fa-search search-icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <c:if test="${n.length() < 2}">
+                                                            <input
+                                                                type="text"
+                                                                name="keyword"
+                                                                placeholder="Search room by room number..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                        <c:if test="${n.length() > 1}">
+                                                            <input
+                                                                type="text"
+                                                                name="keyword"
+                                                                value="${n}"
+                                                                placeholder="Search room by room number..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                    </div>
+                                                </form>
+                                            </nav>
+                                            <c:set value="${requestScope.noti}" var="noti" />
+
+                                            <button
+                                                class="btn btn-primary btn-round ms-auto"
+                                                onclick="addRoom()">
+                                                <i class="fa fa-plus"></i>
+                                                Add Room
+                                            </button>
+                                        </div>
+                                    </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table id="add-user" class="display table table-striped table-hover" >

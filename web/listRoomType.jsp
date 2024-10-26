@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -112,7 +113,7 @@
                                                         <td>${s.typeName}</td>
                                                         <!-- Clean Status -->
                                                         <td>${s.capacity}</td>
-                                                        <td>${s.price}</td>
+                                                        <td><fmt:formatNumber value="${s.price}" type="currency" currencyCode="VND"></fmt:formatNumber></td>
                                                         <td>
                                                             <img width="120px" height="80px" src="${s.image}" alt="Image room type">
                                                         </td>

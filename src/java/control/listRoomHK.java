@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
 import dal.RoomDao;
@@ -21,14 +20,16 @@ import model.Room;
  * @author LENOVO
  */
 public class listRoomHK extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     */ 
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -70,6 +71,7 @@ public class listRoomHK extends HttpServlet {
         int typeId = 0;
         int statusId = 0;
         int cleanId = 0;
+        int roomNumber = 0;
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
@@ -82,8 +84,8 @@ public class listRoomHK extends HttpServlet {
         if (request.getParameter("cleanId") != null) {
             cleanId = Integer.parseInt(request.getParameter("cleanId"));
         }
-        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId);
-        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId) / 5);
+        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId, roomNumber);
+        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId, roomNumber) / 5);
         System.out.println(noPage);
         if (noPage == 0) {
             request.setAttribute("noti", "No room found");

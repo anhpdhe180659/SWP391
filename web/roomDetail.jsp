@@ -7,6 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -106,63 +107,55 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <!-- Modal -->
-
-                                    <div>
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <form action="updateRoomStatus"  method="POST">
-                                                    <div class="modal-body">
-                                                        <div class="modal-body">
-                                                            <table class="table table-bordered">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th>Room Number</th>
-                                                                        <td>${u.roomNumber}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Clean Status</th>
-                                                                        <td>
-                                                                            <c:choose>
-                                                                                <c:when test="${u.cleanId == 3}">Cleaned</c:when>
-                                                                                <c:when test="${u.cleanId == 2}">In progress</c:when>
-                                                                                <c:otherwise>Not clean</c:otherwise>
-                                                                            </c:choose>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <c:forEach var="type" items="${sessionScope.roomType}">
-                                                                        <c:if test="${u.typeId == type.typeId}">
-                                                                            <tr>
-                                                                                <th>Type Room</th>
-                                                                                <td>${type.typeName}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Capacity</th>
-                                                                                <td>${type.capacity}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Price</th>
-                                                                                <td>${type.price}</td>
-                                                                            </tr>
-                                                                        </c:if>
-                                                                    </c:forEach>
-                                                                    <tr>
-                                                                        <th>Status</th>
-                                                                        <td>
-                                                                            <c:choose>
-                                                                                <c:when test="${u.statusId == 3}">Under Maintenance</c:when>
-                                                                                <c:when test="${u.statusId == 2}">Occupied</c:when>
-                                                                                <c:otherwise>Available</c:otherwise>
-                                                                            </c:choose>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Room Number</th>
+                                                            <td>${u.roomNumber}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Clean Status</th>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${u.cleanId == 3}">Cleaned</c:when>
+                                                                    <c:when test="${u.cleanId == 2}">In progress</c:when>
+                                                                    <c:otherwise>Not clean</c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                        </tr>
+                                                        <c:forEach var="type" items="${sessionScope.roomType}">
+                                                            <c:if test="${u.typeId == type.typeId}">
+                                                                <tr>
+                                                                    <th>Type Room</th>
+                                                                    <td>${type.typeName}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Capacity</th>
+                                                                    <td>${type.capacity}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Price</th>
+                                                                    <td><fmt:formatNumber value="${type.price}" type="currency" currencyCode="VND" /></td>
+                                                                </tr>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <tr>
+                                                            <th>Status</th>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${u.statusId == 3}">Under Maintenance</c:when>
+                                                                    <c:when test="${u.statusId == 2}">Occupied</c:when>
+                                                                    <c:otherwise>Available</c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -193,9 +186,9 @@
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo2.js"></script>
         <script>
-                                            document.querySelector('.close').editEventListener('click', function () {
-                                                $('#editUserModal').modal('hide');
-                                            });
+                    document.querySelector('.close').editEventListener('click', function () {
+                        $('#editUserModal').modal('hide');
+                    });
 
         </script>
 
