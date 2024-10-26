@@ -264,7 +264,7 @@ public class BookingDAO extends DBContext {
         String query = """
                        SELECT *
                        FROM HotelManagement.BookingRoom
-                       WHERE NOT ( ? < CheckOutDate AND ? > CheckInDate )
+                       WHERE ( ? < CheckOutDate AND ? > CheckInDate )
                        and RoomID = ?  """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setTimestamp(1, newInTime);
@@ -277,14 +277,15 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             // empty list -> ko trung lich --> book
             return false;
-        }else{
+        } else {
             // not empty --> trung lich vs 1 booking nao do --> ko book dc
             return true;
         }
     }
+
     public boolean IsEverBooked(int roomid) {
         boolean ReadyToBook = false;
         List<Integer> list = new ArrayList<Integer>();
@@ -301,14 +302,21 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return false;
-        }else{
+        } else {
             return true;
         }
         // empty -> chua ai book phong do bao h
+
+    }
+
+    public static void main(String[] args) {
+        BookingDAO bdao = new BookingDAO();
+        Date currentDate = new Date();
+        System.out.println("Hello");
         
-        
+
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus) {
@@ -340,18 +348,25 @@ public class BookingDAO extends DBContext {
     }
 
     public void deleteBooking(int bookingid) {
-        String query = """
-                       DELETE FROM HotelManagement.BookingService
-                             WHERE BookingID = ?
-                       DELETE FROM HotelManagement.BookingRoom
-                             WHERE BookingID = ?
-                       DELETE FROM HotelManagement.Booking
-                             WHERE BookingID = ?""";
-        try (PreparedStatement pre = connection.prepareStatement(query);) {
-            pre.setInt(1, bookingid);
-            pre.setInt(2, bookingid);
-            pre.setInt(3, bookingid);
-            pre.executeUpdate();
+        try {
+            String query1 = "DELETE FROM HotelManagement.BookingService WHERE BookingID = ?";
+            try (PreparedStatement pre1 = connection.prepareStatement(query1)) {
+                pre1.setInt(1, bookingid);
+                pre1.executeUpdate();
+            }
+
+            String query2 = "DELETE FROM HotelManagement.BookingRoom WHERE BookingID = ?";
+            try (PreparedStatement pre2 = connection.prepareStatement(query2)) {
+                pre2.setInt(1, bookingid);
+                pre2.executeUpdate();
+            }
+
+            String query3 = "DELETE FROM HotelManagement.Booking WHERE BookingID = ?";
+            try (PreparedStatement pre3 = connection.prepareStatement(query3)) {
+                pre3.setInt(1, bookingid);
+                pre3.executeUpdate();
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -385,28 +400,20 @@ public class BookingDAO extends DBContext {
         }
     }
 
-    public static void main(String args) {
-        BookingDAO bdao = new BookingDAO();
-        Date currentDate = new Date();
-//        bdao.addBookingRoom(5, 1, 3, LocalDateTime.MIN, LocalDateTime.MAX, 0);
-//        System.out.println(bdao.getAllRoomIDDelete(6));
-        LocalDateTime dateTime = LocalDateTime.now();
-        System.out.println(bdao.getAllRoomIDToCancelBooking(4));
-    }
-
     public int getNewBookingID() {
         int bookingid = 0;
         String query = """
-                       SELECT TOP (1)BookingID
-                             ,GuestID
-                             ,Deposit
-                             ,CheckInStatus
-                             ,PaidStatus
-                             ,UserID
-                             ,BookingDate
-                             ,TotalPrice
-                         FROM HotelManagement.Booking
-                         ORDER BY BookingID DESC""";
+                       SELECT BookingID,
+                              GuestID,
+                              Deposit,
+                              CheckInStatus,
+                              PaidStatus,
+                              UserID,
+                              BookingDate,
+                              TotalPrice
+                       FROM HotelManagement.Booking
+                       ORDER BY BookingID DESC
+                       LIMIT 1;""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {

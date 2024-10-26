@@ -82,8 +82,8 @@
                                                 <tr>
                                                     <th>ROOMNAME</th>
                                                     <th>Number of night</th>
-                                                    <th>CHECKIN DATE</th>
-                                                    <th>CHECKOUT DATE</th>
+                                                    <th>Expected CHECKIN DATE</th>
+                                                    <th>Expected CHECKOUT DATE</th>
                                                     <th>PRICE</th>
                                                 </tr>
                                             </thead>

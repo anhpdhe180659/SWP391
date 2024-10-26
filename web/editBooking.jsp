@@ -139,7 +139,7 @@
                                                 <div class="col-md-3 col-lg-3">
                                                     <div class="form-group">
                                                         <c:set value="${requestScope.checkindate}" var="checkindate"/>
-                                                        <label for="iden"><i class="far fa-calendar-check"></i> Check-in Date</label>
+                                                        <label for="iden"><i class="far fa-calendar-check"></i> Expected Check-in Date</label>
                                                         <input
                                                             type="text"
                                                             class="form-control"
@@ -152,7 +152,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <c:set value="${requestScope.deposit}" var="deposit"/>
-                                                        <label for="address"><i class="far fa-calendar-times"></i> Check-out Date</label>
+                                                        <label for="address"><i class="far fa-calendar-times"></i> Expected Check-out Date</label>
                                                         <input
                                                             type="text"
                                                             class="form-control"

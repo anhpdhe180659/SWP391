@@ -371,7 +371,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean emailExists(String email) {
-        String sql = "SELECT TOP 1 1 FROM HotelManagement.User WHERE Email = ?";
+        String sql = "SELECT  * FROM HotelManagement.User WHERE Email = ?";
         try (PreparedStatement st = connection.prepareStatement(sql);) {
             st.setString(1, email);
             try (ResultSet rs = st.executeQuery()) {
@@ -412,7 +412,7 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public static void main(String args) {
+    public static void main(String[] args) {
         UserDAO userDAO = new UserDAO();
         User u = userDAO.getUserByID(12);
 
