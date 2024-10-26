@@ -141,7 +141,7 @@
                             <p><b>Hotline: 1900 1833</b></p>
                         </div>
                         <div class="contact-img hidden col-6">
-                            <img src="img/hotel/hotelcontact.jpg"width="90%" alt="hotelContact"/>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.506341944541!2d105.5227089114359!3d21.01241668055205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abc60e7d3f19%3A0x2be9d7d0b5abcbf4!2sFPT%20University!5e0!3m2!1sen!2s!4v1729759128288!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </section>

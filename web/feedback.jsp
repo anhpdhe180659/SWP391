@@ -16,10 +16,16 @@
                 margin: 0;
                 padding: 0;
             }
-            .header-container {
-                background-color: #333;
-                padding: 10px 0;
-                margin-bottom: 20px;
+            .header-container{
+                width: 100%;
+                z-index: 1001;
+                position: fixed;
+                top:0;
+                background-color: #fff;
+            }
+            .navbar .container-fluid .logo{
+                display: flex;
+                justify-content: center;
             }
             .navbar {
                 display: flex;
@@ -126,16 +132,11 @@
                         <img src="img/logo/logo.png" alt="logo">
                     </a>
                 </div>
-                <div class="navbar-link">
-                    <a href="#about">About Us</a>
-                    <a href="#contact">For Booking</a>
-                    <a href="#feedback">Feedback</a>
-                </div>
             </nav>
         </div>
 
         <!-- Phần hiển thị feedback đã có -->
-        <div class="container">
+        <div style="margin-top: 160px" class="container">
             <h2>Previous Feedback</h2>
             <div class="feedback-list">
                 <% 

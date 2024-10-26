@@ -240,7 +240,7 @@
                                                 <div class="demo">
                                                     <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
                                                         <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
-                                                        <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                        <li class="page-item ${index < 3 ? 'disabled' :'' } ">
                                                             <a class="page-link" href="listRoomAdmin?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                                 <span class="sr-only">Previous</span>
@@ -249,15 +249,15 @@
                                                         <c:choose>
                                                             <c:when test="${index <= 3}">
                                                                 <c:set var="startPage" value="1" />
-                                                                <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                                <c:set var="endPage" value="${Nopage > 6 ? 6 : Nopage}" />
                                                             </c:when>
                                                             <c:when test="${index > Nopage - 3}">
-                                                                <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                                <c:set var="startPage" value="${Nopage - 6 > 0 ? Nopage - 6 : 1}" />
                                                                 <c:set var="endPage" value="${Nopage}" />
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <c:set var="startPage" value="${index - 2}" />
-                                                                <c:set var="endPage" value="${index + 2}" />
+                                                                <c:set var="startPage" value="${index - 3}" />
+                                                                <c:set var="endPage" value="${index + 3}" />
                                                             </c:otherwise>
                                                         </c:choose>
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">

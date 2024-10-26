@@ -40,7 +40,7 @@ public class UserDAO extends DBContext {
                              ,Role
                              ,Email
                              ,Status
-                         FROM HotelManagement.User""";
+                         FROM User""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -87,7 +87,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM HotelManagement.User 
+                       FROM User 
                        WHERE UserID = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -119,7 +119,7 @@ public class UserDAO extends DBContext {
 
     public void addUser(User u) {
         String sql = """
-                     INSERT INTO HotelManagement.User
+                     INSERT INTO User
                                 (Name
                                 ,DateOfBirth
                                 ,Sex
@@ -162,7 +162,7 @@ public class UserDAO extends DBContext {
             return;
         }
         String sql = """
-                     UPDATE HotelManagement.User 
+                     UPDATE User 
                      SET Status = 0
                      WHERE UserID = ? """;
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -175,7 +175,7 @@ public class UserDAO extends DBContext {
 
     public void editUser(User u, int userid) {
         String sql = """
-                     UPDATE HotelManagement.User
+                     UPDATE User
                           SET Name = ?
                              ,DateOfBirth = ?
                              ,Sex = ?
@@ -231,7 +231,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM HotelManagement.User
+                       FROM User
                        ORDER BY UserID
                        LIMIT 5 OFFSET ? """;
         try {
@@ -281,7 +281,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM HotelManagement.User 
+                       FROM User 
                        WHERE Username = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -328,7 +328,7 @@ public class UserDAO extends DBContext {
                                  ,Role
                                  ,Email
                                  ,Status
-                       FROM HotelManagement.User 
+                       FROM User 
                        WHERE Email = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -358,7 +358,7 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePassword(String password, String email) {
-        String sql = "UPDATE HotelManagement.User SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE User SET Password = ? WHERE Email = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, password);
@@ -371,7 +371,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean emailExists(String email) {
-        String sql = "SELECT TOP 1 1 FROM HotelManagement.User WHERE Email = ?";
+        String sql = "SELECT 1 FROM User WHERE Email = ? LIMIT 1;";
         try (PreparedStatement st = connection.prepareStatement(sql);) {
             st.setString(1, email);
             try (ResultSet rs = st.executeQuery()) {
@@ -385,8 +385,8 @@ public class UserDAO extends DBContext {
     }
 
     public void updatePasswordsToHashed() {
-        String selectSQL = "SELECT UserID, Password FROM HotelManagement.User";
-        String updateSQL = "UPDATE HotelManagement.User SET Password = ? WHERE UserID = ?";
+        String selectSQL = "SELECT UserID, Password FROM User";
+        String updateSQL = "UPDATE User SET Password = ? WHERE UserID = ?";
 
         try (PreparedStatement psSelect = connection.prepareStatement(selectSQL); ResultSet rs = psSelect.executeQuery()) {
 
@@ -440,7 +440,7 @@ public class UserDAO extends DBContext {
                            ,Role
                            ,Email
                            ,Status
-                     FROM HotelManagement.User
+                     FROM User
                      WHERE Name like ? """;
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -490,7 +490,7 @@ public class UserDAO extends DBContext {
                            ,Role
                            ,Email
                            ,Status
-                     FROM HotelManagement.User
+                     FROM User
                      WHERE Name like ?
                      ORDER BY UserID
                      LIMIT 5 OFFSET ?""";
