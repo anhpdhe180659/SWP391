@@ -99,7 +99,7 @@ public class GuestDAO extends DBContext {
     public Guest getNewGuest() {
         Guest guest = new Guest();
         String sql = """
-                     SELECT TOP(1) GuestID
+                     SELECT GuestID
                            ,Name
                            ,DateOfBirth
                            ,Sex
@@ -109,7 +109,8 @@ public class GuestDAO extends DBContext {
                            ,Nationality
                            ,isHidden
                        FROM HotelManagement.Guest
-                       ORDER BY GuestID DESC;""";
+                       ORDER BY GuestID DESC
+                       LIMIT 1;""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();

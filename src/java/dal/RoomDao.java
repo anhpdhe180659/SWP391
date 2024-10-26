@@ -99,7 +99,7 @@ public class RoomDao extends DBContext {
                              , rs.StatusName
                          FROM HotelManagement.Room r INNER JOIN RoomStatus rs
                          ON rs.StatusID = r.StatusID
-                         WHERE rs.StatusName like 'Available'""";
+                       Order by RoomID ASC""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {

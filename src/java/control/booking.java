@@ -163,8 +163,6 @@ public class booking extends HttpServlet {
                 gdao.addGuest(guest);// add new guest in database 
                 guestBooking = gdao.getNewGuest();
             }
-            bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
-            int bookingid = bdao.getNewBookingID();
             String[] selectedRoom = request.getParameterValues("roomSelected");
             boolean bookAllRoom = true;
             if (selectedRoom != null) {
@@ -183,21 +181,22 @@ public class booking extends HttpServlet {
                         }
                     }
                 }
-                if (bookAllRoom == true) {
-                    for (String roomID : selectedRoom) {
-                        int roomid = Integer.parseInt(roomID);
-                        // add information into bookingRoom table
-                        bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
-                        if (checkinstatus == 1) {
-                            bdao.updateStatusRoom(roomid);
-                        }
-                    }
-                }
             } else {
                 noti = "Please select at least 1 room for booking!";
                 request.setAttribute("noti", noti);
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
+            }
+            bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
+            int bookingid = bdao.getNewBookingID();
+            if (bookAllRoom == true) {
+                for (String roomID : selectedRoom) {
+                    int roomid = Integer.parseInt(roomID);
+                    bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
+                    if (checkinstatus == 1) {
+                        bdao.updateStatusRoom(roomid);
+                    }
+                }
             }
             String bookingcode = utilConvert.toBase36(bookingid);
             request.setAttribute("code", bookingcode);
