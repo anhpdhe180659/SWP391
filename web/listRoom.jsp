@@ -17,7 +17,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -131,9 +131,26 @@
                                 <div class="card">
                                     <div class="card-body row">
                                         <c:forEach items="${sessionScope.listRoom}" var="s">
-                                            <div class="card col-3 m-5 p-3" style="border-radius: 10px; box-shadow:  1px 1px 1px 1px grey">
+                                            <div class="card col-3 m-5 p-3" style="border-radius: 10px; box-shadow:  1px 1px 1px grey">
                                                 <div  class="card-header">
                                                     <h1 class="text-secondary"><i class="fas fa-home"> Room: ${s.roomNumber}</i></h1>
+                                                    <c:if test="${s.statusId == 2}">
+                                                        <c:forEach items="${sessionScope.bookingRooms}" var="b">
+                                                            <c:if test="${s.roomId == b.roomID}"> 
+                                                                <c:forEach items="${sessionScope.bookings}" var="bk">
+                                                                    <c:if test="${b.bookingID == bk.bookingID}">
+                                                                        <c:forEach items="${sessionScope.guests}" var="g">
+                                                                            <c:if test="${bk.guestID == g.guestID}">
+                                                                                <div class="title-header">
+                                                                                    <h5 style="color: red"><i class="fas fa-user-alt">Guest:  ${g.name}</i></h5>
+                                                                                </div>
+                                                                            </c:if>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
                                                     <div class="button-header">
                                                         <c:choose>
                                                             <c:when test="${s.statusId == 1}">
@@ -141,21 +158,6 @@
                                                                 <button class="maintaince button btn-warning" data-room-id="${s.roomId}" >Maintance</button>
                                                             </c:when>
                                                             <c:when test="${s.statusId == 2}">
-                                                                <c:forEach items="${sessionScope.bookingRooms}" var="b">
-                                                                    <c:if test="${s.roomId == b.roomID}"> 
-                                                                        <c:forEach items="${sessionScope.bookings}" var="bk">
-                                                                            <c:if test="${b.bookingID == bk.bookingID}">
-                                                                                <c:forEach items="${sessionScope.guests}" var="g">
-                                                                                    <c:if test="${bk.guestID == g.guestID}">
-                                                                                        <div class="title-header">
-                                                                                            <p><i class="fas fa-user-alt"> ${g.name}</i></p>
-                                                                                        </div>
-                                                                                    </c:if>
-                                                                                </c:forEach>
-                                                                            </c:if>
-                                                                        </c:forEach>
-                                                                    </c:if>
-                                                                </c:forEach>
                                                                 <a class="button" href="checkOut?roomId=${s.roomId}">Check out</a>
                                                             </c:when>
                                                             <c:when test="${s.statusId == 3}">

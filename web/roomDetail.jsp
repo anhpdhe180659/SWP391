@@ -113,163 +113,104 @@
                                             <div class="modal-content">
                                                 <form action="updateRoomStatus"  method="POST">
                                                     <div class="modal-body">
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Room Number</label>
-                                                                    <input
-                                                                        name="roomNumber"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        value="${u.roomNumber}"
-                                                                        readonly
-                                                                        />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Clean Status</label>                  
-                                                                    <select name="cleanId" class="form-control" readonly>
-                                                                        <option value="3"
-                                                                                <c:if test="${u.cleanId == 3}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Cleaned</option>
-                                                                        <option value="2"
-                                                                                <c:if test="${u.cleanId == 2}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >In progress</option>
-                                                                        <option value="1"
-                                                                                <c:if test="${u.cleanId == 1}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Not clean</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <c:forEach var="type" items="${sessionScope.roomType}">
-                                                                    <c:if test="${u.typeId == type.typeId}">
-                                                                        <div class="form-group form-group-default">
-                                                                            <label>Type Room</label>                  
-                                                                            <input
-                                                                                name="typeId"
-                                                                                type="text"
-                                                                                class="form-control room-type"
-                                                                                value="${type.typeName}"
-                                                                                readonly
-                                                                                />
-                                                                        </div>
-                                                                        <!-- Hiển thị Capacity và Price tương ứng -->
-                                                                        <div class="form-group form-group-default">
-                                                                            <label>Capacity</label>
-                                                                            <input
-                                                                                type="text"
-                                                                                class="form-control capacity"
-                                                                                value="${type.capacity}"
-                                                                                readonly
-                                                                                />
-                                                                        </div>
-                                                                        <div class="form-group form-group-default">
-                                                                            <label>Price</label>
-                                                                            <input
-                                                                                type="text"
-                                                                                class="form-control price"
-                                                                                value="${type.price}"
-                                                                                readonly
-                                                                                />
-                                                                        </div>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </div>
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Status</label>                  
-                                                                    <select name="statusId" class="form-control" readonly> 
-                                                                        <option class="text-warning" value="3"
-                                                                                <c:if test="${u.statusId == 3}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Under Maintainance</option>
-                                                                        <option class="text-danger" value="2"
-                                                                                <c:if test="${u.statusId == 2}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Occupied</option>
-                                                                        <option class="text-success" value="1"
-                                                                                <c:if test="${u.statusId == 1}">
-                                                                                    selected
-                                                                                </c:if>
-                                                                                >Available</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                        <div class="modal-body">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>Room Number</th>
+                                                                        <td>${u.roomNumber}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Clean Status</th>
+                                                                        <td>
+                                                                            <c:choose>
+                                                                                <c:when test="${u.cleanId == 3}">Cleaned</c:when>
+                                                                                <c:when test="${u.cleanId == 2}">In progress</c:when>
+                                                                                <c:otherwise>Not clean</c:otherwise>
+                                                                            </c:choose>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <c:forEach var="type" items="${sessionScope.roomType}">
+                                                                        <c:if test="${u.typeId == type.typeId}">
+                                                                            <tr>
+                                                                                <th>Type Room</th>
+                                                                                <td>${type.typeName}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Capacity</th>
+                                                                                <td>${type.capacity}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Price</th>
+                                                                                <td>${type.price}</td>
+                                                                            </tr>
+                                                                        </c:if>
+                                                                    </c:forEach>
+                                                                    <tr>
+                                                                        <th>Status</th>
+                                                                        <td>
+                                                                            <c:choose>
+                                                                                <c:when test="${u.statusId == 3}">Under Maintenance</c:when>
+                                                                                <c:when test="${u.statusId == 2}">Occupied</c:when>
+                                                                                <c:otherwise>Available</c:otherwise>
+                                                                            </c:choose>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
-                                                    <input type="text" name="roomId" value="${u.roomId}" hidden="">
-                                                    <div class="modal-footer border-0">
-                                                        <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <c:if test="${noti == 'Update status successful !'}" >
-                                                            <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
-                                                        </c:if>
-                                                        <c:if test="${noti != 'Update status successful !'}" >
-                                                            <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
-                                                        </c:if>
-                                                    </div>
-                                                </form>
                                             </div>
                                         </div>
-                                    </div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <footer class="footer">
+
+                </footer>
             </div>
 
-            <footer class="footer">
+            <!-- Custom template | don't include it in your project! -->
 
-            </footer>
+            <!-- End Custom template -->
         </div>
+        <!--   Core JS Files   -->
+        <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+        <script src="assets/js/core/popper.min.js"></script>
+        <script src="assets/js/core/bootstrap.min.js"></script>
 
-        <!-- Custom template | don't include it in your project! -->
-
-        <!-- End Custom template -->
-    </div>
-    <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/core/popper.min.js"></script>
-    <script src="assets/js/core/bootstrap.min.js"></script>
-
-    <!-- jQuery Scrollbar -->
-    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-    <!-- Datatables -->
-    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
-    <!-- Kaiadmin JS -->
-    <script src="assets/js/kaiadmin.min.js"></script>
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="assets/js/setting-demo2.js"></script>
-    <script>
+        <!-- jQuery Scrollbar -->
+        <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+        <!-- Datatables -->
+        <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+        <!-- Kaiadmin JS -->
+        <script src="assets/js/kaiadmin.min.js"></script>
+        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+        <script src="assets/js/setting-demo2.js"></script>
+        <script>
                                             document.querySelector('.close').editEventListener('click', function () {
                                                 $('#editUserModal').modal('hide');
                                             });
 
-    </script>
+        </script>
 
-    <script>
-        function doClose() {
-            $('#editUserModal').modal('hide');
-        }
-    </script>
-    <script>
-        function BackToList() {
-            window.location = "listRoom";
-        }
-    </script>
+        <script>
+            function doClose() {
+                $('#editUserModal').modal('hide');
+            }
+        </script>
+        <script>
+            function BackToList() {
+                window.location = "listRoom";
+            }
+        </script>
 
-</body>
+    </body>
 </html>
 
 

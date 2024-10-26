@@ -3,12 +3,17 @@
     flex-direction: row; /* Keeps the buttons in a row */
     gap:2px;    
 }
+.card{
+    padding: 0;
+}
 
 .button {
     display: block;
-    width: fit-content; /* Keeps the width of the button tight around the content */
+    width: 80px; /* Keeps the width of the button tight around the content */
+    height: 30px;
+    font-size: 12px;
     border: 1px solid gray;
-    padding: 5px 10px; /* Add some padding for better spacing inside the button */
+    padding: 5px 3px; /* Add some padding for better spacing inside the button */
 }
 
 .title-card-header {
