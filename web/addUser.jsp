@@ -171,8 +171,8 @@
                                                                         class="form-control"
                                                                         required
                                                                         placeholder="Enter Identification"
-                                                                        pattern="(^[A-Z0-9]{10}$)|(^[A-Z0-9]{12}$)" 
-                                                                        title="Valid ID contains 10 or 12 digits and uppercase letters"
+                                                                        pattern="(^[A-Z0-9]{8}$)|^[0-9]{10}$)|(^[0-9]{12}$)"  
+                                                                        title="Valid ID contains 8, 10 or 12 digits and uppercase letters"
                                                                         />
                                                                 </div>
                                                             </div>
