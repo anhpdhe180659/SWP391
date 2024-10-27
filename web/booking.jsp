@@ -236,7 +236,7 @@
                                                                     pattern="^\d{10,15}$"
                                                                     title="Valid phone number must be 10 to 15 digits long"
                                                                     required
-                                                                    
+
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -316,40 +316,12 @@
                                                                 <!--datetime-local-->
                                                             </div>
                                                             <div class="form-group">
-                                                                <label><i class="fas fa-transgender"></i> Gender</label><br />
-                                                                <div class="d-flex">
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="gender"
-                                                                            id="flexRadioDefault1"
-                                                                            value="1"
-                                                                            checked
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="flexRadioDefault1"
-                                                                            >
-                                                                            Male
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="gender"
-                                                                            id="flexRadioDefault2"
-
-                                                                            value="0"
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="flexRadioDefault2"
-                                                                            >
-                                                                            Female
-                                                                        </label>
-                                                                    </div>
+                                                                <label for="paymentMethod"><i class="far fa-credit-card"></i> Payment Method</label>
+                                                                <div class="form-group form-group-default">
+                                                                    <select id="paymentMethod" name="paymentMethod" class="form-control">
+                                                                        <option value="1">Cash</option>
+                                                                        <option value="2">Bank transfer</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -404,37 +376,39 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label><i class="fab fa-amazon-pay"></i> Paid status</label><br />
+
+                                                                <label><i class="fas fa-transgender"></i> Gender</label><br />
                                                                 <div class="d-flex">
                                                                     <div class="form-check">
                                                                         <input
                                                                             class="form-check-input"
                                                                             type="radio"
-                                                                            name="paidstatus"
-                                                                            id="check3"
-                                                                            value="0"
+                                                                            name="gender"
+                                                                            id="flexRadioDefault1"
+                                                                            value="1"
                                                                             checked
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
-                                                                            for="check3"
+                                                                            for="flexRadioDefault1"
                                                                             >
-                                                                            Not yet
+                                                                            Male
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check">
                                                                         <input
                                                                             class="form-check-input"
                                                                             type="radio"
-                                                                            name="paidstatus"
-                                                                            id="check4"
-                                                                            value="1"
+                                                                            name="gender"
+                                                                            id="flexRadioDefault2"
+
+                                                                            value="0"
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
-                                                                            for="check4"
+                                                                            for="flexRadioDefault2"
                                                                             >
-                                                                            Paid
+                                                                            Female
                                                                         </label>
                                                                     </div>
                                                                 </div>

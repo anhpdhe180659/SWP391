@@ -43,6 +43,14 @@ public class bookingList extends HttpServlet {
         BookingDAO bdao = new BookingDAO();
         GuestDAO gdao = new GuestDAO();
         UserDAO udao = new UserDAO();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         int index = 1;
         int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
         if (request.getParameter("index") != null) {

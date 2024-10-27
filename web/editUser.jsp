@@ -281,18 +281,18 @@
                                                                     <div class="form-group form-group-default" >
                                                                         <label>Status</label>
                                                                         <c:if test="${u.status == 1}">
-                                                                        <div style="margin:5px 0px;color: green;font-weight: bold">active</div>
+                                                                            <div style="margin:5px 0px;color: green;font-weight: bold">active</div>
                                                                         </c:if>
                                                                         <c:if test="${u.status == 0}">
-                                                                        <div style="margin:5px 0px;color: red;font-weight: bold">inactive</div>
+                                                                            <div style="margin:5px 0px;color: red;font-weight: bold">inactive</div>
                                                                         </c:if>
                                                                         <input
-                                                                        name="status"
-                                                                        type="text"
-                                                                        value="${u.status}"
-                                                                        class="form-control"
-                                                                        hidden
-                                                                        />
+                                                                            name="status"
+                                                                            type="text"
+                                                                            value="${u.status}"
+                                                                            class="form-control"
+                                                                            hidden
+                                                                            />
                                                                     </div>
                                                                 </div>
                                                             </c:if>
@@ -301,8 +301,15 @@
                                                     <input type="text" name="userid" value="${u.userID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: darkorange">${noti}</div>
-                                                        <button
+                                                        <div style="margin-right: 25px; font-weight: bold;color: red">${noti}</div>
+                                                            <button
+                                                                type="button"
+                                                                data-bs-toggle="tooltip"
+                                                                class="btn btn-warning"
+                                                                onclick="doReset(${u.userID})"
+                                                                >Reset password
+                                                            </button>&nbsp;
+                                                            <button
                                                             type="reset"
                                                             class="btn btn-danger">
                                                             Reset
@@ -351,6 +358,14 @@
                                                     document.querySelector('.close').editEventListener('click', function () {
                                                         $('#editUserModal').modal('hide');
                                                     });
+    </script>
+    <script>
+        function doReset(userid) {
+            var option = confirm("Are you sure to reset password this user?");
+            if (option === true) {
+                window.location = "resetPassword?userid=" + userid;
+            }
+        }
     </script>
     <script>
         function doClose() {
