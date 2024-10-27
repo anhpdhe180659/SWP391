@@ -4,7 +4,6 @@
  */
 package control;
 
-import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.UserDAO;
 import java.io.IOException;
@@ -14,17 +13,25 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import model.Booking;
+import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import model.Guest;
+import model.User;
+import util.PasswordUtils;
 
 /**
  *
  * @author nhatk
  */
-public class deleteBooking extends HttpServlet {
+public class sendBookingCode extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,8 +45,6 @@ public class deleteBooking extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        BookingDAO bdao = new BookingDAO();
         HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("login.jsp");
@@ -49,33 +54,51 @@ public class deleteBooking extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        int bookingid = Integer.parseInt(request.getParameter("bookingid"));
-        List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
-        List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);
-        if (listRoomToCancel.isEmpty()) {
-            String noti = "Cannot cancel booking! You must cancel the booking at least 24 hours before the check-in time.";
-            request.setAttribute("noti", noti);
-        } else {
-            bdao.deleteBooking(bookingid);
-        }
-        int index = 1;
-        int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        List<Booking> listBooking = bdao.getNext5Booking(index);
+        GuestDAO gdao = new GuestDAO();
+        int guestid = Integer.parseInt(request.getParameter("guestid"));
+        Guest guest = gdao.getGuestByGuestID(guestid);
         
-        session.setAttribute("listBooking", listBooking);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        request.getRequestDispatcher("listBooking.jsp").forward(request, response);
-
+        String email = request.getParameter("email");
+        if(guest.getEmail() != null){
+            
+        }else{
+            
+        }
+        String bookingCode = request.getParameter("bookingcode");
+        sendResetEmail(email, bookingCode); // Handle hashing error
+        String noti = "Booking code has been sent to that email.";
+        request.setAttribute("noti", noti);
+        request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
     }
 
-    public static void main(String[] args) {
-        Date currentDate = new Date();
-        LocalDateTime dateTime = LocalDateTime.now();
-        System.out.println(dateTime);
+    private void sendResetEmail(String email, String bookingcode) {
+        // Email sending logic
+        String subject = "Booking code from ALIHOTEL";
+        String content = "Your booking code is: " + bookingcode;
+
+        // Set up your SMTP server and send the email (this is a simplified example)
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true"); // Enable STARTTLS
+
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("thaison02004@gmail.com", "fvwu vhci umtk dkpz");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("thaison02004@gmail.com"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            message.setSubject(subject);
+            message.setText(content);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

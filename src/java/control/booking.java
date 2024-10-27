@@ -125,7 +125,9 @@ public class booking extends HttpServlet {
             int deposit = Integer.parseInt(request.getParameter("deposit"));
             String noti = "Booking successfully!";
             int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
-            int paidstatus = Integer.parseInt(request.getParameter("paidstatus"));
+            
+            int paidstatus = 0;
+            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<Guest> listGuest = gdao.getAllGuests();
             Guest guestBooking = null;
             boolean guestExist = false;
@@ -187,7 +189,11 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus);// add information into booking table
+            if(checkinstatus == 1){
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,paymentMethod, currentDateTime);
+            }else{
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,paymentMethod, null);
+            }
             int bookingid = bdao.getNewBookingID();
             if (bookAllRoom == true) {
                 for (String roomID : selectedRoom) {
@@ -200,6 +206,7 @@ public class booking extends HttpServlet {
             }
             String bookingcode = utilConvert.toBase36(bookingid);
             request.setAttribute("code", bookingcode);
+            request.setAttribute("guestid", guestBooking.getGuestID());
             request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
         } catch (Exception e) {
             out.print(e);

@@ -45,11 +45,18 @@ public class bookingDetail extends HttpServlet {
         GuestDAO gdao = new GuestDAO();
         UserDAO udao = new UserDAO();
         RoomDao rdao = new RoomDao();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         int index = 1;
         if(request.getParameter("bookingid") != null){
             bookingid = Integer.parseInt(request.getParameter("bookingid"));
         }
-        
         int NoPage = util.pagination.getNoPageBookingDetail(bdao.getAllBookingRoomByBookingID(bookingid));
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
