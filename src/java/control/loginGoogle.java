@@ -32,7 +32,11 @@ public class loginGoogle extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String code = request.getParameter("code");
-        System.out.println(code);
+        if(code == null){
+            request.setAttribute("error", "Cancel login with Google.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }else{
+        System.out.println("COde"+code);
         String accessToken = getToken(code);
         UserGoogleDTO user = getUserInfo(accessToken);
         System.out.println(user);
@@ -61,6 +65,7 @@ public class loginGoogle extends HttpServlet {
             // Nếu email chưa được đăng ký, quay lại trang đăng nhập và hiện thông báo
             request.setAttribute("error", "Email chưa được đăng ký.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         }
     }
 

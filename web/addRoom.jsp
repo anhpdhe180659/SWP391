@@ -126,6 +126,7 @@
                                                                         />
                                                                 </div>
                                                             </div>
+                                                            <p class="error" style="display: none; color: red;font-size: 12px"></p>
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Clean Status</label>                  
@@ -231,13 +232,13 @@
             <script src="assets/js/kaiadmin.min.js"></script>
             <!-- Kaiadmin DEMO methods, don't include it in your project! -->
             <script src="assets/js/setting-demo2.js"></script>
-           
+
             <script>
-                document.querySelector('.close').editEventListener('click', function () {
-                    $('#editUserModal').modal('hide');
-                });
+                                            document.querySelector('.close').editEventListener('click', function () {
+                                                $('#editUserModal').modal('hide');
+                                            });
             </script>
-           
+
             <script>
                 function BackToList() {
                     window.location = "listRoomAdmin";
@@ -298,6 +299,23 @@
                 console.log(capacity);
             </script>
 
+            <script>
+                const roomNum = document.querySelector('input[name="roomNumber"]');
+                console.log(roomNum);
+                roomNum.onchange = function () {
+                    const value = roomNum.value;
+                    var re = new RegExp("^([0-9]{3,5})$");
+                    console.log(re);
+                    if (!re.test(value)) {
+                        const error = document.querySelector('.error');
+                        error.textContent = "Please input number with 3-5 digits";
+                        error.style.display = 'block';
+                    } else {
+                        const error = document.querySelector('.error');
+                        error.style.display = 'none'; // Hide error if input is valid
+                    }
+                }
+            </script>
     </body>
 </html>
 

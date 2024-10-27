@@ -137,9 +137,7 @@
                                                         Please select a gender.
                                                     </div>
                                                 </div>
-
                                             </div>
-
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label>
@@ -156,6 +154,15 @@
                                                     <input name="nationality" type="text" class="form-control" placeholder="Enter nationality" required />
                                                 </div>
                                             </div>
+                                            <!-- Thêm trường Email -->
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-group-default">
+                                                    <label>
+                                                        <i class="fa fa-envelope"></i> Email
+                                                    </label>
+                                                    <input name="email" type="email" maxlength="100" class="form-control" placeholder="Enter email address" required />
+                                                </div>
+                                            </div>
                                             <div class="col-sm-6"></div>
                                             <div class="col-sm-2 text-right">
                                                 <button type="submit" class="btn btn-primary btn-round">
@@ -165,9 +172,10 @@
                                         </div>
                                     </form>
 
+
                                     <c:if test="${not empty noti}">
                                         <h4><div class="noti" style="color: red">${noti}</div></h4>
-                                    </c:if>
+                                        </c:if>
 
 
                                 </div>
@@ -188,8 +196,8 @@
             <script src="assets/js/kaiadmin.min.js"></script>
 
             <script>
-                                        function validate() {
-                                        }
+                                            function validate() {
+                                            }
 
             </script>
 

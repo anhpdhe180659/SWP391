@@ -93,49 +93,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-flex align-items-center">
-                                            <nav
-                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-                                                >
-                                                <c:set value="${requestScope.keyword} " var="n"/>
-                                                <form action="searchRoom">
-                                                    <div class="input-group" >
-                                                        <div class="input-group-prepend">
-                                                            <button type="submit" class="btn btn-search pe-1">
-                                                                <i class="fa fa-search search-icon"></i>
-                                                            </button>
-                                                        </div>
-                                                        <c:if test="${n.length() < 2}">
-                                                            <input
-                                                                type="text"
-                                                                name="keyword"
-                                                                placeholder="Search room..."
-                                                                class="form-control"
-                                                                />
-                                                        </c:if>
-                                                        <c:if test="${n.length() > 1}">
-                                                            <input
-                                                                type="text"
-                                                                name="keyword"
-                                                                value="${n}"
-                                                                placeholder="Search room..."
-                                                                class="form-control"
-                                                                />
-                                                        </c:if>
-                                                    </div>
-                                                </form>
-                                            </nav>
-                                            <c:set value="${requestScope.noti}" var="noti" />
 
-                                            <button
-                                                class="btn btn-primary btn-round ms-auto"
-                                                onclick="addRoom()">
-                                                <i class="fa fa-plus"></i>
-                                                Add Room
-                                            </button>
-                                        </div>
-                                    </div>
                                     <div class="card-body row">
 
                                         <h3 class="fw-bold mb-3">Room Filter</h3>
@@ -171,6 +129,49 @@
                                     </div>
                                 </div>
                                 <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <nav
+                                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+                                                >
+                                                <c:set value="${requestScope.keyword} " var="n"/>
+                                                <form action="listRoomAdmin">
+                                                    <div class="input-group" >
+                                                        <div class="input-group-prepend">
+                                                            <button type="submit" class="btn btn-search pe-1">
+                                                                <i class="fa fa-search search-icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <c:if test="${n.length() < 2}">
+                                                            <input
+                                                                type="text"
+                                                                name="keyword"
+                                                                placeholder="Search room by room number..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                        <c:if test="${n.length() > 1}">
+                                                            <input
+                                                                type="text"
+                                                                name="keyword"
+                                                                value="${n}"
+                                                                placeholder="Search room by room number..."
+                                                                class="form-control"
+                                                                />
+                                                        </c:if>
+                                                    </div>
+                                                </form>
+                                            </nav>
+                                            <c:set value="${requestScope.noti}" var="noti" />
+
+                                            <button
+                                                class="btn btn-primary btn-round ms-auto"
+                                                onclick="addRoom()">
+                                                <i class="fa fa-plus"></i>
+                                                Add Room
+                                            </button>
+                                        </div>
+                                    </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table id="add-user" class="display table table-striped table-hover" >
@@ -240,7 +241,7 @@
                                                 <div class="demo">
                                                     <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">
                                                         <div style="width: 100px; align-content: end">${index} of ${Nopage} page</div>
-                                                        <li class="page-item ${index < 2 ? 'disabled' :'' } ">
+                                                        <li class="page-item ${index < 3 ? 'disabled' :'' } ">
                                                             <a class="page-link" href="listRoomAdmin?index=${index-1}&typeId=${requestScope.typeId}&statusId=${requestScope.statusId}&cleanId=${requestScope.cleanId}" aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                                 <span class="sr-only">Previous</span>
@@ -249,15 +250,15 @@
                                                         <c:choose>
                                                             <c:when test="${index <= 3}">
                                                                 <c:set var="startPage" value="1" />
-                                                                <c:set var="endPage" value="${Nopage > 5 ? 5 : Nopage}" />
+                                                                <c:set var="endPage" value="${Nopage > 6 ? 6 : Nopage}" />
                                                             </c:when>
                                                             <c:when test="${index > Nopage - 3}">
-                                                                <c:set var="startPage" value="${Nopage - 4 > 0 ? Nopage - 4 : 1}" />
+                                                                <c:set var="startPage" value="${Nopage - 6 > 0 ? Nopage - 6 : 1}" />
                                                                 <c:set var="endPage" value="${Nopage}" />
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <c:set var="startPage" value="${index - 2}" />
-                                                                <c:set var="endPage" value="${index + 2}" />
+                                                                <c:set var="startPage" value="${index - 3}" />
+                                                                <c:set var="endPage" value="${index + 3}" />
                                                             </c:otherwise>
                                                         </c:choose>
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">

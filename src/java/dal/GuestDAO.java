@@ -19,22 +19,23 @@ public class GuestDAO extends DBContext {
 
     public static void main(String[] args) {
         GuestDAO dao = new GuestDAO();
-        Guest guest = new Guest();
-        guest.setGuestID(1); // Giả định rằng chúng ta đang cập nhật khách hàng với ID 1
-        guest.setName("Nguyễn Văn An");
-        guest.setDateOfBirth(LocalDate.of(1985, 3, 15)); // Thiết lập ngày sinh
-        guest.setSex(1); // Giả định rằng 1 đại diện cho nam
-        guest.setAddress("123 Đường Lê Lợi, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh");
-        guest.setPhone("0901234567");
-        guest.setIdentification("CMND 079085001234");
-        guest.setNationality("Việt Nam");
-//        dao.editGuest(guest,1);
-        List<Guest> l = dao.getHiddenGuest();
+        Guest newGuest = new Guest();
+        newGuest.setName("Nguyen Van A");
+        newGuest.setDateOfBirth(LocalDate.of(1990, 5, 20));
+        newGuest.setSex(1); // 1 - Nam, 2 - Nữ
+        newGuest.setAddress("123 Main St, Ho Chi Minh");
+        newGuest.setPhone("0912345678");
+        newGuest.setIdentification("ID123456");
+        newGuest.setNationality("Vietnam");
+        newGuest.setEmail("nguyenvana@example.com");
+        newGuest.setIsHidden(0); // 0 - Không ẩn, 1 - Ẩn
+        dao.addGuest(newGuest);
+        List<Guest> l = dao.getAllGuests();
         for (Guest g : l) {
             System.out.println(g);
         }
-        System.out.println(dao.getNumberGuestByMonth());
-        System.out.println(dao.getGuestByGuestID(8));
+//        System.out.println(dao.getNumberGuestByMonth());
+//        System.out.println(dao.getGuestByGuestID(8));
 
     }
 
@@ -63,16 +64,17 @@ public class GuestDAO extends DBContext {
     public List<Guest> getAllGuests() {
         List<Guest> guests = new ArrayList<>();
         String sql = """
-                     SELECT GuestID
-                           ,Name
-                           ,DateOfBirth
-                           ,Sex
-                           ,Address
-                           ,Phone
-                           ,Identification
-                           ,Nationality
-                           ,isHidden
-                       FROM Guest""";
+                 SELECT GuestID
+                       ,Name
+                       ,DateOfBirth
+                       ,Sex
+                       ,Address
+                       ,Phone
+                       ,Identification
+                       ,Nationality
+                       ,isHidden
+                       ,Email
+                   FROM Guest""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -88,6 +90,7 @@ public class GuestDAO extends DBContext {
                 guest.setIdentification(rs.getString("Identification"));
                 guest.setNationality(rs.getString("Nationality"));
                 guest.setIsHidden(rs.getInt("isHidden"));
+                guest.setEmail(rs.getString("Email")); // Thiết lập giá trị cho trường Email
                 guests.add(guest);
             }
         } catch (Exception e) {
@@ -99,22 +102,23 @@ public class GuestDAO extends DBContext {
     public Guest getNewGuest() {
         Guest guest = new Guest();
         String sql = """
-                     SELECT GuestID
-                           ,Name
-                           ,DateOfBirth
-                           ,Sex
-                           ,Address
-                           ,Phone
-                           ,Identification
-                           ,Nationality
-                           ,isHidden
-                       FROM HotelManagement.Guest
-                       ORDER BY GuestID DESC
-                       LIMIT 1;""";
+                 SELECT GuestID
+                       ,Name
+                       ,DateOfBirth
+                       ,Sex
+                       ,Address
+                       ,Phone
+                       ,Identification
+                       ,Nationality
+                       ,isHidden
+                       ,Email
+                   FROM HotelManagement.Guest
+                   ORDER BY GuestID DESC
+                   LIMIT 1;""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {  // Chỉ cần kiểm tra một lần, không cần vòng lặp
                 guest.setGuestID(rs.getInt("GuestID"));
                 guest.setName(rs.getString("Name"));
                 guest.setDateOfBirth(rs.getDate("DateOfBirth").toLocalDate());
@@ -124,9 +128,10 @@ public class GuestDAO extends DBContext {
                 guest.setIdentification(rs.getString("Identification"));
                 guest.setNationality(rs.getString("Nationality"));
                 guest.setIsHidden(rs.getInt("isHidden"));
+                guest.setEmail(rs.getString("Email")); // Thiết lập giá trị cho Email
             }
         } catch (Exception e) {
-            System.out.println("Connect error");
+            System.out.println("Connect error: " + e.getMessage());
         }
         return guest;
     }
@@ -134,22 +139,23 @@ public class GuestDAO extends DBContext {
     public Guest getGuestByGuestID(int guestid) {
         Guest guest = new Guest();
         String sql = """
-                     SELECT  GuestID
-                           ,Name
-                           ,DateOfBirth
-                           ,Sex
-                           ,Address
-                           ,Phone
-                           ,Identification
-                           ,Nationality
-                           ,isHidden
-                       FROM Guest
-                       WHERE GuestID = ?""";
+                 SELECT  GuestID
+                       ,Name
+                       ,DateOfBirth
+                       ,Sex
+                       ,Address
+                       ,Phone
+                       ,Identification
+                       ,Nationality
+                       ,isHidden
+                       ,Email  -- Thêm trường Email vào truy vấn
+                   FROM Guest
+                   WHERE GuestID = ?""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, guestid);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) { // Thay đổi từ while sang if vì chỉ có 1 khách hàng cho mỗi GuestID
                 guest.setGuestID(rs.getInt("GuestID"));
                 guest.setName(rs.getString("Name"));
                 guest.setDateOfBirth(rs.getDate("DateOfBirth").toLocalDate());
@@ -159,26 +165,29 @@ public class GuestDAO extends DBContext {
                 guest.setIdentification(rs.getString("Identification"));
                 guest.setNationality(rs.getString("Nationality"));
                 guest.setIsHidden(rs.getInt("isHidden"));
+                guest.setEmail(rs.getString("Email")); // Thiết lập giá trị cho Email
             }
         } catch (Exception e) {
-            System.out.println("Connect error");
+            System.out.println("Connect error: " + e.getMessage());
         }
         return guest;
     }
 
     public void addGuest(Guest guest) {
         String query = """
-                       INSERT INTO Guest
-                                  (Name
-                                  ,DateOfBirth
-                                  ,Sex
-                                  ,Address
-                                  ,Phone
-                                  ,Identification
-                                  ,Nationality
-                                  ,isHidden)
-                            VALUES
-                                  (?,?,?,?,?,?,?,?)""";
+       INSERT INTO Guest
+                 (Name
+                 ,DateOfBirth
+                 ,Sex
+                 ,Address
+                 ,Phone
+                 ,Identification
+                 ,Nationality
+                 ,isHidden
+                 ,Email)  -- Thêm trường Email vào truy vấn
+           VALUES
+                 (?,?,?,?,?,?,?,?,?)""";
+
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setString(1, guest.getName());
             pre.setString(2, guest.getDateOfBirth().toString());
@@ -188,6 +197,7 @@ public class GuestDAO extends DBContext {
             pre.setString(6, guest.getIdentification());
             pre.setString(7, guest.getNationality());
             pre.setInt(8, 0);
+            pre.setString(9, guest.getEmail()); // Thiết lập giá trị cho Email
             pre.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -196,26 +206,28 @@ public class GuestDAO extends DBContext {
 
     public void updateGuest(Guest guest) {
         String query = """
-                   UPDATE Guest
-                   SET Name = ?,
-                       DateOfBirth = ?,
-                       Sex = ?,
-                       Address = ?,
-                       Phone = ?,
-                       Identification = ?,
-                       Nationality = ?,
-                       isHidden = ?
-                   WHERE GuestID = ?""";
+               UPDATE Guest
+               SET Name = ?,
+                   DateOfBirth = ?,
+                   Sex = ?,
+                   Address = ?,
+                   Phone = ?,
+                   Identification = ?,
+                   Nationality = ?,
+                   isHidden = ?,
+                   Email = ?  -- Thêm trường Email vào cập nhật
+               WHERE GuestID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query)) {
             pre.setString(1, guest.getName());
-            pre.setString(2, guest.getDateOfBirth().toString()); // Chuyển đổi LocalDate sang chuỗi
+            pre.setString(2, guest.getDateOfBirth().toString());
             pre.setInt(3, guest.getSex());
             pre.setString(4, guest.getAddress());
             pre.setString(5, guest.getPhone());
             pre.setString(6, guest.getIdentification());
             pre.setString(7, guest.getNationality());
-            pre.setInt(8, guest.getIsHidden()); // Giá trị ẩn (isHidden)
-            pre.setInt(9, guest.getGuestID());  // Đặt GuestID cho điều kiện WHERE
+            pre.setInt(8, guest.getIsHidden());
+            pre.setString(9, guest.getEmail()); // Thiết lập giá trị cho Email
+            pre.setInt(10, guest.getGuestID()); // Đặt GuestID cho điều kiện WHERE
 
             pre.executeUpdate();
         } catch (Exception e) {
@@ -225,9 +237,9 @@ public class GuestDAO extends DBContext {
 
     public void updateGuestHiddenStatus(int guestID, int isHidden) {
         String query = """
-                   UPDATE Guest
-                   SET isHidden = ?
-                   WHERE GuestID = ?""";
+               UPDATE Guest
+               SET isHidden = ?
+               WHERE GuestID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, isHidden); // 0: không ẩn, 1: ẩn
             pre.setInt(2, guestID);
@@ -240,17 +252,18 @@ public class GuestDAO extends DBContext {
     public List<Guest> getHiddenGuest() {
         List<Guest> hiddenGuests = new ArrayList<>();
         String sql = """
-                 SELECT  GuestID
-                       ,Name
-                       ,DateOfBirth
-                       ,Sex
-                       ,Address
-                       ,Phone
-                       ,Identification
-                       ,Nationality
-                       ,isHidden
-                 FROM Guest
-                 WHERE isHidden = 1""";
+             SELECT  GuestID
+                   ,Name
+                   ,DateOfBirth
+                   ,Sex
+                   ,Address
+                   ,Phone
+                   ,Identification
+                   ,Nationality
+                   ,isHidden
+                   ,Email  -- Thêm trường Email vào truy vấn
+             FROM Guest
+             WHERE isHidden = 1""";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
@@ -265,7 +278,8 @@ public class GuestDAO extends DBContext {
                 guest.setIdentification(rs.getString("Identification"));
                 guest.setNationality(rs.getString("Nationality"));
                 guest.setIsHidden(rs.getInt("isHidden"));
-                hiddenGuests.add(guest);  // Add the hidden guest to the list
+                guest.setEmail(rs.getString("Email")); // Thiết lập giá trị cho Email
+                hiddenGuests.add(guest);  // Thêm khách ẩn vào danh sách
             }
         } catch (Exception e) {
             System.out.println("Connect error: " + e.getMessage());
@@ -276,10 +290,10 @@ public class GuestDAO extends DBContext {
     public List<Guest> getPagedAndFilteredGuests(int offset, int noOfRecords, String guestName, String nationality) {
         List<Guest> guests = new ArrayList<>();
         String sql = """
-                     SELECT GuestID, Name, DateOfBirth, Sex, Address, Phone, Identification, Nationality, isHidden
-                     FROM Guest
-                     WHERE 1=1
-                     """;
+                 SELECT GuestID, Name, DateOfBirth, Sex, Address, Phone, Identification, Nationality, isHidden, Email
+                 FROM Guest
+                 WHERE 1=1
+                 """;
 
         if (guestName != null && !guestName.trim().isEmpty()) {
             sql += " AND Name LIKE ?";
@@ -316,6 +330,7 @@ public class GuestDAO extends DBContext {
                 guest.setIdentification(rs.getString("Identification"));
                 guest.setNationality(rs.getString("Nationality"));
                 guest.setIsHidden(rs.getInt("isHidden"));
+                guest.setEmail(rs.getString("Email")); // Thiết lập giá trị cho Email
                 guests.add(guest);
             }
         } catch (Exception e) {

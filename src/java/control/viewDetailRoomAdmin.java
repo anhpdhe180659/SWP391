@@ -5,6 +5,7 @@
 package control;
 
 import dal.RoomDao;
+import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,7 +14,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.Room;
+import model.RoomType;
 
 /**
  *
@@ -63,7 +66,7 @@ public class viewDetailRoomAdmin extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if ((int)session.getAttribute("role") !=1) {
+        } else if ((int) session.getAttribute("role") != 1) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
@@ -71,6 +74,9 @@ public class viewDetailRoomAdmin extends HttpServlet {
         int roomId = Integer.parseInt(request.getParameter("id"));
         RoomDao roomDao = new RoomDao();
         Room room = roomDao.findRoomById(roomId);
+        RoomTypeDAO roomtypeDao = new RoomTypeDAO();
+        List<RoomType> listRoom = roomtypeDao.getAll();
+        session.setAttribute("roomType", listRoom);
         session.setAttribute("detailRoomAdmin", room);
         response.sendRedirect("roomDetailAdmin.jsp");
     }

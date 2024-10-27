@@ -76,6 +76,10 @@
                                                     <td>${guest.nationality}</td>
                                                 </tr>
                                                 <tr>
+                                                    <td><strong>Email:</strong></td> <!-- Thêm dòng mới cho Email -->
+                                                    <td>${guest.email}</td> <!-- Hiển thị giá trị Email -->
+                                                </tr>
+                                                <tr>
                                                     <td><strong>Is Hidden:</strong></td>
                                                     <td>
                                                         <c:choose>
@@ -86,6 +90,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+
                                         <div class="form-group mt-4">
                                             <a href="listGuest" class="btn btn-secondary" style="border-radius: 5px;">Back to Guest List</a>
                                         </div>

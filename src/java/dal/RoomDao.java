@@ -145,13 +145,14 @@ public class RoomDao extends DBContext {
         return allRoom;
     }
 
-    public List<Room> loadMore(int index, int typeId, int statusId, int cleanId) {
+    public List<Room> loadMore(int index, int typeId, int statusId, int cleanId, int roomNumber) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
                    SELECT * FROM HotelManagement.Room
                    WHERE (? = 0 OR TypeID = ?)
                      AND (? = 0 OR StatusID = ?)
                      AND (? = 0 OR CleanID = ?)
+                     AND (? = 0 OR RoomNumber = ?)  
                    ORDER BY RoomID
                    LIMIT 6 OFFSET ?;
                    """;
@@ -163,7 +164,9 @@ public class RoomDao extends DBContext {
             pre.setInt(4, statusId); // Gán giá trị statusId cho điều kiện StatusID
             pre.setInt(5, cleanId);  // Nếu cleanId = 0 thì bỏ qua điều kiện CleanID
             pre.setInt(6, cleanId);  // Gán giá trị cleanId cho điều kiện CleanID
-            pre.setInt(7, 6 * (index - 1));  // Offset
+            pre.setInt(7, roomNumber);
+            pre.setInt(8, roomNumber);
+            pre.setInt(9, 6 * (index - 1));  // Offset
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -179,12 +182,13 @@ public class RoomDao extends DBContext {
         return listRooms;
     }
 
-    public double getTotalRooms(int typeId, int statusId, int cleanId) {
+    public double getTotalRooms(int typeId, int statusId, int cleanId, int roomNumber) {
         String query = """
                    SELECT COUNT(*) AS total FROM HotelManagement.Room
                    WHERE (? = 0 OR TypeID = ?)
                      AND (? = 0 OR StatusID = ?)
                      AND (? = 0 OR CleanID = ?)
+                     AND (? = 0 OR RoomNumber = ?)
                    """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, typeId);  // For TypeID
@@ -193,7 +197,8 @@ public class RoomDao extends DBContext {
             pre.setInt(4, statusId);  // Match the second placeholder
             pre.setInt(5, cleanId);  // For CleanID
             pre.setInt(6, cleanId);  // Match the third placeholder
-
+            pre.setInt(7, roomNumber);
+            pre.setInt(8, roomNumber);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 return rs.getInt("total");
@@ -332,7 +337,7 @@ public class RoomDao extends DBContext {
         dao.getAllRooms().forEach((r) -> {
             System.out.println(r.getRoomId());
         });
-        System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1) / 5));
+        System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1,10) / 5));
 //        Room room = new Room();
 //        room.setRoomNumber("601");
 //        room.setCleanId(1);
