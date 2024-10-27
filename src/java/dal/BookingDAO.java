@@ -315,7 +315,7 @@ public class BookingDAO extends DBContext {
         BookingDAO bdao = new BookingDAO();
         Date currentDate = new Date();
         System.out.println("Hello");
-        
+
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int paymentMethod, LocalDateTime actualCheckInTime) {
@@ -331,7 +331,7 @@ public class BookingDAO extends DBContext {
                                   ,BookingDate
                                   ,TotalPrice
                                   ,PaymentMethod
-                                  ,ActualCheckInDate  )
+                                  ,ActualCheckInDate)
                             VALUES
                                   (?,?,?,?,?,?,?,?,?)""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -343,7 +343,11 @@ public class BookingDAO extends DBContext {
             pre.setDate(6, sqlDate);
             pre.setInt(7, 0);
             pre.setInt(8, paymentMethod);
-            pre.setTimestamp(9, Timestamp.valueOf(actualCheckInTime));
+            if (actualCheckInTime != null) {
+                pre.setTimestamp(9, Timestamp.valueOf(actualCheckInTime));
+            } else {
+                pre.setNull(9, java.sql.Types.TIMESTAMP);
+            }
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -72,7 +72,7 @@
                                         <h4 class="fw-bold mb-3">Booking Code: <span style="color: red">${code}</span></h4>
                                         <div style="display: flex">
                                             <div class="col-sm-4">
-                                                <span style="color: green">${noti}</span>
+                                                <span style="color: green; font-weight: bold">${noti}</span>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">

@@ -48,8 +48,8 @@ public class bookingDetail extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }

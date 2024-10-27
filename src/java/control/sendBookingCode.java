@@ -49,8 +49,8 @@ public class sendBookingCode extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
@@ -59,14 +59,13 @@ public class sendBookingCode extends HttpServlet {
         Guest guest = gdao.getGuestByGuestID(guestid);
         
         String email = request.getParameter("email");
-        if(guest.getEmail() != null){
-            
-        }else{
-            
+        if(guest.getEmail() == null){
+            guest.setEmail(email);
+            gdao.updateGuest(guest);
         }
         String bookingCode = request.getParameter("bookingcode");
         sendResetEmail(email, bookingCode); // Handle hashing error
-        String noti = "Booking code has been sent to that email.";
+        String noti = "Booking code has been sent successfully!";
         request.setAttribute("noti", noti);
         request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
     }
@@ -85,13 +84,13 @@ public class sendBookingCode extends HttpServlet {
 
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("thaison02004@gmail.com", "fvwu vhci umtk dkpz");
+                return new PasswordAuthentication("ali33hotel@gmail.com", "emyj cyjy lxjd bkbw");
             }
         });
 
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("thaison02004@gmail.com"));
+            message.setFrom(new InternetAddress("ali33hotel@gmail.com"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject(subject);
             message.setText(content);

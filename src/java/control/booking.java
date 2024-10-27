@@ -162,7 +162,7 @@ public class booking extends HttpServlet {
                 return;
             }
             if (guestExist == false) {
-                gdao.addGuest(guest);// add new guest in database 
+                gdao.addGuest(guest);
                 guestBooking = gdao.getNewGuest();
             }
             String[] selectedRoom = request.getParameterValues("roomSelected");
