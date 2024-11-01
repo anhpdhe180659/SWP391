@@ -46,12 +46,15 @@ public class booking extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
+        
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
+        }
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
         }
         RoomDao rd = new RoomDao();
         List<Room> listRoomAvailable = rd.getAllRoomsAvailable();// tat ca room, ko chi available
