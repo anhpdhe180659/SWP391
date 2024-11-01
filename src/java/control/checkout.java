@@ -4,17 +4,29 @@
  */
 package control;
 
+import config.PayOSConfig;
+import static config.PayOSConfig.apiKey;
+import static config.PayOSConfig.checkSum;
+import static config.PayOSConfig.clientID;
 import dal.BookingDAO;
 import dal.GuestDAO;
+import dal.RoomDao;
+import dal.ServiceDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -24,7 +36,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import model.Booking;
+import model.BookingRoom;
+import model.BookingService;
 import model.Guest;
+import model.Room;
+import model.RoomType;
+import model.Service;
+import vn.payos.PayOS;
+import vn.payos.type.CheckoutResponseData;
+import vn.payos.type.ItemData;
+import vn.payos.type.PaymentData;
 
 /**
  *
@@ -43,6 +64,9 @@ public class checkout extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     public static void sendBillMail(Booking b, Guest g) {
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedDeposit = currencyFormatter.format(b.getDeposit());
+        String formattedTotal = currencyFormatter.format(b.getTotalPrice());
         // Set up your SMTP server and send the email (this is a simplified example)
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -52,7 +76,7 @@ public class checkout extends HttpServlet {
         String email = "anhpdhe180659@fpt.edu.vn";
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("thaison02004@gmail.com", "fvwu vhci umtk dkpz");
+                return new PasswordAuthentication("ali33hotel@gmail.com", "emyj cyjy lxjd bkbw");
             }
         });
 
@@ -60,7 +84,7 @@ public class checkout extends HttpServlet {
             MimeMessage message = new MimeMessage(session);
             // set header kieu noi dung
             message.addHeader("Content-type", "text/HTML; charset=UTF-8");
-            message.setFrom(new InternetAddress("thaison02004@gmail.com"));
+            message.setFrom(new InternetAddress("ali33hotel@gmail.com"));
             // nguoi nhan
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
             // tieu de
@@ -86,27 +110,28 @@ public class checkout extends HttpServlet {
                     + ".highlight { color: #E76F51; font-weight: bold; }\r\n"
                     + "</style>\r\n"
                     + "</head>\r\n"
-                    + "<body>\r\n"
+                    + "<body onload=\"formatCurrency()\">\r\n"
                     + "<div class='bill-container'>\r\n"
                     + "<div class='header'>\r\n"
                     + "<h1>AliHotel</h1>\r\n"
-                    + "<p>Address:Beta Building, FPT University Ha Noi, Hoa Lac Hightech Park, Thach That, Ha Noi</p>\r\n"
+                    + "<p>Address: Beta Building, FPT University Ha Noi, Hoa Lac Hightech Park, Thach That, Ha Noi</p>\r\n"
                     + "<p>Hotline: 1900 1833</p>\r\n"
                     + "</div>\r\n"
                     + "<hr>\r\n"
                     + "<div class='content-section'>\r\n"
                     + "<h2>Hotel E-invoice</h2>\r\n"
                     + "<p><strong>Customer Name:</strong> <span class='highlight'>" + g.getName() + "</span></p>\r\n"
-                    + "<p><strong>Booking Date:</strong>" + b.getBookingDate() + "</p>\r\n"
-                    + "<p><strong>Check-in Date:</strong></p>\r\n"
+                    + "<p><strong>Booking Date:</strong> " + b.getBookingDate() + "</p>\r\n"
+                    + "<p><strong>Check-in Date:</strong>1010101</p>\r\n"
                     + "<p><strong>Check-out Date:</strong> 2024-10-25</p>\r\n"
-                    + "<p><strong>Deposit :</strong>" + b.getDeposit() + "</p>\r\n"
-                    + "<p><strong>Total Amount:</strong> <span class='highlight'>" + b.getTotalPrice() + "</span></p>\r\n"
+                    + "<p><strong>Deposit:</strong> <span id='depositAmount'>" + formattedDeposit.substring(0, formattedDeposit.length() - 2) + "VND</span></p>\r\n"
+                    + "<p><strong>Total Amount:</strong> <span class='highlight' id='totalAmount'>" + formattedTotal.substring(0, formattedTotal.length() - 2) + "VND</span></p>\r\n"
                     + "</div>\r\n"
                     + "<hr>\r\n"
                     + "<div class='footer'>\r\n"
                     + "<p>Thank you for staying with us at AliHotel!</p>\r\n"
                     + "<p>&copy; AliHotel - 1900 1833 - FPT University Ha Noi</p>\r\n"
+                    + "<p>For more information, contact <a href='mailto:ali33hotel@gmail.com'>ali33hotel@gmail.com</a></p>\r\n"
                     + "</div>\r\n"
                     + "</div>\r\n"
                     + "</body>\r\n"
@@ -116,6 +141,62 @@ public class checkout extends HttpServlet {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static String generatePayUrlWithPayOs(Booking b, Guest g, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int totalAmount = 0;
+            RoomDao rDao = new RoomDao();
+            ServiceDAO svDao = new ServiceDAO();
+            BookingDAO bkDao = new BookingDAO();
+            //get all room is booked in this booking
+            List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(b.getBookingID());
+            List<ItemData> listItems = new ArrayList<>();
+            // add each room with it's price to item list
+            for (BookingRoom bkRoom : allBookingRoom) {
+                Room room = rDao.getRoomByRoomID(bkRoom.getRoomID());
+                ItemData item = ItemData.builder()
+                        .name(room.getRoomNumber() + "")
+                        .price(bkRoom.getPrice())
+                        .quantity(bkRoom.getNumOfNight())
+                        .build();
+                listItems.add(item);
+                //increase total amount
+                totalAmount += bkRoom.getPrice()*bkRoom.getNumOfNight();
+            };
+            List<BookingService> bookingServices = bkDao.getAllBookingServiceByBookingID(b.getBookingID());
+            if (!bookingServices.isEmpty()) {
+                 // add each service with it's price and quantity to item list
+                for (BookingService bkService : bookingServices) {
+                    Service sv = svDao.findService(bkService.getServiceID());
+                    ItemData item = ItemData.builder()
+                            .name(sv.getName())
+                            .price(sv.getPrice())
+                            .quantity(bkService.getQuantity())
+                            .build();
+                    listItems.add(item);
+                }
+            }
+            PaymentData paymentData = PaymentData.builder().amount(totalAmount)
+                    .cancelUrl("http://localhost:8080/SWP391/cancel")
+                    .returnUrl("http://localhost:8080/SWP391/success")
+                    .description("Thanh toan tien su dung dich vu trong khach san cua khach hang : " + g.getName())
+                    .orderCode(Long.parseLong(b.getBookingID() + ""))
+                    .items(listItems)
+                    .build();
+            PayOS pay = new PayOS(PayOSConfig.clientID, PayOSConfig.apiKey, PayOSConfig.checkSum);
+            CheckoutResponseData check = pay.createPaymentLink(paymentData);
+            String payUrl = check.getCheckoutUrl();
+            return payUrl;
+        } catch (Exception ex) {
+            Logger.getLogger(checkout.class.getName()).log(Level.SEVERE, null, ex);
+            return "error";
+        }
+    }
+
+    public static void main(String[] args) {
+        sendBillMail(new Booking(3, 2, 2000, 1, 1, 2, new Date(), 10000000), new Guest(1, "Duc Anh", LocalDate.now(), 1, "anhpdhe180659@fpt.edu.vn", "Thai Binh", "0867806182", "1212121212", "VN", 1));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -137,6 +218,12 @@ public class checkout extends HttpServlet {
         int guestId = booking.getGuestID();
         GuestDAO gDao = new GuestDAO();
         Guest guest = gDao.getGuestByGuestID(guestId);
+        String payurl = generatePayUrlWithPayOs(booking, guest, request, response);
+        if (payurl == null || payurl.equals("error")) {
+            response.sendRedirect("error");
+        } else {
+            response.sendRedirect(payurl);
+        }
     }
 
     /**

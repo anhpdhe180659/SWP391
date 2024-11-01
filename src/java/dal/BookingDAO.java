@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import model.Booking;
 import model.BookingRoom;
+import model.BookingService;
 
 /**
  *
@@ -131,6 +132,32 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return allBookingRoom;
+    }
+
+    public List<BookingService> getAllBookingServiceByBookingID(int bookingid) {
+        List<BookingService> allBookingService = new ArrayList<>();
+        String query = """
+                       SELECT BookingID
+                        ,ServiceID
+                        ,Quantity
+                        ,TotalPrice
+                        FROM HotelManagement.BookingService
+                       WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBookingService.add(new BookingService(
+                        rs.getInt("BookingID"),
+                        rs.getInt("ServiceID"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("TotalPrice")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBookingService;
     }
 
     public List<BookingRoom> getNext5BookingRoomByBookingID(int bookingid, int index) {
@@ -314,8 +341,9 @@ public class BookingDAO extends DBContext {
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();
         Date currentDate = new Date();
-        System.out.println("Hello");
-
+        bdao.getAllBookingServiceByBookingID(1).forEach((r)->{
+            System.out.println(r.getBookingID());
+        });
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int paymentMethod, LocalDateTime actualCheckInTime) {
