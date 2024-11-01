@@ -93,13 +93,13 @@ public class forgotpassword extends HttpServlet {
 
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("thaison02004@gmail.com", "fvwu vhci umtk dkpz");
+                return new PasswordAuthentication("ali33hotel@gmail.com", "emyj cyjy lxjd bkbw");
             }
         });
 
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("thaison02004@gmail.com"));
+            message.setFrom(new InternetAddress("ali33hotel@gmail.com"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.setSubject(subject);
             message.setText(content);
