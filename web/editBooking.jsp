@@ -235,14 +235,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3">
-                                                    <div class="form-group" style="height: 131.175px;">
+<!--                                                    <div class="form-group" style="height: 131.175px;">
                                                         <label for="exampleFormControlSelect2">List room booked</label>
                                                         <select multiple="" class="form-control" id="exampleFormControlSelect2" style="height: 132.775px;">
                                                             <c:forEach items="${requestScope.listRoom}" var="s">
                                                                 <option>Room ${s.roomNumber}</option>
                                                             </c:forEach>
                                                         </select>
-                                                    </div>
+                                                    </div>-->
                                                 </div>
 
 

@@ -41,7 +41,6 @@ public class listUser extends HttpServlet {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        
         UserDAO udao = new UserDAO();
         int index = 1;
         int NoPage = getNoPage(udao.getAllUser());
