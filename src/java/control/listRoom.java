@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Booking;
 import model.BookingRoom;
@@ -75,10 +76,12 @@ public class listRoom extends HttpServlet {
         //get booking 
         BookingDAO bkDao = new BookingDAO();
         List<Booking> bookings = bkDao.getAllBooking();
+        List<BookingRoom> unpaidBookings = bkDao.getAllBookingUnpaid();
         List<BookingRoom> bookingRooms = bkDao.getAllBookingRoom();
         GuestDAO gDao = new GuestDAO();
         List<Guest> guests = gDao.getAllGuests();
         //set attr
+        session.setAttribute("unpaidBooking", unpaidBookings);
         session.setAttribute("bookings", bookings);
         session.setAttribute("bookingRooms", bookingRooms);
         session.setAttribute("guests", guests);

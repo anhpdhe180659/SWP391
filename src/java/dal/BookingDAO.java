@@ -341,7 +341,7 @@ public class BookingDAO extends DBContext {
     public static void main(String[] args) {
         BookingDAO bdao = new BookingDAO();
         Date currentDate = new Date();
-        bdao.getAllBookingServiceByBookingID(1).forEach((r)->{
+        bdao.getAllBookingServiceByBookingID(1).forEach((r) -> {
             System.out.println(r.getBookingID());
         });
     }
@@ -562,6 +562,58 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return allBooking;
+    }
+
+    public List<BookingRoom> getAllBookingUnpaid() {
+        List<BookingRoom> unpaidBookings = new ArrayList<>();
+        String query = "SELECT br.BookingID, br.RoomID, br.NumOfNight, br.CheckInDate, br.CheckOutDate, br.Price "
+                + "FROM Booking b join BookingRoom br "
+                + "WHERE br.BookingID = b.BookingID and b.PaidStatus = 0";
+
+        try (
+                PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                BookingRoom booking = new BookingRoom(
+                        rs.getInt("BookingID"),
+                        rs.getInt("RoomID"),
+                        rs.getInt("NumOfNight"),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime(),
+                        rs.getTimestamp("CheckOutDate").toLocalDateTime(),
+                        rs.getInt("Price"));
+                unpaidBookings.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return unpaidBookings;
+    }
+
+    public void updatePaidStatus(Booking booking) {
+        String query = """
+                       UPDATE HotelManagement.Booking
+                          SET PaidStatus = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, booking.getPaidStatus());
+            pre.setInt(2, booking.getBookingID());
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateTotalPrice(int bookingID, int totalPrice) {
+        String query = """
+                       UPDATE HotelManagement.Booking
+                          SET TotalPrice = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, totalPrice);
+            pre.setInt(2, bookingID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }
