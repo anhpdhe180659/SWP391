@@ -172,7 +172,7 @@
                                                 <div  class="card-header">
                                                     <h1 class="text-secondary"><i class="fas fa-home"> Room: ${s.roomNumber}</i></h1>
                                                     <c:if test="${s.statusId == 2}">
-                                                        <c:forEach items="${sessionScope.bookingRooms}" var="b">
+                                                        <c:forEach items="${sessionScope.unpaidBooking}" var="b">
                                                             <c:if test="${s.roomId == b.roomID}"> 
                                                                 <c:forEach items="${sessionScope.bookings}" var="bk">
                                                                     <c:if test="${b.bookingID == bk.bookingID}">
@@ -195,7 +195,11 @@
                                                                 <button class="maintaince button btn-warning" data-room-id="${s.roomId}" >Maintance</button>
                                                             </c:when>
                                                             <c:when test="${s.statusId == 2}">
-                                                                <a class="button" href="checkOut?roomId=${s.roomId}">Check out</a>
+                                                                <c:forEach items="${sessionScope.unpaidBooking}" var="bk">
+                                                                    <c:if test="${bk.roomID == s.roomId}">
+                                                                        <a role="button" class="button " href="checkout?bookingId=${bk.bookingID}">Check out</a>
+                                                                    </c:if>
+                                                                </c:forEach>
                                                             </c:when>
                                                             <c:when test="${s.statusId == 3}">
                                                                 <button id="${s.roomId}" data-room-id="${s.roomId}" class="available button btn-success">Available</button>

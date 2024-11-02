@@ -41,7 +41,8 @@ public class addUser extends HttpServlet {
         HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else if ((int)session.getAttribute("role") != 1) {
+        }
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
             request.setAttribute("error", "Please sign in with admin account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
@@ -89,15 +90,15 @@ public class addUser extends HttpServlet {
             if(request.getParameter("password") != null){
                 user.setPassword(hashPassword(password));
             }
-            String email = request.getParameter("email");user.setEmail(email);
+            String email = request.getParameter("email").trim();user.setEmail(email);
             int role = Integer.parseInt(request.getParameter("role"));user.setRole(role);
             int status = Integer.parseInt(request.getParameter("status"));user.setStatus(status);
-            String Name = request.getParameter("name");user.setName(Name);
+            String Name = request.getParameter("name").trim();user.setName(Name);
             String DateOfBirth = request.getParameter("birthday");user.setDateOfBirth(DateOfBirth);
             int Sex = Integer.parseInt(request.getParameter("sex"));user.setSex(Sex);
-            String Address = request.getParameter("address");user.setAddress(Address);
-            String Phone = request.getParameter("phone");user.setPhone(Phone);
-            String Identification = request.getParameter("identification"); user.setIdentification(Identification);
+            String Address = request.getParameter("address").trim();user.setAddress(Address);
+            String Phone = request.getParameter("phone").trim();user.setPhone(Phone);
+            String Identification = request.getParameter("identification").trim(); user.setIdentification(Identification);
             String StartDate = request.getParameter("startdate");user.setStartDate(StartDate);
             int Salary = Integer.parseInt(request.getParameter("salary"));user.setSalary(Salary);
             
