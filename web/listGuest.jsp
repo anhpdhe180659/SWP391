@@ -106,6 +106,7 @@
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Date of Birth</th>
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Gender</th>
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Phone</th>
+                                                    <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Email</th> <!-- Thêm cột Email -->
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Action</th>
                                                 </tr>
                                             </thead>
@@ -127,6 +128,7 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td style="border-right: 1px solid #ddd;">${g.phone}</td>
+                                                            <td style="border-right: 1px solid #ddd;">${g.email}</td> <!-- Thêm giá trị Email -->
                                                             <td style="border-right: 1px solid #ddd;">
                                                                 <div class="form-button-action">
                                                                     <a href="editGuest?guestID=${g.guestID}">
@@ -148,6 +150,7 @@
                                                     </c:if>
                                                 </c:forEach>
                                             </tbody>
+
                                         </table>
                                     </div>
                                 </div>
@@ -178,28 +181,28 @@
 
 
         <script>
-                                                                        $(document).ready(function () {
-                                                                            $('.table').DataTable();
-                                                                        });
+                            $(document).ready(function () {
+                                $('.table').DataTable();
+                            });
 
-                                                                        function addGuest() {
-                                                                            window.location.href = "addGuest";
-                                                                        }
+                            function addGuest() {
+                                window.location.href = "addGuest";
+                            }
 
-                                                                        function viewHiddenGuests() {
-                                                                            window.location.href = "hiddenListGuest";
-                                                                        }
+                            function viewHiddenGuests() {
+                                window.location.href = "hiddenListGuest";
+                            }
 
-                                                                        function doHidden(guestID) {
-                                                                            if (confirm('Are you sure you want to hide this guest?')) {
-                                                                                window.location.href = "hideGuest?guestID=" + guestID;
-                                                                            }
-                                                                        }
-                                                                        function doEdit(guestID) {
-                                                                            if (confirm('Are you sure you want to edit this guest?')) {
-                                                                                window.location.href = "editGuest?guestID=" + guestID;
-                                                                            }
-                                                                        }
+                            function doHidden(guestID) {
+                                if (confirm('Are you sure you want to hide this guest?')) {
+                                    window.location.href = "hideGuest?guestID=" + guestID;
+                                }
+                            }
+                            function doEdit(guestID) {
+                                if (confirm('Are you sure you want to edit this guest?')) {
+                                    window.location.href = "editGuest?guestID=" + guestID;
+                                }
+                            }
 
         </script>
         <script>

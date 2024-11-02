@@ -101,7 +101,7 @@
                                     <div class="card-header">
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
-                                    <form action="booking" method="POST" onsubmit="return validate()">
+                                    <form action="booking" method="POST">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
@@ -195,7 +195,7 @@
                                                                         <%
                                                                            }
                                                                         %>
-                                                                        
+
                                                                     </td>
                                                                 </tr>
                                                                 <%
@@ -233,7 +233,10 @@
                                                                     name="phone"
                                                                     maxlength="50"
                                                                     placeholder="Enter phone number"
+                                                                    pattern="^\d{10,15}$"
+                                                                    title="Valid phone number must be 10 to 15 digits long"
                                                                     required
+
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -260,6 +263,8 @@
                                                                     name="identification"
                                                                     maxlength="20"
                                                                     placeholder="Enter identification"
+                                                                    pattern="(^[A-Z0-9]{8}$)|^[0-9]{10}$)|(^[0-9]{12}$)" 
+                                                                    title="Valid ID contains 8, 10 or 12 digits and uppercase letters"
                                                                     required
                                                                     />
                                                             </div>
@@ -288,7 +293,7 @@
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
                                                             <div class="form-group">
-                                                                <label for="iden"><i class="far fa-calendar-check"></i> Check-in Date</label>
+                                                                <label for="iden"><i class="far fa-calendar-check"></i> Expected Check-in Date</label>
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
@@ -299,7 +304,7 @@
                                                                     />
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="address"><i class="far fa-calendar-times"></i> Check-out Date</label>
+                                                                <label for="address"><i class="far fa-calendar-times"></i> Expected Check-out Date</label>
                                                                 <input
                                                                     type="date"
                                                                     class="form-control"
@@ -311,40 +316,12 @@
                                                                 <!--datetime-local-->
                                                             </div>
                                                             <div class="form-group">
-                                                                <label><i class="fas fa-transgender"></i> Gender</label><br />
-                                                                <div class="d-flex">
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="gender"
-                                                                            id="flexRadioDefault1"
-                                                                            value="1"
-                                                                            checked
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="flexRadioDefault1"
-                                                                            >
-                                                                            Male
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="gender"
-                                                                            id="flexRadioDefault2"
-
-                                                                            value="0"
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="flexRadioDefault2"
-                                                                            >
-                                                                            Female
-                                                                        </label>
-                                                                    </div>
+                                                                <label for="paymentMethod"><i class="far fa-credit-card"></i> Payment Method</label>
+                                                                <div class="form-group form-group-default">
+                                                                    <select id="paymentMethod" name="paymentMethod" class="form-control">
+                                                                        <option value="1">Cash</option>
+                                                                        <option value="2">Bank transfer</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -399,37 +376,39 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label><i class="fab fa-amazon-pay"></i> Paid status</label><br />
+
+                                                                <label><i class="fas fa-transgender"></i> Gender</label><br />
                                                                 <div class="d-flex">
                                                                     <div class="form-check">
                                                                         <input
                                                                             class="form-check-input"
                                                                             type="radio"
-                                                                            name="paidstatus"
-                                                                            id="check3"
-                                                                            value="0"
+                                                                            name="gender"
+                                                                            id="flexRadioDefault1"
+                                                                            value="1"
                                                                             checked
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
-                                                                            for="check3"
+                                                                            for="flexRadioDefault1"
                                                                             >
-                                                                            Not yet
+                                                                            Male
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check">
                                                                         <input
                                                                             class="form-check-input"
                                                                             type="radio"
-                                                                            name="paidstatus"
-                                                                            id="check4"
-                                                                            value="1"
+                                                                            name="gender"
+                                                                            id="flexRadioDefault2"
+
+                                                                            value="0"
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
-                                                                            for="check4"
+                                                                            for="flexRadioDefault2"
                                                                             >
-                                                                            Paid
+                                                                            Female
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -540,31 +519,31 @@
             }
         </script>
         <script>
-            function validate() {
-                var email = document.getElementById("email").value;
-                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-                if (!regex.test(email)) {
-                    alert("Please enter a valid Email address (example@gmail.com)");
-                    document.getElementById("email").focus();
-                    return false;
-                }
-                var phone = document.getElementById("phone").value;
-                var regex1 = /^\d{10}$/;
-
-                if (!regex1.test(phone)) {
-                    alert("Please enter a valid phone number with 10 digit");
-                    document.getElementById("phone").focus();
-                    return false;
-                }
-                var identification = document.getElementById("identification").value;
-                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-                if (!regex2.test(identification)) {
-                    alert("Please enter a valid identification number with 12 digit");
-                    document.getElementById("identification").focus();
-                    return false;
-                }
-                return true;
-            }
+//            function validate() {
+//                var email = document.getElementById("email").value;
+//                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+//                if (!regex.test(email)) {
+//                    alert("Please enter a valid Email address (example@gmail.com)");
+//                    document.getElementById("email").focus();
+//                    return false;
+//                }
+//                var phone = document.getElementById("phone").value.trim(); // Trim spaces from input
+//                var regex1 = /^\d{10}$/;
+//                
+//                if (!regex1.test(phone)) {
+//                    alert("Please enter a valid phone number with 10 digits.");
+//                    document.getElementById("phone").focus();
+//                    return false;
+//                }
+//                var identification = document.getElementById("identification").value;
+//                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+//                if (!regex2.test(identification)) {
+//                    alert("Please enter a valid identification number with 12 digit");
+//                    document.getElementById("identification").focus();
+//                    return false;
+//                }
+//                return true;
+//            }
         </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {

@@ -41,6 +41,14 @@ public class deleteBooking extends HttpServlet {
         PrintWriter out = response.getWriter();
         BookingDAO bdao = new BookingDAO();
         HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         int bookingid = Integer.parseInt(request.getParameter("bookingid"));
         List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
         List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);

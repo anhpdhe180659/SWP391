@@ -23,7 +23,7 @@ public class RoomDao extends DBContext {
 
     public Room getRoomByRoomNumber(String roomNum) {
         String query = """
-                            SELECT * FROM  Room WHERE  RoomNumber = ?
+                            SELECT * FROM  HotelManagement.Room WHERE  RoomNumber = ?
                            """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -46,7 +46,7 @@ public class RoomDao extends DBContext {
 
     public Room getRoomByRoomID(int roomid) {
         String query = """
-                            SELECT * FROM  Room WHERE  RoomID = ?
+                            SELECT * FROM  HotelManagement.Room WHERE  RoomID = ?
                            """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -71,7 +71,7 @@ public class RoomDao extends DBContext {
         List<Room> allRoom = new ArrayList<>();
         String query = """
                        SELECT RoomID, RoomNumber, CleanID, TypeID, StatusID   
-                       FROM Room
+                       FROM HotelManagement.Room
                        """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             ResultSet rs = pre.executeQuery();
@@ -97,9 +97,9 @@ public class RoomDao extends DBContext {
                              ,TypeID
                              ,r.StatusID
                              , rs.StatusName
-                         FROM Room r INNER JOIN RoomStatus rs
+                         FROM HotelManagement.Room r INNER JOIN RoomStatus rs
                          ON rs.StatusID = r.StatusID
-                         WHERE rs.StatusName like 'Available'""";
+                       Order by RoomID ASC""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -124,7 +124,7 @@ public class RoomDao extends DBContext {
                              ,TypeID
                              ,r.StatusID
                              , rs.StatusName
-                        FROM Room r INNER JOIN RoomStatus rs
+                        FROM HotelManagement.Room r INNER JOIN HotelManagement.RoomStatus rs
                         ON rs.StatusID = r.StatusID
                         WHERE rs.StatusName like 'Available'
                         ORDER BY RoomID
@@ -145,13 +145,14 @@ public class RoomDao extends DBContext {
         return allRoom;
     }
 
-    public List<Room> loadMore(int index, int typeId, int statusId, int cleanId) {
+    public List<Room> loadMore(int index, int typeId, int statusId, int cleanId, int roomNumber) {
         List<Room> listRooms = new ArrayList<>();
         String query = """
-                   SELECT * FROM Room
+                   SELECT * FROM HotelManagement.Room
                    WHERE (? = 0 OR TypeID = ?)
                      AND (? = 0 OR StatusID = ?)
                      AND (? = 0 OR CleanID = ?)
+                     AND (? = 0 OR RoomNumber = ?)  
                    ORDER BY RoomID
                    LIMIT 6 OFFSET ?;
                    """;
@@ -163,7 +164,9 @@ public class RoomDao extends DBContext {
             pre.setInt(4, statusId); // Gán giá trị statusId cho điều kiện StatusID
             pre.setInt(5, cleanId);  // Nếu cleanId = 0 thì bỏ qua điều kiện CleanID
             pre.setInt(6, cleanId);  // Gán giá trị cleanId cho điều kiện CleanID
-            pre.setInt(7, 6 * (index - 1));  // Offset
+            pre.setInt(7, roomNumber);
+            pre.setInt(8, roomNumber);
+            pre.setInt(9, 6 * (index - 1));  // Offset
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -179,12 +182,13 @@ public class RoomDao extends DBContext {
         return listRooms;
     }
 
-    public double getTotalRooms(int typeId, int statusId, int cleanId) {
+    public double getTotalRooms(int typeId, int statusId, int cleanId, int roomNumber) {
         String query = """
-                   SELECT COUNT(*) AS total FROM Room
+                   SELECT COUNT(*) AS total FROM HotelManagement.Room
                    WHERE (? = 0 OR TypeID = ?)
                      AND (? = 0 OR StatusID = ?)
                      AND (? = 0 OR CleanID = ?)
+                     AND (? = 0 OR RoomNumber = ?)
                    """;
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, typeId);  // For TypeID
@@ -193,7 +197,8 @@ public class RoomDao extends DBContext {
             pre.setInt(4, statusId);  // Match the second placeholder
             pre.setInt(5, cleanId);  // For CleanID
             pre.setInt(6, cleanId);  // Match the third placeholder
-
+            pre.setInt(7, roomNumber);
+            pre.setInt(8, roomNumber);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 return rs.getInt("total");
@@ -206,7 +211,7 @@ public class RoomDao extends DBContext {
 
     public Room findRoomById(int roomid) {
         String query = """
-                            SELECT * FROM  Room WHERE  RoomID = ?
+                            SELECT * FROM  HotelManagement.Room WHERE  RoomID = ?
                            """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {
@@ -230,7 +235,7 @@ public class RoomDao extends DBContext {
     public int getCapacityByRoomID(int roomid) {
         int price = 0;
         String query = """
-                       select * from Room r inner join RoomType rt
+                       select * from HotelManagement.Room r inner join HotelManagement.RoomType rt
                        on r.TypeID = rt.TypeID
                        where RoomID = ?""";
 
@@ -249,7 +254,7 @@ public class RoomDao extends DBContext {
     public String getTypeNameByRoomID(int roomid) {
         String typeName = null;
         String query = """
-                       select * from Room r inner join RoomType rt
+                       select * from HotelManagement.Room r inner join HotelManagement.RoomType rt
                        on r.TypeID = rt.TypeID
                        where RoomID = ?""";
 
@@ -268,7 +273,7 @@ public class RoomDao extends DBContext {
     public String getStatusNameByRoomID(int roomID) {
         String typeName = null;
         String query = """
-                       select StatusName from Room, RoomStatus
+                       select StatusName from HotelManagement.Room, HotelManagement.RoomStatus
                        where Room.StatusID = RoomStatus.StatusID
                        and RoomID = ?""";
 
@@ -287,7 +292,7 @@ public class RoomDao extends DBContext {
     public String getCleaningStatusNameByRoomID(int roomID) {
         String typeName = null;
         String query = """
-                       select CleanStatus from Room, CleaningStatus
+                       select CleanStatus from HotelManagement.Room, HotelManagement.CleaningStatus
                        where Room.CleanID = CleaningStatus.CleanID
                        and RoomID = ?""";
 
@@ -306,7 +311,7 @@ public class RoomDao extends DBContext {
     public int getPriceByRoomID(int roomid) {
         int price = 0;
         String query = """
-                       select Price from Room r inner join RoomType rt
+                       select Price from HotelManagement.Room r inner join HotelManagement.RoomType rt
                        on r.TypeID = rt.TypeID
                        where RoomID = ?""";
 
@@ -332,7 +337,7 @@ public class RoomDao extends DBContext {
         dao.getAllRooms().forEach((r) -> {
             System.out.println(r.getRoomId());
         });
-        System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1) / 5));
+        System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1,10) / 5));
 //        Room room = new Room();
 //        room.setRoomNumber("601");
 //        room.setCleanId(1);
@@ -343,7 +348,7 @@ public class RoomDao extends DBContext {
 
     public void updateStatus(Room room) {
         String query = """
-                        UPDATE Room
+                        UPDATE HotelManagement.Room
                             SET CleanID  = ?,
                                 StatusID = ?
                             WHERE RoomID = ? 
@@ -362,7 +367,7 @@ public class RoomDao extends DBContext {
 
     public void updateRoom(Room room) {
         String query = """
-                        UPDATE Room
+                        UPDATE HotelManagement.Room
                             SET CleanID  = ?,
                                 StatusID = ?,
                                 TypeID = ?
@@ -382,7 +387,7 @@ public class RoomDao extends DBContext {
 
     public void addRoom(Room room) {
         String query = """
-                        INSERT INTO Room (RoomNumber, CleanID, TypeID, StatusID)
+                        INSERT INTO HotelManagement.Room (RoomNumber, CleanID, TypeID, StatusID)
                         values
                         (?, ?, ?, ?)
                         """;
@@ -399,7 +404,7 @@ public class RoomDao extends DBContext {
     }
 
     public int getRoomStatus(int roomID) throws SQLException {
-        String query = "SELECT StatusID FROM Room WHERE RoomID = ?";
+        String query = "SELECT StatusID FROM HotelManagement.Room WHERE RoomID = ?";
         int stt = 0;
         try (
                 PreparedStatement ps = connection.prepareStatement(query)) {

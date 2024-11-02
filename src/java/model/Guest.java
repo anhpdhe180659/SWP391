@@ -20,15 +20,17 @@ public class Guest {
     String Identification;
     String Nationality;
     int isHidden;
+    String Email;
 
     public Guest() {
     }
 
-    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Address, String Phone, String Identification, String Nationality, int isHidden) {
+    public Guest(int GuestID, String Name, LocalDate DateOfBirth, int Sex, String Email, String Address, String Phone, String Identification, String Nationality, int isHidden) {
         this.GuestID = GuestID;
         this.Name = Name;
         this.DateOfBirth = DateOfBirth;
         this.Sex = Sex;
+        this.Email = Email;
         this.Address = Address;
         this.Phone = Phone;
         this.Identification = Identification;
@@ -66,6 +68,14 @@ public class Guest {
 
     public void setSex(int Sex) {
         this.Sex = Sex;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 
     public String getAddress() {
@@ -110,7 +120,9 @@ public class Guest {
 
     @Override
     public String toString() {
-        return "Guest{" + "GuestID=" + GuestID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Nationality=" + Nationality + ", isHidden=" + isHidden + '}';
+        return "Guest{" + "GuestID=" + GuestID + ", Name=" + Name + ", DateOfBirth=" + DateOfBirth + ", Sex=" + Sex + ", Email=" + Email + ", Address=" + Address + ", Phone=" + Phone + ", Identification=" + Identification + ", Nationality=" + Nationality + ", isHidden=" + isHidden + '}';
     }
+
+    
 
 }

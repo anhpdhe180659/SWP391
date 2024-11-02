@@ -139,7 +139,7 @@
                                                 <div class="col-md-3 col-lg-3">
                                                     <div class="form-group">
                                                         <c:set value="${requestScope.checkindate}" var="checkindate"/>
-                                                        <label for="iden"><i class="far fa-calendar-check"></i> Check-in Date</label>
+                                                        <label for="iden"><i class="far fa-calendar-check"></i> Expected Check-in Date</label>
                                                         <input
                                                             type="text"
                                                             class="form-control"
@@ -152,7 +152,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <c:set value="${requestScope.deposit}" var="deposit"/>
-                                                        <label for="address"><i class="far fa-calendar-times"></i> Check-out Date</label>
+                                                        <label for="address"><i class="far fa-calendar-times"></i> Expected Check-out Date</label>
                                                         <input
                                                             type="text"
                                                             class="form-control"
@@ -235,14 +235,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3">
-                                                    <div class="form-group" style="height: 131.175px;">
+<!--                                                    <div class="form-group" style="height: 131.175px;">
                                                         <label for="exampleFormControlSelect2">List room booked</label>
                                                         <select multiple="" class="form-control" id="exampleFormControlSelect2" style="height: 132.775px;">
                                                             <c:forEach items="${requestScope.listRoom}" var="s">
                                                                 <option>Room ${s.roomNumber}</option>
                                                             </c:forEach>
                                                         </select>
-                                                    </div>
+                                                    </div>-->
                                                 </div>
 
 

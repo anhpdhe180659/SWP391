@@ -120,6 +120,26 @@
         <servlet-name>editBooking</servlet-name>
         <servlet-class>control.editBooking</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>resetPassword</servlet-name>
+        <servlet-class>control.resetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>sendBookingCode</servlet-name>
+        <servlet-class>control.sendBookingCode</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>listItem</servlet-name>
+        <servlet-class>control.listItem</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addItem</servlet-name>
+        <servlet-class>control.addItem</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editItem</servlet-name>
+        <servlet-class>control.editItem</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -343,6 +363,26 @@
     <servlet-mapping>
         <servlet-name>editBooking</servlet-name>
         <url-pattern>/editBooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>resetPassword</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sendBookingCode</servlet-name>
+        <url-pattern>/sendBookingCode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listItem</servlet-name>
+        <url-pattern>/listItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addItem</servlet-name>
+        <url-pattern>/addItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editItem</servlet-name>
+        <url-pattern>/editItem</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

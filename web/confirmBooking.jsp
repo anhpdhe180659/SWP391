@@ -59,16 +59,49 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        
+                                        <c:set value="${requestScope.noti}" var="noti" />
                                         <c:set value="${requestScope.code}" var="code" />
+                                        <c:set value="${requestScope.guestid}" var="guestid" />
                                         <button class="btn btn-primary btn-round ms-auto" onclick="backToList()">
                                             <i class="fa fa-arrow-circle-left"></i> Back to list
                                         </button>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <h4 class="fw-bold mb-3">Booking Code: <span style="color: red">${code}</span></h4>
-                                </div>
+                                <form action="sendBookingCode" method="POST">
+                                    <div class="card-body">
+                                        <h4 class="fw-bold mb-3">Booking Code: <span style="color: red">${code}</span></h4>
+                                        <div style="display: flex">
+                                            <div class="col-sm-4">
+                                                <span style="color: green; font-weight: bold">${noti}</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-group-default">
+                                                    <label>Email</label>
+                                                    <input
+                                                        id="email"
+                                                        name="email"
+                                                        type="text"
+                                                        class="form-control"
+                                                        required
+                                                        placeholder="Enter guest's email"
+                                                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                                        title="Invalid email address"
+                                                        />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4" style="display: flex;align-items: center">
+                                                <button type="submit" class="btn btn-primary" style="margin-left: 20px">Send booking code</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <input type="text" class="form-control"
+                                            name="bookingcode" value="${code}"
+                                            readonly hidden />
+                                        <input type="text" class="form-control"
+                                            name="guestid" value="${guestid}"
+                                            readonly hidden />
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -93,9 +126,9 @@
         <script src="assets/js/kaiadmin.min.js"></script>
         <script src="assets/js/setting-demo2.js"></script>
         <script>
-                                                                    function backToList() {
-                                                                        window.location = "bookingList";
-                                                                    }
+                                            function backToList() {
+                                                window.location = "bookingList";
+                                            }
         </script>
 
     </body>

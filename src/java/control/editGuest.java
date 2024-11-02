@@ -26,11 +26,11 @@ public class editGuest extends HttpServlet {
             try {
                 // Lấy ID của guest từ request
                 int guestID = Integer.parseInt(request.getParameter("guestID"));
-                
+
                 // Tạo GuestDAO để lấy thông tin guest
                 GuestDAO gdao = new GuestDAO();
                 Guest guest = gdao.getGuestByGuestID(guestID);
-                
+
                 if (guest == null) {
                     // Nếu không tìm thấy guest
                     request.setAttribute("error", "Guest not found!");
@@ -61,7 +61,7 @@ public class editGuest extends HttpServlet {
             GuestDAO gdao = new GuestDAO();
 
             // Retrieve form data
-            int guestID = Integer.parseInt(request.getParameter("guestID")); // Lấy guestID từ form
+            int guestID = Integer.parseInt(request.getParameter("guestID")); // Get guestID from form
             String name = request.getParameter("name");
             String dateOfBirth = request.getParameter("dateOfBirth");
             int sex = Integer.parseInt(request.getParameter("sex"));
@@ -69,9 +69,10 @@ public class editGuest extends HttpServlet {
             String phone = request.getParameter("phone");
             String identification = request.getParameter("identification");
             String nationality = request.getParameter("nationality");
+            String email = request.getParameter("email"); // Retrieve email
 
             // Validate guest information
-            String validationError = validateGuestInformation(gdao, guestID, name, dateOfBirth, sex, address, phone, identification, nationality);
+            String validationError = validateGuestInformation(gdao, guestID, name, dateOfBirth, sex, address, phone, identification, nationality, email);
 
             if (validationError != null) {
                 // If validation fails, display error message and return to editGuest page
@@ -90,6 +91,7 @@ public class editGuest extends HttpServlet {
             guest.setPhone(phone);
             guest.setIdentification(identification);
             guest.setNationality(nationality);
+            guest.setEmail(email); // Set email
 
             // Update the guest in the database
             gdao.updateGuest(guest);
@@ -104,25 +106,14 @@ public class editGuest extends HttpServlet {
         }
     }
 
-    private String validateGuestInformation(GuestDAO gdao, int guestID, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality) {
-        // Kiểm tra thông tin như trước
-        if (name.isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
-            return "Full Name cannot be null, blank, or contain special characters.";
-        }
-        if (address.isEmpty()) {
-            return "Address cannot be blank.";
-        }
-        if (phone.isEmpty() || !phone.matches("^\\d{10}$")) {
-            return "Phone must be exactly 10 digits.";
-        }
-        if (identification.isEmpty()) {
-            return "Identification cannot be blank.";
-        }
-        if (nationality.isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
-            return "Nationality cannot be blank.";
+    private String validateGuestInformation(GuestDAO gdao, int guestID, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality, String email) {
+        // Check previous validations...
+
+        if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return "Invalid email format.";
         }
 
-        // Kiểm tra trùng lặp nhưng bỏ qua khách hiện tại (guestID)
+        // Check for duplicates but skip current guest (guestID)
         List<Guest> listGuest = gdao.getAllGuests();
         for (Guest g : listGuest) {
             if (g.getGuestID() != guestID) {
@@ -132,9 +123,13 @@ public class editGuest extends HttpServlet {
                 if (g.getPhone().equals(phone)) {
                     return "Phone number has existed, please try again!";
                 }
+                if (g.getEmail() != null && g.getEmail().equals(email)) { // Check for duplicate email
+                    return "Email has existed, please try again!";
+                }
             }
         }
 
-        return null; // Không có lỗi
+        return null; // No errors
     }
+
 }

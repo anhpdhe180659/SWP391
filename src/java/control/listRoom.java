@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Booking;
 import model.BookingRoom;
@@ -43,6 +44,7 @@ public class listRoom extends HttpServlet {
         int typeId = 0;
         int statusId = 0;
         int cleanId = 0;
+        int roomNumber = 0;
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
@@ -55,8 +57,15 @@ public class listRoom extends HttpServlet {
         if (request.getParameter("cleanId") != null) {
             cleanId = Integer.parseInt(request.getParameter("cleanId"));
         }
-        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId);
-        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId) / 6);
+        if (request.getParameter("keyword") != null && !request.getParameter("keyword").trim().equals("")) {
+            index = 1;
+            typeId = 0;
+            statusId = 0;
+            cleanId = 0;
+            roomNumber = Integer.parseInt(request.getParameter("keyword").trim());
+        }
+        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId, roomNumber);
+        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId,roomNumber) / 6);
         System.out.println(noPage);
         if (noPage == 0) {
             request.setAttribute("noti", "No room found");
@@ -67,10 +76,12 @@ public class listRoom extends HttpServlet {
         //get booking 
         BookingDAO bkDao = new BookingDAO();
         List<Booking> bookings = bkDao.getAllBooking();
+        List<BookingRoom> unpaidBookings = bkDao.getAllBookingUnpaid();
         List<BookingRoom> bookingRooms = bkDao.getAllBookingRoom();
         GuestDAO gDao = new GuestDAO();
         List<Guest> guests = gDao.getAllGuests();
         //set attr
+        session.setAttribute("unpaidBooking", unpaidBookings);
         session.setAttribute("bookings", bookings);
         session.setAttribute("bookingRooms", bookingRooms);
         session.setAttribute("guests", guests);

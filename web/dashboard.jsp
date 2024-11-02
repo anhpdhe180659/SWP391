@@ -112,7 +112,7 @@
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
                                                     <p class="card-category">Guest</p>
-                                                    <h4 class="card-title">${sessionScope.dto.numberOfVisitors}</h4>
+                                                    <h4 class="card-title">${sessionScope.numberOfVisitors}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,7 +133,7 @@
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
                                                     <p class="card-category">Rooms</p>
-                                                    <h4 class="card-title">${sessionScope.dto.numberOfRooms}</h4>
+                                                    <h4 class="card-title">${sessionScope.numberOfRooms}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +154,7 @@
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
                                                     <p class="card-category">Total Amount</p>
-                                                    <h4 class="card-title">${sessionScope.dto.totalInvoice}</h4>
+                                                    <h4 class="card-title">${sessionScope.totalInvoice}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
                                                     <p class="card-category">Services</p>
-                                                    <h4 class="card-title">${sessionScope.dto.totalServices}</h4>
+                                                    <h4 class="card-title">${sessionScope.totalServices}</h4>
                                                 </div>
                                             </div>
                                         </div>

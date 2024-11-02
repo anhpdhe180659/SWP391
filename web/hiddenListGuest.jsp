@@ -76,6 +76,7 @@
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Date of Birth</th>
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Gender</th>
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Phone</th>
+                                                    <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Email</th> <!-- Thêm cột Email -->
                                                     <th style="background-color: #b6e8f3; border-right: 1px solid #ddd;">Action</th>
                                                 </tr>
                                             </thead>
@@ -96,6 +97,7 @@
                                                             </c:choose>
                                                         </td>
                                                         <td style="border-right: 1px solid #ddd;">${g.phone}</td>
+                                                        <td style="border-right: 1px solid #ddd;">${g.email}</td> <!-- Hiển thị Email -->
                                                         <td style="border-right: 1px solid #ddd;">
                                                             <div class="form-button-action">
                                                                 <button type="button" class="btn btn-link btn-success btn-lg" onclick="doRestore(${g.guestID})">
@@ -112,6 +114,7 @@
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+
 
                                     </div>
                                 </div>
