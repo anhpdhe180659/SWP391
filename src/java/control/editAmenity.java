@@ -70,45 +70,47 @@ public class editAmenity extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        try {
-            AmenityDAO adao = new AmenityDAO();
-            HttpSession session = request.getSession();
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+    PrintWriter out = response.getWriter();
+    try {
+        AmenityDAO adao = new AmenityDAO();
+        HttpSession session = request.getSession();
 
-            int amenityid = Integer.parseInt(request.getParameter("amenid"));
-            Amenity oldAmenity = adao.findAmenity(amenityid); 
+        int amenityid = Integer.parseInt(request.getParameter("amenid"));
+        Amenity oldAmenity = adao.findAmenity(amenityid); 
 
-            String name = request.getParameter("name"); 
-            Amenity amenity = new Amenity(amenityid, name);
+        String name = request.getParameter("name"); 
+        Amenity amenity = new Amenity(amenityid, name);
 
-            if (oldAmenity.getAmenName().equals(name)) {
-                
-                request.setAttribute("noti", "No changes made!");
-                request.setAttribute("amenity", oldAmenity);
-            } else {
-                List<Amenity> listAmenity = adao.getAllAmenities();
-                for (Amenity s : listAmenity) {
-                    if (s.getAmenName().equals(name)) {
-                        request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
-                        request.setAttribute("amenity", oldAmenity);
-                        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-                        break;
-                    }
+        if (oldAmenity.getAmenName().equals(name)) {
+            // Nếu tên không thay đổi
+            request.setAttribute("noti", "No changes made!");
+            request.setAttribute("amenity", oldAmenity);
+        } else {
+            List<Amenity> listAmenity = adao.getAllAmenities();
+            for (Amenity s : listAmenity) {
+                if (s.getAmenName().equals(name)) {
+                    // Nếu phát hiện trùng tên
+                    request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                    request.setAttribute("amenity", oldAmenity);
+                    request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+                    return; // Thêm return để dừng phương thức khi phát hiện trùng lặp
                 }
-                adao.updateAmenity(amenity);
-                request.setAttribute("noti", "Save successful!");
-                request.setAttribute("amenity", amenity);
-                request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
             }
-
-            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            out.print("There was an error: " + e.getMessage());
+            // Nếu không có trùng tên, cập nhật tiện nghi
+            adao.updateAmenity(amenity);
+            request.setAttribute("noti", "Save successful!");
+            request.setAttribute("amenity", amenity);
         }
+
+        // Chuyển hướng đến trang edit
+        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+
+    } catch (Exception e) {
+        out.print("There was an error: " + e.getMessage());
     }
+}
 
     public static void main(String[] args) {
         AmenityDAO adao = new AmenityDAO();
