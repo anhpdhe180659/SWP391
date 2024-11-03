@@ -89,7 +89,31 @@ public class ServiceDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        new ServiceDAO().updateService(new Service(1,"Ca phe sua da",20000000));
+        new ServiceDAO().updateService(new Service(1, "Ca phe sua da", 20000000));
+    }
+
+    public List<Service> getAllServiceIsNotBookedByBookingIDAndRoomID(int bookingId, int roomId) {
+        List<Service> services = new ArrayList<>();
+        try {
+            String query = """
+                           select * from hotelmanagement.service s where s.ServiceID not in (
+                           select ServiceID from hotelmanagement.bookingservice bs where bs.BookingID = ? and bs.RoomID = ?
+                           )""";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, bookingId);
+            ps.setInt(2, roomId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Service service = new Service();
+                service.setServiceID(rs.getInt("ServiceID"));
+                service.setName(rs.getString("Name"));
+                service.setPrice(rs.getInt("Price"));
+                services.add(service);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return services;
     }
 
 }
