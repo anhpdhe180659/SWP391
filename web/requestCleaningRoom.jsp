@@ -96,10 +96,7 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Request Cleaning Room</h4>
-                                        <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
-                                            <i class="fas fa-angle-left"></i>
-                                            Back to list
-                                        </button>
+                                        
                                         <!--                                        <button
                                                                                     class="btn btn-primary btn-round ms-auto"
                                                                                     data-bs-toggle="modal"
@@ -145,7 +142,19 @@
                                                                         required
                                                                         />
                                                                 </div>
-                                                            </div>                                                                                                                                                                        
+                                                            </div>       
+                                                                         <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Cleaning By</label>
+                                                                    <input
+                                                                        name="name"
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        value="${a.amenName}"
+                                                                        required
+                                                                        />
+                                                                </div>
+                                                            </div>       
                                                         </div>
                                                     </div>
                                                     <input type="text" name="amenid" value="${a.amenID}" hidden="">
