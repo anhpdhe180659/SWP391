@@ -29,8 +29,8 @@ public class listGuest extends HttpServlet {
             response.sendRedirect("login.jsp");
         } else {
             int role = (Integer) session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
+            if (session.getAttribute("role") != null && role != 2 && role != 1) {
+                request.setAttribute("error", "Please sign in with receptionist/ manager account!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
