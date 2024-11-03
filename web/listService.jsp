@@ -130,6 +130,7 @@
                                                         </p>
 
                                                         <div class="row">
+                                                            <!-- Name Field: Only alphabets allowed, required and trimmed -->
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Name</label>
@@ -137,25 +138,52 @@
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        pattern="^[A-Za-zÀ-ỹ\s]+$"  
+                                                                        title="Name can only contain letters and spaces."
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
+
+                                                            <!-- Price Field: Must be a positive number greater than 0 -->
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Price</label>
-                                                                    <input
+                                                                    <input 
                                                                         name="price"
-                                                                        type="text"
-                                                                        class="form-control"
+                                                                        type="number"
+                                                                        class="form-control price-vnd"
+                                                                        min="1"  
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-
-
-
                                                         </div>
+                                                        <script>
+                                                            document.querySelector('form').addEventListener('submit', function (event) {
+                                                                // Get the name input field
+                                                                const nameInput = document.querySelector('input[name="name"]');
+                                                                const priceInput = document.querySelector('input[name="price"]');
+
+                                                                // Trim whitespace from the name
+                                                                nameInput.value = nameInput.value.trim();
+
+                                                                // Check if the name input is valid (contains only letters and spaces)
+                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
+                                                                if (!namePattern.test(nameInput.value)) {
+                                                                    alert("Name can only contain letters and spaces.");
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                    return;
+                                                                }
+
+                                                                // Check if price is greater than 0
+                                                                if (priceInput.value <= 0) {
+                                                                    alert("Price must be greater than 0.");
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                }
+                                                            });
+                                                        </script>
+
                                                     </div>
                                                     <div class="modal-footer border-0">
                                                         <button
@@ -195,7 +223,7 @@
                                                 <c:forEach items="${sessionScope.listService}" var="sv">
                                                     <tr>
                                                         <td>${sv.name}</td>
-                                                        <td>${sv.price}</td>                                                      
+                                                        <td class="price-vnd">${sv.price}</td>                                                      
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="editService?serviceid=${sv.serviceID}" >
@@ -259,6 +287,22 @@
                                                                         });
         </script>
         <script>
+            // Format price to VND
+            function formatCurrencyVND(value) {
+                return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(value);
+            }
+
+            // Apply the format to all prices
+            $(document).ready(function () {
+                $('.price-vnd').each(function () {
+                    let price = parseFloat($(this).text());
+                    $(this).text(formatCurrencyVND(price));
+                });
+            });
+
             function doClose() {
                 $('#addUserModal').modal('hide');
             }
@@ -340,5 +384,15 @@
                 });
             });
         </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <c:if test="${duplicate != null}">
+            <script>
+            swal({
+                icon: "error",
+                text: 'Duplicate service detected'
+            });
+            </script>
+        </c:if>
+
     </body>
 </html>

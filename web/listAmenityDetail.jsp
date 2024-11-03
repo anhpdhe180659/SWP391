@@ -138,19 +138,22 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Room Number</label>
                                                                     <input
-                                                                        onchange="validate()"
+                                                                        min ="1"
                                                                         name="roomnumber"
-                                                                        type="text"
+                                                                        type="number"
                                                                         class="form-control"
+                                                                        title="Must be greater than 0"
                                                                         required
                                                                         />
                                                                 </div>
                                                                 <div class="form-group form-group-default">
                                                                     <label>Quantity</label>
-                                                                    <input onchange="validate()"
+                                                                    <input
+                                                                        min="0"
                                                                         name="quantity"
                                                                         type="number"
                                                                         class="form-control"
+                                                                        title="Must be greater than or equal to 0"
                                                                         required
                                                                         />
                                                                 </div>
@@ -164,6 +167,23 @@
                                                                     />
                                                             </div>
                                                         </div>  
+                                                        <script>
+                                                            document.querySelector('form').addEventListener('submit', function (event) {
+                                                                // Get the name input field
+                                                                const quantity = document.querySelector('input[name="quantity"]');
+                                                                // Check if price is greater than 0
+                                                                const roomnumber = document.querySelector('input[name="roomnumber"]');
+                                                                if (quantity.value < 0) {
+                                                                    alert("Price must be greater than or equal to 0.");
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                }
+                                                                if (roomnumber.value <= 0) {
+                                                                    alert("Price must be greater than 0.");
+                                                                    event.preventDefault();
+                                                                    /
+                                                                }
+                                                            });
+                                                        </script>
                                                     </div>
 
 
@@ -189,8 +209,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                     <div class="table-responsive">
                                         <table id="add-user" class="display table table-striped table-hover">
                                             <thead>
@@ -284,7 +302,7 @@
             document.querySelector('input[name="roomnumber"]').focus();
             return false;
         }
-        
+
         return true;
     }
 </script>
@@ -359,14 +377,23 @@
             url: actionUrl,
             data: form.serialize(),
             success: function (response) {
-                swal({
-                    icon: 'success',
-                    text: 'Add successfully'
-                }).then(() => {
-                    window.location = currentUrl;
-                });
+                if (response.status === 'success') {
+                    swal({
+                        icon: 'success',
+                        text: response.message || 'Add successfully'
+                    }).then(() => {
+                        window.location = currentUrl;
+                    });
+                } else {
+                    swal({
+                        icon: 'warning',
+                        text: response.message || 'Failed to add'
+                    }).then(() => {
+                        window.location = currentUrl;
+                    });
+                }
             },
-            error: function (xhr,status,error) {
+            error: function (xhr, status, error) {
                 swal({
                     icon: 'warning',
                     text: 'Failed to add'

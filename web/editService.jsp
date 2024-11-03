@@ -113,6 +113,7 @@
                                                     <c:set value="${requestScope.service}" var="s"/>
                                                     <div class="modal-body">
                                                         <div class="row">
+                                                            <!-- Name Field: Only alphabets allowed, required and trimmed -->
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Name</label>
@@ -120,26 +121,59 @@
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${s.name}"
+                                                                        value="${s.name}" 
+                                                                        pattern="^[A-Za-zÀ-ỹ\s]+$"  
+                                                                        title="Name can only contain letters and spaces."
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
+
+                                                            <!-- Price Field: Must be a positive number greater than 0 -->
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Price</label>
                                                                     <input
                                                                         name="price"
-                                                                        type="text"
+                                                                        type="number"
                                                                         class="form-control"
-                                                                        value="${s.price}"
+                                                                        value="${s.price}"  
+                                                                        min="1"  
+                                                                        step="0.01"  
+                                                                        title="Price must be greater than 0."
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
-
-
                                                         </div>
+                                                        <script>
+                                                            document.querySelector('form').addEventListener('submit', function (event) {
+                                                                // Get the name and price input fields
+                                                                const nameInput = document.querySelector('input[name="name"]');
+                                                                const priceInput = document.querySelector('input[name="price"]');
+
+                                                                // Trim whitespace from the name
+                                                                nameInput.value = nameInput.value.trim();
+
+                                                                // Name pattern: Only letters and spaces
+                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
+
+                                                                // Validate Name: Must only contain letters and spaces
+                                                                if (!namePattern.test(nameInput.value)) {
+                                                                    alert("Name can only contain letters and spaces.");
+                                                                    event.preventDefault(); // Prevent form submission if invalid
+                                                                    return;
+                                                                }
+
+                                                                // Validate Price: Must be a number greater than 0
+                                                                if (priceInput.value <= 0) {
+                                                                    alert("Price must be greater than 0.");
+                                                                    event.preventDefault(); // Prevent form submission if invalid
+                                                                    return;
+                                                                }
+                                                            });
+                                                        </script>
+
                                                     </div>
                                                     <input type="text" name="serviceid"  value="${s.serviceID}" hidden="">
                                                     <div class="modal-footer border-0">
@@ -191,28 +225,16 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
-                                                    });
+    document.querySelector('.close').editEventListener('click', function () {
+        $('#editUserModal').modal('hide');
+    });
     </script>
     <script>
         function doClose() {
             $('#editUserModal').modal('hide');
         }
     </script>
-    <script>
-        function validate() {
-            var email = document.getElementById("email").value;
-            var regex1 = /^[a-zA-Z0-9._%+-]+@example\.com$/;
 
-            if (!regex1.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                document.getElementById("email").focus();
-                return false;
-            }
-            return true;
-        }
-    </script>
     <script>
         function BackToList() {
             window.location = "listService";

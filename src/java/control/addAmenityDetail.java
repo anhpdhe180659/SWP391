@@ -38,31 +38,38 @@ public class addAmenityDetail extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        try {
-            HttpSession session = request.getSession();
-            AmenityDAO adao = new AmenityDAO();
-            int amenID = Integer.parseInt(request.getParameter("amenID"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            AmenityDetail amenityDetail = new AmenityDetail();
-            amenityDetail.setAmenID(amenID);
-            amenityDetail.setQuantity(quantity);
-            boolean success = adao.addAmenityDetail(amenityDetail);
-            String message;
-            if (success) {
-                message = "Add successfully.";
-            } else {
-                message = "Failed to add.";
-            }
+        HttpSession session = request.getSession();
+        AmenityDAO adao = new AmenityDAO();
+        List<AmenityDetail> listAmenityDetails = adao.getAllAmenityDetails();
+        int roomNumber = Integer.parseInt(request.getParameter("roomnumber"));
+        RoomDao rDao = new RoomDao();
+        int roomId = rDao.getRoomByRoomNumber(roomNumber + "").getRoomId();
 
-            List<AmenityDetail> listAmenityDetails = adao.getAllAmenityDetails();
-            request.setAttribute("listAmenityDetails", listAmenityDetails);
-            request.getRequestDispatcher("listAmenityDetails.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e.getMessage());
+        int amenID = Integer.parseInt(request.getParameter("amenID"));
+        for (AmenityDetail am : listAmenityDetails) {
+            if (am.getAmenID() == amenID && am.getRoomID() == roomId) {
+
+            }
         }
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        AmenityDetail amenityDetail = new AmenityDetail();
+        amenityDetail.setAmenID(amenID);
+        amenityDetail.setQuantity(quantity);
+        System.out.println("Room ne " + amenityDetail.getRoomID());
+        boolean success = adao.addAmenityDetail(amenityDetail);
+        String message;
+        if (success) {
+            message = "Add successfully.";
+        } else {
+            message = "Failed to add.";
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"status\":\"failed\"}");
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -109,19 +116,25 @@ public class addAmenityDetail extends HttpServlet {
                 amenityDetail.setQuantity(quantity);
                 amenityDetail.setRoomID(r.getRoomId());
                 boolean success = adao.addAmenityDetail(amenityDetail);
-                String message;
+                System.out.println("success "+success);
                 if (success) {
-                    message = "Add successfully.";
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{\"status\":\"success\"}");
                 } else {
-                    message = "Failed to add.";
+
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{\"status\":\"failed\"}");
                 }
-                request.setAttribute("mes", message);
-                List<AmenityDetail> listAmenityDetails = adao.getAllAmenityDetails();
-                session.setAttribute("listAmenityDetails", listAmenityDetails);
-                response.sendRedirect("amenity-detail");
+
             }
         } catch (IOException | NumberFormatException e) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"status\":\"failed\"}");
         }
+
     }
 
     /**
