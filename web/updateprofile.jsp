@@ -110,7 +110,7 @@
                                             <div class="modal-content">
                                                 <form action="updateProfileUser"  method="POST"  onsubmit="return validate()">
                                                     <c:set value="${requestScope.currentUser}" var="e"/>
-                                                    <input type="text" name="empid" value="${e.userID}" hidden="">
+                                                    <input type="text" name="userID" value="${e.userID}" hidden="">
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-sm-4">
