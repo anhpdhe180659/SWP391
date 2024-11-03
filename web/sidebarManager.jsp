@@ -101,14 +101,14 @@
                                             <span class="sub-item">Room Type</span>
                                         </a>
                                     </li>
-                                     <li>
+                                    <li>
                                         <a href="addRoomType">
                                             <span class="sub-item">Add Room Type</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-                        </li>   
+                        </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarLayouts">
                                 <i class="far fa-check-circle"></i>
@@ -163,7 +163,7 @@
                                 </ul>
                             </div>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#h">
                                 <i class="fas fa-bell"></i>
                                 <p>Manage feedback</p>
@@ -179,6 +179,23 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#guestForms" aria-expanded="false" aria-controls="guestForms">
+                                <i class="fas fa-pen-square"></i>
+                                <p>Manage Guest</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="guestForms">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="listGuest">
+                                            <span class="sub-item">Guest</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
                         <!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#charts">
