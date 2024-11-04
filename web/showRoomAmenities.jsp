@@ -12,6 +12,24 @@
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
         <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+        <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+        <script>
+            WebFont.load({
+                google: {families: ["Public Sans:300,400,500,600,700"]},
+                custom: {
+                    families: [
+                        "Font Awesome 5 Solid",
+                        "Font Awesome 5 Regular",
+                        "Font Awesome 5 Brands",
+                        "simple-line-icons",
+                    ],
+                    urls: ["assets/css/fonts.min.css"],
+                },
+                active: function () {
+                    sessionStorage.fonts = true;
+                },
+            });
+        </script>
         <style>
             .status-in-use {
                 background-color: #d4edda; /* Màu xanh nhạt cho trạng thái "In Use" */
@@ -31,7 +49,21 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarstaff.jsp"/>
+            <% Integer role = (Integer) session.getAttribute("role"); %>
+            <c:choose>
+                <c:when test="${role == 1}">
+                    <%-- Hiển thị sidebar cho Manager --%>
+                    <jsp:include page="sidebarManager.jsp"/>
+                </c:when>
+                <c:when test="${role == 2}">
+                    <%-- Hiển thị sidebar cho Receptionist --%>
+                    <jsp:include page="sidebarReceptionist.jsp"/>
+                </c:when>
+                <c:when test="${role == 3}">
+                    <%-- Hiển thị sidebar cho Staff --%>
+                    <jsp:include page="sidebarstaff.jsp"/>
+                </c:when>
+            </c:choose>
             <!-- End Sidebar -->
             <div class="main-panel">
                 <div class="main-header">
@@ -39,9 +71,6 @@
                 </div>
 
                 <div class="container">
-                    <%
-                        int role = (Integer) session.getAttribute("role");
-                    %>
                     <div class="page-inner">
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Room Amenities</h3>

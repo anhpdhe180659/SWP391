@@ -16,7 +16,17 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <% Integer role = (Integer) session.getAttribute("role"); %>
+            <c:choose>
+                <c:when test="${role == 1}">
+                    <%-- Hiển thị sidebar cho Manager --%>
+                    <jsp:include page="sidebarManager.jsp"/>
+                </c:when>
+                <c:when test="${role == 2}">
+                    <%-- Hiển thị sidebar cho Receptionist --%>
+                    <jsp:include page="sidebarReceptionist.jsp"/>
+                </c:when>
+            </c:choose>
             <!-- End Sidebar -->
             <div class="main-panel">
                 <div class="main-header">
