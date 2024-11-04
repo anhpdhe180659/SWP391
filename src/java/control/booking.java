@@ -60,19 +60,6 @@ public class booking extends HttpServlet {
         List<Room> listRoomAvailable = rd.getAllRoomsAvailable();// tat ca room, ko chi available
         session.setAttribute("listRoomAvailable", listRoomAvailable);
         response.sendRedirect("booking.jsp");
-//
-////        RoomTypeDAO rtdao = new RoomTypeDAO();
-//        List<Room> listRoom = (List<Room>) session.getAttribute("listRoomAvailable");
-//        for (Room room : listRoom) {
-//            int capacity = rd.getCapacityByRoomID(room.getRoomId());
-//            int price = rd.getPriceByRoomID(room.getRoomId());
-//            String typeName = rd.getTypeNameByRoomID(room.getRoomId());
-//            room.getRoomNumber();
-//            String statusName = rd.getStatusNameByRoomID(room.getRoomId());
-//            String cleaningStatus = rd.getCleaningStatusNameByRoomID(room.getRoomId());
-//            room.getStatusId();
-//            room.getCleanId();
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
