@@ -4,9 +4,7 @@
  */
 package control;
 
-import dal.BookingDAO;
-import dal.GuestDAO;
-import dal.RoomDao;
+import dal.InvoiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,20 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Booking;
-import model.BookingRoom;
-import model.BookingService;
-import model.Guest;
-import model.Room;
-import model.Service;
-import vn.payos.type.ItemData;
+import model.Invoice;
 
 /**
  *
  * @author phand
  */
-@WebServlet(name = "showInvoice", urlPatterns = {"/showInvoice"})
-public class showInvoice extends HttpServlet {
+@WebServlet(name = "listInvoice", urlPatterns = {"/listInvoice"})
+public class listInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,10 +40,10 @@ public class showInvoice extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet showInvoice</title>");
+            out.println("<title>Servlet listInvoice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet showInvoice at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet listInvoice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,27 +62,18 @@ public class showInvoice extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String id = request.getParameter("bookingId");
-        BookingDAO bkDao = new BookingDAO();
-        int bkId = Integer.parseInt(id);
-        List<Room> allRooms = bkDao.getRoomsByBookingID(bkId);
-        List<Service> allServices = bkDao.getServicesByBookingID(bkId);
-        Booking booking = bkDao.getBookingByBookingID(bkId);
-        bkDao.getTotalPriceBooking(bkId);
-        booking = bkDao.getBookingByBookingID(bkId);
-        int guestId = booking.getGuestID();
-        GuestDAO gDao = new GuestDAO();
-        Guest guest = gDao.getGuestByGuestID(guestId);
-        List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bkId);
-        List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(bkId);
-        session.setAttribute("booking", booking);
-        session.setAttribute("guest", guest);
-        session.setAttribute("allBookingRoom", allBookingRoom);
-        session.setAttribute("allBookingService", allBookingService);
-        session.setAttribute("listRoom", allRooms);
-        session.setAttribute("listService", allServices);
-        session.setAttribute("bookingId", id);
-        response.sendRedirect("invoice.jsp");
+        int index = 1;
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        
+        InvoiceDAO ivDao = new InvoiceDAO();
+        List<Invoice> listInvoice = ivDao.getAll();
+        int noPage = listInvoice.size();
+        session.setAttribute("listInvoice", listInvoice);
+        session.setAttribute("Nopage", noPage);
+        session.setAttribute("currentindex", index);
+        response.sendRedirect("listInvoice.jsp");
     }
 
     /**

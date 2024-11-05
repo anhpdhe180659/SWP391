@@ -775,12 +775,12 @@ public class BookingDAO extends DBContext {
 
     public void getTotalPriceBooking(int id) {
         String sql = "WITH RoomTotal AS (\n"
-                + "    SELECT SUM(Price * NumOfNight) AS RoomMoney \n"
+                + "    SELECT ifnull(SUM(Price * NumOfNight),0) AS RoomMoney \n"
                 + "    FROM bookingroom \n"
                 + "    WHERE BookingID = ?\n"
                 + "),\n"
                 + "ServiceTotal AS (\n"
-                + "    SELECT SUM(TotalPrice) AS ServiceMoney \n"
+                + "    SELECT ifnull(SUM(TotalPrice),0) AS ServiceMoney \n"
                 + "    FROM hotelmanagement.bookingservice \n"
                 + "    WHERE BookingID = ?\n"
                 + ")\n"
