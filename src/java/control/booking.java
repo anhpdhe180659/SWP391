@@ -47,11 +47,11 @@ public class booking extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        
+
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
@@ -60,19 +60,6 @@ public class booking extends HttpServlet {
         List<Room> listRoomAvailable = rd.getAllRoomsAvailable();// tat ca room, ko chi available
         session.setAttribute("listRoomAvailable", listRoomAvailable);
         response.sendRedirect("booking.jsp");
-//
-////        RoomTypeDAO rtdao = new RoomTypeDAO();
-//        List<Room> listRoom = (List<Room>) session.getAttribute("listRoomAvailable");
-//        for (Room room : listRoom) {
-//            int capacity = rd.getCapacityByRoomID(room.getRoomId());
-//            int price = rd.getPriceByRoomID(room.getRoomId());
-//            String typeName = rd.getTypeNameByRoomID(room.getRoomId());
-//            room.getRoomNumber();
-//            String statusName = rd.getStatusNameByRoomID(room.getRoomId());
-//            String cleaningStatus = rd.getCleaningStatusNameByRoomID(room.getRoomId());
-//            room.getStatusId();
-//            room.getCleanId();
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -110,27 +97,33 @@ public class booking extends HttpServlet {
             GuestDAO gdao = new GuestDAO();
             BookingDAO bdao = new BookingDAO();
             RoomDao rdao = new RoomDao();
+            RoomTypeDAO rtdao= new RoomTypeDAO();
             Guest guest = new Guest();
-            String Name = request.getParameter("name");
+            String Name = request.getParameter("name").trim();
+            String email = request.getParameter("email").trim();
+            String Nationality = request.getParameter("nationality").trim();
+            String Identification = request.getParameter("identification").trim();
             guest.setName(Name);
             String DateOfBirth = request.getParameter("birthday");
             guest.setDateOfBirth(LocalDate.parse(DateOfBirth));
             int Sex = Integer.parseInt(request.getParameter("gender"));
             guest.setSex(Sex);
-            String Address = request.getParameter("address");
+            String Address = request.getParameter("address").trim();
             guest.setAddress(Address);
-            String Phone = request.getParameter("phone");
+            String Phone = request.getParameter("phone").trim();
             guest.setPhone(Phone);
-            String Identification = request.getParameter("identification");
+
             guest.setIdentification(Identification);
-            String Nationality = request.getParameter("nationality");
+
             guest.setNationality(Nationality);
-            int deposit = Integer.parseInt(request.getParameter("deposit"));
+
+            guest.setEmail(email);
+//            int deposit = Integer.parseInt(request.getParameter("deposit"));
+            int deposit = 0;
             String noti = "Booking successfully!";
-            int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
-            
+            int checkinstatus = 0;
             int paidstatus = 0;
-            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
+//            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<Guest> listGuest = gdao.getAllGuests();
             Guest guestBooking = null;
             boolean guestExist = false;
@@ -165,6 +158,24 @@ public class booking extends HttpServlet {
                 return;
             }
             if (guestExist == false) {
+                // new guest with different Identification
+                for (Guest g : listGuest) {
+                    if (g.getPhone().equals(guest.getPhone())) {
+                        noti = "Phone number has existed, please try again!";
+                        request.setAttribute("noti", noti);
+                        request.getRequestDispatcher("booking.jsp").forward(request, response);
+                        return;
+                    }
+                    if (email.length() > 0) {
+                        if (g.getEmail()!= null && g.getEmail().equals(guest.getEmail())) {
+                            noti = "Email has existed, please try again!";
+                            request.setAttribute("noti", noti);
+                            request.getRequestDispatcher("booking.jsp").forward(request, response);
+                            return;
+                        }
+                    }
+
+                }
                 gdao.addGuest(guest);
                 guestBooking = gdao.getNewGuest();
             }
@@ -192,10 +203,18 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            if(checkinstatus == 1){
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,paymentMethod, currentDateTime);
-            }else{
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,paymentMethod, null);
+            int totalPrice = 0;
+            if (bookAllRoom == true) {
+                for (String roomID : selectedRoom) {
+                    int roomid = Integer.parseInt(roomID);
+                    int price = rdao.getPriceByRoomID(roomid);
+                    totalPrice += price;
+                }
+            }
+            if (checkinstatus == 1) {
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,totalPrice ,0, currentDateTime);
+            } else {
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,totalPrice ,0, null);
             }
             int bookingid = bdao.getNewBookingID();
             if (bookAllRoom == true) {
@@ -210,7 +229,8 @@ public class booking extends HttpServlet {
             String bookingcode = utilConvert.toBase36(bookingid);
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
-            request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
+//            request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
+            response.sendRedirect("bookingList");
         } catch (Exception e) {
             out.print(e);
         }

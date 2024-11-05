@@ -57,15 +57,22 @@ public class sendBookingCode extends HttpServlet {
         GuestDAO gdao = new GuestDAO();
         int guestid = Integer.parseInt(request.getParameter("guestid"));
         Guest guest = gdao.getGuestByGuestID(guestid);
-        
+        String noti = "Booking code has been sent successfully!";
         String email = request.getParameter("email");
+        for (Guest g : gdao.getAllGuests()) {
+            if(g.getEmail() != null && g.getEmail().equals(email)){
+                noti = "Email has existed, please try again!";
+                request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
+                return;
+            }
+        }
         if(guest.getEmail() == null){
             guest.setEmail(email);
             gdao.updateGuest(guest);
         }
         String bookingCode = request.getParameter("bookingcode");
-        sendResetEmail(email, bookingCode); // Handle hashing error
-        String noti = "Booking code has been sent successfully!";
+        sendResetEmail(email, bookingCode);
+        
         request.setAttribute("noti", noti);
         request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
     }
