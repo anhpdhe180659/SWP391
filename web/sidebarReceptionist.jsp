@@ -148,6 +148,24 @@
                                 </ul>
                             </div>
                             
+                        </li> 
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#X">
+                                <i class="fas fa-bell"></i>
+                                <p>Request Cleaning Room</p>
+                                <span class="caret"></span> 
+                            </a>  
+                               <div class="collapse" id="X">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="requestCleaningRoom.jsp">
+                                            <span class="sub-item">Request</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                           
+                            
                         </li>
                     </ul>
                 </div>

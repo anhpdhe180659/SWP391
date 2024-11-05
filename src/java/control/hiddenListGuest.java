@@ -31,7 +31,7 @@ public class hiddenListGuest extends HttpServlet {
         response.sendRedirect("login.jsp");
     } else if (session.getAttribute("role") != null && (session.getAttribute("role").equals("1") || session.getAttribute("role").equals("2"))) {
         // Nếu người dùng không có quyền (ví dụ như không phải receptionist), chuyển hướng về trang đăng nhập
-        request.setAttribute("error", "Please sign in with a receptionist account!");
+        request.setAttribute("error", "Please sign in with receptionist/ manager account!");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     } else {
         // Lấy danh sách hidden guests từ DAO

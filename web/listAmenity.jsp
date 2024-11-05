@@ -135,18 +135,40 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Name</label>
                                                                     <input
+                                                                        pattern="^[A-Za-zÀ-ỹ\s]+$"
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
+                                                                        title="Name can only contain letters and spaces."
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>
                                                         </div>  
+                                                        <script>
+                                                            document.querySelector('form').addEventListener('submit', function (event) {
+                                                                // Get the name input field
+                                                                const nameInput = document.querySelector('input[name="name"]');
+
+                                                                // Trim whitespace from the name
+                                                                nameInput.value = nameInput.value.trim();
+
+                                                                // Check if the name input is valid (contains only letters and spaces)
+                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
+                                                                if (!namePattern.test(nameInput.value)) {
+                                                                    alert("Name can only contain letters and spaces.");
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                    return;
+                                                                }
+
+                                                                // Check if price is greater than 0
+
+                                                            });
+                                                        </script>
                                                     </div>
-                                                            
-                                                            
-                                                    
+
+
+
                                                     <div class="modal-footer border-0">
                                                         <button
                                                             type="button submit"
@@ -176,7 +198,7 @@
                                                                                     <table id="add-user" class="display table table-striped table-hover" >-->
                                             <thead>
                                                 <tr>
-                                                    
+
                                                     <th>Name</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
@@ -184,8 +206,8 @@
                                             <tbody>
                                                 <c:forEach items="${sessionScope.listAmenity}" var="a">
                                                     <tr>
-<td><a href="amenity-detail?amenityId=${a.amenID}">${a.amenName}</a></td>
-                                                        
+                                                        <td><a href="amenity-detail?amenityId=${a.amenID}">${a.amenName}</a></td>
+
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="editAmenity?amenityid=${a.amenID}" >
@@ -269,11 +291,11 @@
     </script>
     <script>
         function doDelete(amenityid) {
-                var option = confirm("Are you sure? You won't be able to revert this");
-                if (option === true) {
-                    window.location = "deleteAmenity?amenityid=" + amenityid;
-                }
+            var option = confirm("Are you sure? You won't be able to revert this");
+            if (option === true) {
+                window.location = "deleteAmenity?amenityid=" + amenityid;
             }
+        }
     </script>
     <script>
         $(document).ready(function () {
@@ -331,6 +353,16 @@
             });
         });
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <c:if test="${duplicate != null}">
+        <script>
+            swal({
+                icon: "error",
+                text: 'Duplicate amenity detected'
+            });
+        </script>
+    </c:if>
+
 
 </body>
 </html>

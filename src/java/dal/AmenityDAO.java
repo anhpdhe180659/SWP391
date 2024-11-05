@@ -72,6 +72,7 @@ public class AmenityDAO extends DBContext {
         try {
             String query = "INSERT INTO AmenityDetail (RoomID,AmenID, Quantity) VALUES (?, ?,?)";
             PreparedStatement ps = connection.prepareStatement(query);
+            System.out.println("roomID"+amenitydetail.getRoomID());
             ps.setInt(1, amenitydetail.getRoomID());
             ps.setInt(2, amenitydetail.getAmenID());
             ps.setInt(3, amenitydetail.getQuantity());

@@ -47,7 +47,17 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <% Integer role = (Integer) session.getAttribute("role"); %>
+            <c:choose>
+                <c:when test="${role == 1}">
+                    <%-- Hiển thị sidebar cho Manager --%>
+                    <jsp:include page="sidebarManager.jsp"/>
+                </c:when>
+                <c:when test="${role == 2}">
+                    <%-- Hiển thị sidebar cho Receptionist --%>
+                    <jsp:include page="sidebarReceptionist.jsp"/>
+                </c:when>
+            </c:choose>
             <!-- End Sidebar -->
             <div class="main-panel">
                 <div class="main-header">
@@ -74,7 +84,7 @@
                                     <form action="editGuest" method="POST">
                                         <!-- Hidden input to hold guestID -->
                                         <input type="hidden" name="guestID" value="${guest.guestID}" />
-                                        
+
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
@@ -94,6 +104,13 @@
                                                     <input name="phone" type="text" value="${guest.phone}" maxlength="50" class="form-control" placeholder="Enter phone number" required />
                                                 </div>
                                             </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-group-default">
+                                                    <label><i class="fa fa-envelope"></i> Email</label>
+                                                    <input name="email" type="email" value="${guest.email}" class="form-control" placeholder="Enter email" required />
+                                                </div>
+                                            </div>
+
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-id-card"></i> Identification</label>
@@ -139,7 +156,7 @@
 
                                     <c:if test="${not empty noti}">
                                         <h4><div class="noti" style="color: red">${noti}</div></h4>
-                                    </c:if>
+                                        </c:if>
                                 </div>
                             </div>
                         </div>

@@ -80,7 +80,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                   <jsp:include page="navbar-header.jsp"/>
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
@@ -124,30 +124,50 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Name</label>
                                                                     <input
+                                                                        pattern="^[A-Za-zÀ-ỹ\s]+$"
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
                                                                         value="${a.amenName}"
+                                                                        title="Name can only contain letters and spaces."
                                                                         required
                                                                         />
                                                                 </div>
                                                             </div>                                                                                                                                                                        
                                                         </div>
+                                                        <script>
+                                                            document.querySelector('form').addEventListener('submit', function (event) {
+                                                                // Get the name input field
+                                                                const nameInput = document.querySelector('input[name="name"]');
+                                                                const priceInput = document.querySelector('input[name="price"]');
+
+                                                                // Trim whitespace from the name
+                                                                nameInput.value = nameInput.value.trim();
+
+                                                                // Check if the name input is valid (contains only letters and spaces)
+                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
+                                                                if (!namePattern.test(nameInput.value)) {
+                                                                    alert("Name can only contain letters and spaces.");
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                    return;
+                                                                }
+
+                                                                // Check if price is greater than 0
+                                                                if (priceInput.value <= 0) {
+                                                                    alert("Price must be greater than 0.");
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                }
+                                                            });
+                                                        </script>
                                                     </div>
                                                     <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
-                                                        <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary">
-                                                            Save
-                                                        </button>
+                                                        <div style="margin-right: 25px; font-weight: bold; color: ${noti == 'Save successful!' ? 'green' : 'red'};">
+                                                            ${noti}
+                                                        </div>
+                                                        <button type="reset" class="btn btn-danger">Reset</button>&nbsp;
+                                                        <button type="submit" class="btn btn-primary">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -184,9 +204,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
-                                                    });
+                                                            document.querySelector('.close').editEventListener('click', function () {
+                                                                $('#editUserModal').modal('hide');
+                                                            });
     </script>
     <script>
         function doClose() {
