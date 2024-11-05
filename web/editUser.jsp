@@ -123,6 +123,9 @@
                                                                         value="${u.name}"
                                                                         type="text"
                                                                         maxlength="100"
+                                                                        minlength="4"
+                                                                        pattern="^[A-Za-zÀ-ÿ\s'-]{1,100}$"
+                                                                    title="Name contains only character, length should more than 4 and less than 100"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -136,6 +139,9 @@
                                                                         name="address"
                                                                         type="text"
                                                                         maxlength="200"
+                                                                        minlength="4"
+                                                                        pattern="[a-zA-Z0-9\s,.-]+"
+                                                                        title="Please enter a valid address. Only letters, numbers, spaces, commas, periods, and hyphens are allowed."
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -191,6 +197,7 @@
                                                                     <label>Date of Birth</label>
                                                                     <input 
                                                                         value="${u.dateOfBirth}"
+                                                                        id="birthday"
                                                                         type="date" name="birthday" required
                                                                         style="width: 100%; border: none; "/>
                                                                 </div>
@@ -207,7 +214,8 @@
                                                             <div class="col-sm-4" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Start Date</label>
-                                                                    <input type="date" name="startdate" 
+                                                                    <input type="date" name="startdate"
+                                                                           id="startdate"
                                                                            value="${u.startDate}" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
@@ -248,7 +256,12 @@
                                                                                 <c:if test="${u.role == 2}">
                                                                                     selected
                                                                                 </c:if>
-                                                                                >Employee</option>
+                                                                                >Receptionist</option>
+                                                                        <option value="3"
+                                                                                <c:if test="${u.role == 3}">
+                                                                                    selected
+                                                                                </c:if>
+                                                                                >Housekeeper</option>
                                                                         <option value="1"
                                                                                 <c:if test="${u.role == 1}">
                                                                                     selected
@@ -358,6 +371,13 @@
                                                     document.querySelector('.close').editEventListener('click', function () {
                                                         $('#editUserModal').modal('hide');
                                                     });
+    </script>
+    <script>
+                                                    // Get today's date in yyyy-mm-dd format
+                                                    const today = new Date().toISOString().split('T')[0];
+                                                    // Set the max attribute for the birthday input to today's date
+                                                    document.getElementById("birthday").setAttribute("max", today);
+                                                    document.getElementById("startdate").setAttribute("max", today);
     </script>
     <script>
         function doReset(userid) {
