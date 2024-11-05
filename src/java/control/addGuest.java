@@ -20,7 +20,7 @@ public class addGuest extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
         if (session == null || session.getAttribute("user") == null) {
-            request.setAttribute("error", "Please sign in with receptionist account!");
+            request.setAttribute("error", "Please sign in with receptionist/ manager account!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             // Chuyển hướng tới trang addGuest.jsp nếu đã đăng nhập

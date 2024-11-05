@@ -140,7 +140,7 @@
                                                         <th>Clean Status</th>
                                                         <th>Type</th>
                                                         <th>Room Status</th>
-                                                        <th>Action</th>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -197,13 +197,8 @@
                                                                 </td>
                                                             </c:if>
 
-                                                            <!-- View Details Button -->
-                                                            <td style="text-align: center">
-                                                                <a href="viewDetail?id=${s.roomId}">
-                                                                    <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
-                                                                </a>
-                                                            </td>
-                                                        </tr>
+                                                            
+                                                            
                                                     </c:forEach>
                                                 </tbody>
                                             </table>

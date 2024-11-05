@@ -140,6 +140,18 @@
         <servlet-name>editItem</servlet-name>
         <servlet-class>control.editItem</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowRoomAmenities</servlet-name>
+        <servlet-class>control.ShowRoomAmenities</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>listRoomAmenity</servlet-name>
+        <servlet-class>control.listRoomAmenity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateAmenityStatus</servlet-name>
+        <servlet-class>control.updateAmenityStatus</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -383,6 +395,18 @@
     <servlet-mapping>
         <servlet-name>editItem</servlet-name>
         <url-pattern>/editItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowRoomAmenities</servlet-name>
+        <url-pattern>/showRoomAmenities</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listRoomAmenity</servlet-name>
+        <url-pattern>/listRoomAmenity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateAmenityStatus</servlet-name>
+        <url-pattern>/updateAmenityStatus</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
