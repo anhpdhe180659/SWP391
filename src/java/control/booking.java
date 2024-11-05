@@ -97,28 +97,33 @@ public class booking extends HttpServlet {
             GuestDAO gdao = new GuestDAO();
             BookingDAO bdao = new BookingDAO();
             RoomDao rdao = new RoomDao();
+            RoomTypeDAO rtdao= new RoomTypeDAO();
             Guest guest = new Guest();
-            String Name = request.getParameter("name");
+            String Name = request.getParameter("name").trim();
+            String email = request.getParameter("email").trim();
+            String Nationality = request.getParameter("nationality").trim();
+            String Identification = request.getParameter("identification").trim();
             guest.setName(Name);
             String DateOfBirth = request.getParameter("birthday");
             guest.setDateOfBirth(LocalDate.parse(DateOfBirth));
             int Sex = Integer.parseInt(request.getParameter("gender"));
             guest.setSex(Sex);
-            String Address = request.getParameter("address");
+            String Address = request.getParameter("address").trim();
             guest.setAddress(Address);
-            String Phone = request.getParameter("phone");
+            String Phone = request.getParameter("phone").trim();
             guest.setPhone(Phone);
-            String Identification = request.getParameter("identification");
+
             guest.setIdentification(Identification);
-            String Nationality = request.getParameter("nationality");
+
             guest.setNationality(Nationality);
-            String email = request.getParameter("email");
+
             guest.setEmail(email);
-            int deposit = Integer.parseInt(request.getParameter("deposit"));
+//            int deposit = Integer.parseInt(request.getParameter("deposit"));
+            int deposit = 0;
             String noti = "Booking successfully!";
             int checkinstatus = 0;
             int paidstatus = 0;
-            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
+//            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<Guest> listGuest = gdao.getAllGuests();
             Guest guestBooking = null;
             boolean guestExist = false;
@@ -161,12 +166,15 @@ public class booking extends HttpServlet {
                         request.getRequestDispatcher("booking.jsp").forward(request, response);
                         return;
                     }
-                    if (g.getEmail().equals(guest.getEmail())) {
-                        noti = "Email has existed, please try again!";
-                        request.setAttribute("noti", noti);
-                        request.getRequestDispatcher("booking.jsp").forward(request, response);
-                        return;
+                    if (email.length() > 0) {
+                        if (g.getEmail()!= null && g.getEmail().equals(guest.getEmail())) {
+                            noti = "Email has existed, please try again!";
+                            request.setAttribute("noti", noti);
+                            request.getRequestDispatcher("booking.jsp").forward(request, response);
+                            return;
+                        }
                     }
+
                 }
                 gdao.addGuest(guest);
                 guestBooking = gdao.getNewGuest();
@@ -195,10 +203,18 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
+            int totalPrice = 0;
+            if (bookAllRoom == true) {
+                for (String roomID : selectedRoom) {
+                    int roomid = Integer.parseInt(roomID);
+                    int price = rdao.getPriceByRoomID(roomid);
+                    totalPrice += price;
+                }
+            }
             if (checkinstatus == 1) {
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, paymentMethod, currentDateTime);
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,totalPrice ,0, currentDateTime);
             } else {
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, paymentMethod, null);
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,totalPrice ,0, null);
             }
             int bookingid = bdao.getNewBookingID();
             if (bookAllRoom == true) {
@@ -213,7 +229,8 @@ public class booking extends HttpServlet {
             String bookingcode = utilConvert.toBase36(bookingid);
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
-            request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
+//            request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
+            response.sendRedirect("bookingList");
         } catch (Exception e) {
             out.print(e);
         }

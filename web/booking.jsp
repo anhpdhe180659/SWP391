@@ -101,7 +101,7 @@
                                     <div class="card-header">
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
-                                    <form action="booking" method="POST">
+                                    <form action="booking" method="POST" onsubmit="validate()">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
@@ -237,40 +237,38 @@
                                                                     pattern="^\d{10,15}$"
                                                                     title="Valid phone number must be 10 to 15 digits long"
                                                                     required
-
                                                                     />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="nationality"><i class="fas fa-globe"></i> Nationality</label>
-                                                                <!--                                                                <input
-                                                                                                                                    type="text"
-                                                                                                                                    class="form-control"
-                                                                                                                                    id="nationality"
-                                                                                                                                    name="nationality"
-                                                                                                                                    pattern="[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ\s]{1,50}"
-                                                                                                                                    title="Nationality contains only characters, spaces"
-                                                                                                                                    maxlength="50"
-                                                                                                                                    placeholder="Enter nationality"
-                                                                                                                                    list="countryList"
-                                                                                                                                    required
-                                                                                                                                    />-->
-                                                                <select
+                                                                <input
+                                                                    type="text"
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
+                                                                    pattern="^[A-Za-zÀ-ỹ\s]{1,50}$"
+                                                                    title="Nationality should contain only letters and spaces, up to 50 characters."
+                                                                    maxlength="50"
                                                                     placeholder="Enter nationality"
+                                                                    list="countryList"
                                                                     required
-                                                                    >
-                                                                    <option value="Vietnam">Vietnam</option>
-                                                                    <option value="United States">United States</option>
-                                                                    <option value="Canada">Canada</option>
-                                                                    <option value="France">France</option>
-                                                                    <option value="Germany">Germany</option>
-                                                                    <option value="Australia">Australia</option>
-                                                                    <option value="Japan">Japan</option>
-                                                                    <option value="South Korea">South Korea</option>
-                                                                    <!-- Add more countries as needed -->
-                                                                </select>
+                                                                    />
+                                                                <!--                                                                <select
+                                                                                                                                    class="form-control"
+                                                                                                                                    id="nationality"
+                                                                                                                                    name="nationality"
+                                                                                                                                    placeholder="Enter nationality"
+                                                                                                                                    required
+                                                                                                                                    >
+                                                                                                                                    <option value="Vietnam">Vietnam</option>
+                                                                                                                                    <option value="United States">United States</option>
+                                                                                                                                    <option value="Canada">Canada</option>
+                                                                                                                                    <option value="France">France</option>
+                                                                                                                                    <option value="Germany">Germany</option>
+                                                                                                                                    <option value="Australia">Australia</option>
+                                                                                                                                    <option value="Japan">Japan</option>
+                                                                                                                                    <option value="South Korea">South Korea</option>
+                                                                                                                                </select>-->
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
@@ -283,8 +281,8 @@
                                                                     name="identification"
                                                                     maxlength="20"
                                                                     placeholder="Enter identification"
-                                                                    pattern="(^[A-Z0-9]{8}$)|^[0-9]{10}$)|(^[0-9]{12}$)" 
-                                                                    title="Valid ID contains 8, 10 or 12 digits and uppercase letters"
+                                                                    pattern="^[A-Z0-9]{8}|[0-9]{10}|[0-9]{12}$"
+                                                                    title="Valid ID contains 8 uppercase letters or digits, or 10 or 12 digits"
                                                                     required
                                                                     />
                                                             </div>
@@ -344,10 +342,7 @@
                                                                     name="email"
                                                                     type="text"
                                                                     class="form-control"
-                                                                    required
                                                                     placeholder="Enter guest's email"
-                                                                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                                                                    title="Invalid email address"
                                                                     />
                                                             </div>
                                                         </div>
@@ -372,7 +367,7 @@
                                                                                                                                 />
                                                                                                                         </div>-->
 
-                                                            
+
                                                             <div class="form-group">
 
                                                                 <label><i class="fas fa-transgender"></i> Gender</label><br />
@@ -554,31 +549,94 @@
 
         </script>
         <script>
-//            function validate() {
-//                var email = document.getElementById("email").value;
+            function validate() {
+                var email = document.getElementById("email").value.trim();
 //                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-//                if (!regex.test(email)) {
-//                    alert("Please enter a valid Email address (example@gmail.com)");
-//                    document.getElementById("email").focus();
-//                    return false;
-//                }
-//                var phone = document.getElementById("phone").value.trim(); // Trim spaces from input
-//                var regex1 = /^\d{10}$/;
-//                
-//                if (!regex1.test(phone)) {
-//                    alert("Please enter a valid phone number with 10 digits.");
-//                    document.getElementById("phone").focus();
-//                    return false;
-//                }
-//                var identification = document.getElementById("identification").value;
-//                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-//                if (!regex2.test(identification)) {
-//                    alert("Please enter a valid identification number with 12 digit");
-//                    document.getElementById("identification").focus();
-//                    return false;
-//                }
-//                return true;
-//            }
+                var regex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+                if (!regex.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    document.getElementById("email").focus();
+                    return false;
+                }
+                var phone = document.getElementById("phone").value.trim(); // Trim spaces from input
+                var regex1 = /^\d{10}$/;
+
+                if (!regex1.test(phone)) {
+                    alert("Please enter a valid phone number with 10 digits.");
+                    document.getElementById("phone").focus();
+                    return false;
+                }
+                var identification = document.getElementById("identification").value.trim();
+                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+                if (!regex2.test(identification)) {
+                    alert("Please enter a valid identification number with 12 digit");
+                    document.getElementById("identification").focus();
+                    return false;
+                }
+                return true;
+            }
+        </script>
+        <script>
+            document.getElementById("name").addEventListener("input", function () {
+                const nameInput1 = document.getElementById("name").value;
+
+                // Check if the input contains only spaces
+                if (nameInput1.trim() === "") {
+                    alert("The name field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("name").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("email").addEventListener("input", function () {
+                const nameInput2 = document.getElementById("email").value;
+
+                // Check if the input contains only spaces
+                if (nameInput2.trim() === "") {
+                    alert("The email field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("email").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("identification").addEventListener("input", function () {
+                const nameInput3 = document.getElementById("identification").value;
+
+                // Check if the input contains only spaces
+                if (nameInput3.trim() === "") {
+                    alert("The identification field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("identification").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("phone").addEventListener("input", function () {
+                const nameInput4 = document.getElementById("phone").value;
+
+                // Check if the input contains only spaces
+                if (nameInput4.trim() === "") {
+                    alert("The phone field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("phone").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("address").addEventListener("input", function () {
+                const nameInput5 = document.getElementById("address").value;
+
+                // Check if the input contains only spaces
+                if (nameInput5.trim() === "") {
+                    alert("The address field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("address").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("nationality").addEventListener("input", function () {
+                const nameInput6 = document.getElementById("nationality").value;
+
+                // Check if the input contains only spaces
+                if (nameInput6.trim() === "") {
+                    alert("The nationality field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("nationality").value = ""; // Clear the field
+                }
+            });
         </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {

@@ -350,7 +350,7 @@ public class BookingDAO extends DBContext {
         });
     }
 
-    public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int paymentMethod, LocalDateTime actualCheckInTime) {
+    public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice,int paymentMethod, LocalDateTime actualCheckInTime) {
         java.util.Date currentDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
         String query = """
