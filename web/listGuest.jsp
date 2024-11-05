@@ -38,10 +38,19 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+            <% Integer role = (Integer) session.getAttribute("role"); %>
+            <c:choose>
+                <c:when test="${role == 1}">
+                    <%-- Hiển thị sidebar cho Manager --%>
+                    <jsp:include page="sidebarManager.jsp"/>
+                </c:when>
+                <c:when test="${role == 2}">
+                    <%-- Hiển thị sidebar cho Receptionist --%>
+                    <jsp:include page="sidebarReceptionist.jsp"/>
+                </c:when>
+            </c:choose>
             <!-- End Sidebar -->
             <div class="main-panel">
-
                 <div class="main-header">
                     <div class="main-header-logo">
                         <!-- Logo Header -->
@@ -181,28 +190,28 @@
 
 
         <script>
-                            $(document).ready(function () {
-                                $('.table').DataTable();
-                            });
+                                                                        $(document).ready(function () {
+                                                                            $('.table').DataTable();
+                                                                        });
 
-                            function addGuest() {
-                                window.location.href = "addGuest";
-                            }
+                                                                        function addGuest() {
+                                                                            window.location.href = "addGuest";
+                                                                        }
 
-                            function viewHiddenGuests() {
-                                window.location.href = "hiddenListGuest";
-                            }
+                                                                        function viewHiddenGuests() {
+                                                                            window.location.href = "hiddenListGuest";
+                                                                        }
 
-                            function doHidden(guestID) {
-                                if (confirm('Are you sure you want to hide this guest?')) {
-                                    window.location.href = "hideGuest?guestID=" + guestID;
-                                }
-                            }
-                            function doEdit(guestID) {
-                                if (confirm('Are you sure you want to edit this guest?')) {
-                                    window.location.href = "editGuest?guestID=" + guestID;
-                                }
-                            }
+                                                                        function doHidden(guestID) {
+                                                                            if (confirm('Are you sure you want to hide this guest?')) {
+                                                                                window.location.href = "hideGuest?guestID=" + guestID;
+                                                                            }
+                                                                        }
+                                                                        function doEdit(guestID) {
+                                                                            if (confirm('Are you sure you want to edit this guest?')) {
+                                                                                window.location.href = "editGuest?guestID=" + guestID;
+                                                                            }
+                                                                        }
 
         </script>
         <script>

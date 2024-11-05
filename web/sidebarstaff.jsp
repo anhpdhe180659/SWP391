@@ -74,6 +74,15 @@
                                     </li>
                                 </ul>
                             </div>
+                            <div class="collapse" id="base">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="listRoomAmenity">
+                                            <span class="sub-item">View Room's Amenities</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                        
 

@@ -163,17 +163,11 @@
                                                     <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
-                                                        <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary">
-                                                            Save
-                                                        </button>
+                                                        <div style="margin-right: 25px; font-weight: bold; color: ${noti == 'Save successful!' ? 'green' : 'red'};">
+                                                            ${noti}
+                                                        </div>
+                                                        <button type="reset" class="btn btn-danger">Reset</button>&nbsp;
+                                                        <button type="submit" class="btn btn-primary">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -210,9 +204,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                                            document.querySelector('.close').editEventListener('click', function () {
-                                                                                $('#editUserModal').modal('hide');
-                                                                            });
+                                                            document.querySelector('.close').editEventListener('click', function () {
+                                                                $('#editUserModal').modal('hide');
+                                                            });
     </script>
     <script>
         function doClose() {

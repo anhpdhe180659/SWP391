@@ -293,6 +293,26 @@
     }
 </script>
 <script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        // Get the quantity and room number input fields
+        const quantity = document.querySelector('input[name="quantity"]');
+        const roomnumber = document.querySelector('input[name="roomnumber"]');
+
+        // Validate quantity is at least 3
+        if (quantity.value < 3) {
+            alert("Quantity must be at least 3.");
+            event.preventDefault(); // Prevent form submission
+        }
+        
+        // Validate room number is greater than 0
+        if (roomnumber.value <= 0) {
+            alert("Room number must be greater than 0.");
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+</script>
+
+<script>
     function validate() {
         var email = document.querySelector('input[name="roomnumber"]').value;
         var quantity = document.querySelector('input[name="quantity"]').value;
@@ -386,7 +406,7 @@
                     });
                 } else {
                     swal({
-                        icon: 'warning',
+                        icon: 'error',
                         text: response.message || 'Failed to add'
                     }).then(() => {
                         window.location = currentUrl;
@@ -395,7 +415,7 @@
             },
             error: function (xhr, status, error) {
                 swal({
-                    icon: 'warning',
+                    icon: 'error',
                     text: 'Failed to add'
                 }).then(() => {
                     window.location = currentUrl;
