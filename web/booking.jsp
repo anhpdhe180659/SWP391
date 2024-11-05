@@ -191,7 +191,7 @@
                                                                         <%if (room.getStatusId() != 3) {
                                                                         %>
                                                                         <input type="checkbox"
-                                                                               id="checkbox_<%= room.getRoomId() %>" name="roomSelected" value="<%= room.getRoomId()%>" class="row-checkbox"/>
+                                                                               id="checkbox_<%= room.getRoomId() %>" name="roomSelected" value="<%= room.getRoomId()%>" class="row-checkbox" data-price="<%= price %>" onclick="updateTotalPrice()"/>
                                                                         <%
                                                                            }
                                                                         %>
@@ -203,6 +203,7 @@
                                                                 %>
                                                             </tbody>
                                                         </table>
+
                                                     </div>
 
                                                 </div>
@@ -241,16 +242,35 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="nationality"><i class="fas fa-globe"></i> Nationality</label>
-                                                                <input
-                                                                    type="text"
+                                                                <!--                                                                <input
+                                                                                                                                    type="text"
+                                                                                                                                    class="form-control"
+                                                                                                                                    id="nationality"
+                                                                                                                                    name="nationality"
+                                                                                                                                    pattern="[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ\s]{1,50}"
+                                                                                                                                    title="Nationality contains only characters, spaces"
+                                                                                                                                    maxlength="50"
+                                                                                                                                    placeholder="Enter nationality"
+                                                                                                                                    list="countryList"
+                                                                                                                                    required
+                                                                                                                                    />-->
+                                                                <select
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
-                                                                    pattern="[A-Za-z\s]{1,50}" title="Nationality contains only characters, spaces"
-                                                                    maxlength="50"
                                                                     placeholder="Enter nationality"
                                                                     required
-                                                                    />
+                                                                    >
+                                                                    <option value="Vietnam">Vietnam</option>
+                                                                    <option value="United States">United States</option>
+                                                                    <option value="Canada">Canada</option>
+                                                                    <option value="France">France</option>
+                                                                    <option value="Germany">Germany</option>
+                                                                    <option value="Australia">Australia</option>
+                                                                    <option value="Japan">Japan</option>
+                                                                    <option value="South Korea">South Korea</option>
+                                                                    <!-- Add more countries as needed -->
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
@@ -301,6 +321,7 @@
                                                                     name="checkindate"
                                                                     placeholder="Enter identification"
                                                                     required
+                                                                    onchange="calculateTotalStayPrice()"
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -312,69 +333,46 @@
                                                                     name="checkoutdate"
                                                                     placeholder="Enter address"
                                                                     required
+                                                                    onchange="calculateTotalStayPrice()"
                                                                     />
                                                                 <!--datetime-local-->
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="paymentMethod"><i class="far fa-credit-card"></i> Payment Method</label>
-                                                                <div class="form-group form-group-default">
-                                                                    <select id="paymentMethod" name="paymentMethod" class="form-control">
-                                                                        <option value="1">Cash</option>
-                                                                        <option value="2">Bank transfer</option>
-                                                                    </select>
-                                                                </div>
+                                                                <label><i class="fab fa-telegram"></i> Email</label>
+                                                                <input
+                                                                    id="email"
+                                                                    name="email"
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    required
+                                                                    placeholder="Enter guest's email"
+                                                                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                                                    title="Invalid email address"
+                                                                    />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
-
                                                             <div class="form-group">
-                                                                <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
-                                                                <input
-                                                                    type="number"
-                                                                    class="form-control"
-                                                                    min="0"
-                                                                    max="2000000000"
-                                                                    name="deposit"
-                                                                    placeholder="Enter deposit"
-                                                                    required
-                                                                    />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label><i class="fas fa-user-check"></i> Check-in</label><br />
-                                                                <div class="d-flex">
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="checkinstatus"
-                                                                            id="check1"
-                                                                            value="1"
-                                                                            checked
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="check1"
-                                                                            >
-                                                                            Now
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="checkinstatus"
-                                                                            id="check2"
-                                                                            value="0"
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="check2"
-                                                                            >
-                                                                            Later
-                                                                        </label>
-                                                                    </div>
+                                                                <label><i class="fas fa-money-bill-wave"></i> Total Price</label>
+                                                                <div id="totalPriceContainer" style="text-align: left; font-weight: bold; margin-top: 10px;color: green">
+                                                                    Total Price: <span id="totalPrice">0</span>
                                                                 </div>
                                                             </div>
+
+                                                            <!--                                                            <div class="form-group">
+                                                                                                                            <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
+                                                                                                                            <input
+                                                                                                                                type="number"
+                                                                                                                                class="form-control"
+                                                                                                                                min="0"
+                                                                                                                                max="2000000000"
+                                                                                                                                name="deposit"
+                                                                                                                                placeholder="Enter deposit"
+                                                                                                                                required
+                                                                                                                                />
+                                                                                                                        </div>-->
+
+                                                            
                                                             <div class="form-group">
 
                                                                 <label><i class="fas fa-transgender"></i> Gender</label><br />
@@ -414,7 +412,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group"> 
+                                                        <div class="form-group">
                                                             <input
                                                                 type="time"
                                                                 class="form-control"
@@ -455,6 +453,46 @@
             <!-- Custom template | don't include it in your project! -->
             <!-- End Custom template -->
         </div>
+        <script>
+            function calculateTotalStayPrice() {
+                const checkinDate = document.getElementById("checkindate").value;
+                const checkoutDate = document.getElementById("checkoutdate").value;
+
+                // Parse dates and calculate the difference in days
+                if (checkinDate && checkoutDate) {
+                    const checkin = new Date(checkinDate);
+                    const checkout = new Date(checkoutDate);
+                    const stayDuration = (checkout - checkin) / (1000 * 60 * 60 * 24); // Difference in days
+
+                    if (stayDuration > 0) {
+                        // Calculate the base total price of selected rooms
+                        let baseTotalPrice = 0;
+                        const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+                        checkboxes.forEach(checkbox => {
+                            baseTotalPrice += parseInt(checkbox.getAttribute('data-price'));
+                        });
+
+                        // Calculate the final total price based on the stay duration
+                        const totalStayPrice = baseTotalPrice * stayDuration;
+                        document.getElementById('totalPrice').innerText = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(totalStayPrice);
+                    } else {
+                        document.getElementById('totalPrice').innerText = "0 ₫";
+                    }
+                } else {
+                    document.getElementById('totalPrice').innerText = "0 ₫";
+                }
+            }
+
+            // Update the total price when a room checkbox is selected or deselected
+            function updateTotalPrice() {
+                calculateTotalStayPrice();
+            }
+            function toggleCheckbox(roomId) {
+                var checkbox = document.getElementById("checkbox_" + roomId);
+                checkbox.checked = !checkbox.checked;
+                updateTotalPrice();
+            }
+        </script>
         <!--   Core JS Files   -->
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
@@ -495,28 +533,25 @@
         <script src="assets/js/setting-demo2.js"></script>
         <script></script>
         <script>
-                                                                    // Get today's date in yyyy-mm-dd format
-                                                                    const today = new Date().toISOString().split('T')[0];
-                                                                    // Set the max attribute for the birthday input to today's date
-                                                                    document.getElementById("birthday").setAttribute("max", today);
-                                                                    document.getElementById("checkindate").setAttribute("min", today);
-                                                                    document.getElementById("checkoutdate").setAttribute("min", today);
-                                                                    document.getElementById("checkindate").addEventListener("change", function () {
-                                                                        let checkInDate = new Date(this.value);
-                                                                        let minCheckOutDate = new Date(checkInDate);
-                                                                        minCheckOutDate.setDate(checkInDate.getDate() + 1);
-                                                                        // Convert the date back to YYYY-MM-DD format
-                                                                        let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
-                                                                        // Set the minimum date for checkout as one day after the check-in date
-                                                                        let checkOutInput = document.getElementById("checkoutdate");
-                                                                        checkOutInput.setAttribute("min", formattedCheckOutDate);
-                                                                    });
+            // Get today's date in yyyy-mm-dd format
+            const today = new Date().toISOString().split('T')[0];
+            // Set the max attribute for the birthday input to today's date
+            document.getElementById("birthday").setAttribute("max", today);
+            document.getElementById("checkindate").setAttribute("min", today);
+            document.getElementById("checkoutdate").setAttribute("min", today);
+            document.getElementById("checkindate").addEventListener("change", function () {
+                let checkInDate = new Date(this.value);
+                let minCheckOutDate = new Date(checkInDate);
+                minCheckOutDate.setDate(checkInDate.getDate() + 1);
+                // Convert the date back to YYYY-MM-DD format
+                let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
+                // Set the minimum date for checkout as one day after the check-in date
+                let checkOutInput = document.getElementById("checkoutdate");
+                checkOutInput.setAttribute("min", formattedCheckOutDate);
+            });
         </script>
         <script>
-            function toggleCheckbox(roomId) {
-                var checkbox = document.getElementById("checkbox_" + roomId);
-                checkbox.checked = !checkbox.checked;
-            }
+
         </script>
         <script>
 //            function validate() {

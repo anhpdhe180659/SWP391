@@ -47,11 +47,11 @@ public class booking extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        
+
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
@@ -112,10 +112,11 @@ public class booking extends HttpServlet {
             guest.setIdentification(Identification);
             String Nationality = request.getParameter("nationality");
             guest.setNationality(Nationality);
+            String email = request.getParameter("email");
+            guest.setEmail(email);
             int deposit = Integer.parseInt(request.getParameter("deposit"));
             String noti = "Booking successfully!";
-            int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
-            
+            int checkinstatus = 0;
             int paidstatus = 0;
             int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<Guest> listGuest = gdao.getAllGuests();
@@ -152,6 +153,21 @@ public class booking extends HttpServlet {
                 return;
             }
             if (guestExist == false) {
+                // new guest with different Identification
+                for (Guest g : listGuest) {
+                    if (g.getPhone().equals(guest.getPhone())) {
+                        noti = "Phone number has existed, please try again!";
+                        request.setAttribute("noti", noti);
+                        request.getRequestDispatcher("booking.jsp").forward(request, response);
+                        return;
+                    }
+                    if (g.getEmail().equals(guest.getEmail())) {
+                        noti = "Email has existed, please try again!";
+                        request.setAttribute("noti", noti);
+                        request.getRequestDispatcher("booking.jsp").forward(request, response);
+                        return;
+                    }
+                }
                 gdao.addGuest(guest);
                 guestBooking = gdao.getNewGuest();
             }
@@ -179,10 +195,10 @@ public class booking extends HttpServlet {
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
-            if(checkinstatus == 1){
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,paymentMethod, currentDateTime);
-            }else{
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,paymentMethod, null);
+            if (checkinstatus == 1) {
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, paymentMethod, currentDateTime);
+            } else {
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, paymentMethod, null);
             }
             int bookingid = bdao.getNewBookingID();
             if (bookAllRoom == true) {
