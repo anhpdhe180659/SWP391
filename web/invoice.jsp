@@ -136,12 +136,13 @@
                                                     <tbody>
                                                         <c:forEach items="${sessionScope.allBookingRoom}" var="br">
                                                             <tr>
+                                                                <c:set var="serviceTotal" value="0" />
                                                                 <c:forEach items="${sessionScope.listRoom}" var="r">
                                                                     <c:if test="${r.roomId == br.roomID}">
                                                                         <td>Room: ${r.roomNumber}</td>
                                                                     </c:if>
                                                                 </c:forEach>
-                                                                <td><span class="price-vnd">${br.price}</span></td>
+                                                                <td><span class="price-vnd">${br.price}</span> x ${br.numOfNight}</td>
                                                                 <td>
                                                                     <table class="table table-sm table-borderless">
                                                                         <thead>
@@ -161,6 +162,7 @@
                                                                                                 <td>${bs.quantity}</td>
                                                                                                 <td><span class="price-vnd">${bs.totalPrice}</span></td>
                                                                                             </tr>
+                                                                                            <c:set var="serviceTotal" value="${serviceTotal + bs.totalPrice}" />
                                                                                         </c:if>
                                                                                     </c:forEach>
                                                                                 </c:if>
@@ -168,9 +170,22 @@
                                                                         </tbody>
                                                                     </table>
                                                                 </td>
+                                                                <td>
+                                                                    <c:set var="roomTotal" value="${br.price * br.numOfNight + serviceTotal}" />
+                                                                    <span class="price-vnd">${roomTotal}</span>
+                                                                </td>
                                                             </tr>
                                                         </c:forEach>
-                                                        <tr><b>Total: </b><span class="price-vnd">${sessionScope.booking.totalPrice}</span></tr>
+                                                        <tr>
+                                                            <td colspan="3"><b>Deposit: </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.deposit}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"><b>Grand Total: </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
