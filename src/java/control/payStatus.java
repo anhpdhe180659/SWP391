@@ -7,6 +7,7 @@ package control;
 import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.RoomDao;
+import dal.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +35,8 @@ import model.BookingRoom;
 import model.Guest;
 import model.Room;
 import vn.payos.type.ItemData;
+import java.text.NumberFormat;
+import model.BookingService;
 
 /**
  *
@@ -142,7 +146,11 @@ public class payStatus extends HttpServlet {
 
     public static void sendBillMail(Booking b, Guest g) {
         BookingDAO bkDao = new BookingDAO();
-        List<BookingRoom> allBkRoom = bkDao.getAllBookingRoomByBookingID(b.getBookingID());
+        RoomDao rDao = new RoomDao();
+        ServiceDAO sDao = new ServiceDAO();
+
+        List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(b.getBookingID());
+        List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(b.getBookingID());
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String formattedDeposit = currencyFormatter.format(b.getDeposit());
         String formattedTotal = currencyFormatter.format(b.getTotalPrice());
@@ -158,7 +166,70 @@ public class payStatus extends HttpServlet {
                 return new PasswordAuthentication("ali33hotel@gmail.com", "emyj cyjy lxjd bkbw");
             }
         });
+        // Format date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = sdf.format(new Date());
 
+        // Create email content
+        StringBuilder emailContent = new StringBuilder();
+        emailContent.append("<html><body>");
+        emailContent.append("<h2>ALIHOTEL INVOICE</h2>");
+        emailContent.append("<p>Ha Noi, ").append(formattedDate).append("</p>");
+
+        // Customer and Hotel Information
+        emailContent.append("<div style='display: flex; justify-content: space-between;'>");
+        emailContent.append("<div><h4>Customer Information</h4>")
+                .append("<p>Name: ").append(g.getName()).append("</p>")
+                .append("<p>Contact: ").append(g.getPhone()).append("</p>")
+                .append("<p>Nationality: ").append(g.getNationality()).append("</p>")
+                .append("<p>Email: ").append(g.getEmail()).append("</p></div>");
+        emailContent.append("<div><h4>Hotel Information</h4>")
+                .append("<p>Hotel Name: ALI HOTEL</p>")
+                .append("<p>Hotline: 1900 1833</p>")
+                .append("<p>Email: alihotel33@gmail.com</p>")
+                .append("<p>Address: Beta Building, FPT University</p></div>");
+        emailContent.append("</div>");
+
+        // Invoice Table
+        emailContent.append("<h4>Invoice Details</h4>")
+                .append("<table border='1' cellpadding='5' cellspacing='0' style='width: 100%; border-collapse: collapse;'>")
+                .append("<thead><tr><th>Room</th><th>Price per Night</th><th>Services</th><th>Total</th></tr></thead>")
+                .append("<tbody>");
+
+        for (BookingRoom br : allBookingRoom) {
+            emailContent.append("<tr>");
+            emailContent.append("<td>").append("Room: ").append(rDao.getRoomByRoomID(br.getRoomID()).getRoomNumber()).append("</td>");
+            emailContent.append("<td>").append(currencyFormatter.format(br.getPrice())).append("</td>");
+            int servicePrices = 0;
+            // Services Table within Invoice Table
+            emailContent.append("<td><table style='width: 100%;'>")
+                    .append("<thead><tr><th>Service</th><th>Quantity</th><th>Total Price</th></tr></thead><tbody>");
+            for (BookingService s : allBookingService) {
+                if (s.getRoomID() == br.getRoomID()) {  // Ensure service corresponds to the correct room
+                    emailContent.append("<tr>")
+                            .append("<td>").append(sDao.findService(s.getServiceID()).getName()).append("</td>")
+                            .append("<td>").append(s.getQuantity()).append("</td>")
+                            .append("<td>").append(currencyFormatter.format(s.getTotalPrice())).append("</td>")
+                            .append("</tr>");
+                    servicePrices += s.getTotalPrice();
+                }
+            }
+            emailContent.append("</tbody></table></td>");
+
+            // Add room total here if necessary
+            emailContent.append("<td>").append(currencyFormatter.format(br.getPrice()*br.getNumOfNight()+servicePrices)).append("</td>");
+            emailContent.append("</tr>");
+        }
+
+        emailContent.append("</tbody></table>");
+
+        // Footer
+        emailContent.append("<div style='text-align: center; margin-top: 20px;'>")
+                .append("<p>Thank you for staying with us!</p>")
+                .append("<p>Contact us at: <a href='mailto:alihotel33@gmail.com'>alihotel33@gmail.com</a></p>")
+                .append("</div>");
+
+        emailContent.append("</body></html>");
         try {
             MimeMessage message = new MimeMessage(session);
             // set header kieu noi dung
@@ -173,53 +244,19 @@ public class payStatus extends HttpServlet {
             // quy dinh email nhan phan hoi
             message.setReplyTo(null);
             // noi dung
-            message.setContent("<!DOCTYPE html>\r\n"
-                    + "<html>\r\n"
-                    + "<head>\r\n"
-                    + "<style>\r\n"
-                    + "body { font-family: Arial, sans-serif; color: #333; line-height: 1.6; }\r\n"
-                    + "h1 { color: #2A9D8F; font-size: 24px; margin-bottom: 10px; }\r\n"
-                    + "h2 { color: #264653; font-size: 20px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }\r\n"
-                    + "p { margin: 5px 0; }\r\n"
-                    + ".bill-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }\r\n"
-                    + ".header, .footer { text-align: center; color: #555; }\r\n"
-                    + ".footer { font-size: 12px; margin-top: 20px; }\r\n"
-                    + ".content-section { margin-top: 20px; }\r\n"
-                    + ".content-section p { font-size: 14px; }\r\n"
-                    + ".highlight { color: #E76F51; font-weight: bold; }\r\n"
-                    + "</style>\r\n"
-                    + "</head>\r\n"
-                    + "<body onload=\"formatCurrency()\">\r\n"
-                    + "<div class='bill-container'>\r\n"
-                    + "<div class='header'>\r\n"
-                    + "<h1>AliHotel</h1>\r\n"
-                    + "<p>Address: Beta Building, FPT University Ha Noi, Hoa Lac Hightech Park, Thach That, Ha Noi</p>\r\n"
-                    + "<p>Hotline: 1900 1833</p>\r\n"
-                    + "</div>\r\n"
-                    + "<hr>\r\n"
-                    + "<div class='content-section'>\r\n"
-                    + "<h2>Hotel E-invoice</h2>\r\n"
-                    + "<p><strong>Customer Name:</strong> <span class='highlight'>" + g.getName() + "</span></p>\r\n"
-                    + "<p><strong>Booking Date:</strong> " + b.getBookingDate() + "</p>\r\n"
-                    + "<p><strong>Check-in Date:</strong>" + allBkRoom.get(0).getCheckInDate() + "</p>\r\n"
-                    + "<p><strong>Check-out Date:</strong> " + allBkRoom.get(0).getCheckInDate() + "</p>\r\n"
-                    + "<p><strong>Deposit:</strong> <span id='depositAmount'>" + formattedDeposit.substring(0, formattedDeposit.length() - 2) + "VND</span></p>\r\n"
-                    + "<p><strong>Total Amount:</strong> <span class='highlight' id='totalAmount'>" + formattedTotal.substring(0, formattedTotal.length() - 2) + "VND</span></p>\r\n"
-                    + "</div>\r\n"
-                    + "<hr>\r\n"
-                    + "<div class='footer'>\r\n"
-                    + "<p>Thank you for staying with us at AliHotel!</p>\r\n"
-                    + "<p>&copy; AliHotel - 1900 1833 - FPT University Ha Noi</p>\r\n"
-                    + "<p>For more information, contact <a href='mailto:ali33hotel@gmail.com'>ali33hotel@gmail.com</a></p>\r\n"
-                    + "</div>\r\n"
-                    + "</div>\r\n"
-                    + "</body>\r\n"
-                    + "</html>", "text/html");
+            message.setContent(emailContent.toString(), "text/html; charset=UTF-8");
 
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
+    }
+    public static void main(String[] args) {
+        BookingDAO bkDao = new BookingDAO();
+        Booking booking = bkDao.getBookingByBookingID(1);
+        GuestDAO gDao = new GuestDAO();
+        Guest g = gDao.getGuestByGuestID(booking.getGuestID());
+        sendBillMail(booking, g);
     }
 }

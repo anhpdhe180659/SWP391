@@ -197,7 +197,7 @@
                                                             <c:when test="${s.statusId == 2}">
                                                                 <c:forEach items="${sessionScope.unpaidBooking}" var="bk">
                                                                     <c:if test="${bk.roomID == s.roomId}">
-                                                                        <a role="button" class="button " href="checkout?bookingId=${bk.bookingID}">Check out</a>
+                                                                        <a role="button" class="button " href="showInvoice?bookingId=${bk.bookingID}">Check out</a>
                                                                         <a role="button" class="button " href="addServiceBooking?bookingId=${bk.bookingID}&roomId=${s.roomId}">Add Service</a>
                                                                     </c:if>
                                                                 </c:forEach>
