@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.BookingService;
 import model.Service;
+import vn.payos.type.ItemData;
 
 public class ServiceDAO extends DBContext {
 
@@ -70,6 +72,7 @@ public class ServiceDAO extends DBContext {
     }
 
     public Service findService(int serviceID) {
+        System.out.println(serviceID);
         Service service = null;
         try {
             String query = "SELECT * FROM Service WHERE ServiceID = ?";
@@ -89,7 +92,12 @@ public class ServiceDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        new ServiceDAO().updateService(new Service(1, "Ca phe sua da", 20000000));
+        BookingDAO bkDao = new BookingDAO();
+        List<BookingService> bookingServices = bkDao.getAllBookingServiceByBookingID(1);
+        for (BookingService bkService : bookingServices) {
+            Service sv = new ServiceDAO().findService(bkService.getServiceID());
+            System.out.println("sv sv : " + sv.getName());
+        }
     }
 
     public List<Service> getAllServiceIsNotBookedByBookingIDAndRoomID(int bookingId, int roomId) {

@@ -7,7 +7,26 @@
         <title>Add Service</title>
         <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
         <link rel="icon" href="img/logo/favicon.png" type="image/x-icon" />
+        <!-- Fonts and icons -->
+        <script src="assets/js/plugin/webfont/webfont.min.js"></script>
 
+        <script>
+            WebFont.load({
+                google: {families: ["Public Sans:300,400,500,600,700"]},
+                custom: {
+                    families: [
+                        "Font Awesome 5 Solid",
+                        "Font Awesome 5 Regular",
+                        "Font Awesome 5 Brands",
+                        "simple-line-icons",
+                    ],
+                    urls: ["assets/css/fonts.min.css"],
+                },
+                active: function () {
+                    sessionStorage.fonts = true;
+                },
+            });
+        </script>
         <!-- CSS Files -->
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
@@ -133,81 +152,103 @@
             </div>
 
             <!-- Core JS Files -->
+            <!--   Core JS Files   -->
             <script src="assets/js/core/jquery-3.7.1.min.js"></script>
             <script src="assets/js/core/popper.min.js"></script>
             <script src="assets/js/core/bootstrap.min.js"></script>
+
+            <!-- jQuery Scrollbar -->
+            <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+            <!-- Chart JS -->
+            <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+            <!-- jQuery Sparkline -->
+            <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+            <!-- Chart Circle -->
+            <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+            <!-- Datatables -->
+            <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+            <!-- Kaiadmin JS -->
             <script src="assets/js/kaiadmin.min.js"></script>
+
+            <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+            <script src="assets/js/setting-demo.js"></script>
+            <script src="assets/js/demo.js"></script>
             <script>
-                const url = window.location.href;
+                                                                            const url = window.location.href;
 
-                // Format price to VND
-                function formatCurrencyVND(value) {
-                    return new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND'
-                    }).format(value);
-                }
+                                                                            // Format price to VND
+                                                                            function formatCurrencyVND(value) {
+                                                                                return new Intl.NumberFormat('vi-VN', {
+                                                                                    style: 'currency',
+                                                                                    currency: 'VND'
+                                                                                }).format(value);
+                                                                            }
 
-                // Apply the format to all prices
-                $(document).ready(function() {
-                    $('.price-vnd').each(function() {
-                        let price = parseFloat($(this).text());
-                        $(this).text(formatCurrencyVND(price));
-                    });
-                });
+                                                                            // Apply the format to all prices
+                                                                            $(document).ready(function () {
+                                                                                $('.price-vnd').each(function () {
+                                                                                    let price = parseFloat($(this).text());
+                                                                                    $(this).text(formatCurrencyVND(price));
+                                                                                });
+                                                                            });
 
-                function moveServiceToBooked(serviceId, serviceName, servicePrice) {
-                    $.post("addServiceBooking",
-                            {
-                                roomId: ${roomId},
-                                bookingId: ${bookingId},
-                                serviceId: serviceId
-                            },
-                            function (response) {
-                                window.location = url;
-                            }
-                    ).fail(function (xhr, status, error) {
-                        // Handle error
-                        console.error('Error adding service:', error);
-                    });
-                }
+                                                                            function moveServiceToBooked(serviceId, serviceName, servicePrice) {
+                                                                                $.post("addServiceBooking",
+                                                                                        {
+                                                                                            roomId: ${roomId},
+                                                                                            bookingId: ${bookingId},
+                                                                                            serviceId: serviceId
+                                                                                        },
+                                                                                        function (response) {
+                                                                                            window.location = url;
+                                                                                        }
+                                                                                ).fail(function (xhr, status, error) {
+                                                                                    // Handle error
+                                                                                    console.error('Error adding service:', error);
+                                                                                });
+                                                                            }
 
-                function removeBookedService(serviceID) {
-                    $.post("deleteServiceBooking",
-                            {
-                                roomId: ${roomId},
-                                bookingId: ${bookingId},
-                                serviceId: serviceID
-                            },
-                            function (response) {
-                                window.location = url;
-                            }
-                    ).fail(function (xhr, status, error) {
-                        console.error('Error removing service:', error);
-                    });
-                }
+                                                                            function removeBookedService(serviceID) {
+                                                                                $.post("deleteServiceBooking",
+                                                                                        {
+                                                                                            roomId: ${roomId},
+                                                                                            bookingId: ${bookingId},
+                                                                                            serviceId: serviceID
+                                                                                        },
+                                                                                        function (response) {
+                                                                                            window.location = url;
+                                                                                        }
+                                                                                ).fail(function (xhr, status, error) {
+                                                                                    console.error('Error removing service:', error);
+                                                                                });
+                                                                            }
 
-                function updatetQuantity(serviceId) {
-                    const value = document.querySelector(`input[name="quantity_\${serviceId}"]`).value;
-                    if (value > 4 || value < 1) {
-                        alert("Re-enter quantity from 1 -> 4");
-                        return;
-                    } else {
-                        $.post("updateQuantityService",
-                                {
-                                    roomId: ${roomId},
-                                    bookingId: ${bookingId},
-                                    serviceId: serviceId,
-                                    quantity: value
-                                },
-                                function (response) {
-                                    window.location = url;
-                                }
-                        ).fail(function (xhr, status, error) {
-                            console.error('Error updating quantity:', error);
-                        });
-                    }
-                }
+                                                                            function updatetQuantity(serviceId) {
+                                                                                const value = document.querySelector(`input[name="quantity_\${serviceId}"]`).value;
+                                                                                if (value > 4 || value < 1) {
+                                                                                    alert("Re-enter quantity from 1 -> 4");
+                                                                                    return;
+                                                                                } else {
+                                                                                    $.post("updateQuantityService",
+                                                                                            {
+                                                                                                roomId: ${roomId},
+                                                                                                bookingId: ${bookingId},
+                                                                                                serviceId: serviceId,
+                                                                                                quantity: value
+                                                                                            },
+                                                                                            function (response) {
+                                                                                                window.location = url;
+                                                                                            }
+                                                                                    ).fail(function (xhr, status, error) {
+                                                                                        console.error('Error updating quantity:', error);
+                                                                                    });
+                                                                                }
+                                                                            }
             </script>
         </div>
     </body>
