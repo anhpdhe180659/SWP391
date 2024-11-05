@@ -5,9 +5,7 @@
 package control;
 
 import config.PayOSConfig;
-import static config.PayOSConfig.apiKey;
-import static config.PayOSConfig.checkSum;
-import static config.PayOSConfig.clientID;
+
 import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.RoomDao;
@@ -19,29 +17,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import model.Booking;
 import model.BookingRoom;
 import model.BookingService;
 import model.Guest;
 import model.Room;
-import model.RoomType;
 import model.Service;
 import vn.payos.PayOS;
 import vn.payos.type.CheckoutResponseData;
@@ -64,8 +49,6 @@ public class checkout extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-
     public static String generatePayUrlWithPayOs(Booking b, Guest g) {
         try {
             int totalAmount = 0;
@@ -79,7 +62,7 @@ public class checkout extends HttpServlet {
             for (BookingRoom bkRoom : allBookingRoom) {
                 Room room = rDao.getRoomByRoomID(bkRoom.getRoomID());
                 ItemData item = ItemData.builder()
-                        .name(room.getRoomNumber() + "")
+                        .name("Room " + room.getRoomNumber() + ": ")
                         .price(bkRoom.getPrice())
                         .quantity(bkRoom.getNumOfNight())
                         .build();
@@ -92,16 +75,19 @@ public class checkout extends HttpServlet {
                 // add each service with it's price and quantity to item list
                 for (BookingService bkService : bookingServices) {
                     Service sv = svDao.findService(bkService.getServiceID());
+                    System.out.println("sv sv : " + sv.getName());
+                    Room r = rDao.getRoomByRoomID(bkService.getRoomID());
                     ItemData item = ItemData.builder()
-                            .name(sv.getName())
-                            .price(sv.getPrice())
+                            .name("Room " + r.getRoomNumber() + ": " + sv.getName())
+                            .price(bkService.getPrice())
                             .quantity(bkService.getQuantity())
                             .build();
                     listItems.add(item);
+                    totalAmount += bkService.getTotalPrice();
                 }
             }
             b.setTotalPrice(totalAmount);
-            bkDao.updateTotalPrice(b.getBookingID(),b.getTotalPrice());
+            bkDao.updateTotalPrice(b.getBookingID(), b.getTotalPrice());
             totalAmount = totalAmount - b.getDeposit();
             PaymentData paymentData = PaymentData.builder().amount(totalAmount)
                     .cancelUrl("http://localhost:8080/SWP391/payStatus")
@@ -119,7 +105,7 @@ public class checkout extends HttpServlet {
             return "error";
         }
     }
-
+    
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
         Booking booking = bkDao.getBookingByBookingID(2);
@@ -142,22 +128,7 @@ public class checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String id = request.getParameter("bookingId");
-        session.setAttribute("bookingInPay", id);
-        BookingDAO bkDao = new BookingDAO();
-        int bkId = Integer.parseInt(id);
-        Booking booking = bkDao.getBookingByBookingID(bkId);
-        int guestId = booking.getGuestID();
-        GuestDAO gDao = new GuestDAO();
-        Guest guest = gDao.getGuestByGuestID(guestId);
-        String payurl = generatePayUrlWithPayOs(booking, guest);
         
-        if (payurl == null || payurl.equals("error")) {
-            response.sendRedirect("payStatus?status=error");
-        } else {
-            response.sendRedirect(payurl);
-        }
     }
 
     /**
@@ -171,8 +142,36 @@ public class checkout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-//        sendBillMail(booking, guest);
+        
+        HttpSession session = request.getSession();
+        String id = request.getParameter("bookingId");
+        String paymentMethod = request.getParameter("paymentMethod");
+        int bkId = Integer.parseInt(id);
+        switch (paymentMethod) {
+            case "1" -> {
+                session.setAttribute("bookingInPay", id);
+                BookingDAO bkDao = new BookingDAO();
+                Booking booking = bkDao.getBookingByBookingID(bkId);
+                bkDao.updatePaymentMethod(bkId, 1);
+                int guestId = booking.getGuestID();
+                GuestDAO gDao = new GuestDAO();
+                Guest guest = gDao.getGuestByGuestID(guestId);
+                String payurl = generatePayUrlWithPayOs(booking, guest);
+                if (payurl == null || payurl.equals("error")) {
+                    response.sendRedirect("payStatus?status=error");
+                } else {
+                    response.sendRedirect(payurl);
+                }
+            }
+            case "2" -> {
+                BookingDAO bkDao = new BookingDAO();
+                Booking booking = bkDao.getBookingByBookingID(bkId);
+                payByCash(booking);
+            }
+            default -> {
+                response.sendRedirect("showInvoice?bookingId=" + id);
+            }
+        }
     }
 
     /**
@@ -185,4 +184,8 @@ public class checkout extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void payByCash(Booking booking) {
+        
+    }
+    
 }
