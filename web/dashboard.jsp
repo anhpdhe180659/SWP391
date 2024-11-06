@@ -6,7 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@page  import="java.util.List"%>
+<%@page  import="dto.ChartRoom"%>
+<%@ page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,7 +24,7 @@
             href="img/logo/favicon.png"
             type="image/x-icon"
             />
-        
+
 
         <!-- Fonts and icons -->
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
@@ -154,7 +156,7 @@
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
                                                     <p class="card-category">Total Amount</p>
-                                                    <h4 class="card-title">${sessionScope.totalInvoice}</h4>
+                                                    <h4 class="card-title price-vnd">${sessionScope.totalInvoice}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,7 +248,7 @@
                                     </div>
                                 </div>
                             </div>
-                                                
+
                             <div class="col-sm-6 col-md-3">
 
                                 <div class="card card-stats card-round">
@@ -294,71 +296,128 @@
                                 </div>
                             </div>                    
                             <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">Room Statistics</div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-container">
-                                        <canvas
-                                            id="myChart"
-                                            style="width: 50%; height: 50%"
-                                            ></canvas>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Room Statistics</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas
+                                                id="myChart"
+                                                style="width: 50%; height: 50%"
+                                                ></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Type Room </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas
+                                                id="roomChart"
+                                                style="width: 50%; height: 50%"
+                                                ></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-6">
+                                <div class="card card-round">
+                                    <div class="card-header">
+                                        <div class="card-head-row card-tools-still-right">
+                                            <div class="card-title">Transaction History</div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <!-- Projects table -->
+                                            <table class="table align-items-center mb-0">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th scope="col">Invoice Number</th>
+                                                        <th scope="col" class="text-end">Date & Time</th>
+                                                        <th scope="col" class="text-end">Amount</th>
+                                                        <th scope="col" class="text-end">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items="${sessionScope.listInvoice}" var="i">
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <button
+                                                                    class="btn btn-icon btn-round btn-success btn-sm me-2"
+                                                                    >
+                                                                    <i class="fa fa-check"></i>
+                                                                </button>
+                                                                Payment No ${i.invoiceNo}
+                                                            </th>
+                                                            <td class="text-end">${i.paymentDate}</td>
+                                                            <td class="text-end price-vnd">${i.finalAmount} VND</td>
+                                                            <td class="text-end">
+                                                                <span class="badge badge-success">Completed</span>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-    <div class="col-md-4">
-        <canvas id="maintenanceChart"></canvas>
-    </div>
-    <div class="col-md-4">
-        <canvas id="availableChart"></canvas>
-    </div>
-    <div class="col-md-4">
-        <canvas id="occupiedChart"></canvas>
-    </div>
-</div>
+                <div class="col-md-4">
+                    <canvas id="maintenanceChart"></canvas>
+                </div>
+                <div class="col-md-4">
+                    <canvas id="availableChart"></canvas>
+                </div>
+                <div class="col-md-4">
+                    <canvas id="occupiedChart"></canvas>
+                </div>
+            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    var maintenanceData = {
-        labels: ["Under Maintenance", "Available", "Occupied"],
-        datasets: [{
-            label: 'Room Status',
-            data: [<%= session.getAttribute("maintaince") %>, <%= session.getAttribute("available") %>, <%= session.getAttribute("occupied") %>],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)'
-            ],
-            borderWidth: 1
-        }]
-    };
-
-    var maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
-    var maintenanceChart = new Chart(maintenanceCtx, {
-        type: 'bar',
-        data: maintenanceData,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+            var maintenanceData = {
+                labels: ["Under Maintenance", "Available", "Occupied"],
+                datasets: [{
+                        label: 'Room Status',
+                        data: [<%= session.getAttribute("maintaince") %>, <%= session.getAttribute("available") %>, <%= session.getAttribute("occupied") %>],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+            };
+            var maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
+            var maintenanceChart = new Chart(maintenanceCtx, {
+                type: 'bar',
+                data: maintenanceData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
-            }
-        }
-    });
-</script>
+            });
+            </script>
             <!--   Core JS Files   -->
             <script src="assets/js/core/jquery-3.7.1.min.js"></script>
             <script src="assets/js/core/popper.min.js"></script>
@@ -400,7 +459,6 @@
                 lineColor: "#177dff",
                 fillColor: "rgba(23, 125, 255, 0.14)",
             });
-
             $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
                 type: "line",
                 height: "70",
@@ -409,7 +467,6 @@
                 lineColor: "#f3545d",
                 fillColor: "rgba(243, 84, 93, .14)",
             });
-
             $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
                 type: "line",
                 height: "70",
@@ -419,35 +476,119 @@
                 fillColor: "rgba(255, 165, 52, .14)",
             });
             </script>
-            
-    <script>
-        const underMaintenance = ${sessionScope.maintaince};
-        const available = ${sessionScope.available};
-        const occupied = ${sessionScope.occupied};
-        console.log(available);
-        var ctx = document.getElementById('myChart').getContext('2d');
-        const data_chart = {
-            labels: [
-                'Under Maintenance',
-                'Available',
-                'Occupied'
-            ],
-            datasets: [{
-                    data: [underMaintenance, available, occupied],
-                    backgroundColor: [
-                        'orange', // Màu đỏ cho giá trị 10
-                        'greenyellow', // Màu xanh cho giá trị 20
-                        '#286090' // Màu vàng cho giá trị 30
-                    ],
-                    borderWidth: 1
-                }]
-        };
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: data_chart
-        });
 
-    </script>
+            <script>
+                const underMaintenance = ${sessionScope.maintaince};
+                const available = ${sessionScope.available};
+                const occupied = ${sessionScope.occupied};
+                console.log(available);
+                var ctx = document.getElementById('myChart').getContext('2d');
+                const data_chart = {
+                    labels: [
+                        'Under Maintenance',
+                        'Available',
+                        'Occupied'
+                    ],
+                    datasets: [{
+                            data: [underMaintenance, available, occupied],
+                            backgroundColor: [
+                                'orange', // Màu đỏ cho giá trị 10
+                                'greenyellow', // Màu xanh cho giá trị 20
+                                '#286090' // Màu vàng cho giá trị 30
+                            ],
+                            borderWidth: 1
+                        }]
+                };
+                var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data_chart
+                });
+            </script>
+            <%
+        // Retrieve the list of ChartRoom objects from the session
+        List<ChartRoom> roomStats = (List<ChartRoom>) session.getAttribute("chartRooms");
+
+        // Convert the list to JSON format for JavaScript
+        String roomStatsJson = new Gson().toJson(roomStats);
+            %>
+            <script>
+                var roomStats = <%= roomStatsJson %>;
+
+                // Extract the labels (room types) and data (booking times)
+                const labels_type = roomStats.map(room => room.typeName);  // Room types on the x-axis
+                const datatype = roomStats.map(room => room.bookTimes);   // Booking times on the y-axis
+                console.log(datatype);
+                // Render the chart
+                var roomChart = document.getElementById('roomChart').getContext('2d');
+                const data_chartss = {
+                    labels: labels_type,
+                    datasets: [{
+                            label: 'Room Booking Statistics',
+                            data: datatype,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)'
+                            ],
+                            borderWidth: 1
+                        }]
+                };
+
+                var roomCh = new Chart(roomChart, {
+                    type: 'bar',
+                    data: data_chartss,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                min: 0,
+                                title: {
+                                    display: true,
+                                    text: 'Booking Times'  // Label for y-axis
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Room Types'  // Label for x-axis
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+            <script>
+                // Format price to VND
+                function formatCurrencyVND(value) {
+                    return new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(value);
+                }
+
+                // Apply the format to all prices
+                $(document).ready(function () {
+                    $('.price-vnd').each(function () {
+                        let price = parseFloat($(this).text());
+                        $(this).text(formatCurrencyVND(price));
+                    });
+                });
+                function doClose() {
+                    $('#addUserModal').modal('hide');
+                }
+            </script>
     </body>
 </html>
 

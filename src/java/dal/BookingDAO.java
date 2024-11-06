@@ -4,6 +4,7 @@
  */
 package dal;
 
+import dto.ChartRoom;
 import java.sql.Timestamp;
 import java.util.List;
 import model.Room;
@@ -387,7 +388,7 @@ public class BookingDAO extends DBContext {
         BookingDAO bkDao = new BookingDAO();
     }
 
-    public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice,int paymentMethod, LocalDateTime actualCheckInTime) {
+    public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice, int paymentMethod, LocalDateTime actualCheckInTime) {
         java.util.Date currentDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
         String query = """
@@ -795,6 +796,22 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public List<ChartRoom> getBookTimesByRoom() {
+        String sql = "with RoomCount as (select  br.BookingID, r.RoomID , r.TypeID, rt.TypeName  from bookingroom br join room r on br.RoomID = r.RoomID  join RoomType rt on rt.TypeID = r.TypeID)\n"
+                + "\n"
+                + "select count(RoomID) as 'Total', TypeName from RoomCount group by TypeID";
+        List<ChartRoom> listChart = new ArrayList<>();
+        try (PreparedStatement pre = connection.prepareStatement(sql);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                listChart.add(new ChartRoom(rs.getInt("Total"), rs.getString("TypeName")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return listChart;
     }
 
 }
