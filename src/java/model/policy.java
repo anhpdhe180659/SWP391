@@ -12,6 +12,12 @@ package model;
 
 public class policy {
 
+    public policy() {
+    }
+
+    public policy(int aInt, String string, String string1) {
+    }
+
     
     private int policyId;
     private String policyTitle;
