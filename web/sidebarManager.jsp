@@ -106,6 +106,11 @@
                                             <span class="sub-item">Add Room Type</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="listRoomAmenity">
+                                            <span class="sub-item">View Room's Amenities</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

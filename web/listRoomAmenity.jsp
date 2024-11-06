@@ -46,7 +46,22 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarstaff.jsp"/>
+            <% Integer role = (Integer) session.getAttribute("role"); %>
+            <c:choose>
+                <c:when test="${role == 1}">
+                    <%-- Hiển thị sidebar cho Manager --%>
+                    <jsp:include page="sidebarManager.jsp"/>
+                </c:when>
+                <c:when test="${role == 2}">
+                    <%-- Hiển thị sidebar cho Receptionist --%>
+                    <jsp:include page="sidebarReceptionist.jsp"/>
+                </c:when>
+                <c:when test="${role == 3}">
+                    <%-- Hiển thị sidebar cho Staff --%>
+                    <jsp:include page="sidebarstaff.jsp"/>
+                </c:when>
+            </c:choose>
+
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -111,11 +126,11 @@
                                             <button class="btn btn-label-info ms-4" type="submit">Filter</button>
 
                                         </form>
-<!--                                        <form id="searchForm" class="d-flex align-items-center mb-3">
-                                            <span class="me-2">Room Number:</span>
-                                            <input type="text" id="roomNumberInput" class="form-control col-4 me-4" placeholder="Enter room number" style="max-width: 250px;" />
-                                            <button type="button" class="btn btn-label-info" onclick="searchRoom()">Search</button>
-                                        </form>-->
+                                        <!--                                        <form id="searchForm" class="d-flex align-items-center mb-3">
+                                                                                    <span class="me-2">Room Number:</span>
+                                                                                    <input type="text" id="roomNumberInput" class="form-control col-4 me-4" placeholder="Enter room number" style="max-width: 250px;" />
+                                                                                    <button type="button" class="btn btn-label-info" onclick="searchRoom()">Search</button>
+                                                                                </form>-->
 
                                     </div>
                                 </div>
@@ -235,26 +250,26 @@
             <script src="assets/js/setting-demo.js"></script>
             <script src="assets/js/demo.js"></script>
             <script>
-                                                function searchRoom() {
-                                                    const input = document.getElementById("roomNumberInput").value.toLowerCase();
-                                                    const rows = document.querySelectorAll(".room-row");
-                                                    let found = false; // Đánh dấu xem có phòng nào được tìm thấy không
+            function searchRoom() {
+                const input = document.getElementById("roomNumberInput").value.toLowerCase();
+                const rows = document.querySelectorAll(".room-row");
+                let found = false; // Đánh dấu xem có phòng nào được tìm thấy không
 
-                                                    rows.forEach(row => {
-                                                        const roomNumberCell = row.cells[0].textContent.toLowerCase();
-                                                        if (roomNumberCell.includes(input) || input === "") {
-                                                            row.style.display = ""; // Hiện hàng nếu tìm thấy
-                                                            found = true;
-                                                        } else {
-                                                            row.style.display = "none"; // Ẩn hàng nếu không tìm thấy
-                                                        }
-                                                    });
+                rows.forEach(row => {
+                    const roomNumberCell = row.cells[0].textContent.toLowerCase();
+                    if (roomNumberCell.includes(input) || input === "") {
+                        row.style.display = ""; // Hiện hàng nếu tìm thấy
+                        found = true;
+                    } else {
+                        row.style.display = "none"; // Ẩn hàng nếu không tìm thấy
+                    }
+                });
 
-                                                    // Nếu không có phòng nào tìm thấy, bạn có thể thông báo cho người dùng
-                                                    if (!found) {
-                                                        alert("No rooms found with the specified number.");
-                                                    }
-                                                }
+                // Nếu không có phòng nào tìm thấy, bạn có thể thông báo cho người dùng
+                if (!found) {
+                    alert("No rooms found with the specified number.");
+                }
+            }
             </script>
             <script>
                 $(document).ready(function () {
