@@ -14,15 +14,26 @@ public class Item {
     String ItemName;
     int StandardQuantity;
     int StockQuantity;
+    int UsedQuantity;
     int Price;
 
-    public Item(int ItemID, String ItemName, int StandardQuantity, int StockQuantity, int Price) {
+    public Item(int ItemID, String ItemName, int StandardQuantity, int StockQuantity, int UsedQuantity, int Price) {
         this.ItemID = ItemID;
         this.ItemName = ItemName;
         this.StandardQuantity = StandardQuantity;
         this.StockQuantity = StockQuantity;
+        this.UsedQuantity = UsedQuantity;
         this.Price = Price;
     }
+
+    public int getUsedQuantity() {
+        return UsedQuantity;
+    }
+
+    public void setUsedQuantity(int UsedQuantity) {
+        this.UsedQuantity = UsedQuantity;
+    }
+
 
     public Item() {
     }
@@ -69,7 +80,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" + "ItemID=" + ItemID + ", ItemName=" + ItemName + ", StandardQuantity=" + StandardQuantity + ", StockQuantity=" + StockQuantity + ", Price=" + Price + '}';
+        return "Item{" + "ItemID=" + ItemID + ", ItemName=" + ItemName + ", StandardQuantity=" + StandardQuantity + ", StockQuantity=" + StockQuantity + ", UsedQuantity=" + UsedQuantity + ", Price=" + Price + '}';
     }
 
     

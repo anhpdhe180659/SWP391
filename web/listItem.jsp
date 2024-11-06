@@ -116,6 +116,7 @@
                                                     <th>Name</th>
                                                     <th>Number/Room</th>
                                                     <th>Stock Quantity</th>
+                                                    <th>Used Quantity</th>
                                                     <th>Price</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
@@ -144,6 +145,7 @@
                                                     <td><%= item.getItemName() %></td>
                                                     <td><%= item.getStandardQuantity() %></td>
                                                     <td><%= item.getStockQuantity() %></td>
+                                                    <td><%= item.getUsedQuantity() %></td>
                                                     <td><%= formattedPrice %></td>                                          
                                                     <td>
                                                         <div class="form-button-action">
