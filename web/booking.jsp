@@ -101,7 +101,7 @@
                                     <div class="card-header">
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
                                     </div>
-                                    <form action="booking" method="POST">
+                                    <form action="booking" method="POST" onsubmit="validate()">
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
@@ -191,7 +191,7 @@
                                                                         <%if (room.getStatusId() != 3) {
                                                                         %>
                                                                         <input type="checkbox"
-                                                                               id="checkbox_<%= room.getRoomId() %>" name="roomSelected" value="<%= room.getRoomId()%>" class="row-checkbox"/>
+                                                                               id="checkbox_<%= room.getRoomId() %>" name="roomSelected" value="<%= room.getRoomId()%>" class="row-checkbox" data-price="<%= price %>" onclick="updateTotalPrice()"/>
                                                                         <%
                                                                            }
                                                                         %>
@@ -203,6 +203,7 @@
                                                                 %>
                                                             </tbody>
                                                         </table>
+
                                                     </div>
 
                                                 </div>
@@ -236,7 +237,6 @@
                                                                     pattern="^\d{10,15}$"
                                                                     title="Valid phone number must be 10 to 15 digits long"
                                                                     required
-
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -246,11 +246,29 @@
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
-                                                                    pattern="[A-Za-z\s]{1,50}" title="Nationality contains only characters, spaces"
+                                                                    pattern="^[A-Za-zÀ-ỹ\s]{1,50}$"
+                                                                    title="Nationality should contain only letters and spaces, up to 50 characters."
                                                                     maxlength="50"
                                                                     placeholder="Enter nationality"
+                                                                    list="countryList"
                                                                     required
                                                                     />
+                                                                <!--                                                                <select
+                                                                                                                                    class="form-control"
+                                                                                                                                    id="nationality"
+                                                                                                                                    name="nationality"
+                                                                                                                                    placeholder="Enter nationality"
+                                                                                                                                    required
+                                                                                                                                    >
+                                                                                                                                    <option value="Vietnam">Vietnam</option>
+                                                                                                                                    <option value="United States">United States</option>
+                                                                                                                                    <option value="Canada">Canada</option>
+                                                                                                                                    <option value="France">France</option>
+                                                                                                                                    <option value="Germany">Germany</option>
+                                                                                                                                    <option value="Australia">Australia</option>
+                                                                                                                                    <option value="Japan">Japan</option>
+                                                                                                                                    <option value="South Korea">South Korea</option>
+                                                                                                                                </select>-->
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
@@ -263,8 +281,8 @@
                                                                     name="identification"
                                                                     maxlength="20"
                                                                     placeholder="Enter identification"
-                                                                    pattern="(^[A-Z0-9]{8}$)|^[0-9]{10}$)|(^[0-9]{12}$)" 
-                                                                    title="Valid ID contains 8, 10 or 12 digits and uppercase letters"
+                                                                    pattern="^[A-Z0-9]{8}|[0-9]{10}|[0-9]{12}$"
+                                                                    title="Valid ID contains 8 uppercase letters or digits, or 10 or 12 digits"
                                                                     required
                                                                     />
                                                             </div>
@@ -301,6 +319,7 @@
                                                                     name="checkindate"
                                                                     placeholder="Enter identification"
                                                                     required
+                                                                    onchange="calculateTotalStayPrice()"
                                                                     />
                                                             </div>
                                                             <div class="form-group">
@@ -312,69 +331,43 @@
                                                                     name="checkoutdate"
                                                                     placeholder="Enter address"
                                                                     required
+                                                                    onchange="calculateTotalStayPrice()"
                                                                     />
                                                                 <!--datetime-local-->
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="paymentMethod"><i class="far fa-credit-card"></i> Payment Method</label>
-                                                                <div class="form-group form-group-default">
-                                                                    <select id="paymentMethod" name="paymentMethod" class="form-control">
-                                                                        <option value="1">Cash</option>
-                                                                        <option value="2">Bank transfer</option>
-                                                                    </select>
-                                                                </div>
+                                                                <label><i class="fab fa-telegram"></i> Email</label>
+                                                                <input
+                                                                    id="email"
+                                                                    name="email"
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    placeholder="Enter guest's email"
+                                                                    />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
-
                                                             <div class="form-group">
-                                                                <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
-                                                                <input
-                                                                    type="number"
-                                                                    class="form-control"
-                                                                    min="0"
-                                                                    max="2000000000"
-                                                                    name="deposit"
-                                                                    placeholder="Enter deposit"
-                                                                    required
-                                                                    />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label><i class="fas fa-user-check"></i> Check-in</label><br />
-                                                                <div class="d-flex">
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="checkinstatus"
-                                                                            id="check1"
-                                                                            value="1"
-                                                                            checked
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="check1"
-                                                                            >
-                                                                            Now
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="form-check">
-                                                                        <input
-                                                                            class="form-check-input"
-                                                                            type="radio"
-                                                                            name="checkinstatus"
-                                                                            id="check2"
-                                                                            value="0"
-                                                                            />
-                                                                        <label
-                                                                            class="form-check-label"
-                                                                            for="check2"
-                                                                            >
-                                                                            Later
-                                                                        </label>
-                                                                    </div>
+                                                                <label><i class="fas fa-money-bill-wave"></i> Total Price</label>
+                                                                <div id="totalPriceContainer" style="text-align: left; font-weight: bold; margin-top: 10px;color: green">
+                                                                    Total Price: <span id="totalPrice">0</span>
                                                                 </div>
                                                             </div>
+
+                                                            <!--                                                            <div class="form-group">
+                                                                                                                            <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
+                                                                                                                            <input
+                                                                                                                                type="number"
+                                                                                                                                class="form-control"
+                                                                                                                                min="0"
+                                                                                                                                max="2000000000"
+                                                                                                                                name="deposit"
+                                                                                                                                placeholder="Enter deposit"
+                                                                                                                                required
+                                                                                                                                />
+                                                                                                                        </div>-->
+
+
                                                             <div class="form-group">
 
                                                                 <label><i class="fas fa-transgender"></i> Gender</label><br />
@@ -414,7 +407,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group"> 
+                                                        <div class="form-group">
                                                             <input
                                                                 type="time"
                                                                 class="form-control"
@@ -455,6 +448,46 @@
             <!-- Custom template | don't include it in your project! -->
             <!-- End Custom template -->
         </div>
+        <script>
+            function calculateTotalStayPrice() {
+                const checkinDate = document.getElementById("checkindate").value;
+                const checkoutDate = document.getElementById("checkoutdate").value;
+
+                // Parse dates and calculate the difference in days
+                if (checkinDate && checkoutDate) {
+                    const checkin = new Date(checkinDate);
+                    const checkout = new Date(checkoutDate);
+                    const stayDuration = (checkout - checkin) / (1000 * 60 * 60 * 24); // Difference in days
+
+                    if (stayDuration > 0) {
+                        // Calculate the base total price of selected rooms
+                        let baseTotalPrice = 0;
+                        const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+                        checkboxes.forEach(checkbox => {
+                            baseTotalPrice += parseInt(checkbox.getAttribute('data-price'));
+                        });
+
+                        // Calculate the final total price based on the stay duration
+                        const totalStayPrice = baseTotalPrice * stayDuration;
+                        document.getElementById('totalPrice').innerText = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(totalStayPrice);
+                    } else {
+                        document.getElementById('totalPrice').innerText = "0 ₫";
+                    }
+                } else {
+                    document.getElementById('totalPrice').innerText = "0 ₫";
+                }
+            }
+
+            // Update the total price when a room checkbox is selected or deselected
+            function updateTotalPrice() {
+                calculateTotalStayPrice();
+            }
+            function toggleCheckbox(roomId) {
+                var checkbox = document.getElementById("checkbox_" + roomId);
+                checkbox.checked = !checkbox.checked;
+                updateTotalPrice();
+            }
+        </script>
         <!--   Core JS Files   -->
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
@@ -495,55 +528,115 @@
         <script src="assets/js/setting-demo2.js"></script>
         <script></script>
         <script>
-                                                                    // Get today's date in yyyy-mm-dd format
-                                                                    const today = new Date().toISOString().split('T')[0];
-                                                                    // Set the max attribute for the birthday input to today's date
-                                                                    document.getElementById("birthday").setAttribute("max", today);
-                                                                    document.getElementById("checkindate").setAttribute("min", today);
-                                                                    document.getElementById("checkoutdate").setAttribute("min", today);
-                                                                    document.getElementById("checkindate").addEventListener("change", function () {
-                                                                        let checkInDate = new Date(this.value);
-                                                                        let minCheckOutDate = new Date(checkInDate);
-                                                                        minCheckOutDate.setDate(checkInDate.getDate() + 1);
-                                                                        // Convert the date back to YYYY-MM-DD format
-                                                                        let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
-                                                                        // Set the minimum date for checkout as one day after the check-in date
-                                                                        let checkOutInput = document.getElementById("checkoutdate");
-                                                                        checkOutInput.setAttribute("min", formattedCheckOutDate);
-                                                                    });
+            // Get today's date in yyyy-mm-dd format
+            const today = new Date().toISOString().split('T')[0];
+            // Set the max attribute for the birthday input to today's date
+            document.getElementById("birthday").setAttribute("max", today);
+            document.getElementById("checkindate").setAttribute("min", today);
+            document.getElementById("checkoutdate").setAttribute("min", today);
+            document.getElementById("checkindate").addEventListener("change", function () {
+                let checkInDate = new Date(this.value);
+                let minCheckOutDate = new Date(checkInDate);
+                minCheckOutDate.setDate(checkInDate.getDate() + 1);
+                // Convert the date back to YYYY-MM-DD format
+                let formattedCheckOutDate = minCheckOutDate.toISOString().split('T')[0];
+                // Set the minimum date for checkout as one day after the check-in date
+                let checkOutInput = document.getElementById("checkoutdate");
+                checkOutInput.setAttribute("min", formattedCheckOutDate);
+            });
         </script>
         <script>
-            function toggleCheckbox(roomId) {
-                var checkbox = document.getElementById("checkbox_" + roomId);
-                checkbox.checked = !checkbox.checked;
+
+        </script>
+        <script>
+            function validate() {
+                var email = document.getElementById("email").value.trim();
+//                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                var regex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+                if (!regex.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    document.getElementById("email").focus();
+                    return false;
+                }
+                var phone = document.getElementById("phone").value.trim(); // Trim spaces from input
+                var regex1 = /^\d{10}$/;
+
+                if (!regex1.test(phone)) {
+                    alert("Please enter a valid phone number with 10 digits.");
+                    document.getElementById("phone").focus();
+                    return false;
+                }
+                var identification = document.getElementById("identification").value.trim();
+                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+                if (!regex2.test(identification)) {
+                    alert("Please enter a valid identification number with 12 digit");
+                    document.getElementById("identification").focus();
+                    return false;
+                }
+                return true;
             }
         </script>
         <script>
-//            function validate() {
-//                var email = document.getElementById("email").value;
-//                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-//                if (!regex.test(email)) {
-//                    alert("Please enter a valid Email address (example@gmail.com)");
-//                    document.getElementById("email").focus();
-//                    return false;
-//                }
-//                var phone = document.getElementById("phone").value.trim(); // Trim spaces from input
-//                var regex1 = /^\d{10}$/;
-//                
-//                if (!regex1.test(phone)) {
-//                    alert("Please enter a valid phone number with 10 digits.");
-//                    document.getElementById("phone").focus();
-//                    return false;
-//                }
-//                var identification = document.getElementById("identification").value;
-//                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-//                if (!regex2.test(identification)) {
-//                    alert("Please enter a valid identification number with 12 digit");
-//                    document.getElementById("identification").focus();
-//                    return false;
-//                }
-//                return true;
-//            }
+            document.getElementById("name").addEventListener("input", function () {
+                const nameInput1 = document.getElementById("name").value;
+
+                // Check if the input contains only spaces
+                if (nameInput1.trim() === "") {
+                    alert("The name field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("name").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("email").addEventListener("input", function () {
+                const nameInput2 = document.getElementById("email").value;
+
+                // Check if the input contains only spaces
+                if (nameInput2.trim() === "") {
+                    alert("The email field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("email").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("identification").addEventListener("input", function () {
+                const nameInput3 = document.getElementById("identification").value;
+
+                // Check if the input contains only spaces
+                if (nameInput3.trim() === "") {
+                    alert("The identification field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("identification").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("phone").addEventListener("input", function () {
+                const nameInput4 = document.getElementById("phone").value;
+
+                // Check if the input contains only spaces
+                if (nameInput4.trim() === "") {
+                    alert("The phone field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("phone").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("address").addEventListener("input", function () {
+                const nameInput5 = document.getElementById("address").value;
+
+                // Check if the input contains only spaces
+                if (nameInput5.trim() === "") {
+                    alert("The address field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("address").value = ""; // Clear the field
+                }
+            });
+            document.getElementById("nationality").addEventListener("input", function () {
+                const nameInput6 = document.getElementById("nationality").value;
+
+                // Check if the input contains only spaces
+                if (nameInput6.trim() === "") {
+                    alert("The nationality field cannot contain only spaces.");
+                    // Optionally, you can clear the field or take any other action
+                    document.getElementById("nationality").value = ""; // Clear the field
+                }
+            });
         </script>
         <script>
             document.querySelectorAll('#multi-filter-select tbody tr').forEach(row => {

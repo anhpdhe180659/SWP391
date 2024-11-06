@@ -19,8 +19,20 @@ public class Booking {
     int UserID;
     Date BookingDate;
     int TotalPrice;
-    
+    int PaymentMethod;
     public Booking() {
+    }
+
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice, int PaymentMethod) {
+        this.BookingID = BookingID;
+        this.GuestID = GuestID;
+        this.Deposit = Deposit;
+        this.CheckInStatus = CheckInStatus;
+        this.PaidStatus = PaidStatus;
+        this.UserID = UserID;
+        this.BookingDate = BookingDate;
+        this.TotalPrice = TotalPrice;
+        this.PaymentMethod = PaymentMethod;
     }
 
     public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice) {
@@ -32,6 +44,14 @@ public class Booking {
         this.UserID = UserID;
         this.BookingDate = BookingDate;
         this.TotalPrice = TotalPrice;
+    }
+
+    public int getPaymentMethod() {
+        return PaymentMethod;
+    }
+
+    public void setPaymentMethod(int PaymentMethod) {
+        this.PaymentMethod = PaymentMethod;
     }
     
 
