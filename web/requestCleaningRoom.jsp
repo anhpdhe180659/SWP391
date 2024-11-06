@@ -106,18 +106,16 @@
                                     <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="editAmenity"  method="POST"  onsubmit="return validate()">
-                                                    <c:set value="${requestScope.amenity}" var="a"/>
+                                                <form action="RequestCleaningRoom"  method="POST">
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Room Number</label>
                                                                     <input
-                                                                        name="name"
+                                                                        name="roomNumber"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${a.amenName}"
                                                                         required
                                                                         />
                                                                 </div>
@@ -128,10 +126,9 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Note</label>
                                                                     <input
-                                                                        name="name"
+                                                                        name="note"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        value="${a.amenName}"
                                                                         required
                                                                         />
                                                                 </div>
@@ -139,18 +136,16 @@
                                                                          <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Cleaning By</label>
-                                                                    <input
-                                                                        name="name"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        value="${a.amenName}"
-                                                                        required
-                                                                        />
+                                                                   
+                                                                    <select class="form-control" name="staffId">
+                                                                        <c:forEach items="${requestScope.listStaff}" var="s">
+                                                                            <option value="${s.userID}">${s.name}</option>
+                                                                        </c:forEach>
+                                                                    </select>
                                                                 </div>
                                                             </div>       
                                                         </div>
                                                     </div>
-                                                    <input type="text" name="amenid" value="${a.amenID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
                                                         <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>

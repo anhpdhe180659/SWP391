@@ -69,6 +69,56 @@ public class UserDAO extends DBContext {
         return sList;
     }
 
+    public List<User> getAllStaff() {
+
+        List<User> sList = new ArrayList<>();
+        String sql = """
+                     SELECT UserID
+                             ,Name
+                             ,DateOfBirth
+                             ,Sex
+                             ,Address
+                             ,Phone
+                             ,Identification
+                             ,StartDate
+                             ,Salary
+                             ,Image
+                             ,Username
+                             ,Password
+                             ,Role
+                             ,Email
+                             ,Status
+                         FROM HotelManagement.User
+                         where Role = 3
+                     """;
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int UserID = rs.getInt("UserID");
+                String Name = rs.getString("Name");
+                String DateOfBirth = rs.getString("DateOfBirth");
+                String Address = rs.getString("Address");
+                String Phone = rs.getString("Phone");
+                String Identification = rs.getString("Identification");
+                String StartDate = rs.getString("StartDate");
+                int Sex = rs.getInt("Sex");
+                int Salary = rs.getInt("Salary");
+                String Image = rs.getString("Image");
+                String Username = rs.getString("Username");
+                String Password = rs.getString("Password");
+                int Role = rs.getInt("Role");
+                String Email = rs.getString("Email");
+                int Status = rs.getInt("Status");
+                User user = new User(UserID, Name, DateOfBirth, Sex, Address, Phone, Identification, StartDate, Salary, Image, Username, Password, Role, Email, Status);
+                sList.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("Connect error");
+        }
+        return sList;
+    }
+
     public User getUserByID(int userID) {
         User user = new User();
         String sql = """
@@ -158,7 +208,7 @@ public class UserDAO extends DBContext {
 
     public void deleteUser(int uid) {
         UserDAO udao = new UserDAO();
-        if(udao.getUserByID(uid).getRole() == 1){
+        if (udao.getUserByID(uid).getRole() == 1) {
             return;
         }
         String sql = """
@@ -310,6 +360,7 @@ public class UserDAO extends DBContext {
         }
         return user;
     }
+
     public User getUserByEmail(String Email) {
         User user = new User();
         String sql = """
@@ -419,6 +470,7 @@ public class UserDAO extends DBContext {
 //        userDAO.editUser(new User(7,
 //                "Khuat anh Nhat", "11-12-2004", 0, "hanoi", "0987363736",
 //                "0373628262782", "11-12-2004", 123, "no", "rec3", "123", 2, "nhatk@gmail.com", 1));
+userDAO.getAllStaff().forEach((r)->{System.out.println(r.getName());});
     }
 
     public List<User> findUserByName(String name) {

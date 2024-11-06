@@ -153,7 +153,7 @@
                                <div class="collapse" id="X">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="requestCleaningRoom.jsp">
+                                        <a href="RequestCleaningRoom">
                                             <span class="sub-item">Request</span>
                                         </a>
                                     </li>
