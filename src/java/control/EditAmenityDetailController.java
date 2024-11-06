@@ -112,7 +112,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         if (success) {
             message = "Quantity updated successfully.";
         } else {
-            message = "Failed to update quantity.";
+            message = "Failed to update quantity."; 
         }
 
     } catch (NumberFormatException e) {

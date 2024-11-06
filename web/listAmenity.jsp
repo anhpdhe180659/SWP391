@@ -161,7 +161,7 @@
                                                                     return;
                                                                 }
 
-                                                                // Check if price is greater than 0
+                                                               
 
                                                             });
                                                         </script>
