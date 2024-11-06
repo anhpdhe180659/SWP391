@@ -150,7 +150,9 @@ public class payStatus extends HttpServlet {
             rDao.updateStatus(room);
             System.out.println("update r ne");
         };
-        sendBillMail(booking, g);
+        if (g.getEmail() != null) {
+            sendBillMail(booking, g);
+        }
         response.sendRedirect("listRoom");
     }
 
@@ -315,7 +317,9 @@ public class payStatus extends HttpServlet {
             rDao.updateStatus(r);
         }
         GuestDAO gDao = new GuestDAO();
-        sendBillMail(booking, gDao.getGuestByGuestID(booking.getGuestID()));
+        if (gDao.getGuestByGuestID(booking.getGuestID()).getEmail() != null) {
+            sendBillMail(booking, gDao.getGuestByGuestID(booking.getGuestID()));
+        }
         response.sendRedirect("listRoom");
     }
 }

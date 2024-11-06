@@ -71,12 +71,8 @@ public class receptionDashboard extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //authen
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("1")) {
-            response.sendRedirect("login.jsp");
-        }
+        HttpSession session = request.getSession();
+        
         User user = (User) session.getAttribute("user");
 //        //get room
         List<NewsItem> newsList = new NewsDAO().getTop3();
@@ -85,7 +81,7 @@ public class receptionDashboard extends HttpServlet {
         List<Room> listRoom = roomDao.getAllRooms();
         //get invoice
         InvoiceDAO invoiceDao = new InvoiceDAO();
-        List<Invoice> listInvoice = invoiceDao.getAll();
+        List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
         //get guest 
         GuestDAO guestDao = new GuestDAO();
         List<Guest> guestList = guestDao.getAllGuests();
