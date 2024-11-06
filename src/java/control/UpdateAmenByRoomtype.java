@@ -64,7 +64,7 @@ public class UpdateAmenByRoomtype extends HttpServlet {
         List<RoomType> roomTypes = roomTypeDAO.getAll();
 
         request.setAttribute("roomTypes", roomTypes);
-        request.getRequestDispatcher("/updateAmenityByRoomType.jsp").forward(request, response);
+        request.getRequestDispatcher("/viewAmenitiesByRoomType.jsp").forward(request, response);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class UpdateAmenByRoomtype extends HttpServlet {
 
         request.setAttribute("message", "Updated successfully!");
 
-        doGet(request, response);
+        response.sendRedirect("viewAmenitiesByRoomType");
     }
 
     @Override
