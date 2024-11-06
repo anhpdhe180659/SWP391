@@ -8,6 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -165,7 +166,12 @@
                                                         <!--datetime-local-->
                                                     </div>
                                                     <c:set value="${requestScope.noti}" var="noti"/>
-                                                    <span style="margin-left: 25px; font-weight: bold;color: green">${noti}</span>
+                                                    <c:if test="${fn:length(noti) < 23}">
+                                                        <span style="margin-left: 25px; font-weight: bold; color: green">${noti}</span>
+                                                    </c:if>
+                                                    <c:if test="${fn:length(noti) > 23}">
+                                                        <span style="margin-left: 25px; font-weight: bold; color: red">${noti}</span>
+                                                    </c:if>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3">
                                                     <c:set value="${requestScope.deposit}" var="deposit"/>
@@ -235,14 +241,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3">
-<!--                                                    <div class="form-group" style="height: 131.175px;">
-                                                        <label for="exampleFormControlSelect2">List room booked</label>
-                                                        <select multiple="" class="form-control" id="exampleFormControlSelect2" style="height: 132.775px;">
-                                                            <c:forEach items="${requestScope.listRoom}" var="s">
-                                                                <option>Room ${s.roomNumber}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>-->
+                                                    <!--                                                    <div class="form-group" style="height: 131.175px;">
+                                                                                                            <label for="exampleFormControlSelect2">List room booked</label>
+                                                                                                            <select multiple="" class="form-control" id="exampleFormControlSelect2" style="height: 132.775px;">
+                                                    <c:forEach items="${requestScope.listRoom}" var="s">
+                                                        <option>Room ${s.roomNumber}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>-->
                                                 </div>
 
 

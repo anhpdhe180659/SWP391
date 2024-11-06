@@ -90,23 +90,19 @@ public class editItem extends HttpServlet {
             int numberOfRoom = rdao.getAllRooms().size();
             Item newitem = new Item();
             int itemID = Integer.parseInt(request.getParameter("itemID"));
+            Item currentItem = idao.getItemByID(itemID);
             String name = request.getParameter("name").trim();
             String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Edit successfully!</div>";
             if (name.length() < 2) {
                 noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid item name, edit failed!</div>";
                 request.setAttribute("noti", noti);
+                request.setAttribute("item", currentItem);
                 request.getRequestDispatcher("editItem.jsp").forward(request, response);
                 return;
             }
             int standardQuantity = Integer.parseInt(request.getParameter("standardQuantity"));
             int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
             int price = Integer.parseInt(request.getParameter("price"));
-//            if (standardQuantity * numberOfRoom > stockQuantity) {
-//                noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid standard quantity, edit failed!</div>";
-//                request.setAttribute("noti", noti);
-//                request.getRequestDispatcher("editItem.jsp").forward(request, response);
-//                return;
-//            }
             newitem.setItemName(name);
             newitem.setPrice(price);
             newitem.setStandardQuantity(standardQuantity);
@@ -117,6 +113,7 @@ public class editItem extends HttpServlet {
                     if (i.getItemName().equalsIgnoreCase(name)) {
                         noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Itemname " + name + " existed, edit failed!</div>";
                         request.setAttribute("noti", noti);
+                        request.setAttribute("item", currentItem);
                         request.getRequestDispatcher("editItem.jsp").forward(request, response);
                         return;
                     }

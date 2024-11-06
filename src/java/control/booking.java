@@ -22,6 +22,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import model.Guest;
 import model.Room;
 import model.User;
@@ -97,7 +106,7 @@ public class booking extends HttpServlet {
             GuestDAO gdao = new GuestDAO();
             BookingDAO bdao = new BookingDAO();
             RoomDao rdao = new RoomDao();
-            RoomTypeDAO rtdao= new RoomTypeDAO();
+            RoomTypeDAO rtdao = new RoomTypeDAO();
             Guest guest = new Guest();
             String Name = request.getParameter("name").trim();
             String email = request.getParameter("email").trim();
@@ -151,12 +160,13 @@ public class booking extends HttpServlet {
                 request.setAttribute("noti", noti);
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
-            } else if (checkInDateTime.isBefore(currentDateTime)) {
-                noti = "Check-in date/time cannot be before the current date/time";
-                request.setAttribute("noti", noti);
-                request.getRequestDispatcher("booking.jsp").forward(request, response);
-                return;
             }
+//            else if (checkInDateTime.isBefore(currentDateTime)) {
+//                noti = "Check-in date/time cannot be before the current date/time";
+//                request.setAttribute("noti", noti);
+//                request.getRequestDispatcher("booking.jsp").forward(request, response);
+//                return;
+//            }
             if (guestExist == false) {
                 // new guest with different Identification
                 for (Guest g : listGuest) {
@@ -167,7 +177,7 @@ public class booking extends HttpServlet {
                         return;
                     }
                     if (email.length() > 0) {
-                        if (g.getEmail()!= null && g.getEmail().equals(guest.getEmail())) {
+                        if (g.getEmail() != null && g.getEmail().equals(guest.getEmail())) {
                             noti = "Email has existed, please try again!";
                             request.setAttribute("noti", noti);
                             request.getRequestDispatcher("booking.jsp").forward(request, response);
@@ -212,9 +222,9 @@ public class booking extends HttpServlet {
                 }
             }
             if (checkinstatus == 1) {
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,totalPrice ,0, currentDateTime);
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, totalPrice, 0, currentDateTime);
             } else {
-                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus,totalPrice ,0, null);
+                bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, totalPrice, 0, null);
             }
             int bookingid = bdao.getNewBookingID();
             if (bookAllRoom == true) {
@@ -222,19 +232,48 @@ public class booking extends HttpServlet {
                     int roomid = Integer.parseInt(roomID);
                     bdao.addBookingRoom(bookingid, roomid, numberOfNight, checkInDateTime, checkOutDateTime, rdao.getPriceByRoomID(roomid));
                     if (checkinstatus == 1) {
-                        bdao.updateStatusRoom(roomid);
+                        bdao.updateStatusRoomOccupied(roomid);
                     }
                 }
             }
             String bookingcode = utilConvert.toBase36(bookingid);
+            sendBookingCodeEmail(email, bookingcode);
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
-//            request.getRequestDispatcher("confirmBooking.jsp").forward(request, response);
-            response.sendRedirect("bookingList");
+            response.sendRedirect("editBooking?bookingid=" + bookingid);
         } catch (Exception e) {
             out.print(e);
         }
+    }
 
+    private void sendBookingCodeEmail(String email, String bookingcode) {
+        // Email sending logic
+        String subject = "Booking code from ALIHOTEL";
+        String content = "Your booking code is: " + bookingcode;
+
+        // Set up your SMTP server and send the email (this is a simplified example)
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true"); // Enable STARTTLS
+
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("ali33hotel@gmail.com", "emyj cyjy lxjd bkbw");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("ali33hotel@gmail.com"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            message.setSubject(subject);
+            message.setText(content);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

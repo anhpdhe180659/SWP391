@@ -48,7 +48,7 @@ public class editBooking extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
@@ -74,11 +74,11 @@ public class editBooking extends HttpServlet {
         Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
         int deposit = booking.getDeposit();
         int checkinstatus = booking.getCheckInStatus();
-        
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String checkindateFormatted = checkindate.format(formatter);
         String checkoutdateFormatted = checkoutdate.format(formatter);
-        
+
         request.setAttribute("checkindate", checkindateFormatted);
         request.setAttribute("checkoutdate", checkoutdateFormatted);
         request.setAttribute("bookingid", bookingid);
@@ -87,7 +87,7 @@ public class editBooking extends HttpServlet {
         request.setAttribute("listRoom", listRoom);
         request.setAttribute("name", guest.getName());
         request.getRequestDispatcher("editBooking.jsp").forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -121,14 +121,38 @@ public class editBooking extends HttpServlet {
         int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
         int deposit = Integer.parseInt(request.getParameter("deposit"));
         int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+        Booking booking = bdao.getBookingByBookingID(bookingid);
+        String noti = "Save successfully!";
         bdao.updateDeposit(bookingid, deposit);
-        bdao.updateCheckInStatus(bookingid, checkinstatus);
+        if (booking.getCheckInStatus() == 0) {
+            bdao.updateCheckInStatus(bookingid, checkinstatus);
+            if(checkinstatus == 1){
+                bdao.updateActualCheckInDate(bookingid);
+            }
+        } else {
+            // checkinstatus dang la 1
+            if(checkinstatus == 0){
+                checkinstatus = 1;
+                noti = "This booking status cannot be edited!";
+            }else{
+                noti = "Save successfully!";
+            }
+        }
+        List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
+        for (BookingRoom bookingRoom : listRoomBooked) {
+            int roomid = bookingRoom.getRoomID();
+            if (booking.getCheckInStatus() == 0) {
+                if (checkinstatus == 1) {
+                    bdao.updateStatusRoomOccupied(roomid);
+                }
+            }
+            // checkin status = 0 thi ko sua trang thai phong
+        }
         BookingCodeConvert utilConvert = new BookingCodeConvert();
         String bookingcode = utilConvert.toBase36(bookingid);
         request.setAttribute("bookingcode", bookingcode);
         GuestDAO gdao = new GuestDAO();
         RoomDao rdao = new RoomDao();
-        Booking booking = bdao.getBookingByBookingID(bookingid);
         List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
         List<Room> listRoom = new ArrayList<>();
         LocalDateTime checkindate = null;
@@ -151,9 +175,9 @@ public class editBooking extends HttpServlet {
         request.setAttribute("checkinstatus", checkinstatus);
         request.setAttribute("listRoom", listRoom);
         request.setAttribute("name", guest.getName());
-        request.setAttribute("noti", "Save successfully!");
+        request.setAttribute("noti", noti);
         request.getRequestDispatcher("editBooking.jsp").forward(request, response);
-        
+
     }
 
     /**

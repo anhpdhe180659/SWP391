@@ -145,7 +145,7 @@
                                     </li>
                                     <li>
                                         <a href="listItem">
-                                            <span class="sub-item">Item</span>
+                                            <span class="sub-item">Consumable items</span>
                                         </a>
                                     </li>
                                     <li>
