@@ -209,10 +209,10 @@
                                                                     >
                                                                     <i class="fa fa-check"></i>
                                                                 </button>
-                                                                Payment from ${i.invoiceNo}
+                                                                Payment No ${i.invoiceNo}
                                                             </th>
                                                             <td class="text-end">${i.paymentDate}</td>
-                                                            <td class="text-end">${i.finalAmount} VND</td>
+                                                            <td class="text-end price-vnd">${i.finalAmount} VND</td>
                                                             <td class="text-end">
                                                                 <span class="badge badge-success">Completed</span>
                                                             </td>
@@ -405,6 +405,27 @@
         };
         var guest = new Chart(guestChart, config);
     </script>
+    <script>
+            // Format price to VND
+            function formatCurrencyVND(value) {
+                return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(value);
+            }
+
+            // Apply the format to all prices
+            $(document).ready(function () {
+                $('.price-vnd').each(function () {
+                    let price = parseFloat($(this).text());
+                    $(this).text(formatCurrencyVND(price));
+                });
+            });
+
+            function doClose() {
+                $('#addUserModal').modal('hide');
+            }
+        </script>
 </body>
 </html>
 

@@ -1,0 +1,72 @@
+/* Invoice Header Styling */
+.invoice-header {
+    margin-bottom: 1rem;
+    background-color: #f1f1f1;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.invoice-header h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+/* Table Styling */
+.invoice-table table {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.invoice-table th, .invoice-table td {
+    padding: 0.75rem;
+    text-align: center;
+    color: #333;
+}
+
+.invoice-table th {
+    background-color: #4a90e2;
+    color: #ffffff;
+}
+
+.invoice-table td {
+    background-color: #ffffff;
+}
+
+.invoice-table tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+/* Header and Footer Styling */
+.card-header, .card-footer {
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+}
+
+.card-header {
+    background-color: #4a90e2;
+}
+
+.card-footer {
+    background-color: #ff6f61;
+}
+
+/* Payment Form Styling */
+.form-control {
+    background-color: #e8f0fe;
+    border: 1px solid #4a90e2;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+    border-color: #357abd;
+}

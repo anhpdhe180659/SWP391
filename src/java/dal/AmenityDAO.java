@@ -267,7 +267,7 @@ public class AmenityDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        System.out.println(new AmenityDAO().findByAmenityIDAndRoomId(32, 7).getAmenID());
+        System.out.println(new AmenityDAO().getAllAmenityDetails());
     }
 
 }

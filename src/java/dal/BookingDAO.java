@@ -16,12 +16,53 @@ import java.util.Date;
 import model.Booking;
 import model.BookingRoom;
 import model.BookingService;
+import model.Service;
 
 /**
  *
  * @author nhatk
  */
 public class BookingDAO extends DBContext {
+
+    public List<Room> getRoomsByBookingID(int id) {
+        List<Room> allRoom = new ArrayList<>();
+        String query = """
+                       SELECT r.RoomID, r.RoomNumber FROM hotelmanagement.room r join hotelmanagement.bookingroom br on r.RoomID = br.RoomID where br.BookingID = ?;
+                       """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Room r = new Room();
+                r.setRoomId(rs.getInt("RoomID"));
+                r.setRoomNumber(rs.getString("RoomNumber"));
+                allRoom.add(r);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allRoom;
+    }
+
+    public List<Service> getServicesByBookingID(int id) {
+        List<Service> allRoom = new ArrayList<>();
+        String query = """
+                       SELECT DISTINCT(r.ServiceID), r.Name FROM hotelmanagement.Service r join hotelmanagement.BookingService br on r.ServiceID = br.ServiceID where br.BookingID = ?;
+                       """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Service r = new Service();
+                r.setServiceID(rs.getInt("ServiceID"));
+                r.setName(rs.getString("Name"));
+                allRoom.add(r);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allRoom;
+    }
 
     public List<Room> getAllRooms() {
         List<Room> allRoom = new ArrayList<>();
@@ -151,8 +192,8 @@ public class BookingDAO extends DBContext {
             while (rs.next()) {
                 allBookingService.add(new BookingService(
                         rs.getInt("BookingID"),
-                        rs.getInt("RoomID"),
                         rs.getInt("ServiceID"),
+                        rs.getInt("RoomID"),
                         rs.getInt("Quantity"),
                         rs.getInt("Price"),
                         rs.getInt("TotalPrice")
@@ -343,14 +384,10 @@ public class BookingDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        BookingDAO bdao = new BookingDAO();
-        Date currentDate = new Date();
-        bdao.getAllBookingServiceByBookingID(1).forEach((r) -> {
-            System.out.println(r.getBookingID());
-        });
+        BookingDAO bkDao = new BookingDAO();
     }
 
-    public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int paymentMethod, LocalDateTime actualCheckInTime) {
+    public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice,int paymentMethod, LocalDateTime actualCheckInTime) {
         java.util.Date currentDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
         String query = """
@@ -432,6 +469,20 @@ public class BookingDAO extends DBContext {
                         WHERE BookingID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, checkinstatus);
+            pre.setInt(2, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updatePaymentMethod(int bookingid, int paymentMethod) {
+        String query = """
+                       UPDATE HotelManagement.Booking
+                          SET PaymentMethod = ?
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, paymentMethod);
             pre.setInt(2, bookingid);
             pre.executeUpdate();
         } catch (SQLException e) {
@@ -720,6 +771,30 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return 0;
+    }
+
+    public void getTotalPriceBooking(int id) {
+        String sql = "WITH RoomTotal AS (\n"
+                + "    SELECT ifnull(SUM(Price * NumOfNight),0) AS RoomMoney \n"
+                + "    FROM bookingroom \n"
+                + "    WHERE BookingID = ?\n"
+                + "),\n"
+                + "ServiceTotal AS (\n"
+                + "    SELECT ifnull(SUM(TotalPrice),0) AS ServiceMoney \n"
+                + "    FROM hotelmanagement.bookingservice \n"
+                + "    WHERE BookingID = ?\n"
+                + ")\n"
+                + "update Booking set TotalPrice = (SELECT \n"
+                + "    (RoomTotal.RoomMoney + ServiceTotal.ServiceMoney) AS TotalMoney\n"
+                + "FROM RoomTotal, ServiceTotal) where bookingid = ?";
+        try (PreparedStatement pre = connection.prepareStatement(sql);) {
+            pre.setInt(1, id);
+            pre.setInt(2, id);
+            pre.setInt(3, id);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

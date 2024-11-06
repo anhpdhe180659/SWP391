@@ -75,19 +75,52 @@
                                                 <span style="color: green; font-weight: bold">${noti}</span>
                                             </div>
                                             <div class="col-sm-4">
-                                                <div class="form-group form-group-default">
-                                                    <label>Email</label>
-                                                    <input
-                                                        id="email"
-                                                        name="email"
-                                                        type="text"
-                                                        class="form-control"
-                                                        required
-                                                        placeholder="Enter guest's email"
-                                                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                                                        title="Invalid email address"
-                                                        />
-                                                </div>
+                                                
+                                                <div class="form-group">
+                                                                <label><i class="fas fa-user-check"></i> Check-in</label><br />
+                                                                <div class="d-flex">
+                                                                    <div class="form-check">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="checkinstatus"
+                                                                            id="check1"
+                                                                            value="1"
+                                                                            checked
+                                                                            />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="check1"
+                                                                            >
+                                                                            Now
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input
+                                                                            class="form-check-input"
+                                                                            type="radio"
+                                                                            name="checkinstatus"
+                                                                            id="check2"
+                                                                            value="0"
+                                                                            />
+                                                                        <label
+                                                                            class="form-check-label"
+                                                                            for="check2"
+                                                                            >
+                                                                            Later
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                <div class="form-group">
+                                                                <label for="paymentMethod"><i class="far fa-credit-card"></i> Payment Method</label>
+                                                                <div class="form-group form-group-default">
+                                                                    <select id="paymentMethod" name="paymentMethod" class="form-control">
+                                                                        <option value="1">Cash</option>
+                                                                        <option value="2">Bank transfer</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                             </div>
                                             <div class="col-sm-4" style="display: flex;align-items: center">
                                                 <button type="submit" class="btn btn-primary" style="margin-left: 20px">Send booking code</button>

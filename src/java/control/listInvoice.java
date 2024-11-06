@@ -4,11 +4,7 @@
  */
 package control;
 
-import dal.GuestDAO;
 import dal.InvoiceDAO;
-import dal.NewsDAO;
-import dal.RoomDao;
-import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,19 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Guest;
 import model.Invoice;
-import model.NewsItem;
-import model.Room;
-import model.RoomType;
-import model.User;
 
 /**
  *
  * @author phand
  */
-@WebServlet(name = "receptionDashboard", urlPatterns = {"/receptionDashboard"})
-public class receptionDashboard extends HttpServlet {
+@WebServlet(name = "listInvoice", urlPatterns = {"/listInvoice"})
+public class listInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,10 +40,10 @@ public class receptionDashboard extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet receptionDashboard</title>");
+            out.println("<title>Servlet listInvoice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet receptionDashboard at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet listInvoice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,53 +61,20 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //authen
         HttpSession session = request.getSession();
+        int index = 1;
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
         
-        User user = (User) session.getAttribute("user");
-//        //get room
-        List<NewsItem> newsList = new NewsDAO().getTop3();
-        session.setAttribute("newsList", newsList);
-        RoomDao roomDao = new RoomDao();
-        List<Room> listRoom = roomDao.getAllRooms();
-        //get invoice
-        InvoiceDAO invoiceDao = new InvoiceDAO();
-        List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
-        //get guest 
-        GuestDAO guestDao = new GuestDAO();
-        List<Guest> guestList = guestDao.getAllGuests();
-        List<Integer> numGuestByMonth = guestDao.getNumberGuestByMonth();
-        int numGuest = guestList.size();
-        //get data to display in dashboard
-        int underMaintainRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 3
-        ).toList().size();
-        int availableRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 1
-        ).toList().size();
-        int occupiedRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 2
-        ).toList().size();
-        int cleaned = listRoom.stream().filter(
-                room -> room.getCleanId() == 3
-        ).toList().size();
-        int notCleaned = listRoom.stream().filter(
-                room -> room.getCleanId() == 1
-        ).toList().size();
-        int inProgress = listRoom.stream().filter(
-                room -> room.getCleanId() == 2
-        ).toList().size();
-        
-        session.setAttribute("numberGuest", numGuest);
-        session.setAttribute("guestByMonth", numGuestByMonth);
-        session.setAttribute("cleaned", cleaned);
-        session.setAttribute("notCleaned", notCleaned);
-        session.setAttribute("inProgress", inProgress);
-        session.setAttribute("maintaince", underMaintainRoom);
-        session.setAttribute("available", availableRoom);
-        session.setAttribute("occupied", occupiedRoom);
+        InvoiceDAO ivDao = new InvoiceDAO();
+        List<Invoice> listInvoice = ivDao.getAll();
+        int noPage = (int) Math.ceil(listInvoice.size()*1.0 / 5);
+        System.out.println("No Page ne "+noPage);
         session.setAttribute("listInvoice", listInvoice);
-        response.sendRedirect("receptionHomePage.jsp");
+        session.setAttribute("Nopage", noPage);
+        session.setAttribute("currentindex", index);
+        response.sendRedirect("listInvoice.jsp");
     }
 
     /**

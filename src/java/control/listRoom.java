@@ -77,6 +77,10 @@ public class listRoom extends HttpServlet {
         BookingDAO bkDao = new BookingDAO();
         List<Booking> bookings = bkDao.getAllBooking();
         List<BookingRoom> unpaidBookings = bkDao.getAllBookingUnpaid();
+        //test
+        unpaidBookings.forEach((r) -> {
+            System.out.println(r.getBookingID());
+        });
         List<BookingRoom> bookingRooms = bkDao.getAllBookingRoom();
         GuestDAO gDao = new GuestDAO();
         List<Guest> guests = gDao.getAllGuests();

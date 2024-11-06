@@ -122,6 +122,9 @@
                                                                         value="${u.name}"
                                                                         type="text"
                                                                         maxlength="100"
+                                                                        minlength="4"
+                                                                        pattern="^[A-Za-zÀ-ÿ\s'-]{1,100}$"
+                                                                        title="Name contains only character, length should more than 4 and less than 100"
                                                                         class="form-control"
                                                                         required
                                                                         placeholder="Enter user's fullname"
@@ -137,6 +140,9 @@
                                                                         type="text"
                                                                         class="form-control"
                                                                         maxlength="200"
+                                                                        minlength="4"
+                                                                        pattern="[a-zA-Z0-9\s,.-]+"
+                                                                        title="Please enter a valid address. Only letters, numbers, spaces, commas, periods, and hyphens are allowed."
                                                                         required
                                                                         placeholder="Enter address"
                                                                         />
@@ -194,8 +200,9 @@
                                                                     <label>Date of Birth</label>
                                                                     <input 
                                                                         value="${u.dateOfBirth}"
+                                                                        id="birthday"
                                                                         type="date" name="birthday" required
-                                                                           style="width: 100%; border: none; "/>
+                                                                        style="width: 100%; border: none; "/>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-4" >
@@ -212,6 +219,7 @@
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Start Date</label>
                                                                     <input type="date" name="startdate" 
+                                                                           id="startdate"
                                                                            value="${u.startDate}" required
                                                                            style="width: 100%; border: none; "/>
                                                                 </div>
@@ -267,7 +275,12 @@
                                                                                 <c:if test="${u.role == 2}">
                                                                                     selected
                                                                                 </c:if>
-                                                                                >Employee</option>
+                                                                                >Receptionist</option>
+                                                                        <option value="3"
+                                                                                <c:if test="${u.role == 3}">
+                                                                                    selected
+                                                                                </c:if>
+                                                                                >Housekeeper</option>
                                                                         <option value="1"
                                                                                 <c:if test="${u.role == 1}">
                                                                                     selected
@@ -340,6 +353,13 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
+                                                    // Get today's date in yyyy-mm-dd format
+                                                    const today = new Date().toISOString().split('T')[0];
+                                                    // Set the max attribute for the birthday input to today's date
+                                                    document.getElementById("birthday").setAttribute("max", today);
+                                                    document.getElementById("startdate").setAttribute("max", today);
+    </script>
+    <script>
         document.querySelector('.close').editEventListener('click', function () {
             $('#editUserModal').modal('hide');
         });
@@ -358,12 +378,12 @@
         function validate() {
             var email = document.getElementById("email").value;
             var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-            
+
             var phone = document.getElementById("phone").value;
             var regex1 = /^\d{10}$/;
             var identification = document.getElementById("identification").value;
             var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-            
+
             return true;
         }
     </script>

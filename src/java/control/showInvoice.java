@@ -4,11 +4,9 @@
  */
 package control;
 
+import dal.BookingDAO;
 import dal.GuestDAO;
-import dal.InvoiceDAO;
-import dal.NewsDAO;
 import dal.RoomDao;
-import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,19 +16,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Booking;
+import model.BookingRoom;
+import model.BookingService;
 import model.Guest;
-import model.Invoice;
-import model.NewsItem;
 import model.Room;
-import model.RoomType;
-import model.User;
+import model.Service;
+import vn.payos.type.ItemData;
 
 /**
  *
  * @author phand
  */
-@WebServlet(name = "receptionDashboard", urlPatterns = {"/receptionDashboard"})
-public class receptionDashboard extends HttpServlet {
+@WebServlet(name = "showInvoice", urlPatterns = {"/showInvoice"})
+public class showInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,10 +48,10 @@ public class receptionDashboard extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet receptionDashboard</title>");
+            out.println("<title>Servlet showInvoice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet receptionDashboard at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet showInvoice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,53 +69,28 @@ public class receptionDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //authen
         HttpSession session = request.getSession();
-        
-        User user = (User) session.getAttribute("user");
-//        //get room
-        List<NewsItem> newsList = new NewsDAO().getTop3();
-        session.setAttribute("newsList", newsList);
-        RoomDao roomDao = new RoomDao();
-        List<Room> listRoom = roomDao.getAllRooms();
-        //get invoice
-        InvoiceDAO invoiceDao = new InvoiceDAO();
-        List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
-        //get guest 
-        GuestDAO guestDao = new GuestDAO();
-        List<Guest> guestList = guestDao.getAllGuests();
-        List<Integer> numGuestByMonth = guestDao.getNumberGuestByMonth();
-        int numGuest = guestList.size();
-        //get data to display in dashboard
-        int underMaintainRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 3
-        ).toList().size();
-        int availableRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 1
-        ).toList().size();
-        int occupiedRoom = listRoom.stream().filter(
-                room -> room.getStatusId() == 2
-        ).toList().size();
-        int cleaned = listRoom.stream().filter(
-                room -> room.getCleanId() == 3
-        ).toList().size();
-        int notCleaned = listRoom.stream().filter(
-                room -> room.getCleanId() == 1
-        ).toList().size();
-        int inProgress = listRoom.stream().filter(
-                room -> room.getCleanId() == 2
-        ).toList().size();
-        
-        session.setAttribute("numberGuest", numGuest);
-        session.setAttribute("guestByMonth", numGuestByMonth);
-        session.setAttribute("cleaned", cleaned);
-        session.setAttribute("notCleaned", notCleaned);
-        session.setAttribute("inProgress", inProgress);
-        session.setAttribute("maintaince", underMaintainRoom);
-        session.setAttribute("available", availableRoom);
-        session.setAttribute("occupied", occupiedRoom);
-        session.setAttribute("listInvoice", listInvoice);
-        response.sendRedirect("receptionHomePage.jsp");
+        String id = request.getParameter("bookingId");
+        BookingDAO bkDao = new BookingDAO();
+        int bkId = Integer.parseInt(id);
+        List<Room> allRooms = bkDao.getRoomsByBookingID(bkId);
+        List<Service> allServices = bkDao.getServicesByBookingID(bkId);
+        Booking booking = bkDao.getBookingByBookingID(bkId);
+        bkDao.getTotalPriceBooking(bkId);
+        booking = bkDao.getBookingByBookingID(bkId);
+        int guestId = booking.getGuestID();
+        GuestDAO gDao = new GuestDAO();
+        Guest guest = gDao.getGuestByGuestID(guestId);
+        List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bkId);
+        List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(bkId);
+        session.setAttribute("booking", booking);
+        session.setAttribute("guest", guest);
+        session.setAttribute("allBookingRoom", allBookingRoom);
+        session.setAttribute("allBookingService", allBookingService);
+        session.setAttribute("listRoom", allRooms);
+        session.setAttribute("listService", allServices);
+        session.setAttribute("bookingId", id);
+        response.sendRedirect("invoice.jsp");
     }
 
     /**
