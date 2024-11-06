@@ -260,7 +260,7 @@ public class BookingDAO extends DBContext {
         }
     }
 
-    public void updateStatusRoom(int roomid) {
+    public void updateStatusRoomOccupied(int roomid) {
         String query = """
                        UPDATE HotelManagement.Room
                         SET StatusID = 2
@@ -406,7 +406,7 @@ public class BookingDAO extends DBContext {
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, guestid);
             pre.setInt(2, deposit);
-            pre.setInt(3, checkinstatus);
+            pre.setInt(3, 0);
             pre.setInt(4, paidstatus);
             pre.setInt(5, userid);
             pre.setDate(6, sqlDate);
@@ -461,6 +461,18 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+    public void updateActualCheckInDate(int bookingid) {
+        String query = """
+                       UPDATE HotelManagement.Booking
+                          SET ActualCheckInDate = NOW() 
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public void updateCheckInStatus(int bookingid, int checkinstatus) {
         String query = """
@@ -474,6 +486,8 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        
+        
     }
 
     public void updatePaymentMethod(int bookingid, int paymentMethod) {

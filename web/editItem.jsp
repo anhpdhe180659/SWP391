@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Edit Item</title><!--  page only for manager  -->
+        <title>Edit Consumable Item</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -86,14 +86,14 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Item</h3>
+                            <h3 class="fw-bold mb-3">Manage Consumable Item</h3>
                         </div>
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Edit Item</h4>
+                                        <h4 class="card-title">Edit Consumable Item</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
@@ -109,6 +109,12 @@
                                             <div class="modal-content">
                                                 <form action="editItem" method="POST">
                                                     <c:set value="${requestScope.item}" var="s"/>
+                                                    <input name="itemid"
+                                                                        value="${s.itemID}"
+                                                                        class="form-control"
+                                                                        required
+                                                                        hidden
+                                                                        />
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-sm-6">
