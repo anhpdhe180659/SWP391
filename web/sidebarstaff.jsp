@@ -84,8 +84,29 @@
                                     </li>
                                 </ul>
                             </div>
+                            <div class="collapse" id="base">
+                                <ul class="nav nav-collapse">
+
+                                </ul>
+                            </div>
                         </li>
-                       
+
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#r">
+                                <i class="fas fa-bed"></i>
+                                <p>Task</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="r">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="viewTask">
+                                            <span class="sub-item">View Task</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
                     </ul>
                 </div>
