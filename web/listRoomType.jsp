@@ -113,7 +113,7 @@
                                                         <td>${s.typeName}</td>
                                                         <!-- Clean Status -->
                                                         <td>${s.capacity}</td>
-                                                        <td><fmt:formatNumber value="${s.price}" type="currency" currencyCode="VND"></fmt:formatNumber></td>
+                                                        <td class="price-vnd">${s.price}</td>
                                                         <td>
                                                             <img width="120px" height="80px" src="${s.image}" alt="Image room type">
                                                         </td>
@@ -161,6 +161,27 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo.js"></script>
     <script src="assets/js/demo.js"></script>
+    <script>
+            // Format price to VND
+            function formatCurrencyVND(value) {
+                return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(value);
+            }
+
+            // Apply the format to all prices
+            $(document).ready(function () {
+                $('.price-vnd').each(function () {
+                    let price = parseFloat($(this).text());
+                    $(this).text(formatCurrencyVND(price));
+                });
+            });
+
+            function doClose() {
+                $('#addUserModal').modal('hide');
+            }
+    </script>
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({

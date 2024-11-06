@@ -171,6 +171,10 @@
     <servlet>
         <servlet-name>deleteItem</servlet-name>
         <servlet-class>control.deleteItem</servlet-class>
+      </servlet>
+<servlet>
+        <servlet-name>UpdateAmenByRoomtype</servlet-name>
+        <servlet-class>control.UpdateAmenByRoomtype</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
@@ -433,6 +437,7 @@
         <url-pattern>/UpdateAmenityQuantityServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>listRoomStaff</servlet-name>
         <url-pattern>/listRoomStaff</url-pattern>
     </servlet-mapping>
@@ -447,6 +452,12 @@
     <servlet-mapping>
         <servlet-name>deleteItem</servlet-name>
         <url-pattern>/deleteItem</url-pattern>
+
+      </servlet-mapping>
+      <servlet-mapping>
+        <servlet-name>UpdateAmenByRoomtype</servlet-name>
+        <url-pattern>/UpdateAmenByRoomtype</url-pattern>
+
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>

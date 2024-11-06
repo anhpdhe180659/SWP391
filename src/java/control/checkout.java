@@ -8,6 +8,7 @@ import config.PayOSConfig;
 
 import dal.BookingDAO;
 import dal.GuestDAO;
+import dal.InvoiceDAO;
 import dal.RoomDao;
 import dal.ServiceDAO;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +30,7 @@ import model.Booking;
 import model.BookingRoom;
 import model.BookingService;
 import model.Guest;
+import model.Invoice;
 import model.Room;
 import model.Service;
 import vn.payos.PayOS;
@@ -105,7 +110,7 @@ public class checkout extends HttpServlet {
             return "error";
         }
     }
-    
+
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
         Booking booking = bkDao.getBookingByBookingID(2);
@@ -128,7 +133,7 @@ public class checkout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     /**
@@ -142,7 +147,7 @@ public class checkout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
         String id = request.getParameter("bookingId");
         String paymentMethod = request.getParameter("paymentMethod");
@@ -152,7 +157,8 @@ public class checkout extends HttpServlet {
                 session.setAttribute("bookingInPay", id);
                 BookingDAO bkDao = new BookingDAO();
                 Booking booking = bkDao.getBookingByBookingID(bkId);
-                bkDao.updatePaymentMethod(bkId, 1);
+                booking.setPaymentMethod(1);
+                bkDao.updatePaymentMethod(bkId, booking.getPaymentMethod());
                 int guestId = booking.getGuestID();
                 GuestDAO gDao = new GuestDAO();
                 Guest guest = gDao.getGuestByGuestID(guestId);
@@ -164,9 +170,7 @@ public class checkout extends HttpServlet {
                 }
             }
             case "2" -> {
-                BookingDAO bkDao = new BookingDAO();
-                Booking booking = bkDao.getBookingByBookingID(bkId);
-                payByCash(booking);
+                response.sendRedirect("payStatus?status=CASH&bookingId="+bkId);
             }
             default -> {
                 response.sendRedirect("showInvoice?bookingId=" + id);
@@ -184,8 +188,6 @@ public class checkout extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void payByCash(Booking booking) {
-        
-    }
     
+
 }

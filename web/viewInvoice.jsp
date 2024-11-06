@@ -90,7 +90,7 @@
                     <div class="page-inner">
                         <div class="row">
                             <!-- Invoice Section -->
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <button class="btn btn-label-success" id="exportButton" onclick="exportPDF()" >PRINT INVOICE</button>
                                 <section class="invoice-container">
                                     <div class="card">
@@ -200,28 +200,6 @@
                                     </div>
                                 </section>
                             </div>
-
-                            <!-- Payment Method Section -->
-                            <div class="col-md-4">
-                                <section>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4>Select Payment Method</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="checkout" method="post">
-                                                <input type="hidden" value="${sessionScope.bookingId}" name="bookingId">
-                                                <label for="paymentMethod">Payment Method</label>
-                                                <select class="form-control" id="paymentMethod" name="paymentMethod">
-                                                    <option value="2">Cash</option>
-                                                    <option value="1">Online Banking</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-primary mt-3">Proceed to Payment</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -262,20 +240,20 @@
 
         </script>
         <script>
-                                    function exportPDF() {
+            function exportPDF() {
 
-                                        var printContents = document.querySelector('.invoice-container').innerHTML;
-                                        var originalContents = document.body.innerHTML;
+                var printContents = document.querySelector('.invoice-container').innerHTML;
+                var originalContents = document.body.innerHTML;
 
-                                        // Set the entire body to just the print area
-                                        document.body.innerHTML = printContents;
+                // Set the entire body to just the print area
+                document.body.innerHTML = printContents;
 
-                                        // Trigger print dialog
-                                        window.print();
+                // Trigger print dialog
+                window.print();
 
-                                        // Restore the original content after printing
-                                        document.body.innerHTML = originalContents;
-                                    }
+                // Restore the original content after printing
+                document.body.innerHTML = originalContents;
+            }
         </script>
     </body>
 </html>
