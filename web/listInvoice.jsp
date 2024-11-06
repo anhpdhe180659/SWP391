@@ -121,12 +121,13 @@
                                                     <c:forEach items="${sessionScope.listInvoice}" var="s">
                                                         <tr>
                                                             <td>${s.invoiceNo}</td>
-                                                            <td>${s.bookingID}</td>
-                                                            <td>${s.totalAmount}</td>
+                                                            <td>${s.bookingId}</td>
+                                                            <td class="price-vnd">${s.totalAmount}</td>
                                                             <td>${s.discount}</td>
-                                                            <td>${s.finalAmount}</td>
+                                                            <td class="price-vnd">${s.finalAmount}</td>
                                                             <td>${s.paymentMethod}</td>
                                                             <td>${s.paymentDate}</td>
+                                                            <td><a href="viewDetailInvoice?invoiceId=${s.invoiceNo}">View</a></td>
                                                         </tr>
                                                     </c:forEach>
                                                     <c:if test="${requestScope.noti != null}">
@@ -217,7 +218,27 @@
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
+<script>
+            // Format price to VND
+            function formatCurrencyVND(value) {
+                return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(value);
+            }
 
+            // Apply the format to all prices
+            $(document).ready(function () {
+                $('.price-vnd').each(function () {
+                    let price = parseFloat($(this).text());
+                    $(this).text(formatCurrencyVND(price));
+                });
+            });
+
+            function doClose() {
+                $('#addUserModal').modal('hide');
+            }
+        </script>
         <script>
 
         </script>
