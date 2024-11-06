@@ -65,6 +65,11 @@ public class RoomType {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public String toString() {
+        return "RoomType{" + "typeId=" + typeId + ", typeName=" + typeName + ", capacity=" + capacity + ", price=" + price + ", image=" + image + '}';
+    }
     
     
 }

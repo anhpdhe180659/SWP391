@@ -59,14 +59,10 @@ public class RoomTypeDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        new RoomTypeDAO().getAll().stream().forEach((r) -> {
-            System.out.println(r.getTypeName());
-        });
-        RoomType rt = new RoomType();
-        rt.setTypeName("Thinh O3");
-        rt.setPrice(2000);
-        rt.setCapacity(2);
-        rt.setImage("ad");
-        new RoomTypeDAO().insertRoomType(rt);
+        RoomTypeDAO dao = new RoomTypeDAO();
+        List<RoomType> l = dao.getAll();
+        for (RoomType roomType : l) {
+            System.out.println(roomType);
+        }
     }
 }

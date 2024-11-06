@@ -77,6 +77,11 @@
                                             <span class="sub-item">View Room's Amenities</span>
                                         </a>
                                     </li>
+                                     <li>
+                                        <a href="listRoomStaff">
+                                            <span class="sub-item">Consumable items</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="collapse" id="base">

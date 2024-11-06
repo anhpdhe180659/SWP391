@@ -148,6 +148,11 @@
                                             <span class="sub-item">Item</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="viewAmenitiesByRoomType">
+                                            <span class="sub-item">View Amenity By Room Type</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -199,7 +204,23 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#policyForms" aria-expanded="false" aria-controls="policyForms">
+                            <i class="fas fa-file-contract"></i>
+                            <p>Manage Policies</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="policyForms">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="policy">
+                                        <span class="sub-item">Policies</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
                         <!--
                         <li class="nav-item">
