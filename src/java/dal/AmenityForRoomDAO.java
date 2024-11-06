@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import model.AmenityDetail;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -199,13 +201,82 @@ public class AmenityForRoomDAO extends DBContext {
         return amenities; // Trả về danh sách tiện nghi
     }
 
-    public static void main(String[] args) {
-        AmenityForRoomDAO dao = new AmenityForRoomDAO();
-//        dao.updateQuantityByRoomType(1, 1, 1);
-        List<AmenityDetail> l = dao.showForRoomType(1);
-        for (AmenityDetail a : l) {
-            System.out.println(a);
+    public Map<Integer, List<AmenityDetail>> getAllAmenitiesByRoomType() {
+        Map<Integer, List<AmenityDetail>> amenitiesByRoomType = new HashMap<>();
+        String query = """
+                SELECT r.TypeID, ad.AmenID, ad.RoomID, ad.Quantity
+                FROM AmenityDetail ad
+                JOIN Room r ON ad.RoomID = r.RoomID
+                """;
+
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int typeId = rs.getInt("TypeID");
+                int amenID = rs.getInt("AmenID");
+                int roomID = rs.getInt("RoomID");
+                int quantity = rs.getInt("Quantity");
+
+                // Tạo đối tượng AmenityDetail
+                AmenityDetail amenityDetail = new AmenityDetail(amenID, roomID, quantity);
+
+                // Thêm vào danh sách tiện nghi của từng loại phòng
+                amenitiesByRoomType
+                        .computeIfAbsent(typeId, k -> new ArrayList<>())
+                        .add(amenityDetail);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error while retrieving all amenities by room type: " + ex.getMessage());
         }
-        
+
+        return amenitiesByRoomType; // Trả về map với danh sách tiện nghi cho mỗi loại phòng
+    }
+
+    public List<AmenityDetail> getAmenitiesForRoomByType(int typeId) {
+        List<AmenityDetail> amenities = new ArrayList<>();
+        String query = """
+                   SELECT ad.AmenID, ad.RoomID, ad.Quantity
+                   FROM AmenityDetail ad
+                   JOIN Room r ON ad.RoomID = r.RoomID
+                   WHERE r.TypeID = ? 
+                   AND r.RoomID = (SELECT RoomID FROM Room WHERE TypeID = ? LIMIT 1)
+                   """;
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            // Set TypeID parameter
+            ps.setInt(1, typeId);
+            ps.setInt(2, typeId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int amenID = rs.getInt("AmenID");
+                    int roomID = rs.getInt("RoomID");
+                    int quantity = rs.getInt("Quantity");
+
+                    // Tạo đối tượng AmenityDetail và thêm vào danh sách
+                    AmenityDetail amenityDetail = new AmenityDetail(amenID, roomID, quantity);
+                    amenities.add(amenityDetail);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error while retrieving amenities for room type " + typeId + ": " + ex.getMessage());
+        }
+
+        return amenities; // Trả về danh sách tiện nghi cho phòng đại diện
+    }
+
+    public static void main(String[] args) {
+        AmenityForRoomDAO amenityForRoomDAO = new AmenityForRoomDAO();
+        List<AmenityDetail> amenities = amenityForRoomDAO.getAmenitiesForRoomByType(1);
+
+        // In kết quả
+        if (amenities.isEmpty()) {
+            System.out.println("No amenities found for this room type.");
+        } else {
+            for (AmenityDetail amenity : amenities) {
+                System.out.println(amenity);
+            }
+        }
+
     }
 }
