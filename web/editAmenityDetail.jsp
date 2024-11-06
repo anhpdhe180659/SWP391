@@ -149,14 +149,17 @@
             <script src="assets/js/setting-demo2.js"></script>
             <script>
     document.querySelector('form').addEventListener('submit', function (event) {
-    const quantity = document.querySelector('input[name="quantity"]');
-    
-    // Validate quantity is at least 3
-    if (quantity.value < 3) {
-        alert("Quantity must be at least 3.");
-        event.preventDefault(); // Prevent form submission
-    }
-});
+        // Get the quantity and room number input fields
+        const quantity = document.querySelector('input[name="quantity"]');
+        
+
+        // Validate quantity is at least 3
+        if (quantity.value < 3) {
+            alert("Quantity must be at least 3.");
+            event.preventDefault(); // Prevent form submission
+        }
+        
+    });
 </script>
 
 

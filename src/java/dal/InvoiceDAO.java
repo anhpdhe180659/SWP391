@@ -120,6 +120,18 @@ public class InvoiceDAO extends DBContext {
         return null;
     }
 
+    public int getTotalAmount() {
+        String sql = "select sum(FinalAmount) as 'Total' from Invoice";
+        try (PreparedStatement pre = connection.prepareStatement(sql);) {
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Total");
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         System.out.println(new InvoiceDAO().getAll().size());
     }

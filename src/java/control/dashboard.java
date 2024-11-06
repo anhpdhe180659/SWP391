@@ -5,12 +5,15 @@
 package control;
 
 import dal.AmenityDAO;
+import dal.BookingDAO;
 import dal.DashboardDAO;
 import dal.GuestDAO;
+import dal.InvoiceDAO;
 import dal.NewsDAO;
 import dal.RoomDao;
 import dal.ServiceDAO;
 import dto.ChartDTO;
+import dto.ChartRoom;
 import dto.StasticDto;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -22,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import model.Amenity;
 import model.Guest;
+import model.Invoice;
 import model.NewsItem;
 import model.Room;
 import model.Service;
@@ -48,7 +52,7 @@ public class dashboard extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         } else {
-            int role = (Integer)session.getAttribute("role");
+            int role = (Integer) session.getAttribute("role");
             if (session.getAttribute("role") != null && role != 1) {
                 request.setAttribute("error", "Please sign in with admin account !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -63,6 +67,8 @@ public class dashboard extends HttpServlet {
 //            for (ChartDTO item : chartDTOs) {
 //                session.setAttribute("month" + item.getMonth(), item.getTotal());
 //            }
+            InvoiceDAO invoiceDao = new InvoiceDAO();
+            List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
             GuestDAO guestDao = new GuestDAO();
             List<Guest> numberOfVisitors = guestDao.getAllGuests();
             List<Service> services = new ServiceDAO().getAllServices();
@@ -77,7 +83,13 @@ public class dashboard extends HttpServlet {
             ).toList().size();
             AmenityDAO amenityDao = new AmenityDAO();
             List<Amenity> listAmenity = amenityDao.getAllAmenities();
+            InvoiceDAO ivDao = new InvoiceDAO();
+            int total = ivDao.getTotalAmount();
+            BookingDAO bkDao = new BookingDAO();
+            List<ChartRoom> chartRooms = bkDao.getBookTimesByRoom();
             //get session 
+            session.setAttribute("chartRooms", chartRooms);
+            session.setAttribute("totalInvoice", total);
             session.setAttribute("totalServices", services.size());
             session.setAttribute("numberOfRooms", listRoom.size());
             session.setAttribute("numberOfVisitors", numberOfVisitors.size());
@@ -85,6 +97,7 @@ public class dashboard extends HttpServlet {
             session.setAttribute("available", availableRoom);
             session.setAttribute("occupied", occupiedRoom);
             session.setAttribute("amenityCount", listAmenity.size());
+            session.setAttribute("listInvoice", listInvoice);
             response.sendRedirect("dashboard.jsp");
         }
     }
