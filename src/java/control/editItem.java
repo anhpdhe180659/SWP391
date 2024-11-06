@@ -101,12 +101,12 @@ public class editItem extends HttpServlet {
             int standardQuantity = Integer.parseInt(request.getParameter("standardQuantity"));
             int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
             int price = Integer.parseInt(request.getParameter("price"));
-            if (standardQuantity * numberOfRoom > stockQuantity) {
-                noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid standard quantity, edit failed!</div>";
-                request.setAttribute("noti", noti);
-                request.getRequestDispatcher("editItem.jsp").forward(request, response);
-                return;
-            }
+//            if (standardQuantity * numberOfRoom > stockQuantity) {
+//                noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid standard quantity, edit failed!</div>";
+//                request.setAttribute("noti", noti);
+//                request.getRequestDispatcher("editItem.jsp").forward(request, response);
+//                return;
+//            }
             newitem.setItemName(name);
             newitem.setPrice(price);
             newitem.setStandardQuantity(standardQuantity);

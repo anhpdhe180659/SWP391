@@ -6,6 +6,7 @@ package control;
 
 import dal.BookingDAO;
 import dal.GuestDAO;
+import dal.InvoiceDAO;
 import dal.RoomDao;
 import dal.ServiceDAO;
 import java.io.IOException;
@@ -36,7 +37,10 @@ import model.Guest;
 import model.Room;
 import vn.payos.type.ItemData;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import model.BookingService;
+import model.Invoice;
 
 /**
  *
@@ -94,6 +98,12 @@ public class payStatus extends HttpServlet {
             case "CANCELLED" -> {
                 response.sendRedirect("listRoom");
             }
+            case "CASH" -> {
+                int bkId = Integer.parseInt(request.getParameter("bookingId"));
+                BookingDAO bkDao = new BookingDAO();
+                Booking booking = bkDao.getBookingByBookingID(bkId);
+                payByCash(booking, request, response);
+            }
             default -> {
                 response.sendRedirect("listRoom");
             }
@@ -140,7 +150,9 @@ public class payStatus extends HttpServlet {
             rDao.updateStatus(room);
             System.out.println("update r ne");
         };
-        sendBillMail(booking, g);
+        if (g.getEmail() != null) {
+            sendBillMail(booking, g);
+        }
         response.sendRedirect("listRoom");
     }
 
@@ -217,9 +229,19 @@ public class payStatus extends HttpServlet {
             emailContent.append("</tbody></table></td>");
 
             // Add room total here if necessary
-            emailContent.append("<td>").append(currencyFormatter.format(br.getPrice()*br.getNumOfNight()+servicePrices)).append("</td>");
+            emailContent.append("<td>").append(currencyFormatter.format(br.getPrice() * br.getNumOfNight() + servicePrices)).append("</td>");
             emailContent.append("</tr>");
         }
+        emailContent.append("<tr>\n"
+                + "                                                            <td colspan=\"3\"><b>Deposit: </b></td>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getDeposit()) + "</span>\n"
+                + "                                                            </td>\n"
+                + "                                                        </tr>");
+        emailContent.append("<tr>\n"
+                + "                                                            <td colspan=\"3\"><b>Grand Total: </b></td>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getTotalPrice()) + "</span>\n"
+                + "                                                            </td>\n"
+                + "                                                        </tr>");
 
         emailContent.append("</tbody></table>");
 
@@ -252,11 +274,52 @@ public class payStatus extends HttpServlet {
         }
 
     }
+
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
         Booking booking = bkDao.getBookingByBookingID(1);
         GuestDAO gDao = new GuestDAO();
         Guest g = gDao.getGuestByGuestID(booking.getGuestID());
         sendBillMail(booking, g);
+    }
+
+    private void payByCash(Booking booking, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        InvoiceDAO ivDao = new InvoiceDAO();
+        Invoice invoice = new Invoice();
+        invoice.setBookingId(booking.getBookingID());
+        invoice.setTotalAmount(booking.getTotalPrice());
+        invoice.setDiscount(0);
+        invoice.setFinalAmount((int) (booking.getTotalPrice() * (1 - invoice.getDiscount())));
+        invoice.setPaymentMethod("Cash");
+        Date currentDate = new Date();
+
+        // Convert Date to LocalDate
+        LocalDate localDate = currentDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        // Set the payment date
+        invoice.setPaymentDate(localDate);
+        //create invoice
+        ivDao.insertInvoice(invoice);
+
+        //update status booking payment
+        BookingDAO bkDao = new BookingDAO();
+        booking.setPaidStatus(1);
+        bkDao.updatePaidStatus(booking);
+        RoomDao rDao = new RoomDao();
+        //update status room
+        List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(booking.getBookingID());
+        for (BookingRoom br : allBookingRoom) {
+            Room r = rDao.getRoomByRoomID(br.getRoomID());
+            r.setCleanId(1);
+            r.setStatusId(1);
+            rDao.updateStatus(r);
+        }
+        GuestDAO gDao = new GuestDAO();
+        if (gDao.getGuestByGuestID(booking.getGuestID()).getEmail() != null) {
+            sendBillMail(booking, gDao.getGuestByGuestID(booking.getGuestID()));
+        }
+        response.sendRedirect("listRoom");
     }
 }

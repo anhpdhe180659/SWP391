@@ -119,12 +119,7 @@
                             <div class="collapse" id="tables">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="tables.jsp">
-                                            <span class="sub-item">Invoice</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="datatables.jsp">
+                                        <a href="listInvoice">
                                             <span class="sub-item">Invoice</span>
                                         </a>
                                     </li>
