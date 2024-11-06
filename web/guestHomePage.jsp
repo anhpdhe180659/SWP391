@@ -65,6 +65,9 @@
                         </div>
                         <div class="navbar-link col-md-2 col-sm-12">
                             <a href="#contact">For Booking</a>
+                        </div>  
+                        <div class="navbar-link col-md-2 col-sm-12">
+                            <a href="policyforguest.jsp">Policies</a>
                         </div> 
                           <div class="navbar-link col-md-2 col-sm-12">
                             <a href="feedback.jsp">FeedBack</a>

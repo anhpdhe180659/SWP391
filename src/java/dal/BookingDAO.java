@@ -411,7 +411,7 @@ public class BookingDAO extends DBContext {
             pre.setInt(4, paidstatus);
             pre.setInt(5, userid);
             pre.setDate(6, sqlDate);
-            pre.setInt(7, 0);
+            pre.setInt(7, totalPrice);
             pre.setInt(8, paymentMethod);
             if (actualCheckInTime != null) {
                 pre.setTimestamp(9, Timestamp.valueOf(actualCheckInTime));

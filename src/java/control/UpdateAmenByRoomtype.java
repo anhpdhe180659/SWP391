@@ -6,12 +6,15 @@ package control;
 
 import dal.AmenityDAO;
 import dal.AmenityForRoomDAO;
+import dal.RoomTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.RoomType;
 
 /**
  *
@@ -36,7 +39,7 @@ public class UpdateAmenByRoomtype extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateAmenByRoomtype</title>");            
+            out.println("<title>Servlet UpdateAmenByRoomtype</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UpdateAmenByRoomtype at " + request.getContextPath() + "</h1>");
@@ -57,33 +60,28 @@ public class UpdateAmenByRoomtype extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
+        List<RoomType> roomTypes = roomTypeDAO.getAll();
+
+        request.setAttribute("roomTypes", roomTypes);
+        request.getRequestDispatcher("/viewAmenitiesByRoomType.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy dữ liệu từ form
         int typeId = Integer.parseInt(request.getParameter("typeId"));
         int amenID = Integer.parseInt(request.getParameter("amenID"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        // Tạo đối tượng AmenityDAO để gọi phương thức cập nhật
         AmenityForRoomDAO dao = new AmenityForRoomDAO();
         dao.updateQuantityByRoomType(typeId, amenID, quantity);
 
-        // Chuyển tiếp đến một trang thông báo (hoặc trang khác)
         request.setAttribute("message", "Updated successfully!");
-        request.getRequestDispatcher("/updateAmenityByRoomType.jsp").forward(request, response);
+
+        response.sendRedirect("viewAmenitiesByRoomType");
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";
