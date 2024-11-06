@@ -47,7 +47,7 @@ public class DBContext {
         // your system configuration.
         try {
             String user = "root";  // Your MySQL username
-            String pass = "1234";  // Your MySQL password
+            String pass = "12345";  // Your MySQL password
             String url = "jdbc:mysql://localhost:3306/HotelManagement";  // MySQL URL with your database name
 
             // Load the MySQL JDBC driver
