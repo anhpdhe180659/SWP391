@@ -30,20 +30,44 @@ public class InvoiceDAO extends DBContext {
             while (rs.next()) {
                 // Handle potential null for PaymentDate
                 LocalDate paymentDate = null;
-                if (rs.getDate("PaymentDate") != null) {
-                    paymentDate = rs.getDate("PaymentDate").toInstant()
-                            .atZone(ZoneId.systemDefault()).toLocalDate();
-                }
 
                 // Add invoice to the list
                 listInvoice.add(new Invoice(
                         rs.getInt("InvoiceNo"),
                         rs.getInt("BookingID"),
-                        rs.getInt("TotalAmount"), 
+                        rs.getInt("TotalAmount"),
                         rs.getFloat("Discount"),
-                        rs.getInt("FinalAmount"), 
+                        rs.getInt("FinalAmount"),
                         rs.getString("PaymentMethod"),
-                        paymentDate
+                        rs.getDate("PaymentDate").toLocalDate()
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving invoices: " + e.getMessage());
+        }
+        return listInvoice;
+    }
+
+    public List<Invoice> getFourNearestInvoice() {
+        List<Invoice> listInvoice = new ArrayList<>();
+        String query = """
+                   SELECT * FROM hotelmanagement.invoice order by InvoiceNo desc limit 4
+                   """;
+        try (PreparedStatement pre = connection.prepareStatement(query); ResultSet rs = pre.executeQuery()) {
+
+            while (rs.next()) {
+                // Handle potential null for PaymentDate
+                LocalDate paymentDate = null;
+
+                // Add invoice to the list
+                listInvoice.add(new Invoice(
+                        rs.getInt("InvoiceNo"),
+                        rs.getInt("BookingID"),
+                        rs.getInt("TotalAmount"),
+                        rs.getFloat("Discount"),
+                        rs.getInt("FinalAmount"),
+                        rs.getString("PaymentMethod"),
+                        rs.getDate("PaymentDate").toLocalDate()
                 ));
             }
         } catch (SQLException e) {
@@ -69,6 +93,31 @@ public class InvoiceDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Invoice getInvoiceById(int id) {
+        String query = """
+                   SELECT * FROM hotelmanagement.invoice where InvoiceNo = ?
+                   """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+
+                return new Invoice(
+                        rs.getInt("InvoiceNo"),
+                        rs.getInt("BookingID"),
+                        rs.getInt("TotalAmount"),
+                        rs.getFloat("Discount"),
+                        rs.getInt("FinalAmount"),
+                        rs.getString("PaymentMethod"),
+                        rs.getDate("PaymentDate").toLocalDate()
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving invoices: " + e.getMessage());
+        }
+        return null;
     }
 
     public static void main(String[] args) {
