@@ -149,11 +149,6 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="updateAmenityByRoomType.jsp">
-                                            <span class="sub-item">Update Amenity By Room Type</span>
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="viewAmenitiesByRoomType">
                                             <span class="sub-item">View Amenity By Room Type</span>
                                         </a>
