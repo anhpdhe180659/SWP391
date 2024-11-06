@@ -98,14 +98,16 @@ public class ItemDAO extends DBContext {
         int itemID = lastItem.getItemID();
         // 9
         RoomDao rdao = new RoomDao();
+        List<Room> listRoom = rdao.getAllRooms();
         int numberOfRoom = rdao.getAllRooms().size();
         String sql = "INSERT INTO HotelManagement.RoomItem "
                 + "(ItemID, RoomID, CurrentQuantity, LastUpdated, NeedReplace) "
                 + "VALUES (?, ?, 0, NOW(), 1);";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            for (int roomId = 1; roomId <= numberOfRoom; roomId++) {
+            for (Room room : listRoom) {
+                int roomid = room.getRoomId();
                 st.setInt(1, itemID);
-                st.setInt(2, roomId);
+                st.setInt(2, roomid);
                 st.executeUpdate();
             }
         } catch (SQLException e) {

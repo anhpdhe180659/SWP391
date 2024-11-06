@@ -82,26 +82,28 @@ public class addItem extends HttpServlet {
             int numberOfRoom = rdao.getAllRooms().size();
             Item item = new Item();
             String name = request.getParameter("name").trim();
-            String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Add item successfully!</div>";
-            if(name.length() < 2){
-                noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid item name, add failed!</div>";
-                request.setAttribute("noti", noti);
-                request.getRequestDispatcher("addItem.jsp").forward(request, response);
-                return;
-            }
             int standardQuantity = Integer.parseInt(request.getParameter("standardQuantity"));
             int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
             int price = Integer.parseInt(request.getParameter("price"));
-//            if (standardQuantity * numberOfRoom > stockQuantity) {
-//                noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid standard quantity, add failed!</div>";
-//                request.setAttribute("noti", noti);
-//                request.getRequestDispatcher("addItem.jsp").forward(request, response);
-//                return;
-//            }
+            String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Add item successfully!</div>";
+            if (name.length() < 1) {
+                noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Invalid item name, add failed!</div>";
+                request.setAttribute("noti", noti);
+                request.setAttribute("name", name);
+                request.setAttribute("price", price);
+                request.setAttribute("quantity", standardQuantity);
+                request.setAttribute("stock", stockQuantity);
+                request.getRequestDispatcher("addItem.jsp").forward(request, response);
+                return;
+            }
             for (Item i : listItem) {
                 if (i.getItemName().equalsIgnoreCase(name)) {
-                    noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Itemname " + name + " existed, add failed!</div>";
+                    noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Itemname " + name + " existed, please try again!</div>";
                     request.setAttribute("noti", noti);
+                    request.setAttribute("name", name);
+                    request.setAttribute("price", price);
+                    request.setAttribute("quantity", standardQuantity);
+                    request.setAttribute("stock", stockQuantity);
                     request.getRequestDispatcher("addItem.jsp").forward(request, response);
                     return;
                 }
@@ -111,7 +113,10 @@ public class addItem extends HttpServlet {
             item.setStandardQuantity(standardQuantity);
             item.setStockQuantity(stockQuantity);
             idao.addItem(item);
-            request.setAttribute("item", item);
+            request.setAttribute("name", name);
+            request.setAttribute("price", price);
+            request.setAttribute("quantity", standardQuantity);
+            request.setAttribute("stock", stockQuantity);
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addItem.jsp").forward(request, response);
         } catch (Exception e) {
