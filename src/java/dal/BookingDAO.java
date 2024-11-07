@@ -636,9 +636,9 @@ public class BookingDAO extends DBContext {
 
     public List<BookingRoom> getAllBookingUnpaid() {
         List<BookingRoom> unpaidBookings = new ArrayList<>();
-        String query = "SELECT br.BookingID, br.RoomID, br.NumOfNight, br.CheckInDate, br.CheckOutDate, br.Price "
+        String query = "SELECT br.BookingID, br.RoomID, br.NumOfNight, br.CheckInDate, br.CheckOutDate, br.Price, b.CheckInStatus "
                 + "FROM Booking b join BookingRoom br "
-                + "WHERE br.BookingID = b.BookingID and b.PaidStatus = 0";
+                + "WHERE br.BookingID = b.BookingID and b.PaidStatus = 0 and b.CheckInStatus = 1";
 
         try (
                 PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
