@@ -178,13 +178,18 @@
                                                             </tr>
                                                         </c:forEach>
                                                         <tr>
+                                                            <td colspan="3"><b>Grand Total:  </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td colspan="3"><b>Deposit: </b></td>
                                                             <td> <span class="price-vnd">${sessionScope.booking.deposit}</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3"><b>Grand Total: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
+                                                            <td colspan="3"><b>Final Total: </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice- sessionScope.booking.deposit}</span>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -262,20 +267,20 @@
 
         </script>
         <script>
-                                    function exportPDF() {
+            function exportPDF() {
 
-                                        var printContents = document.querySelector('.invoice-container').innerHTML;
-                                        var originalContents = document.body.innerHTML;
+                var printContents = document.querySelector('.invoice-container').innerHTML;
+                var originalContents = document.body.innerHTML;
 
-                                        // Set the entire body to just the print area
-                                        document.body.innerHTML = printContents;
+                // Set the entire body to just the print area
+                document.body.innerHTML = printContents;
 
-                                        // Trigger print dialog
-                                        window.print();
+                // Trigger print dialog
+                window.print();
 
-                                        // Restore the original content after printing
-                                        document.body.innerHTML = originalContents;
-                                    }
+                // Restore the original content after printing
+                document.body.innerHTML = originalContents;
+            }
         </script>
     </body>
 </html>
