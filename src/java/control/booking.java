@@ -194,6 +194,7 @@ public class booking extends HttpServlet {
             if (selectedRoom != null) {
                 for (String roomID : selectedRoom) {
                     int roomid = Integer.parseInt(roomID);
+                    Room room = rdao.getRoomByRoomID(roomid);
                     if (bdao.IsEverBooked(roomid) == true) {
                         // if room is booked some time
                         if (bdao.OverlapTime(checkInDateTime, checkOutDateTime, roomid) == true) {
@@ -205,6 +206,14 @@ public class booking extends HttpServlet {
                             request.getRequestDispatcher("booking.jsp").forward(request, response);
                             return;
                         }
+                    }
+                    if (room.getStatusId() == 3) {
+                        bookAllRoom = false;
+                        String roomNumber = rdao.getRoomByRoomID(roomid).getRoomNumber();
+                        noti = "Room " + roomNumber + " is under maintainance. Please choose different room!";
+                        request.setAttribute("noti", noti);
+                        request.getRequestDispatcher("booking.jsp").forward(request, response);
+                        return;
                     }
                 }
             } else {
