@@ -100,7 +100,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Consumable Item</h4>
+                                        <h4 class="card-title">Manage Consumable Item</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="addItem()">
                                             <i class="fa fa-plus"></i> New Item
                                         </button>
