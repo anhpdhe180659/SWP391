@@ -4,6 +4,7 @@
  */
 package control;
 
+import dal.AmenityForRoomDAO;
 import dal.CleanHistoryDAO;
 import dal.GuestDAO;
 import dal.InvoiceDAO;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.CleanStatusHistory;
@@ -124,6 +126,9 @@ public class dashboardstaff extends HttpServlet {
             session.setAttribute("available", availableRoom);
             session.setAttribute("occupied", occupiedRoom);
             session.setAttribute("listInvoice", listInvoice);
+            AmenityForRoomDAO amenityDao = new AmenityForRoomDAO();
+            Map<String, Integer> maintenanceStats = amenityDao.getAmenityMaintenanceStats();
+            request.setAttribute("maintenanceStats", maintenanceStats);
             response.sendRedirect("dashboardstaff.jsp");
         } catch (SQLException ex) {
             Logger.getLogger(dashboardstaff.class.getName()).log(Level.SEVERE, null, ex);

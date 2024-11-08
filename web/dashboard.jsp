@@ -344,7 +344,8 @@
                                     </div>
                                 </div>
                             </div>
-                             <div class="col-md-6">
+                            <jsp:include page="amenityStats.jsp" />
+                            <div class="col-md-6">
                                 <div class="card card-round">
                                     <div class="card-header">
                                         <div class="card-head-row card-tools-still-right">

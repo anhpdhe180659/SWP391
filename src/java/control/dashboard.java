@@ -5,6 +5,7 @@
 package control;
 
 import dal.AmenityDAO;
+import dal.AmenityForRoomDAO;
 import dal.BookingDAO;
 import dal.DashboardDAO;
 import dal.GuestDAO;
@@ -23,6 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import model.Amenity;
 import model.Guest;
 import model.Invoice;
@@ -98,6 +100,9 @@ public class dashboard extends HttpServlet {
             session.setAttribute("occupied", occupiedRoom);
             session.setAttribute("amenityCount", listAmenity.size());
             session.setAttribute("listInvoice", listInvoice);
+            AmenityForRoomDAO amenityrDao = new AmenityForRoomDAO();
+            Map<String, Integer> maintenanceStats = amenityrDao.getAmenityMaintenanceStats();
+            request.setAttribute("maintenanceStats", maintenanceStats);
             response.sendRedirect("dashboard.jsp");
         }
     }
