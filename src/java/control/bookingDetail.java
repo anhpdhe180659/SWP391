@@ -27,7 +27,6 @@ import model.User;
  * @author nhatk
  */
 public class bookingDetail extends HttpServlet {
-    static int bookingid = 0;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -54,6 +53,7 @@ public class bookingDetail extends HttpServlet {
             return;
         }
         int index = 1;
+        int bookingid = 0;
         if(request.getParameter("bookingid") != null){
             bookingid = Integer.parseInt(request.getParameter("bookingid"));
         }

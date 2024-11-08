@@ -225,6 +225,9 @@
                                                         </c:when>
                                                     </c:choose>
                                                 </div>
+                                                <a  role="button" class="button " href="showRoomAmenities?id=${s.roomId}">
+                                                    Amenities
+                                                </a>
                                             </div>
                                         </c:forEach>
                                         <c:set value="${sessionScope.currentindex}" var="index" />
@@ -309,114 +312,114 @@
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
         <script>
-                $(document).ready(function () {
-                    $("#basic-datatables").DataTable({
-                    });
-                    $("#multi-filter-select").DataTable({
-                        pageLength: 10,
-                        initComplete: function () {
-                            this.api()
-                                    .columns()
-                                    .every(function () {
-                                        var column = this;
-                                        var select = $(
-                                                '<select class="form-select"><option value=""></option></select>'
-                                                )
-                                                .appendTo($(column.footer()).empty())
-                                                .on("change", function () {
-                                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                    column
-                                                            .search(val ? "^" + val + "$" : "", true, false)
-                                                            .draw();
-                                                });
-
-                                        column
-                                                .data()
-                                                .unique()
-                                                .sort()
-                                                .each(function (d, j) {
-                                                    select.append(
-                                                            '<option value="' + d + '">' + d + "</option>"
-                                                            );
-                                                });
-                                    });
-                        },
-                    });
-
-                    //             Add Row
-
+            $(document).ready(function () {
+                $("#basic-datatables").DataTable({
                 });
+                $("#multi-filter-select").DataTable({
+                    pageLength: 10,
+                    initComplete: function () {
+                        this.api()
+                                .columns()
+                                .every(function () {
+                                    var column = this;
+                                    var select = $(
+                                            '<select class="form-select"><option value=""></option></select>'
+                                            )
+                                            .appendTo($(column.footer()).empty())
+                                            .on("change", function () {
+                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                                column
+                                                        .search(val ? "^" + val + "$" : "", true, false)
+                                                        .draw();
+                                            });
+
+                                    column
+                                            .data()
+                                            .unique()
+                                            .sort()
+                                            .each(function (d, j) {
+                                                select.append(
+                                                        '<option value="' + d + '">' + d + "</option>"
+                                                        );
+                                            });
+                                });
+                    },
+                });
+
+                //             Add Row
+
+            });
         </script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
-                const currentUrl = window.location.href;
-                console.log(currentUrl);
-                $(document).ready(function () {
-                    $('.available').on('click', function () {
-                        const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                        const field = 'statusId'; // Get field name from data attribute
-                        const value = 1; // Get selected value
-                        console.log(field);
-                        // AJAX call to update the database
-                        $.ajax({
-                            url: 'updateRoomStatus', // Your servlet URL
-                            method: 'POST',
-                            data: {
-                                roomId: roomId,
-                                field: field,
-                                value: value
-                            },
-                            success: function (response) {
-                                console.log(swal);
-                                // Handle success, you can show a notification or update the UI
-                                swal({
-                                    icon: "success",
-                                    text: 'Update successful'
-                                }).then(() => {
-                                    window.location = currentUrl;
-                                });
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle error
-                                alert('Update failed.');
-                            }
-                        });
+            const currentUrl = window.location.href;
+            console.log(currentUrl);
+            $(document).ready(function () {
+                $('.available').on('click', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = 'statusId'; // Get field name from data attribute
+                    const value = 1; // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            console.log(swal);
+                            // Handle success, you can show a notification or update the UI
+                            swal({
+                                icon: "success",
+                                text: 'Update successful'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed.');
+                        }
                     });
                 });
+            });
 
 
-                $(document).ready(function () {
-                    $('.maintaince').on('click', function () {
-                        const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                        const field = 'statusId'; // Get field name from data attribute
-                        const value = 3; // Get selected value
-                        console.log(field);
-                        // AJAX call to update the database
-                        $.ajax({
-                            url: 'updateRoomStatus', // Your servlet URL
-                            method: 'POST',
-                            data: {
-                                roomId: roomId,
-                                field: field,
-                                value: value
-                            },
-                            success: function (response) {
-                                console.log(swal);
-                                // Handle success, you can show a notification or update the UI
-                                swal({
-                                    icon: "success",
-                                    text: 'Update successful'
-                                }).then(() => {
-                                    window.location = currentUrl;
-                                })
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle error
-                                alert('Update failed:');
-                            }
-                        });
+            $(document).ready(function () {
+                $('.maintaince').on('click', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = 'statusId'; // Get field name from data attribute
+                    const value = 3; // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            console.log(swal);
+                            // Handle success, you can show a notification or update the UI
+                            swal({
+                                icon: "success",
+                                text: 'Update successful'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            })
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed:');
+                        }
                     });
                 });
+            });
         </script>
         <script>
 

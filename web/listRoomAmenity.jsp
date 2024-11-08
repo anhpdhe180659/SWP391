@@ -100,6 +100,18 @@
                             <div class="page-header">
                                 <h2 class="fw-bold mb-3">Room Status</h2>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Room Amenity Status Statistics</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="amenityStatsChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body row">
@@ -123,6 +135,11 @@
                                                 <option value="3" ${requestScope.statusId == '3' ? 'selected' : ''}>Under maintenance</option>
                                             </select>
 
+                                            <span>Amenity Status</span>
+                                            <select class="form-select-sm col-2 me-3" name="amenityStatus">
+                                                <option value="0" ${requestScope.amenityStatus == '0' ? 'selected' : ''}>All</option>
+                                                <option value="1" ${requestScope.amenityStatus == '1' ? 'selected' : ''}>Has Broken/Maintenance Amenities</option>
+                                            </select>
                                             <button class="btn btn-label-info ms-4" type="submit">Filter</button>
 
                                         </form>
@@ -335,6 +352,47 @@
                                 alert('Update failed:');
                             }
                         });
+                    });
+                });
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var ctx = document.getElementById('amenityStatsChart').getContext('2d');
+                    var stats = {
+                        labels: [
+                            'Normal Rooms',
+                            'Rooms Needing Maintenance',
+                            'Rooms with Broken Amenities'
+                        ],
+                        datasets: [{
+                                data: [
+                ${maintenanceStats['Normal'] != null ? maintenanceStats['Normal'] : 0},
+                ${maintenanceStats['Maintenance'] != null ? maintenanceStats['Maintenance'] : 0},
+                ${maintenanceStats['Broken'] != null ? maintenanceStats['Broken'] : 0}
+                                ],
+                                backgroundColor: [
+                                    '#2ecc71', // green for normal
+                                    '#f1c40f', // yellow for maintenance
+                                    '#e74c3c'  // red for broken
+                                ]
+                            }]
+                    };
+
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: stats,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Room Amenity Status Distribution'
+                                }
+                            }
+                        }
                     });
                 });
             </script>

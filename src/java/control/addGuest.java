@@ -97,7 +97,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         if (address.trim().isEmpty()) {
             return "Address cannot be blank.";
         }
-        if (phone.trim().isEmpty() || !phone.matches("^\\d{10}$")) {
+        if (phone.trim().isEmpty() || !phone.matches("^[0-9]{10}$")) {
             return "Phone must be exactly 10 digits.";
         }
         if (identification.trim().isEmpty()) {

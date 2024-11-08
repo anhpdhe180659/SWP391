@@ -18,7 +18,7 @@
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="dashboard" class="logo">
+                    <a href="guestHomePage.jsp" class="logo">
                         <img
                             src="img/logo/logoAdmin.png"
                             alt="navbar brand"
@@ -145,7 +145,7 @@
                                     </li>
                                     <li>
                                         <a href="listItem">
-                                            <span class="sub-item">Item</span>
+                                            <span class="sub-item">Consumable items</span>
                                         </a>
                                     </li>
                                     <li>
