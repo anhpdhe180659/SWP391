@@ -157,9 +157,10 @@
                         <input type="text" name="title" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Context</label>
-                        <textarea name="context" class="form-control" required></textarea>
-                    </div>
+    <label>Context</label>
+    <textarea name="context" class="form-control" rows="10" 
+        style="white-space: pre-wrap;" required></textarea>
+</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -187,10 +188,11 @@
                         <label>Title</label>
                         <input type="text" name="title" id="editPolicyTitle" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <label>Context</label>
-                        <textarea name="context" id="editPolicyContext" class="form-control" required></textarea>
-                    </div>
+                   <div class="form-group">
+    <label>Context</label>
+    <textarea name="context" id="editPolicyContext" class="form-control" 
+        rows="10" style="white-space: pre-wrap;" required></textarea>
+</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -239,7 +241,8 @@
                 </div>
                 <div class="form-group">
                     <label>Context</label>
-                    <p id="viewPolicyContext" class="form-control"></p>
+                    <div id="viewPolicyContext" class="form-control" 
+                        style="white-space: pre-wrap; min-height: 200px; overflow-y: auto; background-color: white;"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -250,27 +253,29 @@
 </div>
 
 
-<script>
-     function viewPolicy(id, title, context) {
-        // Decode HTML entities and unescape special characters
-        title = $('<div/>').html(title).text();
-        context = $('<div/>').html(context).text();
-        
-        $('#viewPolicyTitle').text(title);
-        $('#viewPolicyContext').text(context);
-        $('#viewPolicyModal').modal('show');
-    }
 
-    function editPolicy(id, title, context) {
-        // Decode HTML entities and unescape special characters
-        title = $('<div/>').html(title).text();
-        context = $('<div/>').html(context).text();
-        
-        $('#editPolicyId').val(id);
-        $('#editPolicyTitle').val(title);
-        $('#editPolicyContext').val(context);
-        $('#editPolicyModal').modal('show');
-    }
+<script>
+   function viewPolicy(id, title, context) {
+    // Decode HTML entities and unescape special characters
+    title = $('<div/>').html(title).text();
+    context = $('<div/>').html(context).text();
+    
+    $('#viewPolicyTitle').text(title);
+    // Use .html() instead of .text() to preserve line breaks
+    $('#viewPolicyContext').html(context.replace(/\n/g, '<br>'));
+    $('#viewPolicyModal').modal('show');
+}
+
+function editPolicy(id, title, context) {
+    // Decode HTML entities and unescape special characters
+    title = $('<div/>').html(title).text();
+    context = $('<div/>').html(context).text();
+    
+    $('#editPolicyId').val(id);
+    $('#editPolicyTitle').val(title);
+    $('#editPolicyContext').val(context);
+    $('#editPolicyModal').modal('show');
+}
 
     function confirmDelete(id) {
         if (confirm('Are you sure you want to delete this policy?')) {

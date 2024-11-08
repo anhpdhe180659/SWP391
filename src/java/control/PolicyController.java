@@ -60,7 +60,7 @@ public class PolicyController extends HttpServlet {
             throws ServletException, IOException {
         List<policy> policies = policyDAO.getAllPolicies();
         request.setAttribute("policies", policies);
-        request.getRequestDispatcher("list.jsp").forward(request, response);
+        request.getRequestDispatcher("listpolicy.jsp").forward(request, response);
     }
 
     private void showPolicyDetail(HttpServletRequest request, HttpServletResponse response)
@@ -72,7 +72,7 @@ public class PolicyController extends HttpServlet {
 
             if (policy != null) {
                 request.setAttribute("policy", policy);
-                request.getRequestDispatcher("list.jsp").forward(request, response);
+                request.getRequestDispatcher("listpolicy.jsp").forward(request, response);
             } else {
                 response.sendRedirect(request.getContextPath() + "/policy");
             }
@@ -104,28 +104,28 @@ public class PolicyController extends HttpServlet {
         }
     }
 
-     private void addPolicy(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            String title = request.getParameter("title");
-            String context = request.getParameter("context").trim();
+    private void addPolicy(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        String title = request.getParameter("title");
+        String context = request.getParameter("context");
 
-            if (title != null && !title.trim().isEmpty() && context != null && !context.isEmpty()) {
-                policy newPolicy = new policy();
-                newPolicy.setPolicyTitle(title.trim());
-                // Không trim() context để giữ nguyên format
-                newPolicy.setPolicyContext(context);
+        if (title != null && !title.trim().isEmpty() && context != null && !context.isEmpty()) {
+            policy newPolicy = new policy();
+            newPolicy.setPolicyTitle(title.trim());
+            // Store context with preserved line breaks
+            newPolicy.setPolicyContext(context);
 
-                policyDAO.addPolicy(newPolicy);
-                response.sendRedirect(request.getContextPath() + "/policy");
-            } else {
-                request.setAttribute("error", "Title and context are required!");
-                getAllPolicies(request, response);
-            }
-        } catch (Exception e) {
-            request.setAttribute("error", "Error adding policy: " + e.getMessage());
+            policyDAO.addPolicy(newPolicy);
+            response.sendRedirect(request.getContextPath() + "/policy");
+        } else {
+            request.setAttribute("error", "Title and context are required!");
             getAllPolicies(request, response);
         }
+    } catch (Exception e) {
+        request.setAttribute("error", "Error adding policy: " + e.getMessage());
+        getAllPolicies(request, response);
+    } 
     }
 
     private void updatePolicy(HttpServletRequest request, HttpServletResponse response)

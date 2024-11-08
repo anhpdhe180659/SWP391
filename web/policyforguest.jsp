@@ -130,7 +130,7 @@
                 <nav class="navbar">
                     <div class="container-fluid row">
                         <div class="logo col-md-2 col-sm-12">
-                            <a href="#">
+                            <a href="guestHomePage.jsp">
                                 <img src="img/logo/logo.png" alt="logo" width="120" >
                             </a>
                         </div>
