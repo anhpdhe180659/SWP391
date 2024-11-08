@@ -101,7 +101,9 @@ public class editService extends HttpServlet {
             sdao.updateService(service);
             request.setAttribute("noti", "Save successful!");
             request.setAttribute("service", service);
-            request.getRequestDispatcher("editService.jsp").forward(request, response);
+            response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write("{\"status\":\"success\"}");
 
         } catch (Exception e) {
             out.print("There was an error: " + e.getMessage());
