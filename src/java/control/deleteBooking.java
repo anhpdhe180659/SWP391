@@ -44,30 +44,23 @@ public class deleteBooking extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
         int bookingid = Integer.parseInt(request.getParameter("bookingid"));
-        
+
         List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
         List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);
-        if (listRoomToCancel.isEmpty()) {
-            String noti = "Cannot cancel booking! You must cancel the booking at least 24 hours before the check-in time.";
-            request.setAttribute("noti", noti);
-        } else {
-           
-            bdao.deleteBooking(bookingid);
-            
-        }
+        bdao.deleteBooking(bookingid);
         int index = 1;
         int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
         if (request.getParameter("index") != null) {
             index = Integer.parseInt(request.getParameter("index"));
         }
         List<Booking> listBooking = bdao.getNext5Booking(index);
-        
+
         session.setAttribute("listBooking", listBooking);
         session.setAttribute("Nopage", NoPage);
         session.setAttribute("currentindex", index);

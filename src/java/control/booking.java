@@ -300,7 +300,7 @@ public class booking extends HttpServlet {
         String subject = "Booking code from ALIHOTEL";
         String content = "Dear valued customer,\n\n"
                 + "Thank you for choosing ALIHOTEL. We are pleased to confirm your booking. "
-                + "Your booking code is: " + bookingcode + ".\n\n"
+                + "Your booking code is: <strong>" + bookingcode + "</strong>.\n\n"
                 + "Please keep this code for reference. If you have any questions or need further assistance, feel free to contact us.\n\n"
                 + "We would like to remind you that your check-in time is at 2:00 PM on the scheduled date. "
                 + "Please make sure to arrive on time to enjoy your stay.\n\n"
