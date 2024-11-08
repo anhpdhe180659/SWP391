@@ -194,7 +194,14 @@
                     </div>
                 </div>
             </div>
-
+<%
+    // Kiểm tra session và role
+    User user = (User) session.getAttribute("user");
+    if (user == null || user.getRole() != 1) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
             <!-- End Custom template -->
 
             <!--   Core JS Files   -->
