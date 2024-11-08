@@ -118,45 +118,61 @@ public class editBooking extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         BookingDAO bdao = new BookingDAO();
+        GuestDAO gdao = new GuestDAO();
+        RoomDao rdao = new RoomDao();
         int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
         int deposit = Integer.parseInt(request.getParameter("deposit"));
         int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+        List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
         Booking booking = bdao.getBookingByBookingID(bookingid);
         String noti = "Save successfully!";
         bdao.updateDeposit(bookingid, deposit);
+        boolean checkin = true;
         if (booking.getCheckInStatus() == 0) {
-            bdao.updateCheckInStatus(bookingid, checkinstatus);
-            if(checkinstatus == 1){
-                bdao.updateActualCheckInDate(bookingid);
+            if (checkinstatus == 1) {
+                // xem xem phòng đã đang occupied hay ko,
+                // nếu occupied thì ko cho check-in,
+                // nếu available thì cho check-in và actual checkindate
+                for (BookingRoom bookingRoom : listRoomBooked) {
+                    int roomid = bookingRoom.getRoomID();
+                    Room room = rdao.getRoomByRoomID(roomid);
+                    if (room.getStatusId() == 2) {
+                        noti = "The rooms in this booking are currently in use; check-in is not possible!";
+                        checkin = false;
+                    }
+                    // neu dang sua chua van cho check-in nhung se note lai de ko phat tien
+                }
+                if (checkin == true) {
+                    for (BookingRoom bookingRoom : listRoomBooked) {
+                        int roomid = bookingRoom.getRoomID();
+                        bdao.updateStatusRoomOccupied(roomid);
+                    }
+                    bdao.updateActualCheckInDate(bookingid);
+                    bdao.updateCheckInStatus(bookingid, checkinstatus);
+                }
+            } else {
+                // new checkin status = 0 
+                // current checkin status =0
+                // do nothing
             }
         } else {
-            // checkinstatus dang la 1
-            if(checkinstatus == 0){
+            // neu booking checkinstatus la 1
+            if (checkinstatus == 0) {
                 checkinstatus = 1;
                 noti = "This booking status cannot be edited!";
-            }else{
+            } else {
                 noti = "Save successfully!";
             }
-        }
-        List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
-        for (BookingRoom bookingRoom : listRoomBooked) {
-            int roomid = bookingRoom.getRoomID();
-            if (booking.getCheckInStatus() == 0) {
-                if (checkinstatus == 1) {
-                    bdao.updateStatusRoomOccupied(roomid);
-                }
-            }
-            // checkin status = 0 thi ko sua trang thai phong
         }
         BookingCodeConvert utilConvert = new BookingCodeConvert();
         String bookingcode = utilConvert.toBase36(bookingid);
         request.setAttribute("bookingcode", bookingcode);
-        GuestDAO gdao = new GuestDAO();
-        RoomDao rdao = new RoomDao();
         List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
         List<Room> listRoom = new ArrayList<>();
         LocalDateTime checkindate = null;
         LocalDateTime checkoutdate = null;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+//        checkInDateTime.isBefore(currentDateTime)
         for (BookingRoom bookingRoom : listBookingRoom) {
             Room room = rdao.getRoomByRoomID(bookingRoom.getRoomID());
             listRoom.add(room);
@@ -167,7 +183,7 @@ public class editBooking extends HttpServlet {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String checkindateFormatted = checkindate.format(formatter);
         String checkoutdateFormatted = checkoutdate.format(formatter);
-        
+
         request.setAttribute("checkindate", checkindateFormatted);
         request.setAttribute("checkoutdate", checkoutdateFormatted);
         request.setAttribute("bookingid", bookingid);
