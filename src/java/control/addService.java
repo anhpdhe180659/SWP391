@@ -34,32 +34,41 @@ public class addService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            HttpSession session = request.getSession();
-            ServiceDAO sdao = new ServiceDAO();
-            List<Service> listService = sdao.getAllServices();
-            String name = request.getParameter("name");
-            boolean flag = false;
-            for (Service a : listService) {
-                if (a.getName().equals(name)) {
-                    request.setAttribute("duplicate", "Amenity existed in system.");
-                    flag = true;
-                    break;
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            try {
+                ServiceDAO sdao = new ServiceDAO();
+                List<Service> listService = sdao.getAllServices();
+                String name = request.getParameter("name");
+                boolean flag = false;
+                for (Service a : listService) {
+                    if (a.getName().equals(name)) {
+                        request.setAttribute("duplicate", "Amenity existed in system.");
+                        flag = true;
+                        break;
+                    }
                 }
+                if (!flag) {
+                    int price = Integer.parseInt(request.getParameter("price"));
+                    Service s = new Service();
+                    s.setName(name);
+                    s.setPrice(price);
+                    sdao.addService(s);
+                }
+                session.setAttribute("listService", listService);
+                request.getRequestDispatcher("listService.jsp").forward(request, response);
+            } catch (ServletException | IOException | NumberFormatException e) {
+                out.print(e.getMessage());
             }
-            if (!flag) {
-                int price = Integer.parseInt(request.getParameter("price"));
-                Service s = new Service();
-                s.setName(name);
-                s.setPrice(price);
-                sdao.addService(s);
-            }
-            session.setAttribute("listService", listService);
-            request.getRequestDispatcher("listService.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e.getMessage());
         }
     }
 

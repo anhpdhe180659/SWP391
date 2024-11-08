@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.AmenityDetail;
 
 /**
@@ -60,17 +61,27 @@ public class EditAmenityDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String room = request.getParameter("roomid");
-        int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
-        System.out.println("roomID in edit ========================" + roomID);
-        AmenityDAO amenityDao = new AmenityDAO();
-        int amenID = Integer.parseInt(request.getParameter("amenId"));
-        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
-        System.out.println(detail.getQuantity() + "=45454");
-        System.out.println(detail.getAmenID() + "sm");
-        System.out.println(detail.getRoomID() + "rm");
-        request.setAttribute("amenityDetail", detail);
-        request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            String room = request.getParameter("roomid");
+            int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
+            System.out.println("roomID in edit ========================" + roomID);
+            AmenityDAO amenityDao = new AmenityDAO();
+            int amenID = Integer.parseInt(request.getParameter("amenId"));
+            AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
+            System.out.println(detail.getQuantity() + "=45454");
+            System.out.println(detail.getAmenID() + "sm");
+            System.out.println(detail.getRoomID() + "rm");
+            request.setAttribute("amenityDetail", detail);
+            request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -84,51 +95,63 @@ public class EditAmenityDetailController extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    String amenId = request.getParameter("amenid"); 
+    HttpSession session = request.getSession(false);
+    if (session == null || session.getAttribute("role") == null || (int) session.getAttribute("role") != 1) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
+    String amenId = request.getParameter("amenid");
     String roomId = request.getParameter("roomid");
     String quantityStr = request.getParameter("quantity");
-    int quantity = 0;
-    String message = "";
+    int quantity;
+    String message;
     AmenityDAO amenityDao = new AmenityDAO();
 
     try {
-        quantity = Integer.parseInt(quantityStr);
-        
-        // Thêm validate số lượng tối thiểu
-        if (quantity < 3) {
-            message = "Quantity must be at least 3";
-            AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(
-                Integer.parseInt(roomId), 
-                Integer.parseInt(amenId)
-            );
-            request.setAttribute("amenityDetail", detail);
+        quantity = Integer.parseInt(quantityStr.trim());
+
+        // Validate quantity to be greater than 0 and less than 3
+        if (quantity <= 0 || quantity >= 3) {
+            message = "Quantity must be greater than 0 and less than 3.";
+            // Set attribute for error message
             request.setAttribute("noti", message);
-            request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+            request.setAttribute("notiColor", "red");
+            forwardToEditPage(request, response, amenityDao, roomId, amenId);
             return;
         }
 
-        // Nếu hợp lệ thì mới update
+        // If quantity is valid, attempt update
         boolean success = amenityDao.updateQuantity(roomId, amenId, quantity);
-        if (success) {
-            message = "Quantity updated successfully.";
-        } else {
-            message = "Failed to update quantity."; 
-        }
+        message = success ? "Quantity updated successfully." : "Failed to update quantity.";
+        request.setAttribute("noti", message);
+        request.setAttribute("notiColor", success ? "green" : "red");
 
     } catch (NumberFormatException e) {
         message = "Invalid quantity format.";
+        request.setAttribute("noti", message);
+        request.setAttribute("notiColor", "red");
     } catch (Exception e) {
-        message = "An error occurred: " + e.getMessage();
+        message = "An unexpected error occurred: " + e.getMessage();
+        e.printStackTrace();
+        request.setAttribute("noti", message);
+        request.setAttribute("notiColor", "red");
     }
 
+    forwardToEditPage(request, response, amenityDao, roomId, amenId);
+}
+
+private void forwardToEditPage(HttpServletRequest request, HttpServletResponse response, 
+                               AmenityDAO amenityDao, String roomId, String amenId) 
+        throws ServletException, IOException {
     AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(
-        Integer.parseInt(roomId), 
-        Integer.parseInt(amenId)
+            Integer.parseInt(roomId),
+            Integer.parseInt(amenId)
     );
     request.setAttribute("amenityDetail", detail);
-    request.setAttribute("noti", message);
     request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
 }
+
 
     /**
      * Returns a short description of the servlet.

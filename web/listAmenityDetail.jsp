@@ -293,24 +293,29 @@
     }
 </script>
 <script>
-    document.querySelector('form').addEventListener('submit', function (event) {
-        // Get the quantity and room number input fields
-        const quantity = document.querySelector('input[name="quantity"]');
-        const roomnumber = document.querySelector('input[name="roomnumber"]');
+    document.querySelector('.form-add').addEventListener('submit', function (event) {
+    // Get the quantity input field
+    const quantityInput = document.querySelector('input[name="quantity"]');
 
-        // Validate quantity is at least 3
-        if (quantity.value < 3) {
-            alert("Quantity must be at least 3.");
-            event.preventDefault(); // Prevent form submission
-        }
-        
-        // Validate room number is greater than 0
-        if (roomnumber.value <= 0) {
-            alert("Room number must be greater than 0.");
-            event.preventDefault(); // Prevent form submission
-        }
-    });
+    // Trim any leading/trailing whitespace
+    const quantityValue = quantityInput.value.trim();
+
+    // Convert the input value to a number
+    const quantity = Number(quantityValue);
+
+    // Validate that the value is less than 3 and not negative
+    if (isNaN(quantity) || quantity >= 3 || quantity < 0) {
+        alert("Quantity must be a valid number, greater than or equal to 0, and less than 3.");
+        event.preventDefault(); // Prevent form submission
+    } else {
+        console.log("Valid input: " + quantity);  // Debugging step
+    }
+});
+
+
+
 </script>
+
 
 <script>
     function validate() {

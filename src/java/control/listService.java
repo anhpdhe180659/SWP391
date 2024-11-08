@@ -38,10 +38,19 @@ public class listService extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         } else {
-            ServiceDAO serviceDao = new ServiceDAO();
-            List<Service> listService = serviceDao.getAllServices();
-            session.setAttribute("listService", listService);
-            response.sendRedirect("listService.jsp");
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            } else {
+                ServiceDAO serviceDao = new ServiceDAO();
+                List<Service> listService = serviceDao.getAllServices();
+                session.setAttribute("listService", listService);
+                response.sendRedirect("listService.jsp");
+            }
         }
     }
 
