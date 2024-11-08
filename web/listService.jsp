@@ -88,7 +88,7 @@
                     <div class="page-inner">
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Manage Service</h3>
-                            
+
                         </div>
 
                         <div class="col-md-12">
@@ -139,10 +139,11 @@
                                                                         name="name"
                                                                         type="text"
                                                                         class="form-control"
-                                                                        pattern="^[A-Za-zÀ-ỹ\s]+$"  
-                                                                        title="Name can only contain letters and spaces."
+                                                                        pattern="^[A-Za-zÀ-ỹ]+(?:\s[A-Za-zÀ-ỹ]+)*$"  
+                                                                        title="Name can only contain letters and single spaces between words."
                                                                         required
                                                                         />
+
                                                                 </div>
                                                             </div>
 
