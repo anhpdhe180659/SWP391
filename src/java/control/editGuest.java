@@ -19,8 +19,9 @@ public class editGuest extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
-        if (session == null || session.getAttribute("user") == null) {
-            request.setAttribute("error", "Please sign in with receptionist account!");
+        int role = (Integer) session.getAttribute("role");
+        if (session == null || (session.getAttribute("role") != null && role != 2 && role != 1)) {
+            request.setAttribute("error", "Please sign in with receptionist/ manager account!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             try {
@@ -50,18 +51,9 @@ public class editGuest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        PrintWriter out = response.getWriter();
         try {
-            // Retrieve session
-            HttpSession session = request.getSession();
-            User receptionist = (User) session.getAttribute("user");
-
-            // DAO objects
-            GuestDAO gdao = new GuestDAO();
-
             // Retrieve form data
-            int guestID = Integer.parseInt(request.getParameter("guestID")); // Get guestID from form
+            int guestID = Integer.parseInt(request.getParameter("guestID"));
             String name = request.getParameter("name");
             String dateOfBirth = request.getParameter("dateOfBirth");
             int sex = Integer.parseInt(request.getParameter("sex"));
@@ -69,51 +61,81 @@ public class editGuest extends HttpServlet {
             String phone = request.getParameter("phone");
             String identification = request.getParameter("identification");
             String nationality = request.getParameter("nationality");
-            String email = request.getParameter("email"); // Retrieve email
+            String email = request.getParameter("email");
+
+            // Create a guest object with the form data
+            Guest tempGuest = new Guest();
+            tempGuest.setGuestID(guestID);
+            tempGuest.setName(name);
+            tempGuest.setDateOfBirth(LocalDate.parse(dateOfBirth));
+            tempGuest.setSex(sex);
+            tempGuest.setAddress(address);
+            tempGuest.setPhone(phone);
+            tempGuest.setIdentification(identification);
+            tempGuest.setNationality(nationality);
+            tempGuest.setEmail(email);
+
+            // Save the temporary guest in request for form retention
+            request.setAttribute("guest", tempGuest);
 
             // Validate guest information
-            String validationError = validateGuestInformation(gdao, guestID, name, dateOfBirth, sex, address, phone, identification, nationality, email);
+            GuestDAO gdao = new GuestDAO();
+            String validationError = validateGuestInformation(gdao, guestID, name, dateOfBirth, sex,
+                    address, phone, identification, nationality, email);
 
             if (validationError != null) {
-                // If validation fails, display error message and return to editGuest page
                 request.setAttribute("noti", validationError);
                 request.getRequestDispatcher("editGuest.jsp").forward(request, response);
                 return;
             }
 
-            // Guest object update and setting parameters
-            Guest guest = new Guest();
-            guest.setGuestID(guestID); // Set guestID
-            guest.setName(name);
-            guest.setDateOfBirth(LocalDate.parse(dateOfBirth));
-            guest.setSex(sex);
-            guest.setAddress(address);
-            guest.setPhone(phone);
-            guest.setIdentification(identification);
-            guest.setNationality(nationality);
-            guest.setEmail(email); // Set email
-
-            // Update the guest in the database
-            gdao.updateGuest(guest);
-
-            // Redirect to the guest list after successful update
+            // If validation passes, update the guest
+            gdao.updateGuest(tempGuest);
             response.sendRedirect("listGuest");
 
         } catch (Exception e) {
-            out.print(e);
-            request.setAttribute("noti", "An error occurred while editing the guest.");
+            e.printStackTrace();
+            request.setAttribute("noti", "An error occurred while updating the guest.");
             request.getRequestDispatcher("editGuest.jsp").forward(request, response);
         }
     }
 
     private String validateGuestInformation(GuestDAO gdao, int guestID, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality, String email) {
         // Check previous validations...
-
-        if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            return "Invalid email format.";
+        LocalDate dob = LocalDate.parse(dateOfBirth);
+        LocalDate now = LocalDate.now();
+        int age = now.getYear() - dob.getYear();
+        if (dob.plusYears(age).isAfter(now)) {
+            age--;
+        }
+        if (age < 18) {
+            return "Guest must be at least 18 years old.";
         }
 
-        // Check for duplicates but skip current guest (guestID)
+        if (email.trim().isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return "Invalid email format.";
+        }
+        if (name.trim().isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
+            return "Full Name cannot be null, blank, or contain special characters.";
+        }
+        if (address.trim().isEmpty()) {
+            return "Address cannot be blank.";
+        }
+        if (!address.matches("^[\\p{L}0-9\\s,.-]+$")) {
+            return "Address cannot contain special characters except comma, dot, and hyphen.";
+        }
+        if (phone.trim().isEmpty() || !phone.matches("^[0-9]{10}$")) {
+            return "Phone must be exactly 10 digits.";
+        }
+        if (identification.trim().isEmpty()) {
+            return "Identification cannot be blank.";
+        }
+        if (nationality.trim().isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
+            return "Nationality cannot be blank.";
+        }
+        if (name.trim().isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
+            return "Full Name cannot be null, blank, or contain special characters.";
+        }
         List<Guest> listGuest = gdao.getAllGuests();
         for (Guest g : listGuest) {
             if (g.getGuestID() != guestID) {

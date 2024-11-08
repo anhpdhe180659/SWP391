@@ -82,39 +82,41 @@
                                 <div class="card-body">
                                     <!-- Form to edit guest information -->
                                     <form action="editGuest" method="POST">
-                                        <!-- Hidden input to hold guestID -->
                                         <input type="hidden" name="guestID" value="${guest.guestID}" />
-
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-user"></i> Full Name</label>
-                                                    <input name="name" type="text" value="${guest.name}" maxlength="100" class="form-control" placeholder="Enter full name" required />
+                                                    <input name="name" type="text" value="${guest.name}" maxlength="100" 
+                                                           class="form-control" placeholder="Enter full name" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-map-marker-alt"></i> Address</label>
-                                                    <input name="address" type="text" value="${guest.address}" maxlength="200" class="form-control" placeholder="Enter address" required />
+                                                    <input name="address" 
+                                                           type="text" 
+                                                           value="${guest.address}" 
+                                                           maxlength="200" 
+                                                           pattern="^[A-Za-z0-9\s,.-]+$"
+                                                           title="Address can only contain letters, numbers, spaces, commas, dots, and hyphens"
+                                                           class="form-control" 
+                                                           placeholder="Enter address" 
+                                                           required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-phone"></i> Phone</label>
-                                                    <input name="phone" type="text" value="${guest.phone}" maxlength="50" class="form-control" placeholder="Enter phone number" required />
+                                                    <input name="phone" type="text" value="${guest.phone}" pattern="[0-9]{10}" 
+                                                           class="form-control" placeholder="Enter phone number" required />
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group form-group-default">
-                                                    <label><i class="fa fa-envelope"></i> Email</label>
-                                                    <input name="email" type="email" value="${guest.email}" class="form-control" placeholder="Enter email" required />
-                                                </div>
-                                            </div>
-
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-id-card"></i> Identification</label>
-                                                    <input name="identification" type="text" value="${guest.identification}" maxlength="20" class="form-control" placeholder="Enter identification number" required />
+                                                    <input name="identification" type="text" value="${guest.identification}" maxlength="20" 
+                                                           class="form-control" placeholder="Enter identification number" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
@@ -122,27 +124,38 @@
                                                     <label><i class="fas fa-transgender"></i> Gender</label><br />
                                                     <div class="d-flex">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="sex" id="male" value="1" ${guest.sex == 1 ? 'checked' : ''} required />
+                                                            <input class="form-check-input" type="radio" name="sex" id="male" 
+                                                                   value="1" ${guest.sex == 1 ? 'checked' : ''} required />
                                                             <label class="form-check-label" for="male">Male</label>
                                                         </div>
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="sex" id="female" value="2" ${guest.sex == 2 ? 'checked' : ''} required />
+                                                            <input class="form-check-input" type="radio" name="sex" id="female" 
+                                                                   value="0" ${guest.sex == 0 ? 'checked' : ''} required />
                                                             <label class="form-check-label" for="female">Female</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-calendar-alt"></i> Date of Birth</label>
-                                                    <input type="date" name="dateOfBirth" value="${guest.dateOfBirth}" class="form-control" required />
+                                                    <input type="date" name="dateOfBirth" value="${guest.dateOfBirth}"
+                                                           max="<%= java.time.LocalDate.now().minusYears(18) %>"
+                                                           class="form-control" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-globe"></i> Nationality</label>
-                                                    <input name="nationality" type="text" value="${guest.nationality}" class="form-control" placeholder="Enter nationality" required />
+                                                    <input name="nationality" type="text" value="${guest.nationality}" 
+                                                           class="form-control" placeholder="Enter nationality" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-group-default">
+                                                    <label><i class="fa fa-envelope"></i> Email</label>
+                                                    <input name="email" type="email" value="${guest.email}" maxlength="100" 
+                                                           class="form-control" placeholder="Enter email address" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6"></div>

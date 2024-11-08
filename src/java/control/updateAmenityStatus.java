@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import model.Room;
 
@@ -32,19 +33,7 @@ public class updateAmenityStatus extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet updateAmenityStatus</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet updateAmenityStatus at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,7 +48,17 @@ public class updateAmenityStatus extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 3 && role != 1) {
+                request.setAttribute("error", "Please sign in with housekeeper/ manager account!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        }
     }
 
     /**
@@ -72,6 +71,17 @@ public class updateAmenityStatus extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 3 && role != 1) {
+                request.setAttribute("error", "Please sign in with housekeeper/ manager account!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        }
         try {
             int amenID = Integer.parseInt(request.getParameter("amenID")); // Lấy amenID từ request
             int roomID = Integer.parseInt(request.getParameter("roomId")); // Lấy roomID từ request
