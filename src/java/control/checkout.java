@@ -148,32 +148,41 @@ public class checkout extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        String id = request.getParameter("bookingId");
-        String paymentMethod = request.getParameter("paymentMethod");
-        int bkId = Integer.parseInt(id);
-        switch (paymentMethod) {
-            case "1" -> {
-                session.setAttribute("bookingInPay", id);
-                BookingDAO bkDao = new BookingDAO();
-                Booking booking = bkDao.getBookingByBookingID(bkId);
-                booking.setPaymentMethod(1);
-                bkDao.updatePaymentMethod(bkId, booking.getPaymentMethod());
-                int guestId = booking.getGuestID();
-                GuestDAO gDao = new GuestDAO();
-                Guest guest = gDao.getGuestByGuestID(guestId);
-                String payurl = generatePayUrlWithPayOs(booking, guest);
-                if (payurl == null || payurl.equals("error")) {
-                    response.sendRedirect("payStatus?status=error");
-                } else {
-                    response.sendRedirect(payurl);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            String id = request.getParameter("bookingId");
+            String paymentMethod = request.getParameter("paymentMethod");
+            int bkId = Integer.parseInt(id);
+            switch (paymentMethod) {
+                case "1" -> {
+                    session.setAttribute("bookingInPay", id);
+                    BookingDAO bkDao = new BookingDAO();
+                    Booking booking = bkDao.getBookingByBookingID(bkId);
+                    booking.setPaymentMethod(1);
+                    bkDao.updatePaymentMethod(bkId, booking.getPaymentMethod());
+                    int guestId = booking.getGuestID();
+                    GuestDAO gDao = new GuestDAO();
+                    Guest guest = gDao.getGuestByGuestID(guestId);
+                    String payurl = generatePayUrlWithPayOs(booking, guest);
+                    if (payurl == null || payurl.equals("error")) {
+                        response.sendRedirect("payStatus?status=error");
+                    } else {
+                        response.sendRedirect(payurl);
+                    }
                 }
-            }
-            case "2" -> {
-                response.sendRedirect("payStatus?status=CASH&bookingId="+bkId);
-            }
-            default -> {
-                response.sendRedirect("showInvoice?bookingId=" + id);
+                case "2" -> {
+                    response.sendRedirect("payStatus?status=CASH&bookingId=" + bkId);
+                }
+                default -> {
+                    response.sendRedirect("showInvoice?bookingId=" + id);
+                }
             }
         }
     }
@@ -187,7 +196,5 @@ public class checkout extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    
 
 }

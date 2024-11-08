@@ -100,13 +100,13 @@ public class addRoomType extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+       HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
         } else {
             int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
             if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
+                request.setAttribute("error", "Please sign in with manager account !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
 

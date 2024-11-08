@@ -37,7 +37,7 @@ public class viewDetailRoom extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet viewDetailRoom</title>");            
+            out.println("<title>Servlet viewDetailRoom</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet viewDetailRoom at " + request.getContextPath() + "</h1>");
@@ -61,17 +61,19 @@ public class viewDetailRoom extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            RoomDao roomDao = new RoomDao();
+            Room room = roomDao.findRoomById(roomId);
+            session.setAttribute("detailRoom", room);
+            response.sendRedirect("roomDetail.jsp");
         }
-        else if (session.getAttribute("role") != null && session.getAttribute("role").equals("1")) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-        
-        int roomId = Integer.parseInt(request.getParameter("roomId"));
-        RoomDao roomDao = new RoomDao();
-        Room room = roomDao.findRoomById(roomId);
-        session.setAttribute("detailRoom", room);
-        response.sendRedirect("roomDetail.jsp");
     }
 
     /**
