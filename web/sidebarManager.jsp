@@ -18,7 +18,7 @@
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="dashboard" class="logo">
+                    <a href="guestHomePage.jsp" class="logo">
                         <img
                             src="img/logo/logoAdmin.png"
                             alt="navbar brand"
@@ -45,7 +45,7 @@
                     <ul class="nav nav-secondary">
                         <li class="nav-item">
                             <a
-                                href="dashboard"
+                                href="dashboard.jsp"
                                 >
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>

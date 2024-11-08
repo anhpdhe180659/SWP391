@@ -46,7 +46,7 @@ public class RoomDao extends DBContext {
 
     public Room getRoomByRoomID(int roomid) {
         String query = """
-                            SELECT * FROM  HotelManagement.Room WHERE  RoomID = ?
+                        SELECT * FROM  HotelManagement.Room WHERE  RoomID = ?
                            """;
 
         try (PreparedStatement pre = connection.prepareStatement(query);) {

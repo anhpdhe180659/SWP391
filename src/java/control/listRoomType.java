@@ -65,9 +65,7 @@ public class listRoomType extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         } else {
-            System.out.println("sasd");
-            response.getWriter().print("dasdasd");
-            int role = (Integer) session.getAttribute("role");
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
             if (session.getAttribute("role") != null && role != 1) {
                 request.setAttribute("error", "Please sign in with admin account !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

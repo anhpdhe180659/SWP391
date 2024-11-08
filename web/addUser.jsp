@@ -141,8 +141,8 @@
                                                                         class="form-control"
                                                                         maxlength="200"
                                                                         minlength="4"
-                                                                        pattern="[a-zA-Z0-9\s,.-]+"
-                                                                        title="Please enter a valid address. Only letters, numbers, spaces, commas, periods, and hyphens are allowed."
+                                                                        pattern="^[a-zA-Z0-9\s,.'-]+$"
+                                                                        title="Address can contain letters, numbers, spaces, commas, periods, hyphens, and apostrophes"
                                                                         required
                                                                         placeholder="Enter address"
                                                                         />
@@ -177,8 +177,8 @@
                                                                         class="form-control"
                                                                         required
                                                                         placeholder="Enter Identification"
-                                                                        pattern="(^[A-Z0-9]{8}$)|^[0-9]{10}$)|(^[0-9]{12}$)"  
-                                                                        title="Valid ID contains 8, 10 or 12 digits and uppercase letters"
+                                                                        pattern="^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$"
+                                                                    title="Valid ID contains 1 uppercase letters and 7 digits, 9 or 12 digits"
                                                                         />
                                                                 </div>
                                                             </div>

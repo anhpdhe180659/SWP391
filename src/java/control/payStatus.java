@@ -232,14 +232,19 @@ public class payStatus extends HttpServlet {
             emailContent.append("<td>").append(currencyFormatter.format(br.getPrice() * br.getNumOfNight() + servicePrices)).append("</td>");
             emailContent.append("</tr>");
         }
+         emailContent.append("<tr>\n"
+                + "                                                            <td colspan=\"3\"><b>Grand Total: </b></td>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getTotalPrice()) + "</span>\n"
+                + "                                                            </td>\n"
+                + "                                                        </tr>");
         emailContent.append("<tr>\n"
                 + "                                                            <td colspan=\"3\"><b>Deposit: </b></td>\n"
                 + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getDeposit()) + "</span>\n"
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
         emailContent.append("<tr>\n"
-                + "                                                            <td colspan=\"3\"><b>Grand Total: </b></td>\n"
-                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getTotalPrice()) + "</span>\n"
+                + "                                                            <td colspan=\"3\"><b>Final Total: </b></td>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getTotalPrice()-b.getDeposit()) + "</span>\n"
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
 

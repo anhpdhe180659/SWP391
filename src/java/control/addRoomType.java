@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 import model.RoomType;
 import org.apache.commons.io.IOUtils;
@@ -72,7 +73,20 @@ public class addRoomType extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("addRoomType.jsp");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            RoomTypeDAO roomDao = new RoomTypeDAO();
+            List<RoomType> listRoom = roomDao.getAll();
+            session.setAttribute("listRoomType", listRoom);
+            response.sendRedirect("addRoomType.jsp");
+        }
     }
 
     /**
@@ -84,62 +98,60 @@ public class addRoomType extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    HttpSession session = request.getSession(false);
-    if (session == null) {
-        response.sendRedirect("login.jsp");
-    } else {
-        int role = (Integer) session.getAttribute("role");
-        if (session.getAttribute("role") != null && role != 1) {
-            request.setAttribute("error", "Please sign in with admin account!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return; // Make sure to stop further execution
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with manager account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
 
-        CloudinaryConfig cloud = new CloudinaryConfig();
-        Cloudinary cloudinary = cloud.getCloudinary();
-        Part imageURL = request.getPart("image");
+            CloudinaryConfig cloud = new CloudinaryConfig();
+            Cloudinary cloudinary = cloud.getCloudinary();
+            Part imageURL = request.getPart("image");
 
-        // Create temp file and upload image
-        File tempFile = File.createTempFile("upload", null);
-        try (InputStream input = imageURL.getInputStream(); OutputStream output = new FileOutputStream(tempFile)) {
-            IOUtils.copy(input, output);
-        }
+            // Create temp file and upload image
+            File tempFile = File.createTempFile("upload", null);
+            try (InputStream input = imageURL.getInputStream(); OutputStream output = new FileOutputStream(tempFile)) {
+                IOUtils.copy(input, output);
+            }
 
-        try {
-            Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
-            String url = (String) uploadResult.get("secure_url");
+            try {
+                Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
+                String url = (String) uploadResult.get("secure_url");
 
-            // Extract other parameters
-            String typeName = request.getParameter("typeName");
-            int capacity = Integer.parseInt(request.getParameter("capacity"));
-            int price = Integer.parseInt(request.getParameter("price"));
+                // Extract other parameters
+                String typeName = request.getParameter("typeName");
+                int capacity = Integer.parseInt(request.getParameter("capacity"));
+                int price = Integer.parseInt(request.getParameter("price"));
 
-            // Create RoomType object and insert into DB
-            RoomType rt = new RoomType();
-            rt.setTypeName(typeName);
-            rt.setCapacity(capacity);
-            rt.setImage(url);
-            rt.setPrice(price);
+                // Create RoomType object and insert into DB
+                RoomType rt = new RoomType();
+                rt.setTypeName(typeName);
+                rt.setCapacity(capacity);
+                rt.setImage(url);
+                rt.setPrice(price);
 
-            RoomTypeDAO rdao = new RoomTypeDAO();
-            rdao.insertRoomType(rt);
+                RoomTypeDAO rdao = new RoomTypeDAO();
+                rdao.insertRoomType(rt);
 
-            // Redirect to list page after successful insertion
-            request.getRequestDispatcher("listRoomType.jsp").forward(request, response);
+                // Redirect to list page after successful insertion
+                request.getRequestDispatcher("listRoomType.jsp").forward(request, response);
 
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            request.setAttribute("error", "Error adding room type.");
-            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-        } finally {
-            // Clean up temporary file
-            tempFile.delete();
+            } catch (Exception e) {
+                e.printStackTrace(); // Log the exception for debugging
+                request.setAttribute("error", "Error adding room type.");
+                request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+            } finally {
+                // Clean up temporary file
+                tempFile.delete();
+            }
         }
     }
-}
-
 
     /**
      * Returns a short description of the servlet.

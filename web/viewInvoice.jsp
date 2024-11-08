@@ -96,12 +96,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h2>ALIHOTEL INVOICE</h2>
-                                            <%
-    Date now = new Date();
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // specify your date format
-    String formattedDate = sdf.format(now);
-                                            %>
-                                            <p>Ha Noi,<%= formattedDate %></p>
+                                            <p>Ha Noi,${sessionScope.date}</p>
                                         </div>
                                         <div class="card-body">
                                             <!-- Customer and Hotel Information in the Same Row -->
@@ -178,13 +173,18 @@
                                                             </tr>
                                                         </c:forEach>
                                                         <tr>
-                                                            <td colspan="3"><b>Deposit: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.deposit}</span>
+                                                            <td colspan="3"><b>Grand Total:  </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3"><b>Grand Total: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
+                                                            <td colspan="3"><b>Deposit: </b></td>
+                                                            <td> <span class="price-vnd">-${sessionScope.booking.deposit}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"><b>Final Total: </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice- sessionScope.booking.deposit}</span>
                                                             </td>
                                                         </tr>
                                                     </tbody>

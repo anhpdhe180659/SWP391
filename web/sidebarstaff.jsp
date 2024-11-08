@@ -20,7 +20,7 @@
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="receptionDashboard" class="logo">
+                    <a href="guestHomePage.jsp" class="logo">
                         <img
                             src="img/logo/logoAdmin.png"
                             alt="navbar brand"

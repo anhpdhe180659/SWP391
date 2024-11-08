@@ -1,3 +1,9 @@
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page  import="java.util.List"%>
+<%@page  import="model.RoomType"%>
+<%@ page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -64,6 +70,7 @@
                                                                     <label>Type Name</label>
                                                                     <input name="typeName" type="text" class="form-control" required />
                                                                 </div>
+                                                                <span class="error" style="display: none; color: red">Duplicate</span>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
@@ -106,44 +113,72 @@
                 <script src="assets/js/core/popper.min.js"></script>
                 <script src="assets/js/core/bootstrap.min.js"></script>
                 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <%
+      // Retrieve the list of ChartRoom objects from the session
+      List<RoomType> listRoomType = (List<RoomType>) session.getAttribute("listRoomType");
+
+      // Convert the list to JSON format for JavaScript
+      String roomTypeJson = new Gson().toJson(listRoomType);
+                %>
                 <script>
-                                            function BackToList() {
-                                                window.location = "listRoomType.jsp";
-                                            }
-                                            $('.image-input').on('change', function () {
-                                                const input = document.querySelector('.image-input');
-                                                const [file] = input.files;
-                                                const img = document.querySelector('.preview-img');
-                                                if (file) {
-                                                    img.src = URL.createObjectURL(file);
+                                            var roomType = <%= roomTypeJson %>;
+
+                                            // Extract the labels (room types) and data (booking times)
+                                            const labels_type = roomType.map(room => room.typeName);
+                                            console.log(labels_type);
+                                            const error = document.querySelector('.error');
+                                            const typeName = document.querySelector('input[name="typeName"]');
+                                            const button = document.querySelector('button[type="submit"]');
+                                            typeName.onchange = function () {
+                                                const value = typeName.value;
+                                                console.log(value);
+                                                if (labels_type.includes(value)) {
+                                                   button.disabled = true;
+                                                    error.style.display = 'block';
+                                                } else {
+                                                    button.disabled = false;
+                                                    error.style.display = 'none';
                                                 }
-                                                img.style.display='block';
-                                            });
-                                            // Form submission via AJAX
-                                            $('#addForm').on('submit', function (e) {
-                                                e.preventDefault(); // Prevent default form submission
+                                            }
+                </script>
+                <script>
+                    function BackToList() {
+                        window.location = "listRoomType.jsp";
+                    }
+                    $('.image-input').on('change', function () {
+                        const input = document.querySelector('.image-input');
+                        const [file] = input.files;
+                        const img = document.querySelector('.preview-img');
+                        if (file) {
+                            img.src = URL.createObjectURL(file);
+                        }
+                        img.style.display = 'block';
+                    });
+                    // Form submission via AJAX
+                    $('#addForm').on('submit', function (e) {
+                        e.preventDefault(); // Prevent default form submission
 
-                                                const formData = new FormData(this); // FormData for file uploads
-                                                $('#loadingSpinner').show(); // Show loading spinner
+                        const formData = new FormData(this); // FormData for file uploads
+                        $('#loadingSpinner').show(); // Show loading spinner
 
-                                                $.ajax({
-                                                    url: 'addRoomType', // Servlet URL
-                                                    method: 'POST',
-                                                    data: formData,
-                                                    processData: false, // Important for file uploads
-                                                    contentType: false, // Important for file uploads
-                                                    success: function (response) {
-                                                        $('#loadingSpinner').hide(); // Hide spinner on success
-                                                        swal({icon: "success", text: "Add successful!"}).then(() => {
-                                                            window.location = 'listRoomType';
-                                                        });
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        $('#loadingSpinner').hide(); // Hide spinner on error
-                                                        alert('Failed to add room type: ' + xhr.responseText);
-                                                    }
-                                                });
-                                            });
+                        $.ajax({
+                            url: 'addRoomType', // Servlet URL
+                            method: 'POST',
+                            data: formData,
+                            processData: false, // Important for file uploads
+                            contentType: false, // Important for file uploads
+                            success: function (response) {
+                                $('#loadingSpinner').hide(); // Hide spinner on success
+                                swal({icon: "success", text: "Add successful!"}).then(() => {
+                                    window.location = 'listRoomType';
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                $('#loadingSpinner').hide(); // Hide spinner on error
+                                alert('Failed to add room type: ' + xhr.responseText);
+                            }
+                        });
+                    });
                 </script>
             </div>
         </div>

@@ -56,14 +56,14 @@
                 </div>
                 <div class="container">
                     <div class="page-inner">
-                        <div class="page-header">
-                            <h3 class="fw-bold mb-3">Add Service</h3>
-                        </div>
+<!--                        
+                            
+        -->
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Service To Booking</h4>
+                                        <h4 class="card-title">Add Service for Room ${roomNumber}</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick='window.location = "listRoom"'>
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
@@ -71,16 +71,16 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="services-container">
+                                    <div class="services-container row">
                                         <!-- Left Side: Available Services -->
-                                        <div class="service-list">
+                                        <div class="service-list col-6">
                                             <h4>Available Services</h4>
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>Service Name</th>
                                                         <th>Price</th>
-                                                        <th>Select</th>
+                                                        <th>Add</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="available-services">
@@ -89,9 +89,9 @@
                                                             <td>${service.name}</td>
                                                             <td><span class="price-vnd">${service.price}</span></td>
                                                             <td>
-                                                                <button type="button" class="btn btn-primary" 
+                                                                <button type="button" class="btn btn-primary"  
                                                                         onclick="moveServiceToBooked(${service.serviceID}, '${service.name}', ${service.price})">
-                                                                    Add
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -101,14 +101,15 @@
                                         </div>
 
                                         <!-- Right Side: Booked Services -->
-                                        <div class="booked-list">
+                                        <div class="booked-list" style="overflow-x: auto;">
                                             <h4>Booked Services</h4>
-                                            <table class="table table-striped">
+                                            <table class="table table-striped" style="width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th>Service Name</th>
                                                         <th>Price</th>
                                                         <th>Quantity</th>
+                                                        <th>Total</th>
                                                         <th>Remove</th>
                                                     </tr>
                                                 </thead>
@@ -125,19 +126,23 @@
                                                                 <input type="number" id="${bookedService.serviceID}" name="quantity_${bookedService.serviceID}" 
                                                                        value="${bookedService.quantity}" min="1" max="4" class="form-control"
                                                                        onchange="updatetQuantity(${bookedService.serviceID})"
-                                                                       >
+                                                                       ">
+                                                            </td>
+                                                            <td>
+                                                                <span class="price-vnd">${bookedService.totalPrice}</span> 
                                                             </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-danger" 
                                                                         onclick="removeBookedService(${bookedService.serviceID})">
-                                                                    Remove
+                                                                    <i class="fa fa-times" aria-hidden="true"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
-                                            <p><strong>Total Price : </strong><span class="price-vnd">${requestScope.total}</span></p>
+                                            <hr>
+                                            <h4><strong><u><i>Total Price :</i></u> </strong><span class="price-vnd" style="margin-left: 240px">${requestScope.total}</span></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -214,18 +219,21 @@
                                                                             }
 
                                                                             function removeBookedService(serviceID) {
-                                                                                $.post("deleteServiceBooking",
-                                                                                        {
-                                                                                            roomId: ${roomId},
-                                                                                            bookingId: ${bookingId},
-                                                                                            serviceId: serviceID
-                                                                                        },
-                                                                                        function (response) {
-                                                                                            window.location = url;
-                                                                                        }
-                                                                                ).fail(function (xhr, status, error) {
-                                                                                    console.error('Error removing service:', error);
-                                                                                });
+                                                                                var check = confirm("Do you want to delete this service ?");
+                                                                                if (check) {
+                                                                                    $.post("deleteServiceBooking",
+                                                                                            {
+                                                                                                roomId: ${roomId},
+                                                                                                bookingId: ${bookingId},
+                                                                                                serviceId: serviceID
+                                                                                            },
+                                                                                            function (response) {
+                                                                                                window.location = url;
+                                                                                            }
+                                                                                    ).fail(function (xhr, status, error) {
+                                                                                        console.error('Error removing service:', error);
+                                                                                    });
+                                                                                }
                                                                             }
 
                                                                             function updatetQuantity(serviceId) {
