@@ -105,7 +105,7 @@
                                                             <c:if test="${role == '1'}">
                                                                 <input type="number" class="form-control quantity-input" value="${amenities.quantity}" data-room-id="${amenities.roomID}" data-amen-id="${amenities.amenID}" />
                                                             </c:if>
-                                                            <c:if test="${role == '3'}">
+                                                            <c:if test="${role == '2' || role == '3'}">
                                                                 ${amenities.quantity}
                                                             </c:if>
                                                         </td>

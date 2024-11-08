@@ -361,38 +361,38 @@
         <script>
             const currentUrl = window.location.href;
             console.log(currentUrl);
-            $(document).ready(function () {
-                $('.available').on('click', function () {
-                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                    const field = 'statusId'; // Get field name from data attribute
-                    const value = 1; // Get selected value
-                    console.log(field);
-                    // AJAX call to update the database
-                    $.ajax({
-                        url: 'updateRoomStatus', // Your servlet URL
-                        method: 'POST',
-                        data: {
-                            roomId: roomId,
-                            field: field,
-                            value: value
-                        },
-                        success: function (response) {
-                            console.log(swal);
-                            // Handle success, you can show a notification or update the UI
-                            swal({
-                                icon: "success",
-                                text: 'Update successful'
-                            }).then(() => {
-                                window.location = currentUrl;
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            // Handle error
-                            alert('Update failed.');
-                        }
-                    });
-                });
-            });
+//            $(document).ready(function () {
+//                $('.available').on('click', function () {
+//                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+//                    const field = 'statusId'; // Get field name from data attribute
+//                    const value = 1; // Get selected value
+//                    console.log(field);
+//                    // AJAX call to update the database
+//                    $.ajax({
+//                        url: 'updateRoomStatus', // Your servlet URL
+//                        method: 'POST',
+//                        data: {
+//                            roomId: roomId,
+//                            field: field,
+//                            value: value
+//                        },
+//                        success: function (response) {
+//                            console.log(swal);
+//                            // Handle success, you can show a notification or update the UI
+//                            swal({
+//                                icon: "success",
+//                                text: 'Update successful'
+//                            }).then(() => {
+//                                window.location = currentUrl;
+//                            });
+//                        },
+//                        error: function (xhr, status, error) {
+//                            // Handle error
+//                            alert('Update failed.');
+//                        }
+//                    });
+//                });
+//            });
 
 
             $(document).ready(function () {
@@ -429,6 +429,67 @@
             });
         </script>
         <script>
+            $(document).ready(function () {
+                $('.available').on('click', function (e) {
+                    e.preventDefault(); // Prevent default button behavior
+                    const roomId = $(this).data('room-id');
+                    const roomNumber = $(this).closest('tr').find('td:first').text(); // Get room number from the first td
+
+                    // First check if room has maintenance/broken amenities
+                    $.ajax({
+                        url: 'checkRoomAmenities',
+                        method: 'POST',
+                        data: {
+                            roomId: roomId
+                        },
+                        success: function (response) {
+                            console.log('Response from checkRoomAmenities:', response);
+                            if (response === 'true') {
+                                console.log('Room has maintenance issues');
+                                swal({
+                                    icon: "error",
+                                    text: "Room " + roomNumber + " has amenities which have to maintain."
+                                });
+                            } else {
+                                console.log('Room is okay to update');
+                                updateRoomStatus(roomId, 'statusId', 1);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            swal({
+                                icon: "error",
+                                text: "Error checking room amenities: " + error
+                            });
+                        }
+                    });
+                });
+            });
+
+            function updateRoomStatus(roomId, field, value, roomNumber) {
+                $.ajax({
+                    url: 'updateRoomStatus',
+                    method: 'POST',
+                    data: {
+                        roomId: roomId,
+                        field: field,
+                        value: value
+                    },
+                    success: function (response) {
+                        swal({
+                            icon: "success",
+                            text: 'Update successful'
+                        }).then(() => {
+                            window.location = currentUrl;
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        swal({
+                            icon: "error",
+                            text: 'Update failed: ' + error
+                        });
+                    }
+                });
+            }
             const keyword = document.querySelector('input[type="number"]');
             console.log(keyword);
             const errorMessage = document.getElementById("error-message");
