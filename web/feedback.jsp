@@ -21,7 +21,7 @@
                 z-index: 1001;
                 position: fixed;
                 top:0;
-                background-color: #fff;
+                background-color: #111111;
             }
             .navbar .container-fluid .logo{
                 display: flex;
