@@ -5,6 +5,9 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.List" %>
+<%@ page import="dal.RoomTypeDAO" %>
+<%@ page import="model.RoomType" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -46,8 +49,9 @@
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/css/plugins.min.css" />
         <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
-        <link rel="stylesheet" href="CSS/guestHomePage.css"
-              <!-- CSS Just for demo purpose, don't include it in your project -->
+        <link rel="stylesheet" href="CSS/guestHomePage.css"/>
+        <link rel="stylesheet" href="CSS/animate.css"/>
+        <!-- CSS Just for demo purpose, don't include it in your project -->
         <!--<link rel="stylesheet" href="assets/css/demo.css" />-->
     </head>
     <body>
@@ -69,7 +73,7 @@
                         <div class="navbar-link col-md-2 col-sm-12">
                             <a href="policyforguest.jsp">Policies</a>
                         </div> 
-                          <div class="navbar-link col-md-2 col-sm-12">
+                        <div class="navbar-link col-md-2 col-sm-12">
                             <a href="feedback.jsp">FeedBack</a>
                         </div>
                         <div class="login-area col-md-2 col-sm-12">
@@ -79,59 +83,50 @@
                 </nav>
             </div>
             <div class="body-container">
-                <section class="hidden">
-                    <div class="image-banner">
-                        <img src="img/hotel/banner.svg" alt="image-hotel">
+
+                <section id="about" class="carousel slide" data-bs-ride="carousel">
+                    <!-- list item -->
+                    <%
+                        RoomTypeDAO roomDao = new RoomTypeDAO();
+                        List<RoomType> listRoom = roomDao.getAll();
+                    %>
+                    <!-- Indicators -->
+                    <div class="list">
+                        <% for (RoomType room : listRoom) { %>
+                        <div class="item">
+                            <img src="<%= room.getImage() %>">
+                            <div class="content">
+                                <div class="title"><%= room.getTypeName() %></div>
+                                <div class="topic">Price : <%= room.getPrice() %>VND</div>
+                                <div class="author">Capacity: <%= room.getCapacity() %></div>
+
+                            </div>
+                        </div>
+                        <% } %>
                     </div>
-                </section>
-                <section  id="about" class="hidden">
-                    <div class="image-hotel row">
-                        <div class="description col-3 hidden">
-                            <div class="intro">
-                                <p>Perfect</p>
-                            </div>
-                            <div class="image-intro">
-                                <img src="img/hotel/How To Stay In A Decent Cheap Hotel In Tokyo (Review) - The Real Japan.jpg">
-                                <div class="overlay-text"><p>Feel comfortable like your home</p></div>   
-                            </div>
+                    <!-- list thumbnail -->
+                    <div class="thumbnail">
+                        <% for (RoomType room : listRoom) { %>
+                        <div class="item">
+                            <img src="<%= room.getImage() %>">
                         </div>
-                        <div class="description col-3 hidden">
-                            <div class="intro">
-                                <p>Elegance</p>
-                            </div>
-                            <div class="image-intro">
-                                <img src="img/hotel/PS HOUSE _ Jacobsen Arquitetura.jpg">
-                                <div class="overlay-text"><p>Feel comfortable like your home</p></div>  
-                            </div>
-                        </div>
-                        <div class="description col-3 hidden">
-                            <div class="intro">
-                                <p>Luxury</p>
-                            </div>
-                            <div class="image-intro">
-                                <img src="img/hotel/Perfect Color Palettes for a Japandi Bedroom.jpg">
-                                <div class="overlay-text"><p>Luxury room make you more luxurier</p></div>  
-                            </div>
-                        </div>
-                        <div class="description col-3 hidden">
-                            <div class="intro">
-                                <p>Comfortable</p>
-                            </div>
-                            <div class="image-intro">
-                                <img src="img/hotel/Sjöparken - a tranquil Swedish retreat with minimalist design & natural influences _ These Four Wall.jpg">
-                                <div class="overlay-text">
-                                    <p>Feel comfortable like your home</p>
-                                </div>  
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
+                    <!-- next prev -->
+                    <div class="arrows">
+                        <button id="prev"><</button>
+                        <button id="next">></button>
+                    </div>
+                    <!-- time running -->
+                    <div class="time"></div>
                 </section>
+
                 <section id="contact" class="hidden">
                     <div class="contact hidden row">
                         <div class="title-contact hidden col-12">
                             <p>Contact Us</p>
                         </div>
-                        <div class="hotel-infor hidden col-6">
+                        <div class="hotel-infor hidden col-6" style="color: black">
                             <h3 style="font-size: 40px">ALIHOTEL</h3>
                             <br><!-- comment -->
                             <p><b>Địa chỉ:</b> Tòa nhà Beta, Đại học FPT Hà Nội - toạ lạc tại khu công nghệ cao Hoà Lạc, Thạch Thất, Hà Nội.</p>
@@ -139,8 +134,8 @@
                             <p><b>Mã số thuế:</b> 0106011932</p>
                             <br><!-- comment -->
                             <br><!-- comment -->
-                            <p><b>Email:</b> info@alihotel.vn</p>
-                            <p><b>Điện thoại:</b> +84-243-8222-333</p>
+                            <p><b>Email:</b> ali33hotel@gmail.com</p>
+                            <p><b>Điện thoại:</b> +84-243-8222-33</p>
                             <p><b>Hotline: 1900 1833</b></p>
                         </div>
                         <div class="contact-img hidden col-6">
@@ -152,7 +147,6 @@
 
             <div class="myfooter">
                 <footer class="footer-14398">
-
                     <div class="container">
                         <div class="row mb-5">
                             <div class="col-md-3">
@@ -218,73 +212,74 @@
                             </div>
                         </div>
                     </div>
-
+                </footer>
             </div>
-        </footer>
+        </div>
     </div>
-</div>
-<br>
+    <br>
 
-<!--   Core JS Files   -->
-<script src="assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
 
-<!-- jQuery Scrollbar -->
-<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-<!-- Chart JS -->
-<script src="assets/js/plugin/chart.js/chart.min.js"></script>
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
 
-<!-- jQuery Sparkline -->
-<script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
-<!-- Chart Circle -->
-<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
 
-<!-- Datatables -->
-<script src="assets/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
 
-<!-- Bootstrap Notify -->
-<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
-<!-- jQuery Vector Maps -->
-<script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-<script src="assets/js/plugin/jsvectormap/world.js"></script>
-<script>
-            $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-                type: "line",
-                height: "70",
-                width: "100%",
-                lineWidth: "2",
-                lineColor: "#177dff",
-                fillColor: "rgba(23, 125, 255, 0.14)",
-            });
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+    <script>
+        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#177dff",
+            fillColor: "rgba(23, 125, 255, 0.14)",
+        });
 
-            $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-                type: "line",
-                height: "70",
-                width: "100%",
-                lineWidth: "2",
-                lineColor: "#f3545d",
-                fillColor: "rgba(243, 84, 93, .14)",
-            });
+        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#f3545d",
+            fillColor: "rgba(243, 84, 93, .14)",
+        });
 
-            $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-                type: "line",
-                height: "70",
-                width: "100%",
-                lineWidth: "2",
-                lineColor: "#ffa534",
-                fillColor: "rgba(255, 165, 52, .14)",
-            });
-</script>
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#ffa534",
+            fillColor: "rgba(255, 165, 52, .14)",
+        });
+    </script> 
+    <script src="JS/animate.js"></script>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger
-  intent="WELCOME"
-  chat-title="AliHotel"
-  agent-id="c077f1bd-3bd4-4aa6-adca-b44871671084"
-  language-code="en"
-></df-messenger>
+    intent="WELCOME"
+    chat-title="AliHotel"
+    agent-id="c077f1bd-3bd4-4aa6-adca-b44871671084"
+    language-code="en"
+    ></df-messenger>
 </body>
 </html>
