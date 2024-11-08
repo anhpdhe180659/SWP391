@@ -127,7 +127,6 @@ public class booking extends HttpServlet {
             guest.setNationality(Nationality);
 
             guest.setEmail(email);
-//            int deposit = Integer.parseInt(request.getParameter("deposit"));
             int deposit = 0;
             String noti = "Booking successfully!";
             int checkinstatus = 0;
@@ -184,7 +183,6 @@ public class booking extends HttpServlet {
                             return;
                         }
                     }
-
                 }
                 gdao.addGuest(guest);
                 guestBooking = gdao.getNewGuest();
@@ -246,7 +244,9 @@ public class booking extends HttpServlet {
                 }
             }
             String bookingcode = utilConvert.toBase36(bookingid);
-            sendBookingCodeEmail(email, bookingcode);
+            if(email != null){
+                sendBookingCodeEmail(email, bookingcode);
+            }
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
             response.sendRedirect("editBooking?bookingid=" + bookingid);
