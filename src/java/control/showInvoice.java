@@ -69,7 +69,7 @@ public class showInvoice extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         String id = request.getParameter("bookingId");
         BookingDAO bkDao = new BookingDAO();
         int bkId = Integer.parseInt(id);
