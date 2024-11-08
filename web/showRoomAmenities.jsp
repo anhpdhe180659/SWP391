@@ -110,11 +110,27 @@
                                                             </c:if>
                                                         </td>
                                                         <td>
-                                                            <select class="form-select update ${amenities.status == 1 ? 'status-in-use' : amenities.status == 2 ? 'status-maintaining' : 'status-broken'}" name="status" data-room-id="${amenities.roomID}" data-field="status" data-amen-id="${amenities.amenID}">
-                                                                <option value="1" ${amenities.status == 1 ? 'selected' : ''}>In Use</option>
-                                                                <option value="2" ${amenities.status == 2 ? 'selected' : ''}>Maintaining</option>
-                                                                <option value="3" ${amenities.status == 3 ? 'selected' : ''}>Broken</option>
-                                                            </select>
+                                                            <c:choose>
+                                                                <%-- Manager (role 1) và Housekeeper (role 3) có thể chỉnh sửa status --%>
+                                                                <c:when test="${role == '1' || role == '3'}">
+                                                                    <select class="form-select update ${amenities.status == 1 ? 'status-in-use' : amenities.status == 2 ? 'status-maintaining' : 'status-broken'}" 
+                                                                            name="status" 
+                                                                            data-room-id="${amenities.roomID}" 
+                                                                            data-field="status" 
+                                                                            data-amen-id="${amenities.amenID}">
+                                                                        <option value="1" ${amenities.status == 1 ? 'selected' : ''}>In Use</option>
+                                                                        <option value="2" ${amenities.status == 2 ? 'selected' : ''}>Maintaining</option>
+                                                                        <option value="3" ${amenities.status == 3 ? 'selected' : ''}>Broken</option>
+                                                                    </select>
+                                                                </c:when>
+                                                                <%-- Receptionist (role 2) chỉ có thể xem status --%>
+                                                                <c:when test="${role == '2'}">
+                                                                    <div class="${amenities.status == 1 ? 'status-in-use' : amenities.status == 2 ? 'status-maintaining' : 'status-broken'}" 
+                                                                         style="padding: 6px 12px; border-radius: 4px;">
+                                                                        ${amenities.status == 1 ? 'In Use' : amenities.status == 2 ? 'Maintaining' : 'Broken'}
+                                                                    </div>
+                                                                </c:when>
+                                                            </c:choose>
                                                         </td>
 
 

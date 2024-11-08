@@ -86,41 +86,34 @@
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-user"></i> Full Name
-                                                    </label>
-                                                    <input name="name" type="text" maxlength="100" class="form-control" placeholder="Enter full name" required />
+                                                    <label><i class="fa fa-user"></i> Full Name</label>
+                                                    <input name="name" type="text" value="${tempGuest.name}" maxlength="100" class="form-control" placeholder="Enter full name" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-map-marker-alt"></i> Address
-                                                    </label>
-                                                    <input name="address" type="text" maxlength="200" class="form-control" placeholder="Enter address" required />
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-phone"></i> Phone
-                                                    </label>
-                                                    <input name="phone" 
+                                                    <label><i class="fa fa-map-marker-alt"></i> Address</label>
+                                                    <input name="address" 
                                                            type="text" 
-                                                           pattern="[0-9]{10}"
-                                                           maxlength="10"
-                                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                           value="${guest.address}" 
+                                                           maxlength="200" 
+                                                           pattern="^[A-Za-z0-9\s,.-]+$"
+                                                           title="Address can only contain letters, numbers, spaces, commas, dots, and hyphens"
                                                            class="form-control" 
-                                                           placeholder="Enter phone number" 
+                                                           placeholder="Enter address" 
                                                            required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-id-card"></i> Identification
-                                                    </label>
-                                                    <input name="identification" type="text" maxlength="20" class="form-control" placeholder="Enter identification number" required />
+                                                    <label><i class="fa fa-phone"></i> Phone</label>
+                                                    <input name="phone" type="text" value="${tempGuest.phone}" pattern="[0-9]{10}" class="form-control" placeholder="Enter phone number" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-group-default">
+                                                    <label><i class="fa fa-id-card"></i> Identification</label>
+                                                    <input name="identification" type="text" value="${tempGuest.identification}" maxlength="20" class="form-control" placeholder="Enter identification number" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
@@ -128,56 +121,35 @@
                                                     <label><i class="fas fa-transgender"></i> Gender</label><br />
                                                     <div class="d-flex">
                                                         <div class="form-check">
-                                                            <input
-                                                                class="form-check-input"
-                                                                type="radio"
-                                                                name="sex"
-                                                                id="male"
-                                                                value="1"
-                                                                required
-                                                                />
+                                                            <input class="form-check-input" type="radio" name="sex" id="male" value="1" ${tempGuest.sex == 1 ? 'checked' : ''} required />
                                                             <label class="form-check-label" for="male">Male</label>
                                                         </div>
                                                         <div class="form-check">
-                                                            <input
-                                                                class="form-check-input"
-                                                                type="radio"
-                                                                name="sex"
-                                                                id="female"
-                                                                value="2"
-                                                                required
-                                                                />
+                                                            <input class="form-check-input" type="radio" name="sex" id="female" value="0" ${tempGuest.sex == 0 ? 'checked' : ''} required />
                                                             <label class="form-check-label" for="female">Female</label>
                                                         </div>
                                                     </div>
-                                                    <div class="invalid-feedback">
-                                                        Please select a gender.
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-calendar-alt"></i> Date of Birth
-                                                    </label>
-                                                    <input type="date" name="dateOfBirth" class="form-control" required />
+                                                    <label><i class="fa fa-calendar-alt"></i> Date of Birth</label>
+                                                    <input type="date" name="dateOfBirth" 
+                                                           value="${tempGuest.dateOfBirth}"
+                                                           max="<%= java.time.LocalDate.now().minusYears(18) %>"
+                                                           class="form-control" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-globe"></i> Nationality
-                                                    </label>
-                                                    <input name="nationality" type="text" class="form-control" placeholder="Enter nationality" required />
+                                                    <label><i class="fa fa-globe"></i> Nationality</label>
+                                                    <input name="nationality" type="text" value="${tempGuest.nationality}" class="form-control" placeholder="Enter nationality" required />
                                                 </div>
                                             </div>
-                                            <!-- Thêm trường Email -->
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
-                                                    <label>
-                                                        <i class="fa fa-envelope"></i> Email
-                                                    </label>
-                                                    <input name="email" type="email" maxlength="100" class="form-control" placeholder="Enter email address" required />
+                                                    <label><i class="fa fa-envelope"></i> Email</label>
+                                                    <input name="email" type="email" value="${tempGuest.email}" maxlength="100" class="form-control" placeholder="Enter email address" required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6"></div>

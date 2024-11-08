@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Guest;
 
 /**
@@ -31,6 +32,17 @@ public class viewGuest extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 2 && role != 1) {
+                request.setAttribute("error", "Please sign in with receptionist/ manager account!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        }
         String guestID = request.getParameter("guestID");
         GuestDAO guestDao = new GuestDAO();
         Guest guest = guestDao.getGuestByGuestID(Integer.parseInt(guestID)); // Lấy thông tin khách hàng từ database
