@@ -13,8 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Feedback;
+import model.User;
 
 /**
  *
@@ -55,9 +57,22 @@ public class viewFeedbackAdmin extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        // Add authorization check
+       HttpSession session = request.getSession();
+
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with admin account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        
+        // Original code continues here
         FeedbackDAO fbDao = new FeedbackDAO();
         List<Feedback> list = fbDao.getAllFeedback();
         for (Feedback fb : list) {
