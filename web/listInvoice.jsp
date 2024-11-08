@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Dashboard for receptionist</title>
+        <title>List Invoice</title>
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -96,11 +96,20 @@
                                 <div class="card">
                                     <div class="card-body row">
                                         <h3 class="fw-bold mb-3">Invoice Filter</h3>
-                                        <form action="listInvoice">
-                                            <button class="btn btn-label-info ms-4" type="submit">Filter</button>
+                                        <form action="listInvoice" method="get" class="d-flex align-items-center">
+                                            <span class="me-2"><b>From</b></span>
+                                            <input class="form-control me-3" type="date" name="dateFrom" id="dateFrom" style="max-width: 150px;" />
+
+                                            <span class="me-2"><b>To</b></span>
+                                            <input class="form-control me-3" type="date" name="dateTo" id="dateTo" style="max-width: 150px;" />
+
+
+                                            <button class="btn btn-label-info" type="submit">Filter</button>
                                         </form>
+                                        <span id="error-message" style="color: red; display: none; margin-right: 10px;">"End date" must be after "Start date".</span>
                                     </div>
                                 </div>
+
                                 <div class="card">
                                     <div class="card-body row">
                                         <div class="table-responsive">
@@ -192,7 +201,33 @@
                 </div>
             </div>
         </div>
+        <script>
+            const dateFrom = document.getElementById("dateFrom");
+            const dateTo = document.getElementById("dateTo");
+            const errorMessage = document.getElementById("error-message");
 
+            function validateDateOrder() {
+                if (dateFrom.value && dateTo.value) {
+                    const fromDate = new Date(dateFrom.value);
+                    const toDate = new Date(dateTo.value);
+
+                    if (toDate > fromDate) {
+                        errorMessage.style.display = "none"; // Hide error message
+                        dateTo.setCustomValidity(""); // Clear custom validity
+                    } else {
+                        errorMessage.style.display = "inline"; // Show error message
+                        dateTo.setCustomValidity("End date must be after Start date"); // Set custom validity
+                    }
+                } else {
+                    errorMessage.style.display = "none";
+                    dateTo.setCustomValidity(""); // Clear custom validity if any date is missing
+                }
+            }
+
+            // Attach validation to both date inputs
+            dateFrom.addEventListener("change", validateDateOrder);
+            dateTo.addEventListener("change", validateDateOrder);
+        </script>
         <!--   Core JS Files   -->
         <script src="assets/js/core/jquery-3.7.1.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
@@ -218,7 +253,7 @@
         <!-- Kaiadmin DEMO methods, don't include it in your project! -->
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
-<script>
+        <script>
             // Format price to VND
             function formatCurrencyVND(value) {
                 return new Intl.NumberFormat('vi-VN', {

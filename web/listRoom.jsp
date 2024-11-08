@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Dashboard for receptionist</title>
+        <title>List Room</title>
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -145,22 +145,29 @@
                                                         </div>
                                                         <c:if test="${n.length() < 2}">
                                                             <input
-                                                                type="text"
+                                                                type="number"
+                                                                min="1"
                                                                 name="keyword"
+                                                                max="1000"
+                                                                pattern="^[0-9]{4}$"
                                                                 placeholder="Search room by room number..."
                                                                 class="form-control"
                                                                 />
                                                         </c:if>
                                                         <c:if test="${n.length() > 1}">
                                                             <input
-                                                                type="text"
+                                                                type="number"
                                                                 name="keyword"
+                                                                min="1"
+                                                                max="1000"
                                                                 value="${n}"
+                                                                pattern="^[0-9]{4}$"
                                                                 placeholder="Search room by room number..."
                                                                 class="form-control"
                                                                 />
                                                         </c:if>
                                                     </div>
+                                                    <span id="error-message" style="color: red; display: none;">Please enter a number between 1 and 1000.</span>
                                                 </form>
                                             </nav>
                                             <c:set value="${requestScope.noti}" var="noti" />
@@ -245,12 +252,12 @@
                                                             <c:set var="endPage" value="${Nopage > 6 ? 6 : Nopage}" />
                                                         </c:when>
                                                         <c:when test="${index > Nopage - 3}">
-                                                            <c:set var="startPage" value="${Nopage - 6 > 0 ? Nopage - 6 : 1}" />
+                                                            <c:set var="startPage" value="${Nopage - 5 > 0 ? Nopage - 5 : 1}" />
                                                             <c:set var="endPage" value="${Nopage}" />
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:set var="startPage" value="${index - 3}" />
-                                                            <c:set var="endPage" value="${index + 3}" />
+                                                            <c:set var="endPage" value="${index + 2}" />
                                                         </c:otherwise>
                                                     </c:choose>
                                                     <c:forEach var="p" begin="${startPage}" end="${endPage}">
@@ -309,117 +316,132 @@
         <script src="assets/js/setting-demo.js"></script>
         <script src="assets/js/demo.js"></script>
         <script>
-                $(document).ready(function () {
-                    $("#basic-datatables").DataTable({
-                    });
-                    $("#multi-filter-select").DataTable({
-                        pageLength: 10,
-                        initComplete: function () {
-                            this.api()
-                                    .columns()
-                                    .every(function () {
-                                        var column = this;
-                                        var select = $(
-                                                '<select class="form-select"><option value=""></option></select>'
-                                                )
-                                                .appendTo($(column.footer()).empty())
-                                                .on("change", function () {
-                                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                    column
-                                                            .search(val ? "^" + val + "$" : "", true, false)
-                                                            .draw();
-                                                });
-
-                                        column
-                                                .data()
-                                                .unique()
-                                                .sort()
-                                                .each(function (d, j) {
-                                                    select.append(
-                                                            '<option value="' + d + '">' + d + "</option>"
-                                                            );
-                                                });
-                                    });
-                        },
-                    });
-
-                    //             Add Row
-
+            $(document).ready(function () {
+                $("#basic-datatables").DataTable({
                 });
+                $("#multi-filter-select").DataTable({
+                    pageLength: 10,
+                    initComplete: function () {
+                        this.api()
+                                .columns()
+                                .every(function () {
+                                    var column = this;
+                                    var select = $(
+                                            '<select class="form-select"><option value=""></option></select>'
+                                            )
+                                            .appendTo($(column.footer()).empty())
+                                            .on("change", function () {
+                                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                                column
+                                                        .search(val ? "^" + val + "$" : "", true, false)
+                                                        .draw();
+                                            });
+
+                                    column
+                                            .data()
+                                            .unique()
+                                            .sort()
+                                            .each(function (d, j) {
+                                                select.append(
+                                                        '<option value="' + d + '">' + d + "</option>"
+                                                        );
+                                            });
+                                });
+                    },
+                });
+
+                //             Add Row
+
+            });
         </script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
-                const currentUrl = window.location.href;
-                console.log(currentUrl);
-                $(document).ready(function () {
-                    $('.available').on('click', function () {
-                        const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                        const field = 'statusId'; // Get field name from data attribute
-                        const value = 1; // Get selected value
-                        console.log(field);
-                        // AJAX call to update the database
-                        $.ajax({
-                            url: 'updateRoomStatus', // Your servlet URL
-                            method: 'POST',
-                            data: {
-                                roomId: roomId,
-                                field: field,
-                                value: value
-                            },
-                            success: function (response) {
-                                console.log(swal);
-                                // Handle success, you can show a notification or update the UI
-                                swal({
-                                    icon: "success",
-                                    text: 'Update successful'
-                                }).then(() => {
-                                    window.location = currentUrl;
-                                });
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle error
-                                alert('Update failed.');
-                            }
-                        });
+            const currentUrl = window.location.href;
+            console.log(currentUrl);
+            $(document).ready(function () {
+                $('.available').on('click', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = 'statusId'; // Get field name from data attribute
+                    const value = 1; // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            console.log(swal);
+                            // Handle success, you can show a notification or update the UI
+                            swal({
+                                icon: "success",
+                                text: 'Update successful'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed.');
+                        }
                     });
                 });
+            });
 
 
-                $(document).ready(function () {
-                    $('.maintaince').on('click', function () {
-                        const roomId = $(this).data('room-id'); // Get room ID from data attribute
-                        const field = 'statusId'; // Get field name from data attribute
-                        const value = 3; // Get selected value
-                        console.log(field);
-                        // AJAX call to update the database
-                        $.ajax({
-                            url: 'updateRoomStatus', // Your servlet URL
-                            method: 'POST',
-                            data: {
-                                roomId: roomId,
-                                field: field,
-                                value: value
-                            },
-                            success: function (response) {
-                                console.log(swal);
-                                // Handle success, you can show a notification or update the UI
-                                swal({
-                                    icon: "success",
-                                    text: 'Update successful'
-                                }).then(() => {
-                                    window.location = currentUrl;
-                                })
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle error
-                                alert('Update failed:');
-                            }
-                        });
+            $(document).ready(function () {
+                $('.maintaince').on('click', function () {
+                    const roomId = $(this).data('room-id'); // Get room ID from data attribute
+                    const field = 'statusId'; // Get field name from data attribute
+                    const value = 3; // Get selected value
+                    console.log(field);
+                    // AJAX call to update the database
+                    $.ajax({
+                        url: 'updateRoomStatus', // Your servlet URL
+                        method: 'POST',
+                        data: {
+                            roomId: roomId,
+                            field: field,
+                            value: value
+                        },
+                        success: function (response) {
+                            console.log(swal);
+                            // Handle success, you can show a notification or update the UI
+                            swal({
+                                icon: "success",
+                                text: 'Update successful'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            })
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            alert('Update failed:');
+                        }
                     });
                 });
+            });
         </script>
         <script>
+            const keyword = document.querySelector('input[type="number"]');
+            console.log(keyword);
+            const errorMessage = document.getElementById("error-message");
+            keyword.addEventListener("keypress", function (event) {
+                if (event.key === "e" || event.key === "E") {
+                    event.preventDefault();
+                }
+            });
+            keyword.onchange = function () {
+                const numberPattern = /^[1-9][0-9]{0,2}$|^1000$/;
+                if (!numberPattern.test(keyword.value)) {
 
+                } else {
+
+                }
+            };
         </script>
     </body>
 </html>

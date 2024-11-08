@@ -18,7 +18,7 @@
             />
         <link
             rel="icon"
-            href="img/logo/logo.png"
+            href="img/logo/favicon.png"
             type="image/x-icon"
             />
 
@@ -104,7 +104,6 @@
                                                     <th>Capacity</th>
                                                     <th>Pruce</th>
                                                     <th>Image</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -116,11 +115,6 @@
                                                         <td class="price-vnd">${s.price}</td>
                                                         <td>
                                                             <img width="120px" height="80px" src="${s.image}" alt="Image room type">
-                                                        </td>
-                                                        <td style="text-align: center">
-                                                            <a href="viewDetailRoomType?id=${s.typeId}">
-                                                                <i class="far fa-eye me-3"></i>&nbsp;&nbsp;View
-                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
