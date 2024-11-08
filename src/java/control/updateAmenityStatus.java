@@ -5,6 +5,7 @@
 package control;
 
 import dal.AmenityForRoomDAO;
+import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import model.Room;
 
 /**
  *
@@ -75,17 +77,24 @@ public class updateAmenityStatus extends HttpServlet {
             int roomID = Integer.parseInt(request.getParameter("roomId")); // Lấy roomID từ request
             int newStatus = Integer.parseInt(request.getParameter("value")); // Lấy giá trị trạng thái mới từ request
 
-            // Gọi phương thức trong DAO để cập nhật trạng thái
+            // Cập nhật trạng thái tiện ích
             AmenityForRoomDAO amenityForRoomDAO = new AmenityForRoomDAO();
-            amenityForRoomDAO.updateStatus(amenID, roomID, newStatus); // Cập nhật trạng thái
+            amenityForRoomDAO.updateStatus(amenID, roomID, newStatus);
 
-            // Gửi phản hồi về client
-            response.setStatus(HttpServletResponse.SC_OK); // Trả về trạng thái thành công
-        }catch (NumberFormatException e) {
+            if (newStatus == 2 || newStatus == 3) {
+                RoomDao roomDao = new RoomDao();
+                Room room = roomDao.findRoomById(roomID);
+                room.setStatusId(3);
+                roomDao.updateStatus(room);
+            }
+
+            // Gửi phản hồi thành công về client
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print("Cập nhật trạng thái tiện ích và phòng thành công!");
+
+        } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input data"); // Xử lý lỗi nếu dữ liệu không hợp lệ
-        }
-        // Xử lý lỗi cơ sở dữ liệu
-         catch (Exception e) {
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred: " + e.getMessage()); // Xử lý lỗi khác
         }
     }

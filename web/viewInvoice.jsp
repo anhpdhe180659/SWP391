@@ -178,13 +178,18 @@
                                                             </tr>
                                                         </c:forEach>
                                                         <tr>
-                                                            <td colspan="3"><b>Deposit: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.deposit}</span>
+                                                            <td colspan="3"><b>Grand Total:  </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3"><b>Grand Total: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
+                                                            <td colspan="3"><b>Deposit: </b></td>
+                                                            <td> <span class="price-vnd">-${sessionScope.booking.deposit}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"><b>Final Total: </b></td>
+                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice- sessionScope.booking.deposit}</span>
                                                             </td>
                                                         </tr>
                                                     </tbody>

@@ -114,26 +114,38 @@ public class editUser extends HttpServlet {
             String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Save successfully!</div>";
             for (User u : listUser) {
                 if (!oldUser.getUsername().equals(username)) {
-                    if (u.getUsername().equals(username)) {
+                    if(u.getUsername().equals(username)) {
                         noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Username " + username + " existed, please try again!</div>";
                         request.setAttribute("noti", noti);
-                        request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                        request.setAttribute("user", oldUser);
+                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
                         return;
                     }
                 }
                 if (!oldUser.getEmail().equals(email)) {
-                    if (u.getEmail().equals(email)) {
+                    if(u.getEmail().equals(email)) {
                         noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Email " + email + " existed, please try again!</div>";
                         request.setAttribute("noti", noti);
-                        request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                        request.setAttribute("user", oldUser);
+                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
                         return;
                     }
                 }
-                if (!Identification.equals(u.getIdentification())) {
-                    if (u.getIdentification().equals(Identification)) {
+                if (!oldUser.getPhone().equals(Phone)) {
+                    if(u.getPhone().equals(Phone)) {
+                        noti = "<div style='margin-right: 25px;color: red; font-weight:bold'>Phone number " + Phone + " existed, please try again!</div>";
+                        request.setAttribute("noti", noti);
+                        request.setAttribute("user", oldUser);
+                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
+                        return;
+                    }
+                }
+                if(!oldUser.getIdentification().equals(Identification)) {
+                    if(u.getIdentification().equals(Identification)) {
                         // check if Identification is existed in database
                         request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");
-                        request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                        request.setAttribute("user", oldUser);
+                        request.getRequestDispatcher("editUser.jsp").forward(request, response);
                         return;
                     }
                 }

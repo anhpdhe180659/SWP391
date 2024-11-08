@@ -117,6 +117,12 @@ public class addUser extends HttpServlet {
                     request.getRequestDispatcher("addUser.jsp").forward(request, response);
                     return;
                 }
+                if (u.getPhone().equals(Phone)) {
+                    // check if Identification is existed in database
+                    request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Phone number " + Phone + " existed!</div>");
+                    request.getRequestDispatcher("addUser.jsp").forward(request, response);
+                    return;
+                }
                 if (u.getIdentification().equals(Identification)) {
                     // check if Identification is existed in database
                     request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Identification " + Identification + " existed!</div>");

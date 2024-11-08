@@ -124,7 +124,9 @@
                                         </table>
 
                                         <div class="form-group mt-4">
-                                            <a href="listRoomAmenity" class="btn btn-secondary" style="border-radius: 5px;">Back to Room List</a>
+                                            <a href="<%= (role != null && role==2) ? "listRoom" : "listRoomAmenity" %>" class="btn btn-secondary" style="border-radius: 5px;">
+                                                Back to <%= (role != null && role==2) ? "Room List" : "Room Amenity List" %>
+                                            </a>
                                         </div>
                                     </c:if>
                                 </div>
@@ -145,111 +147,114 @@
                 <script src="assets/js/kaiadmin.min.js"></script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
-                    $(document).ready(function () {
-                        // Lưu giá trị ban đầu của mỗi input số lượng
-                        $('.quantity-input').each(function () {
-                            $(this).data('original-value', $(this).val());
-                        });
+            $(document).ready(function () {
+                // Lưu giá trị ban đầu của mỗi input số lượng
+                $('.quantity-input').each(function () {
+                    $(this).data('original-value', $(this).val());
+                });
 
-                        // Cập nhật trạng thái tiện nghi
-                        $('.update').on('change', function () {
-                            const roomId = $(this).data('room-id'); // Lấy Room ID từ thuộc tính data
-                            const amenID = $(this).data('amen-id'); // Lấy Amenity ID từ thuộc tính data
-                            const value = $(this).val(); // Lấy giá trị đã chọn
+                // Cập nhật trạng thái tiện nghi
+                $('.update').on('change', function () {
+                    const roomId = $(this).data('room-id'); // Lấy Room ID từ thuộc tính data
+                    const amenID = $(this).data('amen-id'); // Lấy Amenity ID từ thuộc tính data
+                    const value = $(this).val(); // Lấy giá trị đã chọn
 
-                            // Cập nhật trạng thái tiện nghi
-                            updateAmenityStatus(roomId, amenID, value, this); // Truyền `this` vào hàm
-                        });
+                    // Cập nhật trạng thái tiện nghi
+                    updateAmenityStatus(roomId, amenID, value, this); // Truyền `this` vào hàm
+                });
 
-                        // Cập nhật số lượng tiện nghi
-                        $('.quantity-input').on('change', function () {
-                            const roomId = $(this).data('room-id'); // Lấy Room ID từ thuộc tính data
-                            const amenID = $(this).data('amen-id'); // Lấy Amenity ID từ thuộc tính data
-                            const quantityInput = $(this).val().trim(); // Lấy giá trị số lượng mới và loại bỏ khoảng trắng
-                            const originalValue = $(this).data('original-value'); // Lấy giá trị ban đầu
+                // Cập nhật số lượng tiện nghi
+                $('.quantity-input').on('change', function () {
+                    const roomId = $(this).data('room-id'); // Lấy Room ID từ thuộc tính data
+                    const amenID = $(this).data('amen-id'); // Lấy Amenity ID từ thuộc tính data
+                    const quantityInput = $(this).val().trim(); // Lấy giá trị số lượng mới và loại bỏ khoảng trắng
+                    const originalValue = $(this).data('original-value'); // Lấy giá trị ban đầu
 
-                            // Kiểm tra xem giá trị nhập vào có phải là số hay không
-                            if (isNaN(quantityInput) || quantityInput === '') {
-                                alert('Quantity must be a valid number');
-                                $(this).val(originalValue); // Khôi phục lại giá trị ban đầu
-                                return; // Dừng thực hiện nếu số lượng không hợp lệ
-                            }
-
-                            // Chuyển đổi giá trị sang số nguyên
-                            const quantity = parseInt(quantityInput);
-
-                            // Kiểm tra số lượng trước khi cập nhật
-                            if (quantity <= 0 || quantity >= 10) {
-                                alert('Quantity must be greater than 0 and less than 10');
-                                $(this).val(originalValue); // Khôi phục lại giá trị ban đầu
-                                return; // Dừng thực hiện nếu số lượng không hợp lệ
-                            }
-
-                            // Gọi hàm updateQuantity để cập nhật số lượng
-                            updateQuantity(roomId, amenID, quantity);
-                        });
-
-                        // Cập nhật màu sắc ban đầu khi trang được tải
-                        $('.update').each(function () {
-                            updateStatusColor(this);
-                        });
-                    });
-
-                    function updateAmenityStatus(roomId, amenID, status, selectElement) {
-                        $.ajax({
-                            url: 'updateAmenityStatus', // Đường dẫn đến servlet của bạn
-                            method: 'POST',
-                            data: {
-                                amenID: amenID,
-                                roomId: roomId,
-                                value: status
-                            },
-                            success: function (response) {
-                                alert('Update status successfully');
-                                // Cập nhật màu sắc dropdown sau khi thay đổi
-                                updateStatusColor(selectElement); // Cập nhật màu sắc cho select
-                            },
-                            error: function (xhr, status, error) {
-                                alert('Update failed: ' + error);
-                            }
-                        });
+                    // Kiểm tra xem giá trị nhập vào có phải là số hay không
+                    if (isNaN(quantityInput) || quantityInput === '') {
+                        alert('Quantity must be a valid number');
+                        $(this).val(originalValue); // Khôi phục lại giá trị ban đầu
+                        return; // Dừng thực hiện nếu số lượng không hợp lệ
                     }
 
-                    function updateQuantity(roomID, amenID, quantity) {
-                        $.ajax({
-                            url: 'UpdateAmenityQuantityServlet', // Đường dẫn đến servlet của bạn
-                            method: 'POST',
-                            data: {
-                                amenID: amenID,
-                                roomId: roomID,
-                                quantity: quantity
-                            },
-                            success: function (response) {
-                                // Cập nhật giá trị mới cho input
-                                $(`input[data-room-id="${roomID}"][data-amen-id="${amenID}"]`).val(quantity);
-                                alert('Update quantity successfully');
-                            },
-                            error: function (xhr, status, error) {
-                                alert('Update failed: ' + xhr.responseText);
-                            }
-                        });
+                    // Chuyển đổi giá trị sang số nguyên
+                    const quantity = parseInt(quantityInput);
+
+                    // Kiểm tra số lượng trước khi cập nhật
+                    if (quantity <= 0 || quantity >= 10) {
+                        alert('Quantity must be greater than 0 and less than 10');
+                        $(this).val(originalValue); // Khôi phục lại giá trị ban đầu
+                        return; // Dừng thực hiện nếu số lượng không hợp lệ
                     }
 
-                    function updateStatusColor(selectElement) {
-                        const selectedValue = selectElement.value;
+                    // Gọi hàm updateQuantity để cập nhật số lượng
+                    updateQuantity(roomId, amenID, quantity);
+                });
 
-                        // Xóa tất cả các lớp trạng thái
-                        selectElement.classList.remove('status-in-use', 'status-maintaining', 'status-broken');
+                // Cập nhật màu sắc ban đầu khi trang được tải
+                $('.update').each(function () {
+                    updateStatusColor(this);
+                });
+            });
 
-                        // Thêm lớp tương ứng với trạng thái đã chọn
-                        if (selectedValue == '1') {
-                            selectElement.classList.add('status-in-use');
-                        } else if (selectedValue == '2') {
-                            selectElement.classList.add('status-maintaining');
-                        } else if (selectedValue == '3') {
-                            selectElement.classList.add('status-broken');
-                        }
+            function updateAmenityStatus(roomId, amenID, status, selectElement) {
+                $.ajax({
+                    url: 'updateAmenityStatus', // URL tới servlet cập nhật trạng thái tiện ích
+                    method: 'POST',
+                    data: {
+                        amenID: amenID,
+                        roomId: roomId,
+                        value: status
+                    },
+                    success: function (response) {
+                        alert('Amenity status updated successfully');
+
+                        // Cập nhật màu sắc của dropdown dựa trên trạng thái mới
+                        updateStatusColor(selectElement);
+
+                        // Không cần gọi updateRoomStatus từ JavaScript nữa vì servlet sẽ xử lý điều này
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Update failed: ' + error);
                     }
+                });
+            }
+
+            function updateQuantity(roomID, amenID, quantity) {
+                $.ajax({
+                    url: 'UpdateAmenityQuantityServlet', // Đường dẫn đến servlet của bạn
+                    method: 'POST',
+                    data: {
+                        amenID: amenID,
+                        roomId: roomID,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        // Cập nhật giá trị mới cho input
+                        $(`input[data-room-id="${roomID}"][data-amen-id="${amenID}"]`).val(quantity);
+                        alert('Update quantity successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Update failed: ' + xhr.responseText);
+                    }
+                });
+            }
+
+            function updateStatusColor(selectElement) {
+                const selectedValue = selectElement.value;
+
+                // Xóa tất cả các lớp trạng thái
+                selectElement.classList.remove('status-in-use', 'status-maintaining', 'status-broken');
+
+                // Thêm lớp tương ứng với trạng thái đã chọn
+                if (selectedValue == '1') {
+                    selectElement.classList.add('status-in-use');
+                } else if (selectedValue == '2') {
+                    selectElement.classList.add('status-maintaining');
+                } else if (selectedValue == '3') {
+                    selectElement.classList.add('status-broken');
+                }
+            }
                 </script>
 
                 </body>

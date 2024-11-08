@@ -17,7 +17,7 @@
 <html>
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>List Item</title><!--  page only for manager  -->
+        <title>List Consumable Item</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -94,13 +94,13 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Item</h3>
+                            <h3 class="fw-bold mb-3">Manage Consumable Item</h3>
                         </div>
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Item</h4>
+                                        <h4 class="card-title">Manage Consumable Item</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="addItem()">
                                             <i class="fa fa-plus"></i> New Item
                                         </button>

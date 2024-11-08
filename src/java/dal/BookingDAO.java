@@ -261,7 +261,7 @@ public class BookingDAO extends DBContext {
         }
     }
 
-    public void updateStatusRoom(int roomid) {
+    public void updateStatusRoomOccupied(int roomid) {
         String query = """
                        UPDATE HotelManagement.Room
                         SET StatusID = 2
@@ -315,7 +315,7 @@ public class BookingDAO extends DBContext {
         List<Integer> list = new ArrayList<>();
         String query = """
                        select * from HotelManagement.BookingRoom
-                       WHERE TIMESTAMPDIFF(HOUR, NOW(), CheckInDate) >= 24
+                       WHERE TIMESTAMPDIFF(MINUTE, NOW(), CheckInDate) >= 1440
                        AND BookingID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);
@@ -386,6 +386,7 @@ public class BookingDAO extends DBContext {
 
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
+        bkDao.deleteBooking(6);
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice, int paymentMethod, LocalDateTime actualCheckInTime) {
@@ -407,7 +408,7 @@ public class BookingDAO extends DBContext {
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, guestid);
             pre.setInt(2, deposit);
-            pre.setInt(3, checkinstatus);
+            pre.setInt(3, 0);
             pre.setInt(4, paidstatus);
             pre.setInt(5, userid);
             pre.setDate(6, sqlDate);
@@ -426,24 +427,14 @@ public class BookingDAO extends DBContext {
 
     public void deleteBooking(int bookingid) {
         try {
-            String query1 = "DELETE FROM HotelManagement.BookingService WHERE BookingID = ?";
+            String query1 = """
+                            UPDATE HotelManagement.Booking
+                                                      SET TotalPrice = 0
+                                                    WHERE BookingID = ?""";
             try (PreparedStatement pre1 = connection.prepareStatement(query1)) {
                 pre1.setInt(1, bookingid);
                 pre1.executeUpdate();
             }
-
-            String query2 = "DELETE FROM HotelManagement.BookingRoom WHERE BookingID = ?";
-            try (PreparedStatement pre2 = connection.prepareStatement(query2)) {
-                pre2.setInt(1, bookingid);
-                pre2.executeUpdate();
-            }
-
-            String query3 = "DELETE FROM HotelManagement.Booking WHERE BookingID = ?";
-            try (PreparedStatement pre3 = connection.prepareStatement(query3)) {
-                pre3.setInt(1, bookingid);
-                pre3.executeUpdate();
-            }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -463,6 +454,19 @@ public class BookingDAO extends DBContext {
         }
     }
 
+    public void updateActualCheckInDate(int bookingid) {
+        String query = """
+                       UPDATE HotelManagement.Booking
+                          SET ActualCheckInDate = NOW() 
+                        WHERE BookingID = ?""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void updateCheckInStatus(int bookingid, int checkinstatus) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -475,6 +479,7 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     public void updatePaymentMethod(int bookingid, int paymentMethod) {
@@ -622,9 +627,9 @@ public class BookingDAO extends DBContext {
 
     public List<BookingRoom> getAllBookingUnpaid() {
         List<BookingRoom> unpaidBookings = new ArrayList<>();
-        String query = "SELECT br.BookingID, br.RoomID, br.NumOfNight, br.CheckInDate, br.CheckOutDate, br.Price "
+        String query = "SELECT br.BookingID, br.RoomID, br.NumOfNight, br.CheckInDate, br.CheckOutDate, br.Price, b.CheckInStatus "
                 + "FROM Booking b join BookingRoom br "
-                + "WHERE br.BookingID = b.BookingID and b.PaidStatus = 0";
+                + "WHERE br.BookingID = b.BookingID and b.PaidStatus = 0 and b.CheckInStatus = 1";
 
         try (
                 PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {

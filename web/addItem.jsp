@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Add Item</title><!--  page only for manager  -->
+        <title>Add Consumable Item</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -86,19 +86,17 @@
                 <div class="container">
                     <div class="page-inner">
                         <div class="page-header">
-                            <h3 class="fw-bold mb-3">Manage Item</h3>
+                            <h3 class="fw-bold mb-3">Manage Consumable Item</h3>
                         </div>
-
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Item</h4>
+                                        <h4 class="card-title">Add Consumable Item</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick="BackToList()">
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
                                         </button>
-
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -108,7 +106,11 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="addItem" method="POST">
-                                                    <c:set value="${requestScope.item}" var="s"/>
+                                                    <c:set value="${requestScope.name}" var="name"/>
+                                                    <c:set value="${requestScope.price}" var="price"/>
+                                                    <c:set value="${requestScope.quantity}" var="quantity"/>
+                                                    <c:set value="${requestScope.stock}" var="stock"/>
+                                                    
                                                     <div class="modal-body">
                                                         <div class="row">
                                                             <div class="col-sm-6">
@@ -120,7 +122,7 @@
                                                                         class="form-control"
                                                                         minlength="2"
                                                                         maxlength="50"
-                                                                        value="${s.itemName}"
+                                                                        value="${name}"
                                                                         pattern="^[a-zA-ZÀ-ÿ\s-]+$"
                                                                         title="The name should only contain letters, spaces, and hyphens, with 2 to 50 characters."
                                                                         required
@@ -133,7 +135,7 @@
                                                                         type="number"
                                                                         min="0"
                                                                         max="50000000"
-                                                                        value="${s.price}"
+                                                                        value="${price}"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -147,7 +149,7 @@
                                                                         type="number"
                                                                         min="0"
                                                                         max="10000"
-                                                                        value="${s.standardQuantity}"
+                                                                        value="${quantity}"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -159,7 +161,7 @@
                                                                         type="number"
                                                                         min="0"
                                                                         max="10000"
-                                                                        value="${s.stockQuantity}"
+                                                                        value="${stock}"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -176,6 +178,7 @@
                                                             Save
                                                         </button>
                                                     </div>
+                                                        
                                                 </form>
                                             </div>
                                         </div>

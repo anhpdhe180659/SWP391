@@ -15,7 +15,7 @@ public class BookingCodeConvert {
     
 
     private static final String BASE36_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final int OFFSET = 10000; // Thêm giá trị bù
+    private static final int OFFSET = 9999999; // Thêm giá trị bù
 
     // Mã hóa từ bookingid sang Base36, có thêm giá trị bù
     public String toBase36(int bookingId) {

@@ -175,7 +175,7 @@
                                                                     <i class="fa fa-edit"></i>
                                                                 </button>
                                                             </a>
-                                                            <% if(book.getCheckInStatus() == 0){
+                                                            <% if(book.getCheckInStatus() == 0 && book.getTotalPrice() > 0){
                                                             %>
                                                             <button
                                                                 type="button"
@@ -187,7 +187,6 @@
                                                                 >
                                                                 <i class="fa fa-times"></i>
                                                             </button>
-
                                                             <%
                                                                 };
                                                             %>
