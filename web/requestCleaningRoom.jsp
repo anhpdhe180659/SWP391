@@ -80,7 +80,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
-                   <jsp:include page="navbar-header.jsp"/>
+                    <jsp:include page="navbar-header.jsp"/>
                 </div>
 
                 <div class="container">
@@ -96,8 +96,8 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Request Cleaning Room</h4>
-                                        
-                                       
+
+
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -112,54 +112,53 @@
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Room Number</label>
-                                                                    <input
-                                                                        name="roomNumber"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>                                                                                                                                                                        
-                                                        </div>  
-                                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Note</label>
-                                                                    <input
-                                                                        name="note"
-                                                                        type="text"
-                                                                        class="form-control"
-                                                                        required
-                                                                        />
-                                                                </div>
-                                                            </div>       
-                                                                         <div class="col-sm-12">
-                                                                <div class="form-group form-group-default">
-                                                                    <label>Cleaning By</label>
-                                                                   
-                                                                    <select class="form-control" name="staffId">
-                                                                        <c:forEach items="${requestScope.listStaff}" var="s">
-                                                                            <option value="${s.userID}">${s.name}</option>
+                                                                    <select name="roomNumber" class="form-control" required>
+                                                                        <option value="">Select a room</option>
+                                                                        <c:forEach items="${requestScope.roomList}" var="room">
+                                                                            <option value="${room.roomNumber}">${room.roomNumber}</option>
                                                                         </c:forEach>
                                                                     </select>
                                                                 </div>
-                                                            </div>       
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Note</label>
+                                                                        <input
+                                                                            name="note"
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            required
+                                                                            />
+                                                                    </div>
+                                                                </div>       
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Cleaning By</label>
+
+                                                                        <select class="form-control" name="staffId">
+                                                                            <c:forEach items="${requestScope.listStaff}" var="s">
+                                                                                <option value="${s.userID}">${s.name}</option>
+                                                                            </c:forEach>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>       
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
-                                                        <button
-                                                            type="reset"
-                                                            class="btn btn-danger">
-                                                            Reset
-                                                        </button>&nbsp;
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary">
-                                                            Save
-                                                        </button>
-                                                    </div>
+                                                        <div class="modal-footer border-0">
+                                                            <c:set value="${requestScope.noti}" var="noti"/>
+                                                            <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
+                                                            <button
+                                                                type="reset"
+                                                                class="btn btn-danger">
+                                                                Reset
+                                                            </button>&nbsp;
+                                                            <button
+                                                                type="submit"
+                                                                class="btn btn-primary">
+                                                                Save
+                                                            </button>
+                                                        </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -195,9 +194,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
-                                                    });
+            document.querySelector('.close').editEventListener('click', function () {
+                $('#editUserModal').modal('hide');
+            });
     </script>
     <script>
         function doClose() {
