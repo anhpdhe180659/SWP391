@@ -56,14 +56,14 @@
                 </div>
                 <div class="container">
                     <div class="page-inner">
-                        <div class="page-header">
-                            <h3 class="fw-bold mb-3">Add Service</h3>
-                        </div>
+<!--                        
+                            
+        -->
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Room  </h4>
+                                        <h4 class="card-title">Add Service for Room ${roomNumber}</h4>
                                         <button class="btn btn-primary btn-round ms-auto" onclick='window.location = "listRoom"'>
                                             <i class="fas fa-angle-left"></i>
                                             Back to list
