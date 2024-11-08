@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.List;
 import model.Booking;
 import model.BookingRoom;
@@ -84,6 +85,8 @@ public class viewDetailInvoice extends HttpServlet {
         Guest guest = gDao.getGuestByGuestID(guestId);
         List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bkId);
         List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(bkId);
+        LocalDate date = iv.getPaymentDate();
+        session.setAttribute("date", date.toString());
         session.setAttribute("booking", booking);
         session.setAttribute("guest", guest);
         session.setAttribute("allBookingRoom", allBookingRoom);
