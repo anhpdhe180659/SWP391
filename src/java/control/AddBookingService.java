@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Booking;
 import model.BookingService;
+import model.Room;
 import model.Service;
 
 /**
@@ -65,24 +66,37 @@ public class AddBookingService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
         int roomId = Integer.parseInt(request.getParameter("roomId"));
         int bookingId = Integer.parseInt(request.getParameter("bookingId"));
         ServiceDAO svDao = new ServiceDAO();
         BookingDAO bkDao = new BookingDAO();
+        RoomDao roomDao = new RoomDao();
+        Room room = roomDao.getRoomByRoomID(roomId);
+        String roomNumber = room.getRoomNumber();
         List<BookingService> bookingServices = bkDao.getAllBookingServiceByBookingIDAndRoomID(bookingId, roomId);
         List<Service> listServiceAvailables = svDao.getAllServiceIsNotBookedByBookingIDAndRoomID(bookingId, roomId);
-        HttpSession session = request.getSession();
+        
         List<Service> listServices = svDao.getAllServices();
         session.setAttribute("listServiceAvailables", listServiceAvailables);
         session.setAttribute("listServices", listServices);
         session.setAttribute("bookingServices", bookingServices);
         request.setAttribute("roomId", roomId);
         request.setAttribute("bookingId", bookingId);
+        request.setAttribute("roomNumber", roomNumber);
         request.setAttribute("total", bkDao.getTotalPriceService(bookingId, roomId));
         // Forward to JSP to display the services and booking
         request.getRequestDispatcher("addBookingService.jsp").forward(request, response);
     }
-
+    }
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -118,5 +132,5 @@ public class AddBookingService extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }
