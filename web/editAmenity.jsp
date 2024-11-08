@@ -139,25 +139,20 @@
                                                             document.querySelector('form').addEventListener('submit', function (event) {
                                                                 // Get the name input field
                                                                 const nameInput = document.querySelector('input[name="name"]');
-                                                                const priceInput = document.querySelector('input[name="price"]');
 
-                                                                // Trim whitespace from the name
+                                                                // Trim whitespace from the beginning and end of the name
                                                                 nameInput.value = nameInput.value.trim();
 
-                                                                // Check if the name input is valid (contains only letters and spaces)
-                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
+                                                                // Check if the name input is valid (contains only letters, single spaces between words, and no multiple spaces)
+                                                                const namePattern = /^[A-Za-zÀ-ỹ]+(?:\s[A-Za-zÀ-ỹ]+)*$/;
+
                                                                 if (!namePattern.test(nameInput.value)) {
-                                                                    alert("Name can only contain letters and spaces.");
+                                                                    alert("Name can only contain letters and single spaces between words.");
                                                                     event.preventDefault(); // Prevent form submission
                                                                     return;
                                                                 }
-
-                                                                // Check if price is greater than 0
-                                                                if (priceInput.value <= 0) {
-                                                                    alert("Price must be greater than 0.");
-                                                                    event.preventDefault(); // Prevent form submission
-                                                                }
                                                             });
+
                                                         </script>
                                                     </div>
                                                     <input type="text" name="amenid" value="${a.amenID}" hidden="">
@@ -287,6 +282,29 @@
                 $("#editUserModal").modal("hide");
             });
         });
+    </script>
+    <script>
+        document.querySelector('.form-add').addEventListener('submit', function (event) {
+            // Get the quantity input field
+            const quantityInput = document.querySelector('input[name="quantity"]');
+
+            // Trim any leading/trailing whitespace
+            const quantityValue = quantityInput.value.trim();
+
+            // Convert the input value to a number
+            const quantity = Number(quantityValue);
+
+            // Validate that the value is less than 3 and not negative
+            if (isNaN(quantity) || quantity >= 3 || quantity < 0) {
+                alert("Quantity must be a valid number, greater than or equal to 0, and less than 3.");
+                event.preventDefault(); // Prevent form submission
+            } else {
+                console.log("Valid input: " + quantity);  // Debugging step
+            }
+        });
+
+
+
     </script>
 
 </body>
