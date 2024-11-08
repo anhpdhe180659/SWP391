@@ -75,11 +75,11 @@ public class listInvoice extends HttpServlet {
             if (request.getParameter("dateFrom") != null) {
                 dateFrom = request.getParameter("dateFrom");
             }
-            if (request.getParameter("dateTo") != null) {
+            if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
                 dateTo = request.getParameter("dateTo");
             }
             int index = 1;
-            if (request.getParameter("index") != null) {
+            if (request.getParameter("index") != null ) {
                 index = Integer.parseInt(request.getParameter("index"));
             }
             InvoiceDAO ivDao = new InvoiceDAO();

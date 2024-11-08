@@ -163,12 +163,12 @@
                                                                 <c:set var="endPage" value="${Nopage > 6 ? 6 : Nopage}" />
                                                             </c:when>
                                                             <c:when test="${index > Nopage - 3}">
-                                                                <c:set var="startPage" value="${Nopage - 6 > 0 ? Nopage - 6 : 1}" />
+                                                                <c:set var="startPage" value="${Nopage - 5 > 0 ? Nopage - 5 : 1}" />
                                                                 <c:set var="endPage" value="${Nopage}" />
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <c:set var="startPage" value="${index - 3}" />
-                                                                <c:set var="endPage" value="${index + 3}" />
+                                                                <c:set var="endPage" value="${index + 2}" />
                                                             </c:otherwise>
                                                         </c:choose>
                                                         <c:forEach var="p" begin="${startPage}" end="${endPage}">

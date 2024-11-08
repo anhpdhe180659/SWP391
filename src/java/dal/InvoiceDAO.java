@@ -67,9 +67,8 @@ public class InvoiceDAO extends DBContext {
             }
             pre.setInt(3, 5 * (index - 1));
             ResultSet rs = pre.executeQuery();
+            System.out.println(pre);
             while (rs.next()) {
-                // Handle potential null for PaymentDate
-                LocalDate paymentDate = null;
 
                 // Add invoice to the list
                 listInvoice.add(new Invoice(
