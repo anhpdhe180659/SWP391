@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.AmenityDetail;
 
 /**
@@ -60,17 +61,27 @@ public class EditAmenityDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String room = request.getParameter("roomid");
-        int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
-        System.out.println("roomID in edit ========================" + roomID);
-        AmenityDAO amenityDao = new AmenityDAO();
-        int amenID = Integer.parseInt(request.getParameter("amenId"));
-        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
-        System.out.println(detail.getQuantity() + "=45454");
-        System.out.println(detail.getAmenID() + "sm");
-        System.out.println(detail.getRoomID() + "rm");
-        request.setAttribute("amenityDetail", detail);
-        request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            String room = request.getParameter("roomid");
+            int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
+            System.out.println("roomID in edit ========================" + roomID);
+            AmenityDAO amenityDao = new AmenityDAO();
+            int amenID = Integer.parseInt(request.getParameter("amenId"));
+            AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
+            System.out.println(detail.getQuantity() + "=45454");
+            System.out.println(detail.getAmenID() + "sm");
+            System.out.println(detail.getRoomID() + "rm");
+            request.setAttribute("amenityDetail", detail);
+            request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -82,53 +93,63 @@ public class EditAmenityDetailController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String amenId = request.getParameter("amenid"); 
-    String roomId = request.getParameter("roomid");
-    String quantityStr = request.getParameter("quantity");
-    int quantity = 0;
-    String message = "";
-    AmenityDAO amenityDao = new AmenityDAO();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            String amenId = request.getParameter("amenid");
+            String roomId = request.getParameter("roomid");
+            String quantityStr = request.getParameter("quantity");
+            int quantity = 0;
+            String message = "";
+            AmenityDAO amenityDao = new AmenityDAO();
 
-    try {
-        quantity = Integer.parseInt(quantityStr);
-        
-        // Thêm validate số lượng tối thiểu
-        if (quantity < 3) {
-            message = "Quantity must be at least 3";
+            try {
+                quantity = Integer.parseInt(quantityStr);
+
+                // Thêm validate số lượng tối thiểu
+                if (quantity < 3) {
+                    message = "Quantity must be at least 3";
+                    AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(
+                            Integer.parseInt(roomId),
+                            Integer.parseInt(amenId)
+                    );
+                    request.setAttribute("amenityDetail", detail);
+                    request.setAttribute("noti", message);
+                    request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
+                    return;
+                }
+
+                // Nếu hợp lệ thì mới update
+                boolean success = amenityDao.updateQuantity(roomId, amenId, quantity);
+                if (success) {
+                    message = "Quantity updated successfully.";
+                } else {
+                    message = "Failed to update quantity.";
+                }
+
+            } catch (NumberFormatException e) {
+                message = "Invalid quantity format.";
+            } catch (Exception e) {
+                message = "An error occurred: " + e.getMessage();
+            }
+
             AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(
-                Integer.parseInt(roomId), 
-                Integer.parseInt(amenId)
+                    Integer.parseInt(roomId),
+                    Integer.parseInt(amenId)
             );
             request.setAttribute("amenityDetail", detail);
             request.setAttribute("noti", message);
             request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
-            return;
         }
-
-        // Nếu hợp lệ thì mới update
-        boolean success = amenityDao.updateQuantity(roomId, amenId, quantity);
-        if (success) {
-            message = "Quantity updated successfully.";
-        } else {
-            message = "Failed to update quantity."; 
-        }
-
-    } catch (NumberFormatException e) {
-        message = "Invalid quantity format.";
-    } catch (Exception e) {
-        message = "An error occurred: " + e.getMessage();
     }
-
-    AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(
-        Integer.parseInt(roomId), 
-        Integer.parseInt(amenId)
-    );
-    request.setAttribute("amenityDetail", detail);
-    request.setAttribute("noti", message);
-    request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
-}
 
     /**
      * Returns a short description of the servlet.
