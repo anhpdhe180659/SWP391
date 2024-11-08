@@ -41,8 +41,8 @@ public class editService extends HttpServlet {
             response.sendRedirect("login.jsp");
         } else {
             int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             response.setContentType("text/html;charset=UTF-8");

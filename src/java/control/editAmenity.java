@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
 import dal.AmenityDAO;
@@ -23,34 +22,46 @@ import model.Service;
  * @author admin
  */
 public class editAmenity extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        AmenityDAO adao = new AmenityDAO();
-        PrintWriter out = response.getWriter();
-        try {
-            int amenityid = Integer.parseInt(request.getParameter("amenityid"));
-            Amenity amenity = adao.findAmenity(amenityid);
-            request.setAttribute("amenity", amenity);
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            response.setContentType("text/html;charset=UTF-8");
+            AmenityDAO adao = new AmenityDAO();
+            PrintWriter out = response.getWriter();
+            try {
+                int amenityid = Integer.parseInt(request.getParameter("amenityid"));
+                Amenity amenity = adao.findAmenity(amenityid);
+                request.setAttribute("amenity", amenity);
 
-            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+                request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+            } catch (ServletException | IOException | NumberFormatException e) {
+                out.print(e);
+            }
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,64 +69,66 @@ public class editAmenity extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-    HttpSession session = request.getSession(false);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
         } else {
             int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-    PrintWriter out = response.getWriter();
-    try {
-        AmenityDAO adao = new AmenityDAO();
-        int amenityid = Integer.parseInt(request.getParameter("amenid"));
-        Amenity oldAmenity = adao.findAmenity(amenityid); 
+            PrintWriter out = response.getWriter();
+            try {
+                AmenityDAO adao = new AmenityDAO();
+                int amenityid = Integer.parseInt(request.getParameter("amenid"));
+                Amenity oldAmenity = adao.findAmenity(amenityid);
 
-        String name = request.getParameter("name").trim(); 
-        Amenity amenity = new Amenity(amenityid, name);
+                String name = request.getParameter("name").trim();
+                Amenity amenity = new Amenity(amenityid, name);
 
-        if (oldAmenity.getAmenName().equals(name)) {
-            request.setAttribute("noti", "No changes made!");
-            request.setAttribute("amenity", oldAmenity);
-        } else {
-            List<Amenity> listAmenity = adao.getAllAmenities();
-            for (Amenity s : listAmenity) {
-                if (s.getAmenName().equals(name)) {
-                    request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                if (oldAmenity.getAmenName().equals(name)) {
+                    request.setAttribute("noti", "No changes made!");
                     request.setAttribute("amenity", oldAmenity);
-                    request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-                    return; 
+                } else {
+                    List<Amenity> listAmenity = adao.getAllAmenities();
+                    for (Amenity s : listAmenity) {
+                        if (s.getAmenName().equals(name)) {
+                            request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                            request.setAttribute("amenity", oldAmenity);
+                            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+                            return;
+                        }
+                    }
+                    adao.updateAmenity(amenity);
+                    request.setAttribute("noti", "Save successful!");
+                    request.setAttribute("amenity", amenity);
                 }
+
+                // Chuyển hướng đến trang edit
+                request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+
+            } catch (Exception e) {
+                out.print("There was an error: " + e.getMessage());
             }
-            adao.updateAmenity(amenity);
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("amenity", amenity);
         }
-
-        // Chuyển hướng đến trang edit
-        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-
-    } catch (Exception e) {
-        out.print("There was an error: " + e.getMessage());
     }
-}
-}
+
     public static void main(String[] args) {
         AmenityDAO adao = new AmenityDAO();
         List<Amenity> listAmenity = adao.getAllAmenities();
@@ -128,10 +141,10 @@ throws ServletException, IOException {
         }
         System.out.println(countSameAmenityname);
     }
-    
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

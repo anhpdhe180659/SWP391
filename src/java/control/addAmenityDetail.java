@@ -36,9 +36,17 @@ public class addAmenityDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            } else {
+                int role = (Integer) session.getAttribute("role");
+                if (session.getAttribute("role") != null && role != 1) {
+                    request.setAttribute("error", "Please sign in with admin account !");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
         AmenityDAO adao = new AmenityDAO();
         List<AmenityDetail> listAmenityDetails = adao.getAllAmenityDetails();
         int roomNumber = Integer.parseInt(request.getParameter("roomnumber"));
@@ -68,7 +76,7 @@ public class addAmenityDetail extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"status\":\"failed\"}");
     }
-
+    }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -95,16 +103,16 @@ public class addAmenityDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            HttpSession session = request.getSession(false);
-            if (session == null) {
-                response.sendRedirect("login.jsp");
-            } else {
-                int role = (Integer) session.getAttribute("role");
-                if (session.getAttribute("role") != null && role != 1) {
-                    request.setAttribute("error", "Please sign in with admin account !");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                }
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            try {
 
                 AmenityDAO adao = new AmenityDAO();
                 int roomnumber = Integer.parseInt(request.getParameter("roomnumber"));
@@ -116,7 +124,7 @@ public class addAmenityDetail extends HttpServlet {
                 amenityDetail.setQuantity(quantity);
                 amenityDetail.setRoomID(r.getRoomId());
                 boolean success = adao.addAmenityDetail(amenityDetail);
-                System.out.println("success "+success);
+                System.out.println("success " + success);
                 if (success) {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -128,13 +136,12 @@ public class addAmenityDetail extends HttpServlet {
                     response.getWriter().write("{\"status\":\"failed\"}");
                 }
 
+            } catch (IOException | NumberFormatException e) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"status\":\"failed\"}");
             }
-        } catch (IOException | NumberFormatException e) {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"status\":\"failed\"}");
         }
-
     }
 
     /**
