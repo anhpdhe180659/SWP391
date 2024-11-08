@@ -124,7 +124,9 @@
                                         </table>
 
                                         <div class="form-group mt-4">
-                                            <a href="listRoomAmenity" class="btn btn-secondary" style="border-radius: 5px;">Back to Room List</a>
+                                            <a href="<%= (role != null && role==2) ? "listRoom" : "listRoomAmenity" %>" class="btn btn-secondary" style="border-radius: 5px;">
+                                                Back to <%= (role != null && role==2) ? "Room List" : "Room Amenity List" %>
+                                            </a>
                                         </div>
                                     </c:if>
                                 </div>

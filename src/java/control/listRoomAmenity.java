@@ -4,6 +4,7 @@
  */
 package control;
 
+import dal.AmenityForRoomDAO;
 import dal.RoomDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import model.Room;
 
 /**
@@ -82,7 +84,18 @@ public class listRoomAmenity extends HttpServlet {
         if (request.getParameter("cleanId") != null) {
             cleanId = Integer.parseInt(request.getParameter("cleanId"));
         }
-        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId, roomNumber);
+        int amenityStatus = 0;
+        if (request.getParameter("amenityStatus") != null) {
+            amenityStatus = Integer.parseInt(request.getParameter("amenityStatus"));
+        }
+        List<Room> listRoom;
+        if (amenityStatus == 1) {
+            // Get rooms with broken/maintenance amenities
+            listRoom = roomDao.loadMoreWithAmenityStatus(index, typeId, statusId, cleanId, roomNumber);
+        } else {
+            // Get all rooms based on other filters
+            listRoom = roomDao.loadMore(index, typeId, statusId, cleanId, roomNumber);
+        }
         int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId, roomNumber) / 5);
         System.out.println(noPage);
         if (noPage == 0) {
@@ -95,6 +108,10 @@ public class listRoomAmenity extends HttpServlet {
         request.setAttribute("typeId", typeId);
         request.setAttribute("statusId", statusId);
         request.setAttribute("cleanId", cleanId);
+        request.setAttribute("amenityStatus", amenityStatus);
+        AmenityForRoomDAO amenityDao = new AmenityForRoomDAO();
+        Map<String, Integer> maintenanceStats = amenityDao.getAmenityMaintenanceStats();
+        request.setAttribute("maintenanceStats", maintenanceStats);
         request.getRequestDispatcher("listRoomAmenity.jsp").forward(request, response);
     }
 
