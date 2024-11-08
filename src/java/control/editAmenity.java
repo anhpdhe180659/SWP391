@@ -72,11 +72,18 @@ public class editAmenity extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
+    HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
     PrintWriter out = response.getWriter();
     try {
         AmenityDAO adao = new AmenityDAO();
-        HttpSession session = request.getSession();
-
         int amenityid = Integer.parseInt(request.getParameter("amenid"));
         Amenity oldAmenity = adao.findAmenity(amenityid); 
 
@@ -84,21 +91,18 @@ throws ServletException, IOException {
         Amenity amenity = new Amenity(amenityid, name);
 
         if (oldAmenity.getAmenName().equals(name)) {
-            // Nếu tên không thay đổi
             request.setAttribute("noti", "No changes made!");
             request.setAttribute("amenity", oldAmenity);
         } else {
             List<Amenity> listAmenity = adao.getAllAmenities();
             for (Amenity s : listAmenity) {
                 if (s.getAmenName().equals(name)) {
-                    // Nếu phát hiện trùng tên
                     request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
                     request.setAttribute("amenity", oldAmenity);
                     request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-                    return; // Thêm return để dừng phương thức khi phát hiện trùng lặp
+                    return; 
                 }
             }
-            // Nếu không có trùng tên, cập nhật tiện nghi
             adao.updateAmenity(amenity);
             request.setAttribute("noti", "Save successful!");
             request.setAttribute("amenity", amenity);
@@ -111,7 +115,7 @@ throws ServletException, IOException {
         out.print("There was an error: " + e.getMessage());
     }
 }
-
+}
     public static void main(String[] args) {
         AmenityDAO adao = new AmenityDAO();
         List<Amenity> listAmenity = adao.getAllAmenities();
