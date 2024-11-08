@@ -58,6 +58,10 @@
             <c:if test="${sessionScope.user.role == 1}">
                 <!-- Sidebar -->
                 <jsp:include page="sidebarManager.jsp"/>
+            </c:if> 
+                 <c:if test="${sessionScope.user.role == 3}">
+                <!-- Sidebar -->
+                <jsp:include page="sidebarstaff.jsp"/>
             </c:if>
             <!-- End Sidebar -->
 
