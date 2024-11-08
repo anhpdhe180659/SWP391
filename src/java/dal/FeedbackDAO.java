@@ -43,20 +43,20 @@ public class FeedbackDAO extends DBContext {
 
     // Phương thức thêm feedback mới
     public void addFeedback(String name, String GuestID, String feedback, int rating) {
-        String insertFeedbackQuery = "INSERT INTO Feedback (name, GuestID, feedback, rating) VALUES (?, ?, ?, ?)";
-        
-        try (
-             PreparedStatement pstmt = connection.prepareStatement(insertFeedbackQuery)) {
-             
-            pstmt.setString(1, name);
-            pstmt.setString(2, GuestID);
-            pstmt.setString(3, feedback);
-            pstmt.setInt(4, rating);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    String insertFeedbackQuery = "INSERT INTO Feedback (name, GuestID, feedback, rating, feedbackStatus) VALUES (?, ?, ?, ?, 1)";
+    
+    try (
+         PreparedStatement pstmt = connection.prepareStatement(insertFeedbackQuery)) {
+         
+        pstmt.setString(1, name);
+        pstmt.setString(2, GuestID);
+        pstmt.setString(3, feedback);
+        pstmt.setInt(4, rating);
+        pstmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
     // Phương thức lấy tất cả feedback từ cơ sở dữ liệu
     public List<Feedback> getAllFeedback() {
