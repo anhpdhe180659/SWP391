@@ -183,11 +183,7 @@
                                     <!--<label for="userID">User ID</label>-->
                                     <input type="hidden" id="userID" name="userID" value="${sessionScope.user.userID}" >
 
-                                    <label for="publish_date">Publish Date</label>
-                                    <input type="datetime-local" id="publish_date" name="publish_date" required>
-
-                                    <label for="post_date">Post Date</label>
-                                    <input type="datetime-local" id="post_date" name="post_date" required>
+                                   
 
                                     <label for="is_active">Is Active?</label>
                                     <input type="checkbox" id="is_active" name="is_active" checked>
