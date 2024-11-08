@@ -7,6 +7,7 @@ package control;
 import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.RoomDao;
+import dal.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,11 +15,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -30,6 +35,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import model.Booking;
 import model.BookingRoom;
+import model.BookingService;
 import model.Guest;
 import model.Room;
 import util.BookingCodeConvert;
@@ -164,10 +170,12 @@ public class editBooking extends HttpServlet {
                     if (room.getStatusId() == 2) {
                         noti = "The rooms in this booking are currently in use";
                         checkin = false;
+                        checkinstatus = 0;
                     }
                     if (room.getStatusId() == 3) {
                         noti = "The rooms in this booking are currently in maintainance";
                         checkin = false;
+                        checkinstatus = 0;
                     }
                     // neu dang sua chua ko cho check in
                 }
@@ -177,7 +185,7 @@ public class editBooking extends HttpServlet {
                         bdao.updateStatusRoomOccupied(roomid);
                     }
                     if (email != null) {
-                        sendBookingDepositEmail(guest.getName(), email, deposit, bookingcode);
+                        sendBillMail(booking, guest, deposit);
                     }
                     bdao.updateActualCheckInDate(bookingid);
                     bdao.updateCheckInStatus(bookingid, checkinstatus);
@@ -222,6 +230,104 @@ public class editBooking extends HttpServlet {
         // nếu có email của khách thì gửi xác nhận đặt cọc
 
         request.getRequestDispatcher("editBooking.jsp").forward(request, response);
+    }
+
+    public static void sendBillMail(Booking b, Guest g, int deposit) {
+        BookingDAO bkDao = new BookingDAO();
+        RoomDao rDao = new RoomDao();
+        ServiceDAO sDao = new ServiceDAO();
+
+        List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(b.getBookingID());
+        List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(b.getBookingID());
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedDeposit = currencyFormatter.format(b.getDeposit());
+        String formattedTotal = currencyFormatter.format(b.getTotalPrice());
+        // Set up your SMTP server and send the email (this is a simplified example)
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true"); // Enable STARTTLS
+        String email = g.getEmail();
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("ali33hotel@gmail.com", "emyj cyjy lxjd bkbw");
+            }
+        });
+        // Format date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = sdf.format(new Date());
+
+        // Create email content
+        StringBuilder emailContent = new StringBuilder();
+        emailContent.append("<html><body>");
+        emailContent.append("<h2>ALIHOTEL INVOICE</h2>");
+        emailContent.append("<p>Ha Noi, ").append(formattedDate).append("</p>");
+
+        // Customer and Hotel Information
+        emailContent.append("<div style='display: flex; justify-content: space-between;'>");
+        emailContent.append("<div><h4>Customer Information</h4>")
+                .append("<p>Name: ").append(g.getName()).append("</p>")
+                .append("<p>Contact: ").append(g.getPhone()).append("</p>")
+                .append("<p>Nationality: ").append(g.getNationality()).append("</p>")
+                .append("<p>Email: ").append(g.getEmail()).append("</p></div>");
+        emailContent.append("<div><h4>Hotel Information</h4>")
+                .append("<p>Hotel Name: ALI HOTEL</p>")
+                .append("<p>Hotline: 1900 1833</p>")
+                .append("<p>Email: alihotel33@gmail.com</p>")
+                .append("<p>Address: Beta Building, FPT University</p></div>");
+        emailContent.append("</div>");
+        // Invoice Table
+        emailContent.append("<h4>Invoice Details</h4>")
+                .append("<table border='1' cellpadding='5' cellspacing='0' style='width: 100%; border-collapse: collapse;'>")
+                .append("<thead><tr><th>Room</th><th>Price per Night</th><th>Total</th></tr></thead>")
+                .append("<tbody>");
+        for (BookingRoom br : allBookingRoom) {
+            emailContent.append("<tr>");
+            emailContent.append("<td>").append("Room: ").append(rDao.getRoomByRoomID(br.getRoomID()).getRoomNumber()).append("</td>");
+            emailContent.append("<td>").append(currencyFormatter.format(br.getPrice())).append("</td>");
+
+            // Removed Services column and table
+            // Add room total here if necessary
+            emailContent.append("<td>").append(currencyFormatter.format(br.getPrice() * br.getNumOfNight())).append("</td>");
+            emailContent.append("</tr>");
+        }
+        emailContent.append("</tbody></table>");
+        emailContent.append("<tr>\n"
+                + "                                                            <td colspan=\"3\"><b>Deposit: </b></td>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(deposit) + "</span>\n"
+                + "                                                            </td>\n"
+                + "                                                        </tr>");
+        emailContent.append("</tbody></table>");
+
+        // Footer
+        emailContent.append("<div style='text-align: center; margin-top: 20px;'>")
+                .append("<p>Thank you for staying with us!</p>")
+                .append("<p>Contact us at: <a href='mailto:alihotel33@gmail.com'>alihotel33@gmail.com</a></p>")
+                .append("</div>");
+
+        emailContent.append("</body></html>");
+        try {
+            MimeMessage message = new MimeMessage(session);
+            // set header kieu noi dung
+            message.addHeader("Content-type", "text/HTML; charset=UTF-8");
+            message.setFrom(new InternetAddress("ali33hotel@gmail.com"));
+            // nguoi nhan
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
+            // tieu de
+            message.setSubject("Automation mail (not reply)");
+            //ngay gui
+            message.setSentDate(new Date());
+            // quy dinh email nhan phan hoi
+            message.setReplyTo(null);
+            // noi dung
+            message.setContent(emailContent.toString(), "text/html; charset=UTF-8");
+
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void sendBookingDepositEmail(String guestName, String email, int deposit, String bookingcode) {
