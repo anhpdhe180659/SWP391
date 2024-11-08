@@ -144,15 +144,19 @@
                                                         </div>
                                                         <c:if test="${n.length() < 2}">
                                                             <input
-                                                                type="text"
+                                                                type="number"
+                                                                min="1"
                                                                 name="keyword"
+                                                                max="1000"
                                                                 placeholder="Search room by room number..."
                                                                 class="form-control"
                                                                 />
                                                         </c:if>
                                                         <c:if test="${n.length() > 1}">
                                                             <input
-                                                                type="text"
+                                                                type="number"
+                                                                min="1"
+                                                                max="1000"
                                                                 name="keyword"
                                                                 value="${n}"
                                                                 placeholder="Search room by room number..."
@@ -393,6 +397,24 @@
                 //             Add Row
 
             });
+        </script>
+        <script>
+            const keyword = document.querySelector('input[type="number"]');
+            console.log(keyword);
+            const errorMessage = document.getElementById("error-message");
+            keyword.addEventListener("keypress", function (event) {
+                if (event.key === "e" || event.key === "E") {
+                    event.preventDefault();
+                }
+            });
+            keyword.onchange = function () {
+                const numberPattern = /^[1-9][0-9]{0,2}$|^1000$/;
+                if (!numberPattern.test(keyword.value)) {
+
+                } else {
+
+                }
+            };
         </script>
     </body>
 </html>

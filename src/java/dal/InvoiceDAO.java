@@ -6,6 +6,7 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -27,6 +28,45 @@ public class InvoiceDAO extends DBContext {
                    """;
         try (PreparedStatement pre = connection.prepareStatement(query); ResultSet rs = pre.executeQuery()) {
 
+            while (rs.next()) {
+                // Handle potential null for PaymentDate
+                LocalDate paymentDate = null;
+
+                // Add invoice to the list
+                listInvoice.add(new Invoice(
+                        rs.getInt("InvoiceNo"),
+                        rs.getInt("BookingID"),
+                        rs.getInt("TotalAmount"),
+                        rs.getFloat("Discount"),
+                        rs.getInt("FinalAmount"),
+                        rs.getString("PaymentMethod"),
+                        rs.getDate("PaymentDate").toLocalDate()
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving invoices: " + e.getMessage());
+        }
+        return listInvoice;
+    }
+
+    public List<Invoice> get5InvoicesATime(String dateFrom, String dateTo, int index) {
+        List<Invoice> listInvoice = new ArrayList<>();
+        String query = """
+                   SELECT * FROM hotelmanagement.invoice where (PaymentDate >= COALESCE(?, PaymentDate) and PaymentDate <= COALESCE(?,PaymentDate)) LIMIT 5 OFFSET ?
+                   """;
+        try (PreparedStatement pre = connection.prepareStatement(query)) {
+            if (dateFrom != null) {
+                pre.setString(1, dateFrom);
+            } else {
+                pre.setNull(1, Types.DATE);
+            }
+            if (dateTo != null) {
+                pre.setString(2, dateTo);
+            } else {
+                pre.setNull(2, Types.DATE);
+            }
+            pre.setInt(3, 5 * (index - 1));
+            ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 // Handle potential null for PaymentDate
                 LocalDate paymentDate = null;
@@ -133,6 +173,6 @@ public class InvoiceDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        System.out.println(new InvoiceDAO().getAll().size());
+        System.out.println(new InvoiceDAO().get5InvoicesATime("2024-11-07", null, 1).size());
     }
 }

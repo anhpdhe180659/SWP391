@@ -184,7 +184,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td colspan="3"><b>Deposit: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.deposit}</span>
+                                                            <td> <span class="price-vnd">-${sessionScope.booking.deposit}</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
