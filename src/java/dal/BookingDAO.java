@@ -386,6 +386,7 @@ public class BookingDAO extends DBContext {
 
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
+        bkDao.deleteBooking(6);
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice, int paymentMethod, LocalDateTime actualCheckInTime) {
@@ -426,24 +427,14 @@ public class BookingDAO extends DBContext {
 
     public void deleteBooking(int bookingid) {
         try {
-            String query1 = "DELETE FROM HotelManagement.BookingService WHERE BookingID = ?";
+            String query1 = """
+                            UPDATE HotelManagement.Booking
+                                                      SET TotalPrice = 0
+                                                    WHERE BookingID = ?""";
             try (PreparedStatement pre1 = connection.prepareStatement(query1)) {
                 pre1.setInt(1, bookingid);
                 pre1.executeUpdate();
             }
-
-            String query2 = "DELETE FROM HotelManagement.BookingRoom WHERE BookingID = ?";
-            try (PreparedStatement pre2 = connection.prepareStatement(query2)) {
-                pre2.setInt(1, bookingid);
-                pre2.executeUpdate();
-            }
-
-            String query3 = "DELETE FROM HotelManagement.Booking WHERE BookingID = ?";
-            try (PreparedStatement pre3 = connection.prepareStatement(query3)) {
-                pre3.setInt(1, bookingid);
-                pre3.executeUpdate();
-            }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -462,6 +453,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
+
     public void updateActualCheckInDate(int bookingid) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -487,8 +479,7 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
-        
+
     }
 
     public void updatePaymentMethod(int bookingid, int paymentMethod) {

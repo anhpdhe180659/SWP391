@@ -191,15 +191,15 @@
                                                             onblur="FormatDeposit()"
                                                             />
                                                     </div><c:set value="${requestScope.neededDeposit}" var="neededDeposit"/>
-                                                            <input
-                                                            type="number"
-                                                            id="neededDeposit"
-                                                            class="form-control"
-                                                            name="deposit"
-                                                            value="${neededDeposit}"
-                                                            required
-                                                            hidden
-                                                            />
+                                                    <input
+                                                        type="number"
+                                                        id="neededDeposit"
+                                                        class="form-control"
+                                                        name="deposit"
+                                                        value="${neededDeposit}"
+                                                        required
+                                                        hidden
+                                                        />
                                                     <c:set value="${requestScope.checkinstatus}" var="checkinstatus"/>
                                                     <div class="form-group">
                                                         <label><i class="fas fa-user-check"></i> Check-in</label><br />
@@ -244,9 +244,11 @@
                                                             <button class="btn btn-danger btn-round ms-auto" type="reset">
                                                                 Reset
                                                             </button>
-                                                            <button class="btn btn-primary btn-round ms-auto" type="submit">
-                                                                Save
-                                                            </button>
+                                                            <c:if test="${neededDeposit > 0}" >
+                                                                <button class="btn btn-primary btn-round ms-auto" type="submit">
+                                                                    Save
+                                                                </button>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                 </div>
