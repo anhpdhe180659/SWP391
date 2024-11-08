@@ -40,8 +40,6 @@ import util.BookingCodeConvert;
  */
 public class editBooking extends HttpServlet {
 
-    private static boolean sendEmail = false;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -139,8 +137,12 @@ public class editBooking extends HttpServlet {
         int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
         List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
         Booking booking = bdao.getBookingByBookingID(bookingid);
-        int neededDeposit = booking.getTotalPrice() / 2;
+        BookingCodeConvert utilConvert = new BookingCodeConvert();
+        String bookingcode = utilConvert.toBase36(bookingid);
+        Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
+        String email = guest.getEmail();
         String noti = "Save successfully!";
+        int neededDeposit = booking.getTotalPrice() / 2;
         boolean checkin = true;
         if (deposit != neededDeposit) {
             noti = "Deposit must be 50% of total price";
@@ -174,6 +176,9 @@ public class editBooking extends HttpServlet {
                         int roomid = bookingRoom.getRoomID();
                         bdao.updateStatusRoomOccupied(roomid);
                     }
+                    if (email != null) {
+                        sendBookingDepositEmail(guest.getName(), email, deposit, bookingcode);
+                    }
                     bdao.updateActualCheckInDate(bookingid);
                     bdao.updateCheckInStatus(bookingid, checkinstatus);
                 }
@@ -183,7 +188,7 @@ public class editBooking extends HttpServlet {
                 // do nothing
             }
         } else {
-            // neu booking checkinstatus la 1
+            // neu bookingstatus dang la 1
             if (checkinstatus == 0) {
                 checkinstatus = 1;
                 noti = "This booking status cannot be edited!";
@@ -191,8 +196,6 @@ public class editBooking extends HttpServlet {
                 noti = "Save successfully!";
             }
         }
-        BookingCodeConvert utilConvert = new BookingCodeConvert();
-        String bookingcode = utilConvert.toBase36(bookingid);
         request.setAttribute("bookingcode", bookingcode);
         List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
         LocalDateTime checkindate = null;
@@ -200,12 +203,10 @@ public class editBooking extends HttpServlet {
         LocalDateTime currentDateTime = LocalDateTime.now();
 //        checkInDateTime.isBefore(currentDateTime)
         for (BookingRoom bookingRoom : listBookingRoom) {
-//            Room room = rdao.getRoomByRoomID(bookingRoom.getRoomID());
-//            listRoom.add(room);
             checkindate = bookingRoom.getCheckInDate();
             checkoutdate = bookingRoom.getCheckOutDate();
         }
-        Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String checkindateFormatted = checkindate.format(formatter);
         String checkoutdateFormatted = checkoutdate.format(formatter);
@@ -219,11 +220,7 @@ public class editBooking extends HttpServlet {
         request.setAttribute("name", guest.getName());
         request.setAttribute("noti", noti);
         // nếu có email của khách thì gửi xác nhận đặt cọc
-        String email = guest.getEmail();
-        if (email != null && deposit == neededDeposit && sendEmail == false) {
-            sendBookingDepositEmail(guest.getName(), email, deposit,bookingcode);
-            sendEmail = true;
-        }
+
         request.getRequestDispatcher("editBooking.jsp").forward(request, response);
     }
 

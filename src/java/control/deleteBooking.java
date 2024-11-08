@@ -50,13 +50,16 @@ public class deleteBooking extends HttpServlet {
             return;
         }
         int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+        
         List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
         List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);
         if (listRoomToCancel.isEmpty()) {
             String noti = "Cannot cancel booking! You must cancel the booking at least 24 hours before the check-in time.";
             request.setAttribute("noti", noti);
         } else {
+           
             bdao.deleteBooking(bookingid);
+            
         }
         int index = 1;
         int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
