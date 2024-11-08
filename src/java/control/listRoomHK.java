@@ -57,15 +57,22 @@ public class listRoomHK extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        } else if (session.getAttribute("role").equals("3")) {
-            request.setAttribute("error", "Please sign in with staff account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    HttpSession session = request.getSession(false);
+    if (session == null || session.getAttribute("role") == null) {
+        request.setAttribute("error", "Access denied. Please login first!");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+        return;
+    }
+    
+    // Kiểm tra role là số nguyên 3 (housekeeping)
+    int userRole = Integer.parseInt(session.getAttribute("role").toString());
+    if (userRole != 3) {
+        request.setAttribute("error", "Access denied. This page is for housekeeping staff only!");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+        return;
+    }
         RoomDao roomDao = new RoomDao();
         int index = 1;
         int typeId = 0;

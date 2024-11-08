@@ -60,20 +60,26 @@ public class viewTask extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if (session == null || (session != null & session.getAttribute("user") == null)) {
-            request.setAttribute("error", "Please sign in !");
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    if (session == null || (session != null && session.getAttribute("user") == null)) {
+        request.setAttribute("error", "Please sign in !");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    } else {
+        User u = (User) session.getAttribute("user");
+        // Thêm kiểm tra Role
+        if (u.getRole() != 3) {
+            request.setAttribute("error", "Access denied. This page is for staff only!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else {
-            User u = (User) session.getAttribute("user");
-            CleaningRequestDAO rDao = new CleaningRequestDAO();
-            List<CleaningRequest> listTask = rDao.getByStaffID(u.getUserID());
-            request.setAttribute("listTask", listTask);
-            request.getRequestDispatcher("viewTask.jsp").forward(request, response);
+            return;
         }
+        CleaningRequestDAO rDao = new CleaningRequestDAO();
+        List<CleaningRequest> listTask = rDao.getByStaffID(u.getUserID());
+        request.setAttribute("listTask", listTask);
+        request.getRequestDispatcher("viewTask.jsp").forward(request, response);
     }
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
