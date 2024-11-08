@@ -146,34 +146,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <script>
-                                                            document.querySelector('form').addEventListener('submit', function (event) {
-                                                                // Get the name and price input fields
-                                                                const nameInput = document.querySelector('input[name="name"]');
-                                                                const priceInput = document.querySelector('input[name="price"]');
-
-                                                                // Trim whitespace from the name
-                                                                nameInput.value = nameInput.value.trim();
-
-                                                                // Name pattern: Only letters and spaces
-                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
-
-                                                                // Validate Name: Must only contain letters and spaces
-                                                                if (!namePattern.test(nameInput.value)) {
-                                                                    alert("Name can only contain letters and spaces.");
-                                                                    event.preventDefault(); // Prevent form submission if invalid
-                                                                    return;
-                                                                }
-
-                                                                // Validate Price: Must be a number greater than 0
-                                                                if (priceInput.value <= 0) {
-                                                                    alert("Price must be greater than 0.");
-                                                                    event.preventDefault(); // Prevent form submission if invalid
-                                                                    return;
-                                                                }
-                                                            });
-                                                        </script>
-
                                                     </div>
                                                     <input type="text" name="serviceid"  value="${s.serviceID}" hidden="">
                                                     <div class="modal-footer border-0">
@@ -225,9 +197,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-    document.querySelector('.close').editEventListener('click', function () {
-        $('#editUserModal').modal('hide');
-    });
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editUserModal').modal('hide');
+                                                    });
     </script>
     <script>
         function doClose() {
@@ -241,6 +213,7 @@
         }
     </script>
     <script>
+        var currentUrl = window.location.href;
         $(document).ready(function () {
             $('#myForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent the form from submitting the traditional way
@@ -250,12 +223,21 @@
                     url: '/SWP391/editService', // Your server endpoint
                     data: formData,
                     success: function (response) {
-                        console.log(swal);
-                        // Handle success, you can show a notification or update the UI
-                        swal({
-                            icon: "success",
-                            text: 'Update successful'
-                        });
+                        if (response.status === 'success') {
+                            swal({
+                                icon: 'success',
+                                text: response.message || 'Update successfully'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            });
+                        } else {
+                            swal({
+                                icon: 'error',
+                                text: response.message || 'Failed to update'
+                            }).then(() => {
+                                window.location = currentUrl;
+                            });
+                        }
                     },
                     error: function (xhr, status, error) {
                         // Handle error

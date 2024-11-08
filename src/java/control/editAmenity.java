@@ -80,7 +80,7 @@ throws ServletException, IOException {
         int amenityid = Integer.parseInt(request.getParameter("amenid"));
         Amenity oldAmenity = adao.findAmenity(amenityid); 
 
-        String name = request.getParameter("name"); 
+        String name = request.getParameter("name").trim(); 
         Amenity amenity = new Amenity(amenityid, name);
 
         if (oldAmenity.getAmenName().equals(name)) {
