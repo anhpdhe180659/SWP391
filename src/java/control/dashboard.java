@@ -81,6 +81,25 @@ public class dashboard extends HttpServlet {
             int occupiedRoom = listRoom.stream().filter(
                     room -> room.getStatusId() == 2
             ).toList().size();
+            int singleRoomCount = (int) listRoom.stream()
+                    .filter(room -> room.getTypeId() == 1) 
+                    .count();
+
+            int doubleRoomCount = (int) listRoom.stream()
+                    .filter(room -> room.getTypeId() == 2) 
+                    .count();
+
+            int familyRoomCount = (int) listRoom.stream()
+                    .filter(room -> room.getTypeId() == 3) 
+                    .count();
+
+            int deluxeRoomCount = (int) listRoom.stream()
+                    .filter(room -> room.getTypeId() == 4) 
+                    .count();
+
+            int presidentRoomCount = (int) listRoom.stream()
+                    .filter(room -> room.getTypeId() == 5) 
+                    .count();
             AmenityDAO amenityDao = new AmenityDAO();
             List<Amenity> listAmenity = amenityDao.getAllAmenities();
             InvoiceDAO ivDao = new InvoiceDAO();
@@ -98,6 +117,11 @@ public class dashboard extends HttpServlet {
             session.setAttribute("occupied", occupiedRoom);
             session.setAttribute("amenityCount", listAmenity.size());
             session.setAttribute("listInvoice", listInvoice);
+            session.setAttribute("singleRoomCount", singleRoomCount);
+            session.setAttribute("doubleRoomCount", doubleRoomCount);
+            session.setAttribute("familyRoomCount", familyRoomCount);
+            session.setAttribute("deluxeRoomCount", deluxeRoomCount);
+            session.setAttribute("presidentRoomCount", presidentRoomCount);
             response.sendRedirect("dashboard.jsp");
         }
     }

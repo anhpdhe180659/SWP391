@@ -205,6 +205,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-6 col-md-3">
 
                                 <div class="card card-stats card-round">
@@ -270,120 +271,214 @@
                                         </div>
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-round">
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-success bubble-shadow-small"style="background-color: #20c997"
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color:springgreen"
                                                     >
-                                                    <i class="fas fa-share-alt-square"></i>
+                                                    <i class="fas fa-user"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
                                                     <p class="card-category">Single Room</p>
-                                                    <h4 class="card-title">${sessionScope.amenityCount}</h4>
+                                                    <h4 class="card-title">${sessionScope.singleRoomCount}</h4>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Newest Notifications</div>
-                                    </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
                                     <div class="card-body">
-                                        <div class="container">
-                                            <ul>
-                                                <c:forEach var="news" items="${sessionScope.newsList}">
-                                                    <li>
-                                                        <span style="font-size: 21px" class="date">${news.publishDate}</span>
-                                                        <a style="font-size: 22px" href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
-                                                        <p style="white-space: nowrap;       /* Không cho phép xuống dòng */
-                                                           overflow: hidden;          /* Ẩn phần nội dung tràn ra */
-                                                           text-overflow: ellipsis;
-                                                           font-size:16px/* Hiển thị dấu ba chấm */">${news.content}</p>
-                                                    </li>
-                                                </c:forEach>
-                                                <li><a href="viewNotification">View all notification</a></li>
-                                            </ul> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                    
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Room Statistics</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas
-                                                id="myChart"
-                                                style="width: 50%; height: 50%"
-                                                ></canvas>
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color: cadetblue"
+                                                    >
+                                                    <i class="fas fa-user-friends"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Double Room</p>
+                                                    <h4 class="card-title">${sessionScope.doubleRoomCount}</h4>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Number of room types </div>
-                                    </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
                                     <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas
-                                                id="roomChart"
-                                                style="width: 50%; height: 50%"
-                                                ></canvas>
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color: aqua"
+                                                    >
+                                                    <i class="fas fa-users"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Family Room</p>
+                                                    <h4 class="card-title">${sessionScope.familyRoomCount}</h4>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                             <div class="col-md-6">
-                                <div class="card card-round">
-                                    <div class="card-header">
-                                        <div class="card-head-row card-tools-still-right">
-                                            <div class="card-title">Transaction History</div>
-
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color: darkred"
+                                                    >
+                                                    <i class="fas fa-chess-king"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">Deluxe Room</p>
+                                                    <h4 class="card-title">${sessionScope.deluxeRoomCount}</h4>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <!-- Projects table -->
-                                            <table class="table align-items-center mb-0">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th scope="col">Invoice Number</th>
-                                                        <th scope="col" class="text-end">Date & Time</th>
-                                                        <th scope="col" class="text-end">Amount</th>
-                                                        <th scope="col" class="text-end">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach items="${sessionScope.listInvoice}" var="i">
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <button
-                                                                    class="btn btn-icon btn-round btn-success btn-sm me-2"
-                                                                    >
-                                                                    <i class="fa fa-check"></i>
-                                                                </button>
-                                                                Payment No ${i.invoiceNo}
-                                                            </th>
-                                                            <td class="text-end">${i.paymentDate}</td>
-                                                            <td class="text-end price-vnd">${i.finalAmount} VND</td>
-                                                            <td class="text-end">
-                                                                <span class="badge badge-success">Completed</span>
-                                                            </td>
-                                                        </tr>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="card card-stats card-round">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-icon">
+                                                <div
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color:purple"
+                                                    >
+                                                    <i class="fas fa-crown"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col col-stats ms-3 ms-sm-0">
+                                                <div class="numbers">
+                                                    <p class="card-category">President Room</p>
+                                                    <h4 class="card-title">${sessionScope.presidentRoomCount}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Newest Notifications Section -->
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Newest Notifications</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="container">
+                                                <ul>
+                                                    <c:forEach var="news" items="${sessionScope.newsList}">
+                                                        <li>
+                                                            <span style="font-size: 21px" class="date">${news.publishDate}</span>
+                                                            <a style="font-size: 22px" href="NewsServlet?action=view&id=${news.newsID}">${news.title}</a>
+                                                            <p style="white-space: nowrap;
+                                                               overflow: hidden;
+                                                               text-overflow: ellipsis;
+                                                               font-size:16px;">
+                                                                ${news.content}
+                                                            </p>
+                                                        </li>
                                                     </c:forEach>
-                                                </tbody>
-                                            </table>
+                                                    <li><a href="viewNotification">View all notifications</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Room Statistics Section -->
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Room Statistics</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="chart-container">
+                                                <canvas id="myChart" style="width: 50%; height: 50%;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Number of Room Types Section -->
+                            <div class="row mt-4">
+                                <!-- Transaction History Section -->
+                                <div class="col-md-6">
+                                    <div class="card card-round">
+                                        <div class="card-header">
+                                            <div class="card-head-row card-tools-still-right">
+                                                <div class="card-title">Transaction History</div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <!-- Projects table -->
+                                                <table class="table align-items-center mb-0">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th scope="col">Invoice Number</th>
+                                                            <th scope="col" class="text-end">Date & Time</th>
+                                                            <th scope="col" class="text-end">Amount</th>
+                                                            <th scope="col" class="text-end">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach items="${sessionScope.listInvoice}" var="i">
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <button
+                                                                        class="btn btn-icon btn-round btn-success btn-sm me-2"
+                                                                        >
+                                                                        <i class="fa fa-check"></i>
+                                                                    </button>
+                                                                    Payment No ${i.invoiceNo}
+                                                                </th>
+                                                                <td class="text-end">${i.paymentDate}</td>
+                                                                <td class="text-end price-vnd">${i.finalAmount} VND</td>
+                                                                <td class="text-end">
+                                                                    <span class="badge badge-success">Completed</span>
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Number of Room Types Section -->
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Number of room types</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="chart-container">
+                                                <canvas id="roomChart" style="width: 50%; height: 50%;"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
