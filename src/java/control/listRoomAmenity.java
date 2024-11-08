@@ -62,9 +62,15 @@ public class listRoomAmenity extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+
         if (session == null) {
-            request.setAttribute("error", "Please sign in with staff account !");
             response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 3 && role != 1) {
+                request.setAttribute("message", "Please sign in with housekeeper/ manager account!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
         }
         RoomDao roomDao = new RoomDao();
         int index = 1;
