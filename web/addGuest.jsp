@@ -105,7 +105,14 @@
                                                     <label>
                                                         <i class="fa fa-phone"></i> Phone
                                                     </label>
-                                                    <input name="phone" type="text" maxlength="50" class="form-control" placeholder="Enter phone number" required />
+                                                    <input name="phone" 
+                                                           type="text" 
+                                                           pattern="[0-9]{10}"
+                                                           maxlength="10"
+                                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                           class="form-control" 
+                                                           placeholder="Enter phone number" 
+                                                           required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">

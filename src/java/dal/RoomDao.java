@@ -337,7 +337,7 @@ public class RoomDao extends DBContext {
         dao.getAllRooms().forEach((r) -> {
             System.out.println(r.getRoomId());
         });
-        System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1,10) / 5));
+        System.out.println(Math.ceil(dao.getTotalRooms(1, 1, 1, 10) / 5));
 //        Room room = new Room();
 //        room.setRoomNumber("601");
 //        room.setCleanId(1);
@@ -420,4 +420,45 @@ public class RoomDao extends DBContext {
         return stt;
     }
 
+    public List<Room> loadMoreWithAmenityStatus(int index, int typeId, int statusId, int cleanId, int roomNumber) {
+        List<Room> list = new ArrayList<>();
+        String sql = "SELECT DISTINCT r.* FROM Room r "
+                + "INNER JOIN AmenityDetail ad ON r.roomID = ad.roomID "
+                + "WHERE 1=1 "
+                + "AND (ad.status = 2 OR ad.status = 3) "; // Broken or Maintenance status
+
+        if (typeId != 0) {
+            sql += " AND r.TypeID = " + typeId;
+        }
+        if (statusId != 0) {
+            sql += " AND r.StatusID = " + statusId;
+        }
+        if (cleanId != 0) {
+            sql += " AND r.CleanID = " + cleanId;
+        }
+        if (roomNumber != 0) {
+            sql += " AND r.RoomNumber = " + roomNumber;
+        }
+
+        sql += " ORDER BY r.roomID LIMIT 5 OFFSET ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (index - 1) * 5);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Room r = new Room(
+                        rs.getInt("roomID"),
+                        rs.getString("roomNumber"),
+                        rs.getInt("cleanID"), // Thay đổi vị trí này
+                        rs.getInt("typeID"), // Thay đổi vị trí này
+                        rs.getInt("statusID") // Thay đổi vị trí này
+                );
+                list.add(r);
+            }
+        } catch (SQLException e) {
+            System.out.println("loadMoreWithAmenityStatus: " + e.getMessage());
+        }
+        return list;
+    }
 }

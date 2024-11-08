@@ -207,7 +207,15 @@
                                                     </div>
 
                                                 </div>
-
+                                                <c:set value="${requestScope.name}" var="name"/>
+                                                <c:set value="${requestScope.phone}" var="phone"/>
+                                                <c:set value="${requestScope.email}" var="email"/>
+                                                <c:set value="${requestScope.nationality}" var="nationality"/>
+                                                <c:set value="${requestScope.identification}" var="identification"/>
+                                                <c:set value="${requestScope.address}" var="address"/>
+                                                <c:set value="${requestScope.gender}" var="gender"/>
+                                                <c:set value="${requestScope.checkindate}" var="checkindate"/>
+                                                <c:set value="${requestScope.checkoutdate}" var="checkoutdate"/>
                                                 <div class="row tab-pane fade" id="pills-room" role="tabpanel" aria-labelledby="pills-room-tab">
                                                     <div style="display: flex">
                                                         <div class="col-md-3 col-lg-3">
@@ -219,8 +227,9 @@
                                                                     id="name"
                                                                     name="name"
                                                                     maxlength="100"
-                                                                    pattern="^[A-Za-zÀ-ÿ\s'-]{1,100}$"
-                                                                    title="Name contains only character, length should less than 100"
+                                                                    value="${name}"
+                                                                    pattern="^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$"
+                                                                    title="Name contains only character and space, length should less than 100"
                                                                     placeholder="Enter guest's full name"
                                                                     required
                                                                     />
@@ -233,6 +242,7 @@
                                                                     id="phone"
                                                                     name="phone"
                                                                     maxlength="50"
+                                                                    value="${phone}"
                                                                     placeholder="Enter phone number"
                                                                     pattern="^\d{10,15}$"
                                                                     title="Valid phone number must be 10 to 15 digits long"
@@ -246,7 +256,8 @@
                                                                     class="form-control"
                                                                     id="nationality"
                                                                     name="nationality"
-                                                                    pattern="^[A-Za-zÀ-ỹ\s]{1,50}$"
+                                                                    value="${nationality}"
+                                                                    pattern="^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$""
                                                                     title="Nationality should contain only letters and spaces, up to 50 characters."
                                                                     maxlength="50"
                                                                     placeholder="Enter nationality"
@@ -280,9 +291,10 @@
                                                                     id="identification"
                                                                     name="identification"
                                                                     maxlength="20"
+                                                                    value="${identification}"
                                                                     placeholder="Enter identification"
-                                                                    pattern="^[A-Z0-9]{8}|[0-9]{10}|[0-9]{12}$"
-                                                                    title="Valid ID contains 8 uppercase letters or digits, or 10 or 12 digits"
+                                                                    pattern="^[A-Z]{1}[0-9]{7}|[0-9]{10}|[0-9]{12}$"
+                                                                    title="Valid ID contains 1 uppercase letters and 7 digits, 10 or 12 digits"
                                                                     required
                                                                     />
                                                             </div>
@@ -294,6 +306,8 @@
                                                                     id="address"
                                                                     name="address"
                                                                     maxlength="200"
+                                                                    pattern="^[a-zA-Z0-9\s,.'-]+$"
+                                                                    value="${address}"
                                                                     placeholder="Enter address"
                                                                     required
                                                                     />
@@ -317,6 +331,7 @@
                                                                     class="form-control"
                                                                     id="checkindate"
                                                                     name="checkindate"
+                                                                    value="${checkindate}"
                                                                     placeholder="Enter identification"
                                                                     required
                                                                     onchange="calculateTotalStayPrice()"
@@ -329,6 +344,7 @@
                                                                     class="form-control"
                                                                     id="checkoutdate"
                                                                     name="checkoutdate"
+                                                                    value="${checkoutdate}"
                                                                     placeholder="Enter address"
                                                                     required
                                                                     onchange="calculateTotalStayPrice()"
@@ -341,6 +357,7 @@
                                                                     id="email"
                                                                     name="email"
                                                                     type="text"
+                                                                    value="${email}"
                                                                     class="form-control"
                                                                     placeholder="Enter guest's email"
                                                                     />
@@ -353,21 +370,6 @@
                                                                     Total Price: <span id="totalPrice">0</span>
                                                                 </div>
                                                             </div>
-
-                                                            <!--                                                            <div class="form-group">
-                                                                                                                            <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
-                                                                                                                            <input
-                                                                                                                                type="number"
-                                                                                                                                class="form-control"
-                                                                                                                                min="0"
-                                                                                                                                max="2000000000"
-                                                                                                                                name="deposit"
-                                                                                                                                placeholder="Enter deposit"
-                                                                                                                                required
-                                                                                                                                />
-                                                                                                                        </div>-->
-
-
                                                             <div class="form-group">
 
                                                                 <label><i class="fas fa-transgender"></i> Gender</label><br />
@@ -379,7 +381,9 @@
                                                                             name="gender"
                                                                             id="flexRadioDefault1"
                                                                             value="1"
-                                                                            checked
+                                                                            <c:if test="${gender == 1 || gender == null}">
+                                                                                checked
+                                                                            </c:if>
                                                                             />
                                                                         <label
                                                                             class="form-check-label"
@@ -394,7 +398,9 @@
                                                                             type="radio"
                                                                             name="gender"
                                                                             id="flexRadioDefault2"
-
+                                                                            <c:if test="${gender == 0}">
+                                                                                checked
+                                                                            </c:if>
                                                                             value="0"
                                                                             />
                                                                         <label
@@ -458,7 +464,6 @@
                     const checkin = new Date(checkinDate);
                     const checkout = new Date(checkoutDate);
                     const stayDuration = (checkout - checkin) / (1000 * 60 * 60 * 24); // Difference in days
-
                     if (stayDuration > 0) {
                         // Calculate the base total price of selected rooms
                         let baseTotalPrice = 0;
@@ -553,35 +558,49 @@
                 var email = document.getElementById("email").value.trim();
 //                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
                 var regex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-                if (!regex.test(email)) {
-                    alert("Please enter a valid Email address (example@gmail.com)");
-                    document.getElementById("email").focus();
+                if (email.length > 0) {
+                    if (!regex.test(email)) {
+                        alert("Please enter a valid Email address (example@gmail.com)");
+                        document.getElementById("email").focus();
+                        return false;
+                    }
+                }
+//                var identification = document.getElementById("identification").value.trim();
+//                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
+//                if (!regex2.test(identification)) {
+//                    alert("Please enter a valid identification number with 10 or 12 digit");
+//                    document.getElementById("identification").focus();
+//                    return false;
+//                }
+                document.getElementById("address").addEventListener("blur", function () {
+                    const address = this.value;
+                    const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
+                    if (!pattern.test(address)) {
+                        alert("The address contains invalid characters.");
+                        this.value = ""; // Optionally clear the input
+                    }
+                });
+                var checkboxes = document.querySelectorAll("input[name='roomSelected']");
+                var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+                if (!isChecked) {
+                    alert("Please select at least one room.");
+                    return false;
+                } else {
+                    var option = confirm("Are you sure to save this booking?");
+                    if (option === true) {
+                        return true;
+                    }
                     return false;
                 }
-                var phone = document.getElementById("phone").value.trim(); // Trim spaces from input
-                var regex1 = /^\d{10}$/;
 
-                if (!regex1.test(phone)) {
-                    alert("Please enter a valid phone number with 10 digits.");
-                    document.getElementById("phone").focus();
-                    return false;
-                }
-                var identification = document.getElementById("identification").value.trim();
-                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-                if (!regex2.test(identification)) {
-                    alert("Please enter a valid identification number with 12 digit");
-                    document.getElementById("identification").focus();
-                    return false;
-                }
-                return true;
             }
         </script>
         <script>
-            document.getElementById("name").addEventListener("input", function () {
+            document.getElementById("name").addEventListener("blur", function () {
                 const nameInput1 = document.getElementById("name").value;
 
                 // Check if the input contains only spaces
-                if (nameInput1.trim() === "") {
+                if (nameInput1 !== "" && nameInput1.trim() === "") {
                     alert("The name field cannot contain only spaces.");
                     // Optionally, you can clear the field or take any other action
                     document.getElementById("name").value = ""; // Clear the field
@@ -591,47 +610,45 @@
                 const nameInput2 = document.getElementById("email").value;
 
                 // Check if the input contains only spaces
-                if (nameInput2.trim() === "") {
+                if (nameInput2 !== "" && nameInput2.trim() === "") {
                     alert("The email field cannot contain only spaces.");
                     // Optionally, you can clear the field or take any other action
                     document.getElementById("email").value = ""; // Clear the field
                 }
             });
-            document.getElementById("identification").addEventListener("input", function () {
+            document.getElementById("identification").addEventListener("blur", function () {
                 const nameInput3 = document.getElementById("identification").value;
 
                 // Check if the input contains only spaces
-                if (nameInput3.trim() === "") {
+                if (nameInput3 !== "" && nameInput3.trim() === "") {
                     alert("The identification field cannot contain only spaces.");
                     // Optionally, you can clear the field or take any other action
                     document.getElementById("identification").value = ""; // Clear the field
                 }
             });
-            document.getElementById("phone").addEventListener("input", function () {
+            document.getElementById("phone").addEventListener("blur", function () {
                 const nameInput4 = document.getElementById("phone").value;
 
                 // Check if the input contains only spaces
-                if (nameInput4.trim() === "") {
+                if (nameInput4 !== "" && nameInput4.trim() === "") {
                     alert("The phone field cannot contain only spaces.");
                     // Optionally, you can clear the field or take any other action
                     document.getElementById("phone").value = ""; // Clear the field
                 }
             });
-            document.getElementById("address").addEventListener("input", function () {
+            document.getElementById("address").addEventListener("blur", function () {
                 const nameInput5 = document.getElementById("address").value;
-
                 // Check if the input contains only spaces
-                if (nameInput5.trim() === "") {
+                if (nameInput5 !== "" && nameInput5.trim() === "") {
                     alert("The address field cannot contain only spaces.");
                     // Optionally, you can clear the field or take any other action
                     document.getElementById("address").value = ""; // Clear the field
                 }
             });
-            document.getElementById("nationality").addEventListener("input", function () {
+            document.getElementById("nationality").addEventListener("blur", function () {
                 const nameInput6 = document.getElementById("nationality").value;
-
                 // Check if the input contains only spaces
-                if (nameInput6.trim() === "") {
+                if (nameInput6 !== "" && nameInput6.trim() === "") {
                     alert("The nationality field cannot contain only spaces.");
                     // Optionally, you can clear the field or take any other action
                     document.getElementById("nationality").value = ""; // Clear the field

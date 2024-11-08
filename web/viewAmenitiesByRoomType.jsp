@@ -43,7 +43,7 @@
                                             <c:if test="${not empty amenitiesByRoomType[roomType.typeId]}">
                                                 <c:forEach var="amenity" items="${amenitiesByRoomType[roomType.typeId]}">
                                                     <li>
-                                                        Amenity Name: ${amenityNames[amenity.amenID]}, <!-- Lấy tên tiện nghi từ amenityNames -->
+                                                        ${amenityNames[amenity.amenID]}-
                                                         Quantity: ${amenity.quantity}
                                                     </li>
                                                 </c:forEach>

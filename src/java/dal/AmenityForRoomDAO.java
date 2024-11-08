@@ -10,6 +10,7 @@ import model.AmenityDetail;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+import model.Room;
 
 /**
  *
@@ -265,18 +266,67 @@ public class AmenityForRoomDAO extends DBContext {
         return amenities; // Trả về danh sách tiện nghi cho phòng đại diện
     }
 
+    public boolean checkForMaintenanceOrBroken(int roomId) {
+        String query = "SELECT COUNT(*) FROM AmenityDetail WHERE roomID = ? AND (status = 2 OR status = 3)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, roomId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0; // Return true if there's at least one amenity that needs maintenance or is broken
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log error or handle as needed
+        }
+        return false; // Default to false if no amenities need maintenance or broken status is found
+    }
+
+    public Map<String, Integer> getAmenityMaintenanceStats() {
+        Map<String, Integer> stats = new HashMap<>();
+        String query = """
+            WITH RoomStatus AS (
+                SELECT 
+                    r.roomID,
+                    CASE 
+                        WHEN EXISTS (SELECT 1 FROM AmenityDetail ad 
+                                   WHERE ad.roomID = r.roomID AND ad.status = 2) 
+                        THEN 'Maintenance'
+                        WHEN EXISTS (SELECT 1 FROM AmenityDetail ad 
+                                   WHERE ad.roomID = r.roomID AND ad.status = 3) 
+                        THEN 'Broken'
+                        WHEN EXISTS (SELECT 1 FROM AmenityDetail ad 
+                                   WHERE ad.roomID = r.roomID AND ad.status = 1) 
+                        THEN 'Normal'
+                        ELSE NULL
+                    END as room_status
+                FROM Room r
+            )
+            SELECT room_status as status, COUNT(*) as room_count
+            FROM RoomStatus
+            WHERE room_status IS NOT NULL
+            GROUP BY room_status
+            """;
+
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String status = rs.getString("status");
+                int count = rs.getInt("room_count");
+                stats.put(status, count);
+            }
+            // Debug: In ra để kiểm tra
+            System.out.println("Room statistics: " + stats);
+        } catch (SQLException ex) {
+            System.out.println("Error getting amenity maintenance stats: " + ex.getMessage());
+        }
+        return stats;
+    }
+
     public static void main(String[] args) {
         AmenityForRoomDAO amenityForRoomDAO = new AmenityForRoomDAO();
-        List<AmenityDetail> amenities = amenityForRoomDAO.getAmenitiesForRoomByType(1);
-
-        // In kết quả
-        if (amenities.isEmpty()) {
-            System.out.println("No amenities found for this room type.");
-        } else {
-            for (AmenityDetail amenity : amenities) {
-                System.out.println(amenity);
-            }
-        }
+        System.out.println(amenityForRoomDAO.checkForMaintenanceOrBroken(3));
 
     }
 }

@@ -16,19 +16,19 @@
         <script src="assets/js/plugin/webfont/webfont.min.js"></script>
         <script>
             WebFont.load({
-                google: {families: ["Public Sans:300,400,500,600,700"]},
-                custom: {
+            google: {families: ["Public Sans:300,400,500,600,700"]},
+                    custom: {
                     families: [
-                        "Font Awesome 5 Solid",
-                        "Font Awesome 5 Regular",
-                        "Font Awesome 5 Brands",
-                        "simple-line-icons",
+                            "Font Awesome 5 Solid",
+                            "Font Awesome 5 Regular",
+                            "Font Awesome 5 Brands",
+                            "simple-line-icons",
                     ],
-                    urls: ["assets/css/fonts.min.css"],
-                },
-                active: function () {
+                            urls: ["assets/css/fonts.min.css"],
+                    },
+                    active: function () {
                     sessionStorage.fonts = true;
-                },
+                    },
             });
         </script>
         <style>
@@ -80,7 +80,7 @@
 
                 <div class="container">
                     <div class="page-inner">
-                        
+
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Update Room Type Amenities</h3>
                         </div>
@@ -94,7 +94,7 @@
                                         <form action="UpdateAmenByRoomtype" method="post">
                                             <div class="form-group">
                                                 <label for="typeId">Room Type</label>
-                                                <select class="form-control" id="typeId" name="typeId" required>
+                                                <select class="form-control" id="typeId" name="typeId" required onchange="updateAmenityDropdown(this.value)">
                                                     <c:forEach var="roomType" items="${roomTypes}">
                                                         <option value="${roomType.typeId}">${roomType.typeName}</option>
                                                     </c:forEach>
@@ -103,8 +103,10 @@
 
 
                                             <div class="form-group">
-                                                <label for="amenID">Amenity ID</label>
-                                                <input type="number" class="form-control" id="amenID" name="amenID" required>
+                                                <label for="amenID">Amenity</label>
+                                                <select class="form-control" id="amenID" name="amenID" required>
+                                                    <!-- Sẽ cập nhật danh sách này dựa trên Room Type đã chọn -->
+                                                </select>
                                             </div>
 
                                             <div class="form-group">
@@ -132,41 +134,41 @@
                             </div>
                         </div>
                     </div>
-                                    <div class="col-12">
-                            <table class="table table-bordered">
-                                <thead>
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Room Type ID</th>
+                                    <th>Room Type Name</th>
+                                    <th>Amenities</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="roomType" items="${roomTypes}">
                                     <tr>
-                                        <th>Room Type ID</th>
-                                        <th>Room Type Name</th>
-                                        <th>Amenities</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="roomType" items="${roomTypes}">
-                                        <tr>
-                                            <td>${roomType.typeId}</td>
-                                            <td>${roomType.typeName}</td>
-                                            <td>
-                                                <ul>
-                                                    <!-- Kiểm tra xem có tiện nghi cho hạng phòng này không -->
-                                                    <c:if test="${not empty amenitiesByRoomType[roomType.typeId]}">
-                                                        <c:forEach var="amenity" items="${amenitiesByRoomType[roomType.typeId]}">
-                                                            <li>
-                                                                Amenity Name: ${amenityNames[amenity.amenID]}, <!-- Lấy tên tiện nghi từ amenityNames -->
-                                                                Quantity: ${amenity.quantity}
-                                                            </li>
-                                                        </c:forEach>
+                                        <td>${roomType.typeId}</td>
+                                        <td>${roomType.typeName}</td>
+                                        <td>
+                                            <ul>
+                                                <!-- Kiểm tra xem có tiện nghi cho hạng phòng này không -->
+                                                <c:if test="${not empty amenitiesByRoomType[roomType.typeId]}">
+                                                    <c:forEach var="amenity" items="${amenitiesByRoomType[roomType.typeId]}">
+                                                        <li>
+                                                            Amenity Name: ${amenityNames[amenity.amenID]}, <!-- Lấy tên tiện nghi từ amenityNames -->
+                                                            Quantity: ${amenity.quantity}
+                                                        </li>
+                                                    </c:forEach>
+                                                </c:if>
+                                                <c:if test="${empty amenitiesByRoomType[roomType.typeId]}">
+                                                    <li>No amenities found for this room type.</li>
                                                     </c:if>
-                                                    <c:if test="${empty amenitiesByRoomType[roomType.typeId]}">
-                                                        <li>No amenities found for this room type.</li>
-                                                        </c:if>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                     <footer class="footer">
                         <!-- Footer content here -->
                     </footer>
@@ -182,16 +184,48 @@
         <script src="assets/js/kaiadmin.min.js"></script>
 
         <script>
-            $(document).ready(function () {
+                $(document).ready(function () {
                 // Add input validation
                 $('form').on('submit', function (e) {
-                    const quantity = $('#quantity').val();
-                    if (quantity <= 0) {
-                        alert('Quantity must be greater than 0');
-                        e.preventDefault();
-                        return false;
-                    }
+                const quantity = $('#quantity').val();
+                if (quantity <= 0) {
+                alert('Quantity must be greater than 0');
+                e.preventDefault();
+                return false;
+                }
                 });
+                });
+        </script>
+        <script>
+            // JS object chứa tiện nghi cho từng Room Type
+            const amenitiesByRoomType = {
+            <c:forEach var="roomType" items="${roomTypes}">
+            "${roomType.typeId}": [
+                <c:forEach var="amenity" items="${amenitiesByRoomType[roomType.typeId]}">
+            { id: "${amenity.amenID}", name: "${amenityNames[amenity.amenID]}" }<c:if test="${!amenityStatus.last}">,</c:if>
+                </c:forEach>
+            ]<c:if test="${!roomTypeStatus.last}">,</c:if>
+            </c:forEach>
+            };
+            // Cập nhật dropdown tiện nghi dựa trên Room Type đã chọn
+            function updateAmenityDropdown(typeId) {
+            const amenityDropdown = document.getElementById("amenID");
+            amenityDropdown.innerHTML = "";
+            // Lấy danh sách tiện nghi cho Room Type đã chọn
+            const amenities = amenitiesByRoomType[typeId] || [];
+            // Thêm option cho từng tiện nghi
+            amenities.forEach(amenity => {
+            const option = document.createElement("option");
+            option.value = amenity.id;
+            option.text = amenity.name;
+            amenityDropdown.appendChild(option);
+            });
+            }
+
+            // Khi trang load, hiển thị tiện nghi cho Room Type đầu tiên
+            document.addEventListener("DOMContentLoaded", function() {
+            const initialTypeId = document.getElementById("typeId").value;
+            updateAmenityDropdown(initialTypeId);
             });
         </script>
     </body>

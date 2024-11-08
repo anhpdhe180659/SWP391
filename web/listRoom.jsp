@@ -232,6 +232,9 @@
                                                         </c:when>
                                                     </c:choose>
                                                 </div>
+                                                <a  role="button" class="button " href="showRoomAmenities?id=${s.roomId}">
+                                                    Amenities
+                                                </a>
                                             </div>
                                         </c:forEach>
                                         <c:set value="${sessionScope.currentindex}" var="index" />

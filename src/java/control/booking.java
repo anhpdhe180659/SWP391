@@ -109,10 +109,13 @@ public class booking extends HttpServlet {
             RoomTypeDAO rtdao = new RoomTypeDAO();
             Guest guest = new Guest();
             String Name = request.getParameter("name").trim();
-            String email = request.getParameter("email").trim();
-            String Nationality = request.getParameter("nationality").trim();
-            String Identification = request.getParameter("identification").trim();
             guest.setName(Name);
+            String Email = request.getParameter("email").trim();
+            guest.setEmail(Email);
+            String Nationality = request.getParameter("nationality").trim();
+            guest.setNationality(Nationality);
+            String Identification = request.getParameter("identification").trim();
+            guest.setIdentification(Identification);
             String DateOfBirth = request.getParameter("birthday");
             guest.setDateOfBirth(LocalDate.parse(DateOfBirth));
             int Sex = Integer.parseInt(request.getParameter("gender"));
@@ -121,17 +124,14 @@ public class booking extends HttpServlet {
             guest.setAddress(Address);
             String Phone = request.getParameter("phone").trim();
             guest.setPhone(Phone);
-
-            guest.setIdentification(Identification);
-
-            guest.setNationality(Nationality);
-
-            guest.setEmail(email);
+            String checkindate = request.getParameter("checkindate");
+            String checkoutdate = request.getParameter("checkoutdate");
+            String checkintime = request.getParameter("checkintime");
+            String checkouttime = request.getParameter("checkouttime");
             int deposit = 0;
             String noti = "Booking successfully!";
             int checkinstatus = 0;
             int paidstatus = 0;
-//            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<Guest> listGuest = gdao.getAllGuests();
             Guest guestBooking = null;
             boolean guestExist = false;
@@ -141,10 +141,6 @@ public class booking extends HttpServlet {
                     guestBooking = g;
                 }
             }
-            String checkindate = request.getParameter("checkindate");
-            String checkoutdate = request.getParameter("checkoutdate");
-            String checkintime = request.getParameter("checkintime");
-            String checkouttime = request.getParameter("checkouttime");
             // Chuyen đoi thanh LocalDate và LocalTime
             LocalDate inDate = LocalDate.parse(checkindate);
             LocalDate outDate = LocalDate.parse(checkoutdate);
@@ -154,14 +150,8 @@ public class booking extends HttpServlet {
             LocalDateTime checkOutDateTime = LocalDateTime.of(outDate, outTime);
             int numberOfNight = (int) (checkOutDateTime.toLocalDate().toEpochDay() - checkInDateTime.toLocalDate().toEpochDay());
             LocalDateTime currentDateTime = LocalDateTime.now();
-            if (checkInDateTime.isAfter(checkOutDateTime)) {
-                noti = "Check-in date/time cannot be after check-out date/time";
-                request.setAttribute("noti", noti);
-                request.getRequestDispatcher("booking.jsp").forward(request, response);
-                return;
-            }
-//            else if (checkInDateTime.isBefore(currentDateTime)) {
-//                noti = "Check-in date/time cannot be before the current date/time";
+//            if (checkInDateTime.isAfter(checkOutDateTime)) {
+//                noti = "Check-in date/time cannot be after check-out date/time";
 //                request.setAttribute("noti", noti);
 //                request.getRequestDispatcher("booking.jsp").forward(request, response);
 //                return;
@@ -170,15 +160,35 @@ public class booking extends HttpServlet {
                 // new guest with different Identification
                 for (Guest g : listGuest) {
                     if (g.getPhone().equals(guest.getPhone())) {
-                        noti = "Phone number has existed, please try again!";
+                        noti = "Phone number " + Phone + " has existed, please try again!";
                         request.setAttribute("noti", noti);
+                        request.setAttribute("name", Name);
+                        request.setAttribute("email", Email);
+                        request.setAttribute("nationality", Nationality);
+                        request.setAttribute("identification", Identification);
+                        request.setAttribute("birthday", DateOfBirth);
+                        request.setAttribute("gender", Sex);
+                        request.setAttribute("address", Address);
+                        request.setAttribute("phone", Phone);
+                        request.setAttribute("checkindate", checkindate);
+                        request.setAttribute("checkoutdate", checkoutdate);
                         request.getRequestDispatcher("booking.jsp").forward(request, response);
                         return;
                     }
-                    if (email.length() > 0) {
+                    if (Email.length() > 0) {
                         if (g.getEmail() != null && g.getEmail().equals(guest.getEmail())) {
-                            noti = "Email has existed, please try again!";
+                            noti = "Email" + guest.getEmail() + " has existed, please try again!";
                             request.setAttribute("noti", noti);
+                            request.setAttribute("name", Name);
+                            request.setAttribute("email", Email);
+                            request.setAttribute("nationality", Nationality);
+                            request.setAttribute("identification", Identification);
+                            request.setAttribute("birthday", DateOfBirth);
+                            request.setAttribute("gender", Sex);
+                            request.setAttribute("address", Address);
+                            request.setAttribute("phone", Phone);
+                            request.setAttribute("checkindate", checkindate);
+                            request.setAttribute("checkoutdate", checkoutdate);
                             request.getRequestDispatcher("booking.jsp").forward(request, response);
                             return;
                         }
@@ -201,6 +211,16 @@ public class booking extends HttpServlet {
                             String roomNumber = rdao.getRoomByRoomID(roomid).getRoomNumber();
                             noti = "Room " + roomNumber + " is already booked for the selected dates. Please choose different dates!";
                             request.setAttribute("noti", noti);
+                            request.setAttribute("name", Name);
+                            request.setAttribute("email", Email);
+                            request.setAttribute("nationality", Nationality);
+                            request.setAttribute("identification", Identification);
+                            request.setAttribute("birthday", DateOfBirth);
+                            request.setAttribute("gender", Sex);
+                            request.setAttribute("address", Address);
+                            request.setAttribute("phone", Phone);
+                            request.setAttribute("checkindate", checkindate);
+                            request.setAttribute("checkoutdate", checkoutdate);
                             request.getRequestDispatcher("booking.jsp").forward(request, response);
                             return;
                         }
@@ -210,6 +230,16 @@ public class booking extends HttpServlet {
                         String roomNumber = rdao.getRoomByRoomID(roomid).getRoomNumber();
                         noti = "Room " + roomNumber + " is under maintainance. Please choose different room!";
                         request.setAttribute("noti", noti);
+                        request.setAttribute("name", Name);
+                        request.setAttribute("email", Email);
+                        request.setAttribute("nationality", Nationality);
+                        request.setAttribute("identification", Identification);
+                        request.setAttribute("birthday", DateOfBirth);
+                        request.setAttribute("gender", Sex);
+                        request.setAttribute("address", Address);
+                        request.setAttribute("phone", Phone);
+                        request.setAttribute("checkindate", checkindate);
+                        request.setAttribute("checkoutdate", checkoutdate);
                         request.getRequestDispatcher("booking.jsp").forward(request, response);
                         return;
                     }
@@ -217,6 +247,16 @@ public class booking extends HttpServlet {
             } else {
                 noti = "Please select at least 1 room for booking!";
                 request.setAttribute("noti", noti);
+                request.setAttribute("name", Name);
+                request.setAttribute("email", Email);
+                request.setAttribute("nationality", Nationality);
+                request.setAttribute("identification", Identification);
+                request.setAttribute("birthday", DateOfBirth);
+                request.setAttribute("gender", Sex);
+                request.setAttribute("address", Address);
+                request.setAttribute("phone", Phone);
+                request.setAttribute("checkindate", checkindate);
+                request.setAttribute("checkoutdate", checkoutdate);
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
                 return;
             }
@@ -244,8 +284,8 @@ public class booking extends HttpServlet {
                 }
             }
             String bookingcode = utilConvert.toBase36(bookingid);
-            if(email != null){
-                sendBookingCodeEmail(email, bookingcode);
+            if (Email != null) {
+                sendBookingCodeEmail(Email, bookingcode);
             }
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
@@ -258,8 +298,17 @@ public class booking extends HttpServlet {
     private void sendBookingCodeEmail(String email, String bookingcode) {
         // Email sending logic
         String subject = "Booking code from ALIHOTEL";
-        String content = "Your booking code is: " + bookingcode;
-
+        String content = "Dear valued customer,\n\n"
+                + "Thank you for choosing ALIHOTEL. We are pleased to confirm your booking. "
+                + "Your booking code is: " + bookingcode + ".\n\n"
+                + "Please keep this code for reference. If you have any questions or need further assistance, feel free to contact us.\n\n"
+                + "We would like to remind you that your check-in time is at 2:00 PM on the scheduled date. "
+                + "Please make sure to arrive on time to enjoy your stay.\n\n"
+                + "If you wish to cancel your booking, please note that cancellations must be made at least 24 hours in advance "
+                + "to avoid any cancellation fees. You can cancel by contacting our team or through the booking portal.\n\n"
+                + "We look forward to welcoming you to ALIHOTEL!\n\n"
+                + "Best regards,\n"
+                + "The ALIHOTEL Team";
         // Set up your SMTP server and send the email (this is a simplified example)
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
