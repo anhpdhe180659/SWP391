@@ -104,15 +104,16 @@ public class PolicyController extends HttpServlet {
         }
     }
 
-    private void addPolicy(HttpServletRequest request, HttpServletResponse response)
+     private void addPolicy(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             String title = request.getParameter("title");
-            String context = request.getParameter("context");
+            String context = request.getParameter("context").trim();
 
-            if (title != null && !title.trim().isEmpty() && context != null && !context.trim().isEmpty()) {
+            if (title != null && !title.trim().isEmpty() && context != null && !context.isEmpty()) {
                 policy newPolicy = new policy();
-                newPolicy.setPolicyTitle(title);
+                newPolicy.setPolicyTitle(title.trim());
+                // Không trim() context để giữ nguyên format
                 newPolicy.setPolicyContext(context);
 
                 policyDAO.addPolicy(newPolicy);
@@ -132,12 +133,13 @@ public class PolicyController extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             String title = request.getParameter("title");
-            String context = request.getParameter("context");
+            String context = request.getParameter("context").trim();
 
-            if (title != null && !title.trim().isEmpty() && context != null && !context.trim().isEmpty()) {
+            if (title != null && !title.trim().isEmpty() && context != null && !context.isEmpty()) {
                 policy updatePolicy = new policy();
                 updatePolicy.setPolicyId(id);
-                updatePolicy.setPolicyTitle(title);
+                updatePolicy.setPolicyTitle(title.trim());
+                // Không trim() context để giữ nguyên format
                 updatePolicy.setPolicyContext(context);
 
                 policyDAO.updatePolicy(updatePolicy);

@@ -175,13 +175,19 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-4" >
-                                                                <div class="form-group form-group-default" style="line-height: 23px">
-                                                                    <label>Date of Birth</label>
-                                                                    <input type="date" name="birthday" value="${e.dateOfBirth}" required
-                                                                           style="width: 100%; border: none; "/>
-                                                                </div>
-                                                            </div>
+                                                           <div class="col-sm-4" >
+    <div class="form-group form-group-default" style="line-height: 23px">
+        <label>Date of Birth</label>
+        <input type="date" 
+               id="birthday"
+               name="birthday" 
+               value="${e.dateOfBirth}" 
+               required
+               max=""
+               style="width: 100%; border: none;"
+        />
+    </div>
+</div>
                                                             <div class="col-sm-3" >
                                                                 <div class="form-group form-group-default" style="line-height: 23px">
                                                                     <label>Salary</label>
@@ -328,7 +334,23 @@
             });
         });
     </script>
+<script>
+    // Thiết lập max date là ngày hiện tại
+    function setMaxDate() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
 
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("birthday").setAttribute("max", today);
+    }
+    
+    // Gọi hàm khi trang được load
+    window.onload = function() {
+        setMaxDate();
+    };
+</script>
 </body>
 </html>
 

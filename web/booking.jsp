@@ -293,8 +293,8 @@
                                                                     maxlength="20"
                                                                     value="${identification}"
                                                                     placeholder="Enter identification"
-                                                                    pattern="^[A-Z]{1}[0-9]{7}|[0-9]{10}|[0-9]{12}$"
-                                                                    title="Valid ID contains 1 uppercase letters and 7 digits, 10 or 12 digits"
+                                                                    pattern="^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$"
+                                                                    title="Valid ID contains 1 uppercase letters and 7 digits, 9 or 12 digits"
                                                                     required
                                                                     />
                                                             </div>
@@ -307,6 +307,7 @@
                                                                     name="address"
                                                                     maxlength="200"
                                                                     pattern="^[a-zA-Z0-9\s,.'-]+$"
+                                                                    title="Address can contain letters, numbers, spaces, commas, periods, hyphens, and apostrophes"
                                                                     value="${address}"
                                                                     placeholder="Enter address"
                                                                     required
