@@ -315,7 +315,7 @@ public class BookingDAO extends DBContext {
         List<Integer> list = new ArrayList<>();
         String query = """
                        select * from HotelManagement.BookingRoom
-                       WHERE TIMESTAMPDIFF(HOUR, NOW(), CheckInDate) >= 24
+                       WHERE TIMESTAMPDIFF(MINUTE, NOW(), CheckInDate) >= 1440
                        AND BookingID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);
