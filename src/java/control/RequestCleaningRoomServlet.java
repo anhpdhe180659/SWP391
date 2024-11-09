@@ -31,9 +31,8 @@ public class RequestCleaningRoomServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
-          // Thêm kiểm tra role
-        User user = (User) req.getSession().getAttribute("account");
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
+   User user = (User) req.getSession().getAttribute("user");
         if (user == null || user.getRole() != 2) {
             resp.sendRedirect("login");
             return;
@@ -50,13 +49,14 @@ public class RequestCleaningRoomServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        User user = (User) request.getSession().getAttribute("account");
+            throws ServletException, IOException { 
+        
+ User user = (User) request.getSession().getAttribute("user");
         if (user == null || user.getRole() != 2) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
+       
         // Retrieve form data
         String roomNumber = request.getParameter("roomNumber");
         String note = request.getParameter("note");

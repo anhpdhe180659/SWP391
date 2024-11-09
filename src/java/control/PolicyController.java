@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "PolicyController", urlPatterns = {"/policy/*"})
+@WebServlet(name = "PolicyController", urlPatterns = {"/policy"})
 public class PolicyController extends HttpServlet {
     private PolicyDAO policyDAO;
 
