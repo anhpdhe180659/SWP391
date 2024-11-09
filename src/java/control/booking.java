@@ -271,6 +271,7 @@ public class booking extends HttpServlet {
                     totalPrice += price;
                 }
             }
+            totalPrice = totalPrice * numberOfNight;
             if (checkinstatus == 1) {
                 bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, totalPrice, 0, currentDateTime);
             } else {
