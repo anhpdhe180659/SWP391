@@ -75,11 +75,15 @@ public class changePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
         String currentPassword = request.getParameter("currentPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        HttpSession session = request.getSession();
+        
         String username = (String) session.getAttribute("loggedInUser");
 
         if (username == null) {

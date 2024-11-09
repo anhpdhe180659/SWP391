@@ -39,10 +39,18 @@ public class editItemQuantity extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        RoomDao rDAO = new RoomDao();
-        ItemDAO idao = new ItemDAO();
         try {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 3) {
+                request.setAttribute("error", "Please sign in with staff account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            RoomDao rDAO = new RoomDao();
+            ItemDAO idao = new ItemDAO();
 
             int roomId = Integer.parseInt(request.getParameter("roomId"));
             int itemid = Integer.parseInt(request.getParameter("itemId"));
@@ -84,7 +92,7 @@ public class editItemQuantity extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("roomItem.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 

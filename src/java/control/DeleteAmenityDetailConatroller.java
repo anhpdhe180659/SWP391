@@ -62,19 +62,19 @@ public class DeleteAmenityDetailConatroller extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            String roomID = request.getParameter("roomid");
-            System.out.println("RoomId =============" + roomID);
-            AmenityDAO amenityDao = new AmenityDAO();
-            amenityDao.deleteAmenityDetailByRoomNumber(roomID);
-
-            response.sendRedirect("amenity-detail");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        String roomID = request.getParameter("roomid");
+        System.out.println("RoomId =============" + roomID);
+        AmenityDAO amenityDao = new AmenityDAO();
+        amenityDao.deleteAmenityDetailByRoomNumber(roomID);
+
+        response.sendRedirect("amenity-detail");
+
     }
 
     /**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+
     <servlet>
         <servlet-name>dashboard</servlet-name>
         <servlet-class>control.dashboard</servlet-class>
@@ -478,5 +479,15 @@
     <error-page>
         <error-code>404</error-code>
         <location>/error404.jsp</location>
+    </error-page>
+     <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/exceptionErrorPage.jsp</location>
+    </error-page>
+     <error-page>
+        <!-- Specify the exception type to handle -->
+        <exception-type>java.lang.Exception</exception-type>
+        <!-- Specify the page to be redirected to when the exception occurs -->
+        <location>/exceptionErrorPage.jsp</location>
     </error-page>
 </web-app>

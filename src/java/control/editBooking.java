@@ -59,52 +59,56 @@ public class editBooking extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        BookingCodeConvert utilConvert = new BookingCodeConvert();
-        int bookingid = Integer.parseInt(request.getParameter("bookingid"));
-        String bookingcode = utilConvert.toBase36(bookingid);
-        request.setAttribute("bookingcode", bookingcode);
-        BookingDAO bdao = new BookingDAO();
-        GuestDAO gdao = new GuestDAO();
-        RoomDao rdao = new RoomDao();
-        Booking booking = bdao.getBookingByBookingID(bookingid);
-        List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
-        List<Room> listRoom = new ArrayList<>();
-        LocalDateTime checkindate = null;
-        LocalDateTime checkoutdate = null;
-        for (BookingRoom bookingRoom : listBookingRoom) {
-            Room room = rdao.getRoomByRoomID(bookingRoom.getRoomID());
-            listRoom.add(room);
-            checkindate = bookingRoom.getCheckInDate();
-            checkoutdate = bookingRoom.getCheckOutDate();
-        }
-        Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
-        int deposit = booking.getDeposit();
-        int neededDeposit = booking.getTotalPrice() / 2;
-        int checkinstatus = booking.getCheckInStatus();
+        try {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        String checkindateFormatted = checkindate.format(formatter);
-        String checkoutdateFormatted = checkoutdate.format(formatter);
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            BookingCodeConvert utilConvert = new BookingCodeConvert();
+            int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+            String bookingcode = utilConvert.toBase36(bookingid);
+            request.setAttribute("bookingcode", bookingcode);
+            BookingDAO bdao = new BookingDAO();
+            GuestDAO gdao = new GuestDAO();
+            RoomDao rdao = new RoomDao();
+            Booking booking = bdao.getBookingByBookingID(bookingid);
+            List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
+            List<Room> listRoom = new ArrayList<>();
+            LocalDateTime checkindate = null;
+            LocalDateTime checkoutdate = null;
+            for (BookingRoom bookingRoom : listBookingRoom) {
+                Room room = rdao.getRoomByRoomID(bookingRoom.getRoomID());
+                listRoom.add(room);
+                checkindate = bookingRoom.getCheckInDate();
+                checkoutdate = bookingRoom.getCheckOutDate();
+            }
+            Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
+            int deposit = booking.getDeposit();
+            int neededDeposit = booking.getTotalPrice() / 2;
+            int checkinstatus = booking.getCheckInStatus();
 
-        request.setAttribute("checkindate", checkindateFormatted);
-        request.setAttribute("checkoutdate", checkoutdateFormatted);
-        request.setAttribute("bookingid", bookingid);
-        request.setAttribute("deposit", deposit);
-        request.setAttribute("neededDeposit", neededDeposit);
-        request.setAttribute("checkinstatus", checkinstatus);
-        request.setAttribute("listRoom", listRoom);
-        request.setAttribute("name", guest.getName());
-        request.getRequestDispatcher("editBooking.jsp").forward(request, response);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String checkindateFormatted = checkindate.format(formatter);
+            String checkoutdateFormatted = checkoutdate.format(formatter);
 
+            request.setAttribute("checkindate", checkindateFormatted);
+            request.setAttribute("checkoutdate", checkoutdateFormatted);
+            request.setAttribute("bookingid", bookingid);
+            request.setAttribute("deposit", deposit);
+            request.setAttribute("neededDeposit", neededDeposit);
+            request.setAttribute("checkinstatus", checkinstatus);
+            request.setAttribute("listRoom", listRoom);
+            request.setAttribute("name", guest.getName());
+            request.getRequestDispatcher("editBooking.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -134,102 +138,105 @@ public class editBooking extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        BookingDAO bdao = new BookingDAO();
-        GuestDAO gdao = new GuestDAO();
-        RoomDao rdao = new RoomDao();
-        int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
-        int deposit = Integer.parseInt(request.getParameter("deposit"));
-        int bookingid = Integer.parseInt(request.getParameter("bookingid"));
-        int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
-        List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
-        Booking booking = bdao.getBookingByBookingID(bookingid);
-        BookingCodeConvert utilConvert = new BookingCodeConvert();
-        String bookingcode = utilConvert.toBase36(bookingid);
-        Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
-        String email = guest.getEmail();
-        String noti = "Save successfully!";
-        int neededDeposit = booking.getTotalPrice() / 2;
-        boolean checkin = true;
-        if (deposit != neededDeposit) {
-            noti = "Deposit must be 50% of total price";
-            checkin = false;
-        } else {
-            // deposit da nhap dung 50%
-            noti = "Save successfully!";
-            bdao.updateDeposit(bookingid, deposit);
-        }
-        bdao.updatePaymentMethod(bookingid, paymentMethod);
-        if (booking.getCheckInStatus() == 0) {
-            if (checkinstatus == 1) {
-                // xem xem phòng đã đang occupied hay ko,
-                // nếu occupied thì ko cho check-in,
-                // nếu available thì cho check-in và actual checkindate
-                for (BookingRoom bookingRoom : listRoomBooked) {
-                    int roomid = bookingRoom.getRoomID();
-                    Room room = rdao.getRoomByRoomID(roomid);
-                    if (room.getStatusId() == 2) {
-                        noti = "The rooms in this booking are currently in use";
-                        checkin = false;
-                        checkinstatus = 0;
-                    }
-                    if (room.getStatusId() == 3) {
-                        noti = "The rooms in this booking are currently in maintainance";
-                        checkin = false;
-                        checkinstatus = 0;
-                    }
-                    // neu dang sua chua ko cho check in
-                }
-                if (checkin == true) {
+        try {
+
+            BookingDAO bdao = new BookingDAO();
+            GuestDAO gdao = new GuestDAO();
+            RoomDao rdao = new RoomDao();
+            int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
+            int deposit = Integer.parseInt(request.getParameter("deposit"));
+            int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+            int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
+            List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
+            Booking booking = bdao.getBookingByBookingID(bookingid);
+            BookingCodeConvert utilConvert = new BookingCodeConvert();
+            String bookingcode = utilConvert.toBase36(bookingid);
+            Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
+            String email = guest.getEmail();
+            String noti = "Save successfully!";
+            int neededDeposit = booking.getTotalPrice() / 2;
+            boolean checkin = true;
+            if (deposit != neededDeposit) {
+                noti = "Deposit must be 50% of total price";
+                checkin = false;
+            } else {
+                // deposit da nhap dung 50%
+                noti = "Save successfully!";
+                bdao.updateDeposit(bookingid, deposit);
+            }
+            bdao.updatePaymentMethod(bookingid, paymentMethod);
+            if (booking.getCheckInStatus() == 0) {
+                if (checkinstatus == 1) {
+                    // xem xem phòng đã đang occupied hay ko,
+                    // nếu occupied thì ko cho check-in,
+                    // nếu available thì cho check-in và actual checkindate
                     for (BookingRoom bookingRoom : listRoomBooked) {
                         int roomid = bookingRoom.getRoomID();
-                        bdao.updateStatusRoomOccupied(roomid);
+                        Room room = rdao.getRoomByRoomID(roomid);
+                        if (room.getStatusId() == 2) {
+                            noti = "The rooms in this booking are currently in use";
+                            checkin = false;
+                            checkinstatus = 0;
+                        }
+                        if (room.getStatusId() == 3) {
+                            noti = "The rooms in this booking are currently in maintainance";
+                            checkin = false;
+                            checkinstatus = 0;
+                        }
+                        // neu dang sua chua ko cho check in
                     }
-                    if (email != null) {
-                        sendBillMail(booking, guest, deposit);
+                    if (checkin == true) {
+                        for (BookingRoom bookingRoom : listRoomBooked) {
+                            int roomid = bookingRoom.getRoomID();
+                            bdao.updateStatusRoomOccupied(roomid);
+                        }
+                        if (email != null) {
+                            sendBillMail(booking, guest, deposit);
+                        }
+                        bdao.updateActualCheckInDate(bookingid);
+                        bdao.updateCheckInStatus(bookingid, checkinstatus);
                     }
-                    bdao.updateActualCheckInDate(bookingid);
-                    bdao.updateCheckInStatus(bookingid, checkinstatus);
+                } else {
+                    // new checkin status = 0 
+                    // current checkin status =0
+                    // do nothing
                 }
             } else {
-                // new checkin status = 0 
-                // current checkin status =0
-                // do nothing
+                // neu bookingstatus dang la 1
+                if (checkinstatus == 0) {
+                    checkinstatus = 1;
+                    noti = "This booking status cannot be edited!";
+                } else {
+                    noti = "Save successfully!";
+                }
             }
-        } else {
-            // neu bookingstatus dang la 1
-            if (checkinstatus == 0) {
-                checkinstatus = 1;
-                noti = "This booking status cannot be edited!";
-            } else {
-                noti = "Save successfully!";
-            }
-        }
-        request.setAttribute("bookingcode", bookingcode);
-        List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
-        LocalDateTime checkindate = null;
-        LocalDateTime checkoutdate = null;
-        LocalDateTime currentDateTime = LocalDateTime.now();
+            request.setAttribute("bookingcode", bookingcode);
+            List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
+            LocalDateTime checkindate = null;
+            LocalDateTime checkoutdate = null;
+            LocalDateTime currentDateTime = LocalDateTime.now();
 //        checkInDateTime.isBefore(currentDateTime)
-        for (BookingRoom bookingRoom : listBookingRoom) {
-            checkindate = bookingRoom.getCheckInDate();
-            checkoutdate = bookingRoom.getCheckOutDate();
+            for (BookingRoom bookingRoom : listBookingRoom) {
+                checkindate = bookingRoom.getCheckInDate();
+                checkoutdate = bookingRoom.getCheckOutDate();
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String checkindateFormatted = checkindate.format(formatter);
+            String checkoutdateFormatted = checkoutdate.format(formatter);
+            request.setAttribute("checkindate", checkindateFormatted);
+            request.setAttribute("checkoutdate", checkoutdateFormatted);
+            request.setAttribute("bookingid", bookingid);
+            request.setAttribute("deposit", deposit);
+            request.setAttribute("neededDeposit", neededDeposit);
+            request.setAttribute("paymentMethod", paymentMethod);
+            request.setAttribute("checkinstatus", checkinstatus);
+            request.setAttribute("name", guest.getName());
+            request.setAttribute("noti", noti);
+            // nếu có email của khách thì gửi xác nhận đặt cọc
+            request.getRequestDispatcher("editBooking.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        String checkindateFormatted = checkindate.format(formatter);
-        String checkoutdateFormatted = checkoutdate.format(formatter);
-        request.setAttribute("checkindate", checkindateFormatted);
-        request.setAttribute("checkoutdate", checkoutdateFormatted);
-        request.setAttribute("bookingid", bookingid);
-        request.setAttribute("deposit", deposit);
-        request.setAttribute("neededDeposit", neededDeposit);
-        request.setAttribute("paymentMethod", paymentMethod);
-        request.setAttribute("checkinstatus", checkinstatus);
-        request.setAttribute("name", guest.getName());
-        request.setAttribute("noti", noti);
-        // nếu có email của khách thì gửi xác nhận đặt cọc
-
-        request.getRequestDispatcher("editBooking.jsp").forward(request, response);
     }
 
     public static void sendBillMail(Booking b, Guest g, int deposit) {

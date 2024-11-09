@@ -74,56 +74,55 @@ public class receptionDashboard extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-//        //get room
-            List<NewsItem> newsList = new NewsDAO().getTop3();
-            session.setAttribute("newsList", newsList);
-            RoomDao roomDao = new RoomDao();
-            List<Room> listRoom = roomDao.getAllRooms();
-            //get invoice
-            InvoiceDAO invoiceDao = new InvoiceDAO();
-            List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
-            //get guest 
-            GuestDAO guestDao = new GuestDAO();
-            List<Guest> guestList = guestDao.getAllGuests();
-            List<Integer> numGuestByMonth = guestDao.getNumberGuestByMonth();
-            int numGuest = guestList.size();
-            //get data to display in dashboard
-            int underMaintainRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 3
-            ).toList().size();
-            int availableRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 1
-            ).toList().size();
-            int occupiedRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 2
-            ).toList().size();
-            int cleaned = listRoom.stream().filter(
-                    room -> room.getCleanId() == 3
-            ).toList().size();
-            int notCleaned = listRoom.stream().filter(
-                    room -> room.getCleanId() == 1
-            ).toList().size();
-            int inProgress = listRoom.stream().filter(
-                    room -> room.getCleanId() == 2
-            ).toList().size();
-
-            session.setAttribute("numberGuest", numGuest);
-            session.setAttribute("guestByMonth", numGuestByMonth);
-            session.setAttribute("cleaned", cleaned);
-            session.setAttribute("notCleaned", notCleaned);
-            session.setAttribute("inProgress", inProgress);
-            session.setAttribute("maintaince", underMaintainRoom);
-            session.setAttribute("available", availableRoom);
-            session.setAttribute("occupied", occupiedRoom);
-            session.setAttribute("listInvoice", listInvoice);
-            response.sendRedirect("receptionHomePage.jsp");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+//        //get room
+        List<NewsItem> newsList = new NewsDAO().getTop3();
+        session.setAttribute("newsList", newsList);
+        RoomDao roomDao = new RoomDao();
+        List<Room> listRoom = roomDao.getAllRooms();
+        //get invoice
+        InvoiceDAO invoiceDao = new InvoiceDAO();
+        List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
+        //get guest 
+        GuestDAO guestDao = new GuestDAO();
+        List<Guest> guestList = guestDao.getAllGuests();
+        List<Integer> numGuestByMonth = guestDao.getNumberGuestByMonth();
+        int numGuest = guestList.size();
+        //get data to display in dashboard
+        int underMaintainRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 3
+        ).toList().size();
+        int availableRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 1
+        ).toList().size();
+        int occupiedRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 2
+        ).toList().size();
+        int cleaned = listRoom.stream().filter(
+                room -> room.getCleanId() == 3
+        ).toList().size();
+        int notCleaned = listRoom.stream().filter(
+                room -> room.getCleanId() == 1
+        ).toList().size();
+        int inProgress = listRoom.stream().filter(
+                room -> room.getCleanId() == 2
+        ).toList().size();
+
+        session.setAttribute("numberGuest", numGuest);
+        session.setAttribute("guestByMonth", numGuestByMonth);
+        session.setAttribute("cleaned", cleaned);
+        session.setAttribute("notCleaned", notCleaned);
+        session.setAttribute("inProgress", inProgress);
+        session.setAttribute("maintaince", underMaintainRoom);
+        session.setAttribute("available", availableRoom);
+        session.setAttribute("occupied", occupiedRoom);
+        session.setAttribute("listInvoice", listInvoice);
+        response.sendRedirect("receptionHomePage.jsp");
     }
 
     /**

@@ -457,7 +457,7 @@ public class BookingDAO extends DBContext {
     public void updateActualCheckInDate(int bookingid) {
         String query = """
                        UPDATE HotelManagement.Booking
-                          SET ActualCheckInDate = NOW() 
+                          SET ActualCheckInDate = NOW()
                         WHERE BookingID = ?""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);

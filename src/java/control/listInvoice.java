@@ -64,33 +64,32 @@ public class listInvoice extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            String dateFrom = null;
-            String dateTo = null;
-            if (request.getParameter("dateFrom") != null) {
-                dateFrom = request.getParameter("dateFrom");
-            }
-            if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
-                dateTo = request.getParameter("dateTo");
-            }
-            int index = 1;
-            if (request.getParameter("index") != null ) {
-                index = Integer.parseInt(request.getParameter("index"));
-            }
-            InvoiceDAO ivDao = new InvoiceDAO();
-            List<Invoice> listInvoice = ivDao.get5InvoicesATime(dateFrom, dateTo, index);
-            int noPage = (int) Math.ceil(listInvoice.size() * 1.0 / 5);
-            System.out.println("No Page ne " + noPage);
-            session.setAttribute("listInvoice", listInvoice);
-            session.setAttribute("Nopage", noPage);
-            session.setAttribute("currentindex", index);
-            response.sendRedirect("listInvoice.jsp");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        String dateFrom = null;
+        String dateTo = null;
+        if (request.getParameter("dateFrom") != null) {
+            dateFrom = request.getParameter("dateFrom");
+        }
+        if (request.getParameter("dateTo") != null && !request.getParameter("dateTo").equals("")) {
+            dateTo = request.getParameter("dateTo");
+        }
+        int index = 1;
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        InvoiceDAO ivDao = new InvoiceDAO();
+        List<Invoice> listInvoice = ivDao.get5InvoicesATime(dateFrom, dateTo, index);
+        int noPage = (int) Math.ceil(listInvoice.size() * 1.0 / 5);
+        System.out.println("No Page ne " + noPage);
+        session.setAttribute("listInvoice", listInvoice);
+        session.setAttribute("Nopage", noPage);
+        session.setAttribute("currentindex", index);
+        response.sendRedirect("listInvoice.jsp");
     }
 
     /**
