@@ -129,16 +129,8 @@ public class showInvoice extends HttpServlet {
                 System.out.println(r.getAmenName());
             });
 //
-            String note = "";
-            LocalDateTime actualDate = booking.getActualCheckInDate();  // Current date and time
+            String note = invoice.getNote();
 
-            // Example LocalDateTime value
-            LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
-            System.out.println("Expected :" + expectedDate);
-           
-            if (actualDate.isBefore(expectedDate)) {
-                note = "Check in early than expected, ";
-            }
             if (!listBrokenAmen.isEmpty()) {
                 for (RoomAmenBroken ba : listBrokenAmen) {
                     note = note + "Room " + ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
@@ -151,23 +143,14 @@ public class showInvoice extends HttpServlet {
         Invoice iv = ivDao.getInvoiceByBookingId(bkId);
         AmenityForRoomDAO amdao = new AmenityForRoomDAO();
         List<RoomAmenBroken> listBrokenAmen = amdao.getAllBrokenAmenByBooking(bkId);
-        //set not
+        //set note
         String note = iv.getNote();
-        note = "";
-        LocalDateTime actualDate = booking.getActualCheckInDate();  // Current date and time
 
-        // Example LocalDateTime value
-        LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
-        System.out.println("Expected :" + expectedDate);
-        // Convert Date to Instant
-        // Convert LocalDateTime to Instant using system default time zone
-        // Compare the two Instant values
-        if (actualDate.isBefore(expectedDate)) {
-            note = "Check in early than expected, ";
-        }
         if (!listBrokenAmen.isEmpty()) {
             for (RoomAmenBroken ba : listBrokenAmen) {
-                note = note + "Room " + ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
+                if (!note.contains("Room " + ba.getRoomNumber() + ": " + ba.getAmenName() + ",")) {
+                    note = note + "Room " + ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
+                }
             };
         }
         //updte note
