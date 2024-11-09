@@ -7,7 +7,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -248,6 +248,7 @@
                                                                     <input
                                                                         name="password"
                                                                         id="password"
+                                                                         value="${u.password}"
                                                                         type="text" pattern="[a-zA-Z0-9]{3,18}$" title="length should be 3-18, no spaces, unsigned"
                                                                         class="form-control"
                                                                         style="width: 50%"
@@ -374,20 +375,24 @@
     </script>
 
     <script>
+        document.getElementById("address").addEventListener("blur", function () {
+            const address = this.value.trim();
+            const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
+            if (address !== "") {
+                if (!pattern.test(address)) {
+                    alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
+                    this.value = "";
+                }
+            }
+        });
         document.getElementById("email").addEventListener("blur", function () {
             const email = this.value.trim();
             const regexEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-            if (!regexEmail.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                this.value = "";
-            }
-        });
-        document.getElementById("address").addEventListener("blur", function () {
-            const address = this.value;
-            const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
-            if (!pattern.test(address)) {
-                alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
-                this.value = ""; // Optionally clear the input
+            if (email !== "") {
+                if (!regexEmail.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    this.value = "";
+                }
             }
         });
     </script>

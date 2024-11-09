@@ -551,6 +551,142 @@ public class BookingDAO extends DBContext {
 
     }
 
+    public List<Booking> findBookingNoShow() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.* FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                        WHERE b.CheckInStatus = 0
+                        AND br.CheckInDate < CURRENT_DATE and b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingOverdueForCheckout() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.* FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                       WHERE br.CheckOutDate < CURRENT_DATE
+                       AND b.PaidStatus = 0 and b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingUpcomingCheckIn3Day() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.*
+                       FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                       WHERE br.CheckInDate BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 3 DAY)
+                       AND b.CheckInStatus = 0
+                       AND b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingUpcomingCheckOut3Day() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.*
+                       FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                       WHERE br.CheckOutDate BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 3 DAY)
+                       AND b.CheckInStatus = 1
+                       AND b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+    public List<Booking> findCanceledBooking() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT *
+                       FROM Booking b
+                       WHERE b.TotalPrice = 0;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
     public List<Booking> findBookingByBookingID(int bookingid) {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
