@@ -55,7 +55,7 @@ public class editService extends HttpServlet {
 
             request.getRequestDispatcher("editService.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 
@@ -121,7 +121,7 @@ public class editService extends HttpServlet {
                 response.getWriter().write("{\"status\":\"success\"}");
 
             } catch (Exception e) {
-                out.print("There was an error: " + e.getMessage());
+                response.sendRedirect("exceptionErrorPage.jsp");
             }
         }
     }
