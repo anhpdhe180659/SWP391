@@ -131,12 +131,10 @@
                             <br><!-- comment -->
                             <p><b>Địa chỉ:</b> Tòa nhà Beta, Đại học FPT Hà Nội - toạ lạc tại khu công nghệ cao Hoà Lạc, Thạch Thất, Hà Nội.</p>
                             <p><b>VPGD:</b> Tòa nhà Beta, Đại học FPT Hà Nội - toạ lạc tại khu công nghệ cao Hoà Lạc, Thạch Thất, Hà Nội.</p>
-                            <p><b>Mã số thuế:</b> 0106011932</p>
                             <br><!-- comment -->
                             <br><!-- comment -->
                             <p><b>Email:</b> ali33hotel@gmail.com</p>
-                            <p><b>Điện thoại:</b> +84-243-8222-33</p>
-                            <p><b>Hotline: 1900 1833</b></p>
+                            <p><b>Điện thoại:</b> +84-867-806-182</p>
                         </div>
                         <div class="contact-img hidden col-6">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.506341944541!2d105.5227089114359!3d21.01241668055205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abc60e7d3f19%3A0x2be9d7d0b5abcbf4!2sFPT%20University!5e0!3m2!1sen!2s!4v1729759128288!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>

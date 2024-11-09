@@ -72,8 +72,11 @@ public class modifyInvoice extends HttpServlet {
         String note = request.getParameter("note");
         int fine = Integer.parseInt(request.getParameter("fine"));
         int id = Integer.parseInt(request.getParameter("invoiceId"));
+        System.out.println(note);
+        System.out.println(fine);
         InvoiceDAO ivDao = new InvoiceDAO();
         Invoice iv = ivDao.getInvoiceById(id);
+        
         iv.setNote(note);
         iv.setFine(fine);
         iv.setFinalAmount((int) (iv.getTotalAmount() * (100 - iv.getDiscount()) * 1.0 / 100 + iv.getFine()));
@@ -105,9 +108,12 @@ public class modifyInvoice extends HttpServlet {
         String note = request.getParameter("note");
         int fine = Integer.parseInt(request.getParameter("fine"));
         int id = Integer.parseInt(request.getParameter("invoiceId"));
+        System.out.println("note: "+note);
+        System.out.println(fine);
         InvoiceDAO ivDao = new InvoiceDAO();
         Invoice iv = ivDao.getInvoiceById(id);
         iv.setNote(note);
+        System.out.println(iv.getNote());
         iv.setFine(fine);
         System.out.println(iv.getFine());
         System.out.println(iv.getTotalAmount());
