@@ -33,26 +33,31 @@ public class editItem extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        PrintWriter out = response.getWriter();
-        ItemDAO idao = new ItemDAO();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
         try {
-            int itemID = Integer.parseInt(request.getParameter("itemID"));
-            Item item = idao.getItemByID(itemID);
-            request.setAttribute("item", item);
-            request.getRequestDispatcher("editItem.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+
+            HttpSession session = request.getSession(false);
+            PrintWriter out = response.getWriter();
+            ItemDAO idao = new ItemDAO();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            try {
+                int itemID = Integer.parseInt(request.getParameter("itemID"));
+                Item item = idao.getItemByID(itemID);
+                request.setAttribute("item", item);
+                request.getRequestDispatcher("editItem.jsp").forward(request, response);
+            } catch (ServletException | IOException | NumberFormatException e) {
+                out.print(e);
+            }
+            response.sendRedirect("editItem.jsp");
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        response.sendRedirect("editItem.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -119,13 +124,13 @@ public class editItem extends HttpServlet {
                     }
                 }
             }
-            
+
             idao.editItem(newitem, itemID);
             request.setAttribute("item", idao.getItemByID(itemID));
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("editItem.jsp").forward(request, response);
         } catch (Exception e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
 
     }

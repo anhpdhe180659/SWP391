@@ -39,18 +39,19 @@ public class roomItem extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        RoomDao rDAO = new RoomDao();
-        ItemDAO idao = new ItemDAO();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 3) {
-            request.setAttribute("error", "Please sign in with staff account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
         try {
+
+            HttpSession session = request.getSession(false);
+            RoomDao rDAO = new RoomDao();
+            ItemDAO idao = new ItemDAO();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 3) {
+                request.setAttribute("error", "Please sign in with staff account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
             // Lấy roomId từ tham số request
             int roomId = Integer.parseInt(request.getParameter("id"));
             Room room = rDAO.getRoomByRoomID(roomId);
@@ -70,9 +71,7 @@ public class roomItem extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("roomItem.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("error", "An error occurred while fetching amenities.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("errorPage.jsp"); // Trang lỗi
-            dispatcher.forward(request, response);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 
