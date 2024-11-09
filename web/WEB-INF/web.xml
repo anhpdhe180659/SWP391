@@ -507,6 +507,10 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/exceptionErrorPage.jsp</location>
     </error-page>
+     <error-page>
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/exceptionErrorPage.jsp</location>
+    </error-page>
     <error-page>
         <!-- Specify the exception type to handle -->
         <exception-type>java.lang.Exception</exception-type>

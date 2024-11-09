@@ -11,7 +11,9 @@ import model.Room;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import model.Booking;
@@ -103,9 +105,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getInt("PaymentMethod")
                 ));
             }
         } catch (SQLException e) {
@@ -413,7 +413,6 @@ public class BookingDAO extends DBContext {
         BookingDAO bkDao = new BookingDAO();
         Booking b = bkDao.getBookingByBookingID(1);
         System.out.println(b.toString());
-        System.out.println(new java.util.Date(b.getActualCheckInDate().getTime()).toInstant());
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice, int paymentMethod, LocalDateTime actualCheckInTime) {
@@ -441,6 +440,7 @@ public class BookingDAO extends DBContext {
             pre.setDate(6, sqlDate);
             pre.setInt(7, totalPrice);
             pre.setInt(8, paymentMethod);
+
             if (actualCheckInTime != null) {
                 pre.setTimestamp(9, Timestamp.valueOf(actualCheckInTime));
             } else {
@@ -558,6 +558,8 @@ public class BookingDAO extends DBContext {
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             pre.setInt(1, bookingid);
             ResultSet rs = pre.executeQuery();
+
+            // Convert Timestamp to LocalDateTime
             while (rs.next()) {
                 booking = new Booking(
                         rs.getInt("BookingID"),
@@ -569,8 +571,7 @@ public class BookingDAO extends DBContext {
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
                         rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getTimestamp("ActualCheckinDate").toLocalDateTime()
                 );
             }
         } catch (SQLException e) {
@@ -600,9 +601,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getInt("PaymentMethod")
                 ));
             }
         } catch (SQLException e) {
@@ -631,9 +630,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getInt("PaymentMethod")
                 ));
             }
         } catch (SQLException e) {
@@ -664,9 +661,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getInt("PaymentMethod")
                 ));
             }
         } catch (SQLException e) {
@@ -697,9 +692,7 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getInt("PaymentMethod")
                 ));
             }
         } catch (SQLException e) {
@@ -726,9 +719,8 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")));
+                        rs.getInt("PaymentMethod")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -756,9 +748,8 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")));
+                        rs.getInt("PaymentMethod")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -779,8 +770,7 @@ public class BookingDAO extends DBContext {
                              ,BookingDate
                              ,TotalPrice
                              ,PaymentMethod
-                             ,ActualCheckInDate
-                             ,ActualCheckOutDate
+                             
                          FROM HotelManagement.Booking
                        ORDER BY BookingID
                        LIMIT 5 OFFSET ?""";
@@ -797,9 +787,8 @@ public class BookingDAO extends DBContext {
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
-                        rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getInt("PaymentMethod")
+                        
                 ));
             }
         } catch (SQLException e) {
