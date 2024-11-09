@@ -336,7 +336,7 @@ public class AmenityForRoomDAO extends DBContext {
                 + "    FROM BookingRoom\n"
                 + "    join Booking on BookingRoom.BookingID = booking.BookingID\n"
                 + "    WHERE BookingRoom.BookingID = ? and Booking.CheckInStatus = 1\n"
-                + ") AND amenitydetail.Status = 3;";
+                + "AND amenitydetail.Status = 3);";
         try (PreparedStatement pre = connection.prepareStatement(sql);) {
             pre.setInt(1, bkId);
             ResultSet rs = pre.executeQuery();
