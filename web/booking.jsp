@@ -244,8 +244,8 @@
                                                                     maxlength="50"
                                                                     value="${phone}"
                                                                     placeholder="Enter phone number"
-                                                                    pattern="^\d{10,15}$"
-                                                                    title="Valid phone number must be 10 to 15 digits long"
+                                                                    pattern="^\d{10}$"
+                                                                    title="Valid phone number must be 10 digits long"
                                                                     required
                                                                     />
                                                             </div>

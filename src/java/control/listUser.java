@@ -34,28 +34,31 @@ public class listUser extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        try {
+            HttpSession session = request.getSession();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            UserDAO udao = new UserDAO();
+            int index = 1;
+            int NoPage = getNoPage(udao.getAllUser());
+            if (request.getParameter("index") != null) {
+                index = Integer.parseInt(request.getParameter("index"));
+            }
+
+            List<User> listUser = udao.getNext5User(index);
+            session.setAttribute("Nopage", NoPage);
+            session.setAttribute("currentindex", index);
+            session.setAttribute("listUser", listUser);
+            response.sendRedirect("listUser.jsp");
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        UserDAO udao = new UserDAO();
-        int index = 1;
-        int NoPage = getNoPage(udao.getAllUser());
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        
-        
-        List<User> listUser = udao.getNext5User(index);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        session.setAttribute("listUser", listUser);
-        response.sendRedirect("listUser.jsp");
     }
 
     public int getNoPage(List<User> list) {

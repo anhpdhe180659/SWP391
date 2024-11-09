@@ -36,42 +36,46 @@ public class searchBooking extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        BookingDAO bdao = new BookingDAO();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-        }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 2) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        BookingCodeConvert uConvert = new BookingCodeConvert();
-        int index = 1;
-        List<Booking> listBooking = bdao.getAllBooking();
-        String bookingcode = request.getParameter("bookingcode");
-        bookingcode = bookingcode.trim(); // 7PY
-        int bookingid = uConvert.fromBase36(bookingcode); //6
-        int NoPage = util.pagination.getNoPageBooking(bdao.findBookingByBookingID(bookingid));
-        if (request.getParameter("bookingcode").length() > 0) {
-            listBooking = bdao.findBookingByBookingID(bookingid);
-            if (NoPage == 0) {
-                request.setAttribute("notiSearch", "No booking found");
+        try {
+
+            HttpSession session = request.getSession();
+            BookingDAO bdao = new BookingDAO();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
             }
-        } else {
-            listBooking = bdao.getAllBooking();
-            NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            BookingCodeConvert uConvert = new BookingCodeConvert();
+            int index = 1;
+            List<Booking> listBooking = bdao.getAllBooking();
+            String bookingcode = request.getParameter("bookingcode");
+            bookingcode = bookingcode.trim(); // 7PY
+            int bookingid = uConvert.fromBase36(bookingcode); //6
+            int NoPage = util.pagination.getNoPageBooking(bdao.findBookingByBookingID(bookingid));
+            if (request.getParameter("bookingcode").length() > 0) {
+                listBooking = bdao.findBookingByBookingID(bookingid);
+                if (NoPage == 0) {
+                    request.setAttribute("notiSearch", "No booking found");
+                }
+            } else {
+                listBooking = bdao.getAllBooking();
+                NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+            }
+
+            out.println("bookingcode: " + bookingcode);
+            out.println("bookingid sau convert: " + bookingid);
+            out.println("NoPage: " + NoPage);
+            session.setAttribute("listBooking", listBooking);
+            session.setAttribute("Nopage", NoPage);
+            session.setAttribute("currentindex", index);
+            request.setAttribute("searchCode", bookingcode);
+            request.getRequestDispatcher("listBooking.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-
-        out.println("bookingcode: " + bookingcode);
-        out.println("bookingid sau convert: " + bookingid);
-        out.println("NoPage: " + NoPage);
-        session.setAttribute("listBooking", listBooking);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        request.setAttribute("searchCode", bookingcode);
-        request.getRequestDispatcher("listBooking.jsp").forward(request, response);        
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

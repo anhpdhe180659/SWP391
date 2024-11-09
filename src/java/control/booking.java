@@ -54,21 +54,24 @@ public class booking extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        try {
+            PrintWriter out = response.getWriter();
+            HttpSession session = request.getSession();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            RoomDao rd = new RoomDao();
+            List<Room> listRoomAvailable = rd.getAllRoomsAvailable();// tat ca room, ko chi available
+            session.setAttribute("listRoomAvailable", listRoomAvailable);
+            response.sendRedirect("booking.jsp");
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        RoomDao rd = new RoomDao();
-        List<Room> listRoomAvailable = rd.getAllRoomsAvailable();// tat ca room, ko chi available
-        session.setAttribute("listRoomAvailable", listRoomAvailable);
-        response.sendRedirect("booking.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -291,7 +294,7 @@ public class booking extends HttpServlet {
             request.setAttribute("guestid", guestBooking.getGuestID());
             response.sendRedirect("editBooking?bookingid=" + bookingid);
         } catch (Exception e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 
