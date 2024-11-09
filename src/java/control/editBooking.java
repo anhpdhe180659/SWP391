@@ -139,7 +139,6 @@ public class editBooking extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         try {
-
             BookingDAO bdao = new BookingDAO();
             GuestDAO gdao = new GuestDAO();
             RoomDao rdao = new RoomDao();
@@ -306,10 +305,9 @@ public class editBooking extends HttpServlet {
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
         emailContent.append("</tbody></table>");
-
         // Footer
         emailContent.append("<div style='text-align: center; margin-top: 20px;'>")
-                .append("<p>Thank you for staying with us!</p>")
+                .append("<p>We hope you have a wonderful experience with us! Thank you for choosing our hotel, and please let us know if there's anything we can do to make your stay more enjoyable.</p>")
                 .append("<p>Contact us at: <a href='mailto:alihotel33@gmail.com'>alihotel33@gmail.com</a></p>")
                 .append("</div>");
 
