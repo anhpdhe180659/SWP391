@@ -66,32 +66,32 @@ public class AmenityDetailController extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = (Integer) session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            String amenityIdParam = request.getParameter("amenityId");
-            int amenityId = 1; // Default value
-
-            // Check if the parameter is not null and is a valid integer
-            if (amenityIdParam != null) {
-                try {
-                    amenityId = Integer.parseInt(amenityIdParam);
-                } catch (NumberFormatException e) {
-                    // Handle invalid format, e.g., log the error or set a default
-                    e.printStackTrace();
-                }
-            }
-
-            AmenityDAO amenityDao = new AmenityDAO();
-            List<RoomAmenity> listAmenity = amenityDao.getRoomAmenitiesByAmenityId(amenityId);
-            System.out.println("list Count" + listAmenity.size());
-            request.setAttribute("listAmenityDetail", listAmenity);
-            request.setAttribute("amenId", amenityId);
-            request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        String amenityIdParam = request.getParameter("amenityId");
+        int amenityId = 1; // Default value
+
+        // Check if the parameter is not null and is a valid integer
+        if (amenityIdParam != null) {
+            try {
+                amenityId = Integer.parseInt(amenityIdParam);
+            } catch (NumberFormatException e) {
+                // Handle invalid format, e.g., log the error or set a default
+                e.printStackTrace();
+            }
+        }
+
+        AmenityDAO amenityDao = new AmenityDAO();
+        List<RoomAmenity> listAmenity = amenityDao.getRoomAmenitiesByAmenityId(amenityId);
+        System.out.println("list Count" + listAmenity.size());
+        request.setAttribute("listAmenityDetail", listAmenity);
+        request.setAttribute("amenId", amenityId);
+        request.getRequestDispatcher("listAmenityDetail.jsp").forward(request, response);
+
     }
 
     /**

@@ -39,25 +39,23 @@ public class editService extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            response.setContentType("text/html;charset=UTF-8");
-            ServiceDAO sdao = new ServiceDAO();
-            PrintWriter out = response.getWriter();
-            try {
-                int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-                Service service = sdao.findService(serviceid);
-                request.setAttribute("service", service);
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        ServiceDAO sdao = new ServiceDAO();
+        PrintWriter out = response.getWriter();
+        try {
+            int serviceid = Integer.parseInt(request.getParameter("serviceid"));
+            Service service = sdao.findService(serviceid);
+            request.setAttribute("service", service);
 
-                request.getRequestDispatcher("editService.jsp").forward(request, response);
-            } catch (ServletException | IOException | NumberFormatException e) {
-                out.print(e);
-            }
-
+            request.getRequestDispatcher("editService.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e);
         }
     }
 

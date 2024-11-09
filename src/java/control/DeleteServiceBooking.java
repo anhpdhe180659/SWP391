@@ -77,23 +77,23 @@ public class DeleteServiceBooking extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-            int roomId = Integer.parseInt(request.getParameter("roomId"));
-            int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-
-            BookingDAO bookingDao = new BookingDAO();
-            bookingDao.deleteServiceBooking(bookingId, serviceId, roomId);
-            // Respond with success message
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"status\":\"success\"}");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+        int roomId = Integer.parseInt(request.getParameter("roomId"));
+        int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+
+        BookingDAO bookingDao = new BookingDAO();
+        bookingDao.deleteServiceBooking(bookingId, serviceId, roomId);
+        // Respond with success message
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"status\":\"success\"}");
+
     }
 
     /**

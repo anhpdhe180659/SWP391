@@ -39,21 +39,21 @@ public class deleteService extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            ServiceDAO sdao = new ServiceDAO();
-            int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-            sdao.deleteService(serviceid);
-            List<Service> listService = sdao.getAllServices();
-            session.setAttribute("listService", listService);
-            response.sendRedirect("listService");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        ServiceDAO sdao = new ServiceDAO();
+        int serviceid = Integer.parseInt(request.getParameter("serviceid"));
+        sdao.deleteService(serviceid);
+        List<Service> listService = sdao.getAllServices();
+        session.setAttribute("listService", listService);
+        response.sendRedirect("listService");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

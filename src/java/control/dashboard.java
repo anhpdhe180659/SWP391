@@ -53,82 +53,81 @@ public class dashboard extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = (Integer) session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            RoomDao roomDao = new RoomDao();
-            List<Room> listRoom = roomDao.getAllRooms();
-            List<NewsItem> newsList = new NewsDAO().getTop3();
-            session.setAttribute("newsList", newsList);
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        RoomDao roomDao = new RoomDao();
+        List<Room> listRoom = roomDao.getAllRooms();
+        List<NewsItem> newsList = new NewsDAO().getTop3();
+        session.setAttribute("newsList", newsList);
 //            StasticDto dto = dashboardDAO.getStasticDto();
 //            List<ChartDTO> chartDTOs = dashboardDAO.getData();
 //            session.setAttribute("dto", dto);
 //            for (ChartDTO item : chartDTOs) {
 //                session.setAttribute("month" + item.getMonth(), item.getTotal());
 //            }
-            InvoiceDAO invoiceDao = new InvoiceDAO();
-            List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
-            GuestDAO guestDao = new GuestDAO();
-            List<Guest> numberOfVisitors = guestDao.getAllGuests();
-            List<Service> services = new ServiceDAO().getAllServices();
-            int underMaintainRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 3
-            ).toList().size();
-            int availableRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 1
-            ).toList().size();
-            int occupiedRoom = listRoom.stream().filter(
-                    room -> room.getStatusId() == 2
-            ).toList().size();
-            int singleRoomCount = (int) listRoom.stream()
-                    .filter(room -> room.getTypeId() == 1) 
-                    .count();
+        InvoiceDAO invoiceDao = new InvoiceDAO();
+        List<Invoice> listInvoice = invoiceDao.getFourNearestInvoice();
+        GuestDAO guestDao = new GuestDAO();
+        List<Guest> numberOfVisitors = guestDao.getAllGuests();
+        List<Service> services = new ServiceDAO().getAllServices();
+        int underMaintainRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 3
+        ).toList().size();
+        int availableRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 1
+        ).toList().size();
+        int occupiedRoom = listRoom.stream().filter(
+                room -> room.getStatusId() == 2
+        ).toList().size();
+        int singleRoomCount = (int) listRoom.stream()
+                .filter(room -> room.getTypeId() == 1)
+                .count();
 
-            int doubleRoomCount = (int) listRoom.stream()
-                    .filter(room -> room.getTypeId() == 2) 
-                    .count();
+        int doubleRoomCount = (int) listRoom.stream()
+                .filter(room -> room.getTypeId() == 2)
+                .count();
 
-            int familyRoomCount = (int) listRoom.stream()
-                    .filter(room -> room.getTypeId() == 3) 
-                    .count();
+        int familyRoomCount = (int) listRoom.stream()
+                .filter(room -> room.getTypeId() == 3)
+                .count();
 
-            int deluxeRoomCount = (int) listRoom.stream()
-                    .filter(room -> room.getTypeId() == 4) 
-                    .count();
+        int deluxeRoomCount = (int) listRoom.stream()
+                .filter(room -> room.getTypeId() == 4)
+                .count();
 
-            int presidentRoomCount = (int) listRoom.stream()
-                    .filter(room -> room.getTypeId() == 5) 
-                    .count();
-            AmenityDAO amenityDao = new AmenityDAO();
-            List<Amenity> listAmenity = amenityDao.getAllAmenities();
-            InvoiceDAO ivDao = new InvoiceDAO();
-            int total = ivDao.getTotalAmount();
-            BookingDAO bkDao = new BookingDAO();
-            List<ChartRoom> chartRooms = bkDao.getBookTimesByRoom();
-            //get session 
-            session.setAttribute("chartRooms", chartRooms);
-            session.setAttribute("totalInvoice", total);
-            session.setAttribute("totalServices", services.size());
-            session.setAttribute("numberOfRooms", listRoom.size());
-            session.setAttribute("numberOfVisitors", numberOfVisitors.size());
-            session.setAttribute("maintaince", underMaintainRoom);
-            session.setAttribute("available", availableRoom);
-            session.setAttribute("occupied", occupiedRoom);
-            session.setAttribute("amenityCount", listAmenity.size());
-            session.setAttribute("listInvoice", listInvoice);
-            AmenityForRoomDAO amenityrDao = new AmenityForRoomDAO();
-            Map<String, Integer> maintenanceStats = amenityrDao.getAmenityMaintenanceStats();
-            request.setAttribute("maintenanceStats", maintenanceStats);
-            session.setAttribute("singleRoomCount", singleRoomCount);
-            session.setAttribute("doubleRoomCount", doubleRoomCount);
-            session.setAttribute("familyRoomCount", familyRoomCount);
-            session.setAttribute("deluxeRoomCount", deluxeRoomCount);
-            session.setAttribute("presidentRoomCount", presidentRoomCount);
-            response.sendRedirect("dashboard.jsp");
-        }
+        int presidentRoomCount = (int) listRoom.stream()
+                .filter(room -> room.getTypeId() == 5)
+                .count();
+        AmenityDAO amenityDao = new AmenityDAO();
+        List<Amenity> listAmenity = amenityDao.getAllAmenities();
+        InvoiceDAO ivDao = new InvoiceDAO();
+        int total = ivDao.getTotalAmount();
+        BookingDAO bkDao = new BookingDAO();
+        List<ChartRoom> chartRooms = bkDao.getBookTimesByRoom();
+        //get session 
+        session.setAttribute("chartRooms", chartRooms);
+        session.setAttribute("totalInvoice", total);
+        session.setAttribute("totalServices", services.size());
+        session.setAttribute("numberOfRooms", listRoom.size());
+        session.setAttribute("numberOfVisitors", numberOfVisitors.size());
+        session.setAttribute("maintaince", underMaintainRoom);
+        session.setAttribute("available", availableRoom);
+        session.setAttribute("occupied", occupiedRoom);
+        session.setAttribute("amenityCount", listAmenity.size());
+        session.setAttribute("listInvoice", listInvoice);
+        AmenityForRoomDAO amenityrDao = new AmenityForRoomDAO();
+        Map<String, Integer> maintenanceStats = amenityrDao.getAmenityMaintenanceStats();
+        request.setAttribute("maintenanceStats", maintenanceStats);
+        session.setAttribute("singleRoomCount", singleRoomCount);
+        session.setAttribute("doubleRoomCount", doubleRoomCount);
+        session.setAttribute("familyRoomCount", familyRoomCount);
+        session.setAttribute("deluxeRoomCount", deluxeRoomCount);
+        session.setAttribute("presidentRoomCount", presidentRoomCount);
+        response.sendRedirect("dashboard.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
