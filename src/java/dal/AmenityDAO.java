@@ -269,13 +269,10 @@ public class AmenityDAO extends DBContext {
     public String getAmenityName(int amenId) {
         String amenName = null;
         try {
-            // Truy vấn tên tiện nghi dựa trên AmenId
             String query = "SELECT AmenName FROM Amenity WHERE AmenId = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, amenId);
             ResultSet rs = ps.executeQuery();
-
-            // Nếu tìm thấy tiện nghi, lấy tên tiện nghi
             if (rs.next()) {
                 amenName = rs.getString("AmenName");
             }
