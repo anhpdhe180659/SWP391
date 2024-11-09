@@ -34,16 +34,22 @@ public class addItem extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        try {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
+            response.sendRedirect("addItem.jsp");
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        response.sendRedirect("addItem.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -120,7 +126,7 @@ public class addItem extends HttpServlet {
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addItem.jsp").forward(request, response);
         } catch (Exception e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
 
     }

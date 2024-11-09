@@ -38,16 +38,21 @@ public class addUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        try {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
+            response.sendRedirect("addUser.jsp");
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        response.sendRedirect("addUser.jsp");
 
     }
 
@@ -82,27 +87,38 @@ public class addUser extends HttpServlet {
             HttpSession session = request.getSession();
             UserDAO udao = new UserDAO();
             User user = new User();
-            String username = request.getParameter("username");
-            if(request.getParameter("username") != null){
+            String username = request.getParameter("username").trim();
+            if (request.getParameter("username") != null) {
                 user.setUsername(username);
             }
-            String password = request.getParameter("password");
-            if(request.getParameter("password") != null){
+            String password = request.getParameter("password").trim();
+            if (request.getParameter("password") != null) {
                 user.setPassword(hashPassword(password));
             }
-            String email = request.getParameter("email").trim();user.setEmail(email);
-            int role = Integer.parseInt(request.getParameter("role"));user.setRole(role);
-            int status = Integer.parseInt(request.getParameter("status"));user.setStatus(status);
-            String Name = request.getParameter("name").trim();user.setName(Name);
-            String DateOfBirth = request.getParameter("birthday");user.setDateOfBirth(DateOfBirth);
-            int Sex = Integer.parseInt(request.getParameter("sex"));user.setSex(Sex);
-            String Address = request.getParameter("address").trim();user.setAddress(Address);
-            String Phone = request.getParameter("phone").trim();user.setPhone(Phone);
-            String Identification = request.getParameter("identification").trim(); user.setIdentification(Identification);
-            String StartDate = request.getParameter("startdate");user.setStartDate(StartDate);
-            int Salary = Integer.parseInt(request.getParameter("salary"));user.setSalary(Salary);
-            
-            List<User> listUser = udao.getAllUser();request.setAttribute("user", user);
+            String email = request.getParameter("email").trim();
+            user.setEmail(email);
+            int role = Integer.parseInt(request.getParameter("role"));
+            user.setRole(role);
+            int status = Integer.parseInt(request.getParameter("status"));
+            user.setStatus(status);
+            String Name = request.getParameter("name").trim();
+            user.setName(Name);
+            String DateOfBirth = request.getParameter("birthday");
+            user.setDateOfBirth(DateOfBirth);
+            int Sex = Integer.parseInt(request.getParameter("sex"));
+            user.setSex(Sex);
+            String Address = request.getParameter("address").trim();
+            user.setAddress(Address);
+            String Phone = request.getParameter("phone").trim();
+            user.setPhone(Phone);
+            String Identification = request.getParameter("identification").trim();
+            user.setIdentification(Identification);
+            String StartDate = request.getParameter("startdate");
+            user.setStartDate(StartDate);
+            int Salary = Integer.parseInt(request.getParameter("salary"));
+            user.setSalary(Salary);
+            List<User> listUser = udao.getAllUser();
+            request.setAttribute("user", user);
             String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Add user successfully!</div>";
             for (User u : listUser) {
                 if (u.getUsername().equals(username)) {
@@ -118,7 +134,7 @@ public class addUser extends HttpServlet {
                     return;
                 }
                 if (u.getPhone().equals(Phone)) {
-                    // check if Identification is existed in database
+                    // check if phone is existed in database
                     request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Phone number " + Phone + " existed!</div>");
                     request.getRequestDispatcher("addUser.jsp").forward(request, response);
                     return;
@@ -134,7 +150,7 @@ public class addUser extends HttpServlet {
             request.setAttribute("noti", noti);
             request.getRequestDispatcher("addUser.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException | NoSuchAlgorithmException e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 

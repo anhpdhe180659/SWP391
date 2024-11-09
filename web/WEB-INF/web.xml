@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-
+    <!--    <filter>
+        <filter-name>GuestManagementFilter</filter-name>
+        <filter-class>filter.GuestManagementFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>GuestManagementFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
     <servlet>
         <servlet-name>dashboard</servlet-name>
         <servlet-class>control.dashboard</servlet-class>
@@ -184,6 +191,10 @@
     <servlet>
         <servlet-name>checkRoomAmenities</servlet-name>
         <servlet-class>control.checkRoomAmenities</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filterBooking</servlet-name>
+        <servlet-class>control.filterBooking</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
@@ -473,6 +484,10 @@
         <servlet-name>checkRoomAmenities</servlet-name>
         <url-pattern>/checkRoomAmenities</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filterBooking</servlet-name>
+        <url-pattern>/filterBooking</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
     </welcome-file-list>
@@ -480,11 +495,11 @@
         <error-code>404</error-code>
         <location>/error404.jsp</location>
     </error-page>
-     <error-page>
+    <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/exceptionErrorPage.jsp</location>
     </error-page>
-     <error-page>
+    <error-page>
         <!-- Specify the exception type to handle -->
         <exception-type>java.lang.Exception</exception-type>
         <!-- Specify the page to be redirected to when the exception occurs -->

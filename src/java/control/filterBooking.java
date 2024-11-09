@@ -4,7 +4,7 @@
  */
 package control;
 
-import dal.UserDAO;
+import dal.BookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.User;
+import model.Booking;
 
 /**
  *
  * @author nhatk
  */
-public class listUser extends HttpServlet {
+public class filterBooking extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,38 +33,77 @@ public class listUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         try {
             HttpSession session = request.getSession();
             if (session == null) {
                 response.sendRedirect("login.jsp");
             }
-            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
-            UserDAO udao = new UserDAO();
+            BookingDAO bdao = new BookingDAO();
             int index = 1;
-            int NoPage = getNoPage(udao.getAllUser());
-            if (request.getParameter("index") != null) {
-                index = Integer.parseInt(request.getParameter("index"));
-            }
 
-            List<User> listUser = udao.getNext5User(index);
-            session.setAttribute("Nopage", NoPage);
-            session.setAttribute("currentindex", index);
-            session.setAttribute("listUser", listUser);
-            response.sendRedirect("listUser.jsp");
+            List<Booking> listBooking = bdao.getAllBooking();
+            int NoPage = util.pagination.getNoPageBooking(listBooking);
+            int option = 0;
+            if (request.getParameter("filterOption") != null) {
+                option = Integer.parseInt(request.getParameter("filterOption"));
+            }
+            switch (option) {
+                case 1:
+                    // Noshow
+                    listBooking = bdao.findBookingNoShow();
+                    if (listBooking.isEmpty()) {
+                        request.setAttribute("notiSearch", "No booking found");
+                    }
+                    break;
+                case 2:
+                    // Overdue checkout
+                    listBooking = bdao.findBookingOverdueForCheckout();
+                    if (listBooking.isEmpty()) {
+                        request.setAttribute("notiSearch", "No booking found");
+                    }
+                    break;
+                case 3:
+                    //Upcoming check-in
+                    listBooking = bdao.findBookingUpcomingCheckIn3Day();
+                    NoPage = util.pagination.getNoPageBooking(listBooking);
+                    if (listBooking.isEmpty()) {
+                        request.setAttribute("notiSearch", "No booking found");
+                    }
+
+                    break;
+                case 4:
+                    //Upcoming check-out
+                    listBooking = bdao.findBookingUpcomingCheckOut3Day();
+                    NoPage = util.pagination.getNoPageBooking(listBooking);
+                    if (listBooking.isEmpty()) {
+                        request.setAttribute("notiSearch", "No booking found");
+                    }
+
+                    break;
+                case 5:
+                    //Canceled booking
+                    listBooking = bdao.findCanceledBooking();
+                    NoPage = util.pagination.getNoPageBooking(listBooking);
+                    if (listBooking.isEmpty()) {
+                        request.setAttribute("notiSearch", "No booking found");
+                    }
+
+                    break;
+                default:
+                    response.sendRedirect("bookingList");
+                    break;
+            }
+            request.setAttribute("filterOption",option);
+            session.setAttribute("listBooking", listBooking);
+            request.getRequestDispatcher("filterBooking.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendRedirect("exceptionErrorPage.jsp");
         }
-    }
-
-    public int getNoPage(List<User> list) {
-        double page = (double) list.size() / 5;
-        page = Math.ceil(page);
-        return (int) page;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

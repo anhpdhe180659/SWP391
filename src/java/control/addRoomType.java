@@ -111,7 +111,6 @@ public class addRoomType extends HttpServlet {
         CloudinaryConfig cloud = new CloudinaryConfig();
         Cloudinary cloudinary = cloud.getCloudinary();
         Part imageURL = request.getPart("image");
-
         // Create temp file and upload image
         File tempFile = File.createTempFile("upload", null);
         try (InputStream input = imageURL.getInputStream(); OutputStream output = new FileOutputStream(tempFile)) {

@@ -33,33 +33,37 @@ public class searchUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        UserDAO udao = new UserDAO();
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        try {
+
+            UserDAO udao = new UserDAO();
+            HttpSession session = request.getSession();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            int index = 1;
+            String name = request.getParameter("name");
+            name = name.trim();
+            int NoPage = getNoPage(udao.findUserByName(name));
+            if (request.getParameter("index") != null) {
+                index = Integer.parseInt(request.getParameter("index"));
+            }
+            if (NoPage == 0) {
+                request.setAttribute("noti", "No user found");
+            }
+            List<User> listUser = udao.getNext5SearchUser(index, name);
+            session.setAttribute("Nopage", NoPage);
+            session.setAttribute("currentindex", index);
+            session.setAttribute("listUser", listUser);
+            request.setAttribute("searchName", name);
+            request.getRequestDispatcher("listUser.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with admin account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        int index = 1;
-        String name = request.getParameter("name");
-        name = name.trim();
-        int NoPage = getNoPage(udao.findUserByName(name));
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        if(NoPage == 0){
-            request.setAttribute("noti", "No user found");
-        }
-        List<User> listUser = udao.getNext5SearchUser(index, name);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        session.setAttribute("listUser", listUser);
-        request.setAttribute("searchName", name);
-//        response.sendRedirect("listUser.jsp");
-        request.getRequestDispatcher("listUser.jsp").forward(request, response);
     }
 
     public int getNoPage(List<User> list) {

@@ -63,85 +63,76 @@ public class updateProfileUser extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        try {
-            // Kiểm tra session
-            HttpSession session = request.getSession();
-            User sessionUser = (User) session.getAttribute("user");
-            
-            if (sessionUser == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-            
-            // Lấy userID từ form
-            int userID = Integer.parseInt(request.getParameter("userID"));
-            
-            // Kiểm tra xem người dùng có đang cố sửa profile của người khác không
-            if (userID != sessionUser.getUserID()) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-            
-            // Tiếp tục với logic update hiện tại
-            UserDAO udao = new UserDAO();
-            User user = new User();
-            user.setUserID(userID);
+   protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+    PrintWriter out = response.getWriter();
+    try {
+        UserDAO udao = new UserDAO();
+        HttpSession session = request.getSession();
         
-        // Fetch old user details
+        int userID = Integer.parseInt(request.getParameter("userID"));
+        
+        // Fetch old user details first
         User oldUser = udao.getUserByID(userID);
+        User user = new User();
+        user.setUserID(userID);
         
-        // Get parameters from request
+        // Get parameters and set values, keeping old values if parameter is empty
         String name = request.getParameter("name");
+        user.setName(name != null && !name.trim().isEmpty() ? name : oldUser.getName());
+        
         String dateOfBirth = request.getParameter("birthday");
+        user.setDateOfBirth(dateOfBirth != null && !dateOfBirth.trim().isEmpty() ? dateOfBirth : oldUser.getDateOfBirth());
+        
         String address = request.getParameter("address");
+        user.setAddress(address != null && !address.trim().isEmpty() ? address : oldUser.getAddress());
+        
         String phone = request.getParameter("phone");
+        user.setPhone(phone != null && !phone.trim().isEmpty() ? phone : oldUser.getPhone());
+        
         String identification = request.getParameter("identification");
-        String email = request.getParameter("email");
+        user.setIdentification(identification != null && !identification.trim().isEmpty() ? identification : oldUser.getIdentification());
+     
+        
         String startDate = request.getParameter("startdate");
+        user.setStartDate(startDate != null && !startDate.trim().isEmpty() ? startDate : oldUser.getStartDate());
+        
+        // Keep other fields from old user
+        user.setImage(oldUser.getImage());
+        user.setUsername(oldUser.getUsername());
+        user.setPassword(oldUser.getPassword());
+        user.setRole(oldUser.getRole());
+        user.setStatus(oldUser.getStatus());
+        
+        // Parse sex and salary with fallback to old values
         String sexStr = request.getParameter("sex");
-        String salaryStr = request.getParameter("salary");
-        
-        // Create user with entered values
-        user.setName(name);
-        user.setDateOfBirth(dateOfBirth);
-        user.setAddress(address);
-        user.setPhone(phone);
-        user.setIdentification(identification);
-        user.setEmail(email);
-        user.setStartDate(startDate);
-            
-            // Parse sex
-            try {
-                int sex = Integer.parseInt(sexStr);
-                user.setSex(sex);
-            } catch (NumberFormatException e) {
-                user.setSex(oldUser.getSex());
-            }
-            
-            // Parse salary
-            try {
-                int salary = Integer.parseInt(salaryStr);
-                user.setSalary(salary);
-            } catch (NumberFormatException e) {
-                user.setSalary(oldUser.getSalary());
-            }
-            
-             boolean hasError = false;
-        
-        if (name == null || name.trim().isEmpty()) {
-            request.setAttribute("noti", "Name is required!");
-            hasError = true;
+        try {
+            int sex = Integer.parseInt(sexStr);
+            user.setSex(sex);
+        } catch (NumberFormatException e) {
+            user.setSex(oldUser.getSex());
         }
         
+        String salaryStr = request.getParameter("salary");
+        try {
+            int salary = Integer.parseInt(salaryStr);
+            user.setSalary(salary);
+        } catch (NumberFormatException e) {
+            user.setSalary(oldUser.getSalary());
+        }
+        
+        // Validation logic
+        boolean hasError = false;
+        
+        if (name != null && !name.trim().isEmpty() && name.trim().length() < 2) {
+            request.setAttribute("noti", "Name must be at least 2 characters!");
+            hasError = true;
+        }
         // Validate phone format (10 digits)
-        if (phone == null || !phone.matches("\\d{10}")) {
+        if (phone != null && !phone.trim().isEmpty() && !phone.matches("\\d{10}")) {
             request.setAttribute("noti", "Phone number must be exactly 10 digits!");
             hasError = true;
         }
-        
       if (identification == null || !isValidIdentification(identification)) {
     request.setAttribute("noti", "Invalid identifications"  );
     hasError = true;

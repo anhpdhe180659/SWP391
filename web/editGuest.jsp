@@ -115,8 +115,15 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-id-card"></i> Identification</label>
-                                                    <input name="identification" type="text" value="${guest.identification}" maxlength="20" 
-                                                           class="form-control" placeholder="Enter identification number" required />
+                                                    <input name="identification" 
+                                                           type="text" 
+                                                           value="${guest.identification}" 
+                                                           maxlength="20" 
+                                                           class="form-control" 
+                                                           placeholder="Enter identification number" 
+                                                           pattern="^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$"
+                                                           title="Valid ID contains 1 uppercase letter and 7 digits, or 9 digits, or 12 digits"
+                                                           required />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
@@ -175,12 +182,10 @@
                         </div>
                     </div>
                 </div>
-
                 <footer class="footer">
                     <!-- Add your footer content here -->
                 </footer>
             </div>
-
             <!-- Core JS Files -->
             <script src="assets/js/core/jquery-3.7.1.min.js"></script>
             <script src="assets/js/core/popper.min.js"></script>

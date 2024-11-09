@@ -120,12 +120,13 @@
                                                                     <label>Full Name</label>
                                                                     <input
                                                                         name="name"
+                                                                        id="name"
                                                                         value="${u.name}"
                                                                         type="text"
                                                                         maxlength="100"
                                                                         minlength="4"
                                                                         pattern="^[A-Za-zÀ-ÿ\s'-]{1,100}$"
-                                                                    title="Name contains only character, length should more than 4 and less than 100"
+                                                                        title="Name contains only character, length should more than 4 and less than 100"
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -137,11 +138,12 @@
                                                                     <input
                                                                         value="${u.address}"
                                                                         name="address"
+                                                                        id="address"
                                                                         type="text"
                                                                         maxlength="200"
                                                                         minlength="4"
-                                                                        pattern="^[a-zA-Z0-9\s,.'-]+$"
-                                                                        title="Address can contain letters, numbers, spaces, commas, periods, hyphens, and apostrophes"
+                                                                        pattern="^[\p{L}\p{N}\s,.'-]+$"
+                                                                        title="Address can contain letters, numbers, spaces, commas, periods, apostrophes, and hyphens."
                                                                         class="form-control"
                                                                         required
                                                                         />
@@ -158,8 +160,8 @@
                                                                         type="text"
                                                                         class="form-control"
                                                                         required
-                                                                        pattern="^\d{10,15}$"
-                                                                        title="Valid phone number must be 10 to 15 digits long"
+                                                                        pattern="^\d{10}$"
+                                                                        title="Valid phone number must be 10 digits long"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -226,6 +228,7 @@
                                                                     <input
                                                                         value="${u.username}"
                                                                         name="username"
+                                                                        id="username"
                                                                         type="text"
                                                                         pattern="[a-zA-Z0-9]{4,12}$" title="length should be 4-12, no spaces, unsigned"
                                                                         class="form-control"
@@ -315,14 +318,14 @@
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
                                                         <div style="margin-right: 25px; font-weight: bold;color: red">${noti}</div>
-                                                            <button
-                                                                type="button"
-                                                                data-bs-toggle="tooltip"
-                                                                class="btn btn-warning"
-                                                                onclick="doReset(${u.userID})"
-                                                                >Reset password
-                                                            </button>&nbsp;
-                                                            <button
+                                                        <button
+                                                            type="button"
+                                                            data-bs-toggle="tooltip"
+                                                            class="btn btn-warning"
+                                                            onclick="doReset(${u.userID})"
+                                                            >Reset password
+                                                        </button>&nbsp;
+                                                        <button
                                                             type="reset"
                                                             class="btn btn-danger">
                                                             Reset
@@ -368,16 +371,33 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
-                                                    });
+                                                                document.querySelector('.close').editEventListener('click', function () {
+                                                                    $('#editUserModal').modal('hide');
+                                                                });
     </script>
     <script>
-                                                    // Get today's date in yyyy-mm-dd format
-                                                    const today = new Date().toISOString().split('T')[0];
-                                                    // Set the max attribute for the birthday input to today's date
-                                                    document.getElementById("birthday").setAttribute("max", today);
-                                                    document.getElementById("startdate").setAttribute("max", today);
+        // Assuming 'originalStartDate' is the original start date stored in a variable
+        const originalStartDate = "${u.startDate}"; // Replace with your server-side variable
+
+        // Set the minimum date for the start date input field to the original start date
+        document.getElementById("startdate").setAttribute("min", originalStartDate);
+
+        document.getElementById("startdate").addEventListener("change", function () {
+            const selectedDate = new Date(this.value);
+            const originalDate = new Date(originalStartDate);
+
+            if (selectedDate < originalDate) {
+                alert("Start date cannot be before the original start date.");
+                this.value = originalStartDate;
+            }
+        });
+    </script>
+    <script>
+        const today2 = new Date();
+        // Set the max attribute for the birthday input to today's date
+        const minAgeDate = new Date(today2.getFullYear() - 18, today2.getMonth(), today2.getDate());
+        // Set the max attribute for the birthday input to the date 18 years ago
+        document.getElementById("birthday").setAttribute("max", minAgeDate.toISOString().split('T')[0]);
     </script>
     <script>
         function doReset(userid) {
@@ -388,9 +408,26 @@
         }
     </script>
     <script>
-        function doClose() {
-            $('#editUserModal').modal('hide');
-        }
+        document.getElementById("address").addEventListener("blur", function () {
+            const address = this.value.trim();
+            const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
+            if (address !== "") {
+                if (!pattern.test(address)) {
+                    alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
+                    this.value = "";
+                }
+            }
+        });
+        document.getElementById("email").addEventListener("blur", function () {
+            const email = this.value.trim();
+            const regexEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+            if (email !== "") {
+                if (!regexEmail.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    this.value = "";
+                }
+            }
+        });
     </script>
     <script>
         function BackToList() {
@@ -399,12 +436,82 @@
     </script>
     <script>
         function validate() {
-            var phone = document.getElementById("phone").value;
-            var regex1 = /^\d{10}$/;
-            return true;
+            var option = confirm("Are you sure to save?");
+            if (option === true) {
+                return true;
+            }
+            return false;
         }
     </script>
+    <script>
+        document.getElementById("name").addEventListener("blur", function () {
+            const nameInput1 = document.getElementById("name").value;
+            // Check if the input contains only spaces
+            if (nameInput1 !== "" && nameInput1.trim() === "") {
+                alert("The name field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("name").value = ""; // Clear the field
+            }
+        });
 
+        document.getElementById("email").addEventListener("input", function () {
+            const nameInput2 = document.getElementById("email").value;
+
+            // Check if the input contains only spaces
+            if (nameInput2 !== "" && nameInput2.trim() === "") {
+                alert("The email field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("email").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("identification").addEventListener("blur", function () {
+            const nameInput3 = document.getElementById("identification").value;
+
+            // Check if the input contains only spaces
+            if (nameInput3 !== "" && nameInput3.trim() === "") {
+                alert("The identification field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("identification").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("phone").addEventListener("blur", function () {
+            const nameInput4 = document.getElementById("phone").value;
+
+            // Check if the input contains only spaces
+            if (nameInput4 !== "" && nameInput4.trim() === "") {
+                alert("The phone field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("phone").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("address").addEventListener("blur", function () {
+            const nameInput5 = document.getElementById("address").value;
+            // Check if the input contains only spaces
+            if (nameInput5 !== "" && nameInput5.trim() === "") {
+                alert("The address field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("address").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("username").addEventListener("blur", function () {
+            const nameInput7 = document.getElementById("username").value;
+            // Check if the input contains only spaces
+            if (nameInput7 !== "" && nameInput7.trim() === "") {
+                alert("The username field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("username").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("password").addEventListener("blur", function () {
+            const nameInput8 = document.getElementById("password").value;
+            // Check if the input contains only spaces
+            if (nameInput8 !== "" && nameInput8.trim() === "") {
+                alert("The password field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("password").value = ""; // Clear the field
+            }
+        });
+    </script>
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({});

@@ -38,40 +38,38 @@ public class deleteBooking extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        BookingDAO bdao = new BookingDAO();
-        HttpSession session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        try {
+
+            PrintWriter out = response.getWriter();
+            BookingDAO bdao = new BookingDAO();
+            HttpSession session = request.getSession();
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+            }
+            if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+
+            List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
+            List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);
+            bdao.deleteBooking(bookingid);
+            int index = 1;
+            int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+            if (request.getParameter("index") != null) {
+                index = Integer.parseInt(request.getParameter("index"));
+            }
+            List<Booking> listBooking = bdao.getNext5Booking(index);
+
+            session.setAttribute("listBooking", listBooking);
+            session.setAttribute("Nopage", NoPage);
+            session.setAttribute("currentindex", index);
+            request.getRequestDispatcher("listBooking.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
-            request.setAttribute("error", "Please sign in with receptionist account !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-        int bookingid = Integer.parseInt(request.getParameter("bookingid"));
-
-        List<Integer> list = bdao.getAllRoomIDDelete(bookingid);
-        List<Integer> listRoomToCancel = bdao.getAllRoomIDToCancelBooking(bookingid);
-        bdao.deleteBooking(bookingid);
-        int index = 1;
-        int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
-        if (request.getParameter("index") != null) {
-            index = Integer.parseInt(request.getParameter("index"));
-        }
-        List<Booking> listBooking = bdao.getNext5Booking(index);
-
-        session.setAttribute("listBooking", listBooking);
-        session.setAttribute("Nopage", NoPage);
-        session.setAttribute("currentindex", index);
-        request.getRequestDispatcher("listBooking.jsp").forward(request, response);
-
-    }
-
-    public static void main(String[] args) {
-        Date currentDate = new Date();
-        LocalDateTime dateTime = LocalDateTime.now();
-        System.out.println(dateTime);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
