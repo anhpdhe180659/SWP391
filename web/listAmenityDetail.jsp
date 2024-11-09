@@ -150,7 +150,11 @@
                                                                     <label>Quantity</label>
                                                                     <input
                                                                         min="1"
-                                                                        max="4"
+
+                                                                        max="2"
+
+                                                                        
+
                                                                         name="quantity"
                                                                         type="number"
                                                                         class="form-control"
@@ -168,6 +172,7 @@
                                                                     />
                                                             </div>
                                                         </div>  
+
 
                                                     </div>
 
@@ -198,7 +203,7 @@
 
                                                         // Function to validate conditions
                                                         function validate() {
-                                                            const quantityValid = quantity.value >= 0 && quantity.value <= 3;
+                                                            const quantityValid = quantity.value > 0 && quantity.value < 3;
                                                             const roomnumberValid = roomnumber.value > 0 && roomnumber.value < 1000;
 
                                                             if (quantityValid && roomnumberValid) {
@@ -306,29 +311,7 @@
         $('#addUserModal').modal('hide');
     }
 </script>
-<script>
-    document.querySelector('.form-add').addEventListener('submit', function (event) {
-        // Get the quantity input field
-        const quantityInput = document.querySelector('input[name="quantity"]');
 
-        // Trim any leading/trailing whitespace
-        const quantityValue = quantityInput.value.trim();
-
-        // Convert the input value to a number
-        const quantity = Number(quantityValue);
-
-        // Validate that the value is less than 3 and not negative
-        if (isNaN(quantity) || quantity >= 3 || quantity < 0) {
-            alert("Quantity must be a valid number, greater than or equal to 0, and less than 3.");
-            event.preventDefault(); // Prevent form submission
-        } else {
-            console.log("Valid input: " + quantity);  // Debugging step
-        }
-    });
-
-
-
-</script>
 
 
 <script>
@@ -347,7 +330,7 @@
 </script>
 <script>
     function doDelete(userid) {
-        var option = confirm("Are you sure to unactive this?");
+        var option = confirm("Are you sure to remove this?");
         if (option === true) {
             window.location = "deleteAmenityDetail?roomid=" + userid;
         }

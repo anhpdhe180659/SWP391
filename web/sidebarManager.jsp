@@ -175,7 +175,7 @@
                         </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#h">
-                                <i class="fas fa-bell"></i>
+                                <i class="fas fa-comment-dots"></i>
                                 <p>Manage feedback</p>
                                 <span class="caret"></span>
                             </a>
