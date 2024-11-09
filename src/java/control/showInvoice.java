@@ -140,7 +140,7 @@ public class showInvoice extends HttpServlet {
             }
             if (!listBrokenAmen.isEmpty()) {
                 for (RoomAmenBroken ba : listBrokenAmen) {
-                    note = note + "Room "+ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
+                    note = note + "Room " + ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
                 };
             }
             invoice.setNote(note);
@@ -148,6 +148,9 @@ public class showInvoice extends HttpServlet {
             ivDao.insertInvoice(invoice);
         }
         Invoice iv = ivDao.getInvoiceByBookingId(bkId);
+        iv.setTotalAmount(booking.getTotalPrice());
+        iv.setFinalAmount((int) (booking.getTotalPrice() * (100 - iv.getDiscount()) * 1.0 / 100 + iv.getFine()));
+        ivDao.updateNoteAndFine(iv);
         booking = bkDao.getBookingByBookingID(bkId);
         int guestId = booking.getGuestID();
         GuestDAO gDao = new GuestDAO();
