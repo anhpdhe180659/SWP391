@@ -355,6 +355,35 @@ public class BookingDAO extends DBContext {
         }
     }
 
+    public List<Room> getAllRoomAvailableFromDateToDate(LocalDateTime newCheckinTime, LocalDateTime newCheckoutTime) {
+        List<Room> list = new ArrayList<>();
+        java.sql.Timestamp newInTime = java.sql.Timestamp.valueOf(newCheckinTime);
+        java.sql.Timestamp newOutTime = java.sql.Timestamp.valueOf(newCheckoutTime);
+        String query = """
+                       SELECT r.*
+                       FROM Room r
+                       LEFT JOIN BookingRoom br ON r.RoomID = br.RoomID
+                           AND (
+                               (br.CheckInDate <= ? AND br.CheckOutDate >= ?)
+                           )
+                       WHERE br.RoomID IS NULL;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setTimestamp(1, newOutTime);
+            pre.setTimestamp(2, newInTime);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Room(rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
     public boolean IsEverBooked(int roomid) {
         boolean ReadyToBook = false;
         List<Integer> list = new ArrayList<Integer>();

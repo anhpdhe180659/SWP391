@@ -94,7 +94,7 @@
                                         <c:set value="${requestScope.noti}" var="noti" />
 
                                         <form action="filterBooking" style="margin-left: 20px">
-                                            <span>Type</span>
+                                            <span></span>
                                             <select class="form-select-sm col-2 me-3" name="filterOption" style="width: 150px">
                                                 <option value="0" ${requestScope.filterOption == '0' ? 'selected' : ''}>All</option>
                                                 <option value="1" ${requestScope.filterOption == '1' ? 'selected' : ''}>No Show</option>
