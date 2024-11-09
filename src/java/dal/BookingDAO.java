@@ -571,7 +571,8 @@ public class BookingDAO extends DBContext {
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
                         rs.getInt("PaymentMethod"),
-                        rs.getTimestamp("ActualCheckinDate").toLocalDateTime()
+                        rs.getTimestamp("ActualCheckinDate") != null
+                        ? rs.getTimestamp("ActualCheckinDate").toLocalDateTime() : null
                 );
             }
         } catch (SQLException e) {
@@ -788,7 +789,6 @@ public class BookingDAO extends DBContext {
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
                         rs.getInt("PaymentMethod")
-                        
                 ));
             }
         } catch (SQLException e) {

@@ -204,24 +204,40 @@
                                     </li>
                                 </ul>
                             </div>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#policyForms" aria-expanded="false" aria-controls="policyForms">
-                            <i class="fas fa-file-contract"></i>
-                            <p>Manage Policies</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="policyForms">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="policy">
-                                        <span class="sub-item">Policies</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#policyForms" aria-expanded="false" aria-controls="policyForms">
+                                <i class="fas fa-file-contract"></i>
+                                <p>Manage Policies</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="policyForms">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="policy">
+                                            <span class="sub-item">Policies</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#tab">
+                                <i class="fas fa-money-bill"></i>
+                                <p>Invoice</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="tab">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="listInvoice">
+                                            <span class="sub-item">Invoice</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
 
+                        </li>
                         <!--
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#charts">

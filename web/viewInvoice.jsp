@@ -53,7 +53,13 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
+
+            <c:if test="${sessionScope.user.role == 2}">
+                <jsp:include page="sidebarReceptionist.jsp"/>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 1}">
+                <jsp:include page="sidebarManager.jsp"/>
+            </c:if>
             <!-- End Sidebar -->
 
             <div class="main-panel">
@@ -83,6 +89,7 @@
                         </div>
                         <!-- End Logo Header -->
                     </div>
+
                     <jsp:include page="navbar-header.jsp"/>
                 </div>
 
