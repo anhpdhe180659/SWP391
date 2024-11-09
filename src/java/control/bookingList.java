@@ -60,7 +60,10 @@ public class bookingList extends HttpServlet {
                 index = Integer.parseInt(request.getParameter("index"));
             }
             List<Booking> listBooking = bdao.getNext5Booking(index);
-
+            List<Booking> listTocancel = bdao.findBookingNotPaidDeposit24Hour();
+            for (Booking booking : listTocancel) {
+                bdao.deleteBooking(booking.getBookingID());
+            }
             session.setAttribute("listBooking", listBooking);
             session.setAttribute("Nopage", NoPage);
             session.setAttribute("currentindex", index);
@@ -68,6 +71,10 @@ public class bookingList extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("exceptionErrorPage.jsp");
         }
+    }
+    public void autoCancelBookingNotPaidDeposit24Hour(){
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
