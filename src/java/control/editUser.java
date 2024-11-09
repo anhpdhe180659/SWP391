@@ -96,17 +96,17 @@ public class editUser extends HttpServlet {
                 user.setUsername(username);
             }
             int userid = Integer.parseInt(request.getParameter("userid"));
-            String Name = request.getParameter("name");
+            String Name = request.getParameter("name").trim();
             user.setName(Name);
-            String DateOfBirth = request.getParameter("birthday");
+            String DateOfBirth = request.getParameter("birthday").trim();
             user.setDateOfBirth(DateOfBirth);
             int Sex = Integer.parseInt(request.getParameter("sex"));
             user.setSex(Sex);
-            String Address = request.getParameter("address");
+            String Address = request.getParameter("address").trim();
             user.setAddress(Address);
-            String Phone = request.getParameter("phone");
+            String Phone = request.getParameter("phone").trim();
             user.setPhone(Phone);
-            String Identification = request.getParameter("identification");
+            String Identification = request.getParameter("identification").trim();
             user.setIdentification(Identification);
             String StartDate = request.getParameter("startdate");
             user.setStartDate(StartDate);
@@ -114,14 +114,12 @@ public class editUser extends HttpServlet {
             user.setSalary(Salary);
             int role = Integer.parseInt(request.getParameter("role"));
             user.setRole(role);
-            String email = request.getParameter("email");
+            String email = request.getParameter("email").trim();
             user.setEmail(email);
             int status = Integer.parseInt(request.getParameter("status"));
             user.setStatus(status);
             List<User> listUser = udao.getAllUser();
-
             User oldUser = udao.getUserByID(userid);// old user
-
             String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Save successfully!</div>";
             for (User u : listUser) {
                 if (!oldUser.getUsername().equals(username)) {

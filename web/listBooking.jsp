@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@page import="model.*" %>
 <%@page import="dal.*" %>
 <%@page import="java.text.NumberFormat" %>
@@ -62,7 +63,7 @@
                                         <nav
                                             class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
                                             >
-                                            <c:set value="${requestScope.searchCode} " var="n"/>
+                                            <c:set value="${fn:trim(requestScope.searchCode)}" var="n"/>
                                             <form action="searchBooking">
                                                 <div class="input-group" >
                                                     <div class="input-group-prepend">
@@ -70,7 +71,7 @@
                                                             <i class="fa fa-search search-icon"></i>
                                                         </button>
                                                     </div>
-                                                    <c:if test="${n.length() < 2}">
+                                                    <c:if test="${fn:length(n) < 2}">
                                                         <input
                                                             type="text"
                                                             name="bookingcode"
@@ -78,7 +79,7 @@
                                                             class="form-control"
                                                             />
                                                     </c:if>
-                                                    <c:if test="${n.length() > 1}">
+                                                    <c:if test="${fn:length(n) > 1}">
                                                         <input
                                                             type="text"
                                                             name="bookingcode"

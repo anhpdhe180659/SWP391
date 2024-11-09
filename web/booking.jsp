@@ -264,22 +264,6 @@
                                                                     list="countryList"
                                                                     required
                                                                     />
-                                                                <!--                                                                <select
-                                                                                                                                    class="form-control"
-                                                                                                                                    id="nationality"
-                                                                                                                                    name="nationality"
-                                                                                                                                    placeholder="Enter nationality"
-                                                                                                                                    required
-                                                                                                                                    >
-                                                                                                                                    <option value="Vietnam">Vietnam</option>
-                                                                                                                                    <option value="United States">United States</option>
-                                                                                                                                    <option value="Canada">Canada</option>
-                                                                                                                                    <option value="France">France</option>
-                                                                                                                                    <option value="Germany">Germany</option>
-                                                                                                                                    <option value="Australia">Australia</option>
-                                                                                                                                    <option value="Japan">Japan</option>
-                                                                                                                                    <option value="South Korea">South Korea</option>
-                                                                                                                                </select>-->
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-lg-3">
@@ -559,17 +543,34 @@
             document.getElementById("address").addEventListener("blur", function () {
                 const address = this.value.trim();
                 const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
-                if (!pattern.test(address)) {
-                    alert("The address contains invalid characters.");
-                    document.getElementById("address").focus();
+                if (address !== "") {
+                    if (!pattern.test(address)) {
+                        alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
+                        this.value = "";
+                        return; 
+                    }
                 }
             });
             document.getElementById("email").addEventListener("blur", function () {
                 const email = this.value.trim();
                 const regexEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-                if (!regexEmail.test(email)) {
-                    alert("Please enter a valid Email address (example@gmail.com)");
-                    document.getElementById("email").focus();
+                if (email !== "") {
+                    if (!regexEmail.test(email)) {
+                        alert("Please enter a valid Email address (example@gmail.com)");
+                        this.value = "";
+                        return; 
+                    }
+                }
+            });
+            document.getElementById("nationality").addEventListener("blur", function () {
+                const nationality = this.value.trim();
+                const patternNationality = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+                if (nationality !== "") {
+                    if (!patternNationality.test(nationality)) {
+                        alert("Invalid nationality. Please use only letters, spaces, periods, and hyphens.");
+                        this.value = "";
+                        return; 
+                    }
                 }
             });
         </script>
@@ -599,7 +600,7 @@
                     document.getElementById("name").value = ""; // Clear the field
                 }
             });
-            document.getElementById("email").addEventListener("input", function () {
+            document.getElementById("email").addEventListener("blur", function () {
                 const nameInput2 = document.getElementById("email").value;
 
                 // Check if the input contains only spaces
@@ -639,12 +640,12 @@
                 }
             });
             document.getElementById("nationality").addEventListener("blur", function () {
-                const nameInput6 = document.getElementById("nationality").value;
-                // Check if the input contains only spaces
+                const nameInput6 = document.getElementById("nationality").value; // Loại bỏ khoảng trắng ở đầu và cuối
+                // Kiểm tra nếu trường không rỗng và không chỉ chứa khoảng trắng
                 if (nameInput6 !== "" && nameInput6.trim() === "") {
                     alert("The nationality field cannot contain only spaces.");
-                    // Optionally, you can clear the field or take any other action
-                    document.getElementById("nationality").value = ""; // Clear the field
+                    document.getElementById("nationality").value = ""; // Xóa giá trị nếu chỉ chứa khoảng trắng
+                    return; // Dừng không kiểm tra tiếp
                 }
             });
         </script>
