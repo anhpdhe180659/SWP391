@@ -191,7 +191,12 @@
                                                             </div>
                                                             <div class="modal-footer border-0">
                                                                 <c:set value="${requestScope.noti}" var="noti"/>
+                                                                <c:if test="${noti == 'Room number is existed!'}">
+                                                                <p class="text text-danger me-4"> ${noti}</p>
+                                                                </c:if>
+                                                                <c:if test="${noti != 'Room number is existed!'}">
                                                                 <p class="text text-success me-4"> ${noti}</p>
+                                                                </c:if>
                                                                 <button
                                                                     type="submit"
                                                                     class="btn btn-primary">

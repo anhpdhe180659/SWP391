@@ -103,7 +103,7 @@ public class updateRoomDetail extends HttpServlet {
             request.setAttribute("noti", "Update room successful !");
             request.getRequestDispatcher("roomDetailAdmin.jsp").forward(request, response);
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
+            response.sendRedirect("errorExceptionPage.jsp");
         }
     }
 
