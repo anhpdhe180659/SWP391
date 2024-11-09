@@ -98,7 +98,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Add Amenity Detail</h4>
+                                        <h4 class="card-title">Add Amenity Detail </h4>
                                         <button
                                             class="btn btn-primary btn-round ms-auto"
                                             data-bs-toggle="modal"
@@ -142,7 +142,7 @@
                                                                         name="roomnumber"
                                                                         type="number"
                                                                         class="form-control"
-                                                                        title="Must be greater than 0"
+                                                                        title="Must have a room in the hotel"
                                                                         required
                                                                         />
                                                                 </div>
@@ -150,15 +150,11 @@
                                                                     <label>Quantity</label>
                                                                     <input
                                                                         min="1"
-
                                                                         max="2"
-
-                                                                        
-
                                                                         name="quantity"
                                                                         type="number"
                                                                         class="form-control"
-                                                                        title="Must be greater than or equal to 0"
+                                                                        title="Must be greater than to 0"
                                                                         required
                                                                         />
                                                                 </div>
@@ -211,7 +207,7 @@
                                                             } else {
                                                                 btn.disabled = true; // Disable button if either condition is not met
                                                                 if (!quantityValid) {
-                                                                    alert("Quantity must be between 0 and 3.");
+                                                                    alert("Quantity must be from 0 to less than 3");
                                                                 }
                                                                 if (!roomnumberValid) {
                                                                     alert("Room number must be between 1 and 999.");
@@ -234,16 +230,16 @@
                                                 <tr>
                                                     <th>Room Number</th>
                                                     <th>Quantity</th>
-                                                    <th style="display: none;">Amenity ID</th> <!-- Hidden column -->
+                                                    <th style="display: none;">Amenity ID</th> 
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <c:forEach items="${listAmenityDetail}" var="a">
                                                     <tr>
-                                                        <td>${a.roomNumber}</td> <!-- Changed to roomNumber -->
+                                                        <td>${a.roomNumber}</td> 
                                                         <td>${a.quantity}</td>
-                                                        <td style="display: none;">${a.amenID}</td> <!-- Hidden Amenity ID -->
+                                                        <td style="display: none;">${a.amenID}</td> 
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="editAmenityDetail?roomid=${a.roomNumber}&amenId=${a.amenID}">
