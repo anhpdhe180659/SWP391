@@ -150,7 +150,11 @@
                                                                     <label>Quantity</label>
                                                                     <input
                                                                         min="1"
+
                                                                         max="2"
+
+                                                                        
+
                                                                         name="quantity"
                                                                         type="number"
                                                                         class="form-control"
@@ -168,34 +172,7 @@
                                                                     />
                                                             </div>
                                                         </div>  
-                                                        <script>
-                                                        // Get the button and input fields
-                                                        const btn = document.querySelector('button[type="button submit"]');
-                                                        const quantity = document.querySelector('input[name="quantity"]');
-                                                        const roomnumber = document.querySelector('input[name="roomnumber"]');
 
-                                                        // Function to validate conditions
-                                                        function validate() {
-                                                            const quantityValid = quantity.value > 0 && quantity.value <3;
-                                                            const roomnumberValid = roomnumber.value > 0 && roomnumber.value < 1000;
-
-                                                            if (quantityValid && roomnumberValid) {
-                                                                btn.disabled = false; // Enable button if both conditions are met
-                                                            } else {
-                                                                btn.disabled = true; // Disable button if either condition is not met
-                                                                if (!quantityValid) {
-                                                                    alert("Quantity must be between 0 and 3.");
-                                                                }
-                                                                if (!roomnumberValid) {
-                                                                    alert("Room number must be between 1 and 999.");
-                                                                }
-                                                            }
-                                                        }
-
-                                                        // Attach onchange events to call validate function
-                                                        quantity.onchange = validate;
-                                                        roomnumber.onchange = validate;
-                                                    </script>
 
                                                     </div>
 
@@ -218,6 +195,35 @@
                                                             </button>
                                                         </a>
                                                     </div>
+                                                    <script>
+                                                        // Get the button and input fields
+                                                        const btn = document.querySelector('button[type="button submit"]');
+                                                        const quantity = document.querySelector('input[name="quantity"]');
+                                                        const roomnumber = document.querySelector('input[name="roomnumber"]');
+
+                                                        // Function to validate conditions
+                                                        function validate() {
+                                                            const quantityValid = quantity.value > 0 && quantity.value < 3;
+                                                            const roomnumberValid = roomnumber.value > 0 && roomnumber.value < 1000;
+
+                                                            if (quantityValid && roomnumberValid) {
+                                                                btn.disabled = false; // Enable button if both conditions are met
+                                                            } else {
+                                                                btn.disabled = true; // Disable button if either condition is not met
+                                                                if (!quantityValid) {
+                                                                    alert("Quantity must be between 0 and 3.");
+                                                                }
+                                                                if (!roomnumberValid) {
+                                                                    alert("Room number must be between 1 and 999.");
+                                                                }
+                                                            }
+                                                        }
+
+                                                        // Attach onchange events to call validate function
+                                                        quantity.onchange = validate;
+                                                        roomnumber.onchange = validate;
+                                                    </script>
+
                                                 </form>
                                             </div>
                                         </div>
