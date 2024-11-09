@@ -37,24 +37,23 @@ public class editAmenity extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = (Integer) session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            response.setContentType("text/html;charset=UTF-8");
-            AmenityDAO adao = new AmenityDAO();
-            PrintWriter out = response.getWriter();
-            try {
-                int amenityid = Integer.parseInt(request.getParameter("amenityid"));
-                Amenity amenity = adao.findAmenity(amenityid);
-                request.setAttribute("amenity", amenity);
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        AmenityDAO adao = new AmenityDAO();
+        PrintWriter out = response.getWriter();
+        try {
+            int amenityid = Integer.parseInt(request.getParameter("amenityid"));
+            Amenity amenity = adao.findAmenity(amenityid);
+            request.setAttribute("amenity", amenity);
 
-                request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-            } catch (ServletException | IOException | NumberFormatException e) {
-                out.print(e);
-            }
+            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e);
         }
     }
 
@@ -87,46 +86,46 @@ public class editAmenity extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            PrintWriter out = response.getWriter();
-            try {
-                AmenityDAO adao = new AmenityDAO();
-                int amenityid = Integer.parseInt(request.getParameter("amenid"));
-                Amenity oldAmenity = adao.findAmenity(amenityid);
-
-                String name = request.getParameter("name").trim();
-                Amenity amenity = new Amenity(amenityid, name);
-
-                if (oldAmenity.getAmenName().equals(name)) {
-                    request.setAttribute("noti", "No changes made!");
-                    request.setAttribute("amenity", oldAmenity);
-                } else {
-                    List<Amenity> listAmenity = adao.getAllAmenities();
-                    for (Amenity s : listAmenity) {
-                        if (s.getAmenName().equals(name)) {
-                            request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
-                            request.setAttribute("amenity", oldAmenity);
-                            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-                            return;
-                        }
-                    }
-                    adao.updateAmenity(amenity);
-                    request.setAttribute("noti", "Save successful!");
-                    request.setAttribute("amenity", amenity);
-                }
-
-                // Chuyển hướng đến trang edit
-                request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
-
-            } catch (Exception e) {
-                out.print("There was an error: " + e.getMessage());
-            }
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        PrintWriter out = response.getWriter();
+        try {
+            AmenityDAO adao = new AmenityDAO();
+            int amenityid = Integer.parseInt(request.getParameter("amenid"));
+            Amenity oldAmenity = adao.findAmenity(amenityid);
+
+            String name = request.getParameter("name").trim();
+            Amenity amenity = new Amenity(amenityid, name);
+
+            if (oldAmenity.getAmenName().equals(name)) {
+                request.setAttribute("noti", "No changes made!");
+                request.setAttribute("amenity", oldAmenity);
+            } else {
+                List<Amenity> listAmenity = adao.getAllAmenities();
+                for (Amenity s : listAmenity) {
+                    if (s.getAmenName().equals(name)) {
+                        request.setAttribute("noti", "Name " + name + " already exists, please enter another name!");
+                        request.setAttribute("amenity", oldAmenity);
+                        request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+                        return;
+                    }
+                }
+                adao.updateAmenity(amenity);
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("amenity", amenity);
+            }
+
+            // Chuyển hướng đến trang edit
+            request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            out.print("There was an error: " + e.getMessage());
+        }
+
     }
 
     public static void main(String[] args) {

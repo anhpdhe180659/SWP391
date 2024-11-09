@@ -37,39 +37,36 @@ public class addService extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            try {
-                ServiceDAO sdao = new ServiceDAO();
-                List<Service> listService = sdao.getAllServices();
-                String name = request.getParameter("name");
-                boolean flag = false;
-                for (Service a : listService) {
-                    if (a.getName().equals(name)) {
-                        request.setAttribute("duplicate", "Amenity existed in system.");
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    int price = Integer.parseInt(request.getParameter("price"));
-                    Service s = new Service();
-                    s.setName(name);
-                    s.setPrice(price);
-                    sdao.addService(s);
-                }
-                session.setAttribute("listService", listService);
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        ServiceDAO sdao = new ServiceDAO();
+        List<Service> listService = sdao.getAllServices();
+        String name = request.getParameter("name");
+        boolean flag = false;
+        for (Service a : listService) {
+            if (a.getName().equals(name)) {
+                request.setAttribute("duplicate", "Service existed in system.");
+                flag = true;
                 request.getRequestDispatcher("listService.jsp").forward(request, response);
-            } catch (ServletException | IOException | NumberFormatException e) {
-                out.print(e.getMessage());
+                break;
             }
         }
+        if (!flag) {
+            int price = Integer.parseInt(request.getParameter("price"));
+            Service s = new Service();
+            s.setName(name);
+            s.setPrice(price);
+            sdao.addService(s);
+        }
+        session.setAttribute("listService", listService);
+        response.sendRedirect("listService");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,7 +81,6 @@ public class addService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

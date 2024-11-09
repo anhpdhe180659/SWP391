@@ -73,39 +73,38 @@ public class viewDetailInvoice extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            String id = request.getParameter("invoiceId");
-            InvoiceDAO ivDao = new InvoiceDAO();
-            int svId = Integer.parseInt(id);
-            Invoice iv = ivDao.getInvoiceById(svId);
-            BookingDAO bkDao = new BookingDAO();
-            int bkId = iv.getBookingId();
-            List<Room> allRooms = bkDao.getRoomsByBookingID(bkId);
-            List<Service> allServices = bkDao.getServicesByBookingID(bkId);
-            Booking booking = bkDao.getBookingByBookingID(bkId);
-            bkDao.getTotalPriceBooking(bkId);
-            booking = bkDao.getBookingByBookingID(bkId);
-            int guestId = booking.getGuestID();
-            GuestDAO gDao = new GuestDAO();
-            Guest guest = gDao.getGuestByGuestID(guestId);
-            List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bkId);
-            List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(bkId);
-            LocalDate date = iv.getPaymentDate();
-            session.setAttribute("date", date.toString());
-            session.setAttribute("booking", booking);
-            session.setAttribute("guest", guest);
-            session.setAttribute("allBookingRoom", allBookingRoom);
-            session.setAttribute("allBookingService", allBookingService);
-            session.setAttribute("listRoom", allRooms);
-            session.setAttribute("listService", allServices);
-            session.setAttribute("bookingId", id);
-            response.sendRedirect("viewInvoice.jsp");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        String id = request.getParameter("invoiceId");
+        InvoiceDAO ivDao = new InvoiceDAO();
+        int svId = Integer.parseInt(id);
+        Invoice iv = ivDao.getInvoiceById(svId);
+        BookingDAO bkDao = new BookingDAO();
+        int bkId = iv.getBookingId();
+        List<Room> allRooms = bkDao.getRoomsByBookingID(bkId);
+        List<Service> allServices = bkDao.getServicesByBookingID(bkId);
+        Booking booking = bkDao.getBookingByBookingID(bkId);
+        bkDao.getTotalPriceBooking(bkId);
+        booking = bkDao.getBookingByBookingID(bkId);
+        int guestId = booking.getGuestID();
+        GuestDAO gDao = new GuestDAO();
+        Guest guest = gDao.getGuestByGuestID(guestId);
+        List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bkId);
+        List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(bkId);
+        LocalDate date = iv.getPaymentDate();
+        session.setAttribute("date", date.toString());
+        session.setAttribute("booking", booking);
+        session.setAttribute("guest", guest);
+        session.setAttribute("allBookingRoom", allBookingRoom);
+        session.setAttribute("allBookingService", allBookingService);
+        session.setAttribute("listRoom", allRooms);
+        session.setAttribute("listService", allServices);
+        session.setAttribute("bookingId", id);
+        response.sendRedirect("viewInvoice.jsp");
     }
 
     /**

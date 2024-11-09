@@ -35,73 +35,72 @@ public class listRoom extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 2) {
-                request.setAttribute("error", "Please sign in with receptionist account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            RoomDao roomDao = new RoomDao();
-            int index = 1;
-            int typeId = 0;
-            int statusId = 0;
-            int cleanId = 0;
-            int roomNumber = 0;
-            if (request.getParameter("index") != null) {
-                index = Integer.parseInt(request.getParameter("index"));
-            }
-            if (request.getParameter("typeId") != null) {
-                typeId = Integer.parseInt(request.getParameter("typeId"));
-            }
-            if (request.getParameter("statusId") != null) {
-                statusId = Integer.parseInt(request.getParameter("statusId"));
-            }
-            if (request.getParameter("cleanId") != null) {
-                cleanId = Integer.parseInt(request.getParameter("cleanId"));
-            }
-            if (request.getParameter("keyword") != null && !request.getParameter("keyword").trim().equals("")) {
-                index = 1;
-                typeId = 0;
-                statusId = 0;
-                cleanId = 0;
-                roomNumber = Integer.parseInt(request.getParameter("keyword").trim());
-            }
-            List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId, roomNumber);
-            int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId, roomNumber) / 6);
-            System.out.println(noPage);
-            if (noPage == 0) {
-                request.setAttribute("noti", "No room found");
-            }
-            //Get list room type
-            RoomTypeDAO rtDao = new RoomTypeDAO();
-            List<RoomType> roomType = rtDao.getAll();
-            //get booking 
-            BookingDAO bkDao = new BookingDAO();
-            List<Booking> bookings = bkDao.getAllBooking();
-            List<BookingRoom> unpaidBookings = bkDao.getAllBookingUnpaid();
-            //test
-            unpaidBookings.forEach((r) -> {
-                System.out.println(r.getBookingID());
-            });
-            List<BookingRoom> bookingRooms = bkDao.getAllBookingRoom();
-            GuestDAO gDao = new GuestDAO();
-            List<Guest> guests = gDao.getAllGuests();
-            //set attr
-            session.setAttribute("unpaidBooking", unpaidBookings);
-            session.setAttribute("bookings", bookings);
-            session.setAttribute("bookingRooms", bookingRooms);
-            session.setAttribute("guests", guests);
-            session.setAttribute("roomType", roomType);
-            session.setAttribute("listRoom", listRoom);
-            session.setAttribute("Nopage", noPage);
-            session.setAttribute("currentindex", index);
-            // Add the values to the request scope so they can be used in the JSP
-            request.setAttribute("typeId", typeId);
-            request.setAttribute("statusId", statusId);
-            request.setAttribute("cleanId", cleanId);
-
-            request.getRequestDispatcher("listRoom.jsp").forward(request, response);
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        RoomDao roomDao = new RoomDao();
+        int index = 1;
+        int typeId = 0;
+        int statusId = 0;
+        int cleanId = 0;
+        int roomNumber = 0;
+        if (request.getParameter("index") != null) {
+            index = Integer.parseInt(request.getParameter("index"));
+        }
+        if (request.getParameter("typeId") != null) {
+            typeId = Integer.parseInt(request.getParameter("typeId"));
+        }
+        if (request.getParameter("statusId") != null) {
+            statusId = Integer.parseInt(request.getParameter("statusId"));
+        }
+        if (request.getParameter("cleanId") != null) {
+            cleanId = Integer.parseInt(request.getParameter("cleanId"));
+        }
+        if (request.getParameter("keyword") != null && !request.getParameter("keyword").trim().equals("")) {
+            index = 1;
+            typeId = 0;
+            statusId = 0;
+            cleanId = 0;
+            roomNumber = Integer.parseInt(request.getParameter("keyword").trim());
+        }
+        List<Room> listRoom = roomDao.loadMore(index, typeId, statusId, cleanId, roomNumber);
+        int noPage = (int) Math.ceil(roomDao.getTotalRooms(typeId, statusId, cleanId, roomNumber) / 6);
+        System.out.println(noPage);
+        if (noPage == 0) {
+            request.setAttribute("noti", "No room found");
+        }
+        //Get list room type
+        RoomTypeDAO rtDao = new RoomTypeDAO();
+        List<RoomType> roomType = rtDao.getAll();
+        //get booking 
+        BookingDAO bkDao = new BookingDAO();
+        List<Booking> bookings = bkDao.getAllBooking();
+        List<BookingRoom> unpaidBookings = bkDao.getAllBookingUnpaid();
+        //test
+        unpaidBookings.forEach((r) -> {
+            System.out.println(r.getBookingID());
+        });
+        List<BookingRoom> bookingRooms = bkDao.getAllBookingRoom();
+        GuestDAO gDao = new GuestDAO();
+        List<Guest> guests = gDao.getAllGuests();
+        //set attr
+        session.setAttribute("unpaidBooking", unpaidBookings);
+        session.setAttribute("bookings", bookings);
+        session.setAttribute("bookingRooms", bookingRooms);
+        session.setAttribute("guests", guests);
+        session.setAttribute("roomType", roomType);
+        session.setAttribute("listRoom", listRoom);
+        session.setAttribute("Nopage", noPage);
+        session.setAttribute("currentindex", index);
+        // Add the values to the request scope so they can be used in the JSP
+        request.setAttribute("typeId", typeId);
+        request.setAttribute("statusId", statusId);
+        request.setAttribute("cleanId", cleanId);
+
+        request.getRequestDispatcher("listRoom.jsp").forward(request, response);
     }
 
     /**

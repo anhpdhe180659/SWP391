@@ -65,12 +65,11 @@ public class listRoomAmenity extends HttpServlet {
 
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = (Integer) session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 3 && role != 1) {
-                request.setAttribute("message", "Please sign in with housekeeper/ manager account!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") == 2) {
+            request.setAttribute("error", "Please sign in with manager/housekeeper account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
         }
         RoomDao roomDao = new RoomDao();
         int index = 1;

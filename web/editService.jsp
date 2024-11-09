@@ -107,6 +107,9 @@
                                     <!-- Modal -->
 
                                     <div>
+                                        <c:if test="${not empty noti}">
+                                            <div style="margin-right: 25px; font-weight: bold;color: green;">${noti}</div>
+                                        </c:if>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form id="myForm" onsubmit="return validate()">
@@ -127,6 +130,27 @@
                                                                         required
                                                                         />
                                                                 </div>
+                                                                <script>
+                                                                    document.querySelector('form').addEventListener('submit', function (event) {
+                                                                        const nameInput = document.querySelector('input[name="name"]');
+
+                                                                        // Trim leading and trailing spaces
+                                                                        nameInput.value = nameInput.value.trim();
+
+                                                                        // Replace multiple spaces between words with a single space
+                                                                        nameInput.value = nameInput.value.replace(/\s+/g, ' ');
+
+                                                                        // Validate name (letters and single spaces between words)
+                                                                        const namePattern = /^[A-Za-zÀ-ỹ]+(?:\s[A-Za-zÀ-ỹ]+)*$/;
+                                                                        if (!namePattern.test(nameInput.value)) {
+                                                                            alert("Name can only contain letters and single spaces between words.");
+                                                                            event.preventDefault();
+                                                                            return;
+                                                                        }
+                                                                    });
+
+
+                                                                </script>
                                                             </div>
 
                                                             <!-- Price Field: Must be a positive number greater than 0 -->
@@ -150,7 +174,9 @@
                                                     <input type="text" name="serviceid"  value="${s.serviceID}" hidden="">
                                                     <div class="modal-footer border-0">
                                                         <c:set value="${requestScope.noti}" var="noti"/>
-                                                        <div style="margin-right: 25px; font-weight: bold;color: green">${noti}</div>
+                                                        <div style="margin-right: 25px; font-weight: bold; color: ${noti == 'Save successful!' ? 'green' : 'red'};">
+                                                            ${noti}
+                                                        </div>
                                                         <button
                                                             type="reset"
                                                             class="btn btn-danger">
@@ -197,9 +223,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    document.querySelector('.close').editEventListener('click', function () {
-                                                        $('#editUserModal').modal('hide');
-                                                    });
+                                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                                        $('#editUserModal').modal('hide');
+                                                                    });
     </script>
     <script>
         function doClose() {

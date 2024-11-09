@@ -37,37 +37,37 @@ public class addAmenity extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            try {
-                AmenityDAO adao = new AmenityDAO();
-                List<Amenity> listAmenity = adao.getAllAmenities();
-                String name = request.getParameter("name").trim();
-                boolean flag = false;
-                for (Amenity a : listAmenity) {
-                    if (a.getAmenName().equals(name)) {
-                        request.setAttribute("duplicate", "Amenity existed in system.");
-                        flag = true;
-                        break;
-                    }
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            AmenityDAO adao = new AmenityDAO();
+            List<Amenity> listAmenity = adao.getAllAmenities();
+            String name = request.getParameter("name").trim();
+            boolean flag = false;
+            for (Amenity a : listAmenity) {
+                if (a.getAmenName().equals(name)) {
+                    request.setAttribute("duplicate", "Amenity existed in system.");
+                    flag = true;
+                    request.getRequestDispatcher("listAmenity.jsp").forward(request, response);
+                    break;
                 }
-                if (!flag) {
-                    Amenity a = new Amenity();
-                    a.setAmenName(name);
+            }
+            if (!flag) {
+                Amenity a = new Amenity();
+                a.setAmenName(name);
 
-                    adao.addAmenity(a);
-                }
-                session.setAttribute("listAmenity", listAmenity);
-                request.getRequestDispatcher("listAmenity.jsp").forward(request, response);
-            } catch (ServletException | IOException | NumberFormatException e) {
-                out.print(e.getMessage());
+                adao.addAmenity(a);
             }
+            session.setAttribute("listAmenity", listAmenity);
+            response.sendRedirect("listAmenity");
+        } catch (ServletException | IOException | NumberFormatException e) {
+            out.print(e.getMessage());
         }
     }
 

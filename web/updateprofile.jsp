@@ -340,10 +340,10 @@
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
+        var yyyy = today.getFullYear()-18;
 
-        today = yyyy + '-' + mm + '-' + dd;
-        document.getElementById("birthday").setAttribute("max", today);
+        maxDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("birthday").setAttribute("max", maxDate);
     }
     
     // Gọi hàm khi trang được load

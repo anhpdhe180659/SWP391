@@ -77,34 +77,33 @@ public class updateRoomDetail extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with manager account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            try {
-                RoomDao roomDao = new RoomDao();
-                int roomId = Integer.parseInt(request.getParameter("roomId"));
-                String field = request.getParameter("field");
-                String value = request.getParameter("value");
-                Room room = roomDao.findRoomById(roomId);
-                int vl = Integer.parseInt(value);
-                switch (field) {
-                    case "typeId" -> {
-                        room.setTypeId(vl);
-                    }
-                    case "statusId" -> {
-                        room.setStatusId(vl);
-                    }
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        try {
+            RoomDao roomDao = new RoomDao();
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            String field = request.getParameter("field");
+            String value = request.getParameter("value");
+            Room room = roomDao.findRoomById(roomId);
+            int vl = Integer.parseInt(value);
+            switch (field) {
+                case "typeId" -> {
+                    room.setTypeId(vl);
                 }
-                roomDao.updateRoom(room);
-                System.out.println(room.getTypeId() + "/" + room.getRoomNumber() + "/" + room.getStatusId() + "/" + room.getCleanId());
-                request.setAttribute("noti", "Update room successful !");
-                request.getRequestDispatcher("roomDetailAdmin.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                System.out.println(e.getMessage());
+                case "statusId" -> {
+                    room.setStatusId(vl);
+                }
             }
+            roomDao.updateRoom(room);
+            System.out.println(room.getTypeId() + "/" + room.getRoomNumber() + "/" + room.getStatusId() + "/" + room.getCleanId());
+            request.setAttribute("noti", "Update room successful !");
+            request.getRequestDispatcher("roomDetailAdmin.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("errorExceptionPage.jsp");
         }
     }
 
