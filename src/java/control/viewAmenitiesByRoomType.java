@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,17 @@ public class viewAmenitiesByRoomType extends HttpServlet {
     @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+    HttpSession session = request.getSession(false);
 
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = (Integer) session.getAttribute("role");
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with manager account!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        }
     RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
     AmenityForRoomDAO amenityForRoomDAO = new AmenityForRoomDAO();
     AmenityDAO amenityDAO = new AmenityDAO(); // Thêm để gọi phương thức getAmenityName

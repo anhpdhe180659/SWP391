@@ -40,6 +40,15 @@ public class editItemQuantity extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int)session.getAttribute("role") != 3) {
+            request.setAttribute("error", "Please sign in with staff account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         RoomDao rDAO = new RoomDao();
         ItemDAO idao = new ItemDAO();
         try {

@@ -116,9 +116,14 @@
                                                         } 
                                                     %>
                                                     <div class="modal-footer border-0">
-                                                        <div style="margin-right: 25px; font-weight: bold; color: green">
-                                                            <%= request.getAttribute("noti") != null ? request.getAttribute("noti") : "" %>
+                                                        <% 
+    String noti = (String) request.getAttribute("noti");
+    String notiColor = (String) request.getAttribute("notiColor");
+                                                        %>
+                                                        <div style="margin-right: 25px; font-weight: bold; color: <%= notiColor != null ? notiColor : "red" %>;">
+                                                            <%= noti != null ? noti : "" %>
                                                         </div>
+
                                                         <button type="reset" class="btn btn-danger">
                                                             Reset
                                                         </button>&nbsp;
@@ -148,19 +153,18 @@
             <script src="assets/js/kaiadmin.min.js"></script>
             <script src="assets/js/setting-demo2.js"></script>
             <script>
-    document.querySelector('form').addEventListener('submit', function (event) {
-        // Get the quantity and room number input fields
-        const quantity = document.querySelector('input[name="quantity"]');
-        
+                                                        document.querySelector('form').addEventListener('submit', function (event) {
+                                                            const quantity = document.querySelector('input[name="quantity"]').value;
 
-        // Validate quantity is at least 3
-        if (quantity.value < 3) {
-            alert("Quantity must be at least 3.");
-            event.preventDefault(); // Prevent form submission
-        }
-        
-    });
-</script>
+                                                            // Check if quantity is a number greater than 0 and less than 3
+                                                            if (quantity <= 0 || quantity >= 3) {
+                                                                alert("Quantity must be greater than 0 and less than 3.");
+                                                            }
+                                                        });
+
+
+            </script>
+
 
 
 
