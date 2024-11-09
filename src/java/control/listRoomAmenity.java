@@ -66,7 +66,7 @@ public class listRoomAmenity extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1 || (int) session.getAttribute("role") != 3) {
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") == 2) {
             request.setAttribute("error", "Please sign in with manager/housekeeper account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
