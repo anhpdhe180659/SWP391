@@ -102,53 +102,46 @@ public class addRoomType extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with manager account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        CloudinaryConfig cloud = new CloudinaryConfig();
+        Cloudinary cloudinary = cloud.getCloudinary();
+        Part imageURL = request.getPart("image");
 
-            CloudinaryConfig cloud = new CloudinaryConfig();
-            Cloudinary cloudinary = cloud.getCloudinary();
-            Part imageURL = request.getPart("image");
+        // Create temp file and upload image
+        File tempFile = File.createTempFile("upload", null);
+        try (InputStream input = imageURL.getInputStream(); OutputStream output = new FileOutputStream(tempFile)) {
+            IOUtils.copy(input, output);
+        }
 
-            // Create temp file and upload image
-            File tempFile = File.createTempFile("upload", null);
-            try (InputStream input = imageURL.getInputStream(); OutputStream output = new FileOutputStream(tempFile)) {
-                IOUtils.copy(input, output);
-            }
+        try {
+            Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
+            String url = (String) uploadResult.get("secure_url");
 
-            try {
-                Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
-                String url = (String) uploadResult.get("secure_url");
+            // Extract other parameters
+            String typeName = request.getParameter("typeName").trim();
+            int capacity = Integer.parseInt(request.getParameter("capacity").trim());
+            int price = Integer.parseInt(request.getParameter("price").trim());
 
-                // Extract other parameters
-                String typeName = request.getParameter("typeName");
-                int capacity = Integer.parseInt(request.getParameter("capacity"));
-                int price = Integer.parseInt(request.getParameter("price"));
+            // Create RoomType object and insert into DB
+            RoomType rt = new RoomType();
+            rt.setTypeName(typeName);
+            rt.setCapacity(capacity);
+            rt.setImage(url);
+            rt.setPrice(price);
 
-                // Create RoomType object and insert into DB
-                RoomType rt = new RoomType();
-                rt.setTypeName(typeName);
-                rt.setCapacity(capacity);
-                rt.setImage(url);
-                rt.setPrice(price);
+            RoomTypeDAO rdao = new RoomTypeDAO();
+            rdao.insertRoomType(rt);
 
-                RoomTypeDAO rdao = new RoomTypeDAO();
-                rdao.insertRoomType(rt);
+            // Redirect to list page after successful insertion
+            request.getRequestDispatcher("listRoomType.jsp").forward(request, response);
 
-                // Redirect to list page after successful insertion
-                request.getRequestDispatcher("listRoomType.jsp").forward(request, response);
-
-            } catch (Exception e) {
-                e.printStackTrace(); // Log the exception for debugging
-                request.setAttribute("error", "Error adding room type.");
-                request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-            } finally {
-                // Clean up temporary file
-                tempFile.delete();
-            }
+        } catch (Exception e) {
+            request.getRequestDispatcher("errorExcetionPage.jsp").forward(request, response);
         }
     }
 

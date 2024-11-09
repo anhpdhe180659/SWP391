@@ -86,38 +86,37 @@ public class addRoom extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with manager account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            try {
-                String roomNumber = request.getParameter("roomNumber");
-                int cleanId = Integer.parseInt(request.getParameter("cleanId"));
-                int statusId = Integer.parseInt(request.getParameter("statusId"));
-                int typeId = Integer.parseInt(request.getParameter("typeId"));
-                RoomDao roomDao = new RoomDao();
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        try {
+            String roomNumber = request.getParameter("roomNumber").trim();
+            int cleanId = Integer.parseInt(request.getParameter("cleanId"));
+            int statusId = Integer.parseInt(request.getParameter("statusId"));
+            int typeId = Integer.parseInt(request.getParameter("typeId"));
+            RoomDao roomDao = new RoomDao();
 
-                Room room = roomDao.getRoomByRoomNumber(roomNumber);
-                if (room != null) {
-                    request.setAttribute("noti", "Room number is existed !");
-                    request.getRequestDispatcher("addRoom.jsp").forward(request, response);
-                    return;
-                } else {
-                    room = new Room();
-                    room.setRoomNumber(roomNumber);
-                    room.setCleanId(cleanId);
-                    room.setStatusId(statusId);
-                    room.setTypeId(typeId);
-                    roomDao.addRoom(room);
-                }
-                System.out.println(room.getTypeId() + "/" + room.getRoomNumber() + "/" + room.getStatusId() + "/" + room.getCleanId());
-                request.setAttribute("noti", "Add room successful !");
+            Room room = roomDao.getRoomByRoomNumber(roomNumber);
+            if (room != null) {
+                request.setAttribute("noti", "Room number is existed !");
                 request.getRequestDispatcher("addRoom.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                System.out.println(e.getMessage());
+                return;
+            } else {
+                room = new Room();
+                room.setRoomNumber(roomNumber);
+                room.setCleanId(cleanId);
+                room.setStatusId(statusId);
+                room.setTypeId(typeId);
+                roomDao.addRoom(room);
             }
+            System.out.println(room.getTypeId() + "/" + room.getRoomNumber() + "/" + room.getStatusId() + "/" + room.getCleanId());
+            request.setAttribute("noti", "Add room successful !");
+            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
     }
 

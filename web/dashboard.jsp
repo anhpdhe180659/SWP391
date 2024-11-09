@@ -321,7 +321,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-icon">
                                                 <div
-                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color: aqua"
+                                                    class="icon-big text-center icon-info bubble-shadow-small"style="background-color: slategray"
                                                     >
                                                     <i class="fas fa-users"></i>
                                                 </div>
