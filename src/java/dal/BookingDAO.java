@@ -733,7 +733,7 @@ public class BookingDAO extends DBContext {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
                        SELECT *
-                       FROM Booking b
+                       FROM hotelmanagement.Booking b
                        WHERE b.Deposit = 0
                          AND b.BookingDate < DATE_SUB(NOW(), INTERVAL 1 DAY)
                          AND b.TotalPrice > 0;""";
@@ -750,8 +750,8 @@ public class BookingDAO extends DBContext {
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
                         rs.getInt("PaymentMethod"),
-                        rs.getTimestamp("ActualCheckInDate").toLocalDateTime(),
-                        rs.getTimestamp("ActualCheckOutDate").toLocalDateTime()
+                        null,
+                        null
                 ));
             }
         } catch (SQLException e) {

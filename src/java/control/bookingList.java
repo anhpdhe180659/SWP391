@@ -40,8 +40,8 @@ public class bookingList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         try {
-
             HttpSession session = request.getSession();
             BookingDAO bdao = new BookingDAO();
             GuestDAO gdao = new GuestDAO();
@@ -55,15 +55,21 @@ public class bookingList extends HttpServlet {
                 return;
             }
             int index = 1;
-            int NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+            int NoPage = 1;
+            if (!bdao.getAllBooking().isEmpty()) {
+                NoPage = util.pagination.getNoPageBooking(bdao.getAllBooking());
+            }
             if (request.getParameter("index") != null) {
                 index = Integer.parseInt(request.getParameter("index"));
             }
-            List<Booking> listBooking = bdao.getNext5Booking(index);
+
             List<Booking> listTocancel = bdao.findBookingNotPaidDeposit24Hour();
-            for (Booking booking : listTocancel) {
-                bdao.deleteBooking(booking.getBookingID());
+            if (!listTocancel.isEmpty()) {
+                for (Booking booking : listTocancel) {
+                    bdao.deleteBooking(booking.getBookingID());
+                }
             }
+            List<Booking> listBooking = bdao.getNext5Booking(index);
             session.setAttribute("listBooking", listBooking);
             session.setAttribute("Nopage", NoPage);
             session.setAttribute("currentindex", index);
@@ -71,10 +77,6 @@ public class bookingList extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("exceptionErrorPage.jsp");
         }
-    }
-    public void autoCancelBookingNotPaidDeposit24Hour(){
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
