@@ -1,15 +1,8 @@
-<%-- 
-    Document   : error404.jsp
-    Created on : Nov 9, 2024, 2:08:55 AM
-    Author     : phand
---%>
 <%@ page isErrorPage="true" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>404</title><!--  page only for manager  -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Error</title><!--  page only for manager  -->
         <meta
             content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
             name="viewport"
@@ -55,17 +48,17 @@
                 box-shadow: 1px 1px 1px grey;
             }
         </style>
-    </head>
-    <body>
-        <div class="logo" style="display: flex; justify-content: center">
+</head>
+<body>
+    <div class="logo" style="display: flex; justify-content: center">
             <img src="img/logo/logo.png" width="200px"/>
         </div>
         <div class="content">
             <div class="card-header" style="width: 400px">
-                <h1>404</h1>
-                <h2>File Not Found</h2>
+                <h1>An Error Occurred</h1>
+                <h3>Sorry, an unexpected error occurred.</h3>
                 <a role="button" class="btn btn-back-home" href="/SWP391/">Back To Home</a>
             </div>
         </div>
-    </body>
+</body>
 </html>
