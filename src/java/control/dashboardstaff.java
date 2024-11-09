@@ -90,7 +90,7 @@ public class dashboardstaff extends HttpServlet {
             List<Room> listRoom = roomDao.getAllRooms();
 //get invoice
             InvoiceDAO invoiceDao = new InvoiceDAO();
-            List<Invoice> listInvoice = invoiceDao.getAll();
+            List<Invoice> listInvoice = invoiceDao.getAll(null, null);
 //get guest
             GuestDAO guestDao = new GuestDAO();
             List<Guest> guestList = guestDao.getAllGuests();

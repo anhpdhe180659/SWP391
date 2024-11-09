@@ -84,7 +84,8 @@ public class listInvoice extends HttpServlet {
         }
         InvoiceDAO ivDao = new InvoiceDAO();
         List<Invoice> listInvoice = ivDao.get5InvoicesATime(dateFrom, dateTo, index);
-        int noPage = (int) Math.ceil(listInvoice.size() * 1.0 / 5);
+        List<Invoice> listAll = ivDao.getAll(dateFrom,dateTo);
+        int noPage = (int) Math.ceil(listAll.size() * 1.0 / 5);
         System.out.println("No Page ne " + noPage);
         session.setAttribute("listInvoice", listInvoice);
         session.setAttribute("Nopage", noPage);
