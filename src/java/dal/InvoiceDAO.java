@@ -144,17 +144,18 @@ public class InvoiceDAO extends DBContext {
 
     public void updateNoteAndFine(Invoice i) {
         String sql = """
-                    update Invoice set Note = ?,Fine = ?
+                    update Invoice set Note = ?,Fine = ?, FinalAmount = ?
                     where InvoiceNo = ?
                     """;
         try (PreparedStatement pre = connection.prepareStatement(sql);) {
 
             pre.setString(1, i.getNote());
             pre.setInt(2, i.getFine());
-            pre.setInt(3,i.getInvoiceNo());
+            pre.setInt(3, i.getFinalAmount());
+            pre.setInt(4, i.getInvoiceNo());
             pre.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("sdasd"+e.getMessage());
+            System.out.println("sdasd" + e.getMessage());
         }
     }
 
@@ -184,7 +185,8 @@ public class InvoiceDAO extends DBContext {
         }
         return null;
     }
-     public Invoice getInvoiceByBookingId(int id) {
+
+    public Invoice getInvoiceByBookingId(int id) {
         String query = """
                    SELECT * FROM hotelmanagement.invoice where BookingID = ?
                    """;

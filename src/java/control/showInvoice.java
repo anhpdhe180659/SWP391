@@ -95,59 +95,59 @@ public class showInvoice extends HttpServlet {
         List<Service> allServices = bkDao.getServicesByBookingID(bkId);
         Booking booking = bkDao.getBookingByBookingID(bkId);
         //Kiem tra xem invoice da duoc tao chua 
+        bkDao.getTotalPriceBooking(bkId);
+        //cap nhat tien
+        booking = bkDao.getBookingByBookingID(bkId);
         InvoiceDAO ivDao = new InvoiceDAO();
+        System.out.println(booking.getTotalPrice());
         if (ivDao.getInvoiceByBookingId(bkId) == null) {
             //tao invoice
             Invoice invoice = new Invoice();
             invoice.setBookingId(bkId);
             //get totalPrice cua booking
-            bkDao.getTotalPriceBooking(bkId);
             //set vao hoa don
             invoice.setTotalAmount(booking.getTotalPrice());
             invoice.setDiscount(0);
-            invoice.setFinalAmount((int) (booking.getTotalPrice() * (1 - invoice.getDiscount())));
             invoice.setPaymentMethod("Cash");
             invoice.setNote("None");
             invoice.setFine(0);
+            invoice.setFinalAmount((int) (booking.getTotalPrice() * (100 - invoice.getDiscount()) * 1.0 / 100 + invoice.getFine()));
             Date currentDate = new Date();
 
             // Convert Date to LocalDate
             LocalDate localDate = currentDate.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
-
             // Set the payment date
             invoice.setPaymentDate(localDate);
+            //set note for receptionx
+            AmenityForRoomDAO amdao = new AmenityForRoomDAO();
+            List<RoomAmenBroken> listBrokenAmen = amdao.getAllBrokenAmenByBooking(bkId);
+            String note = "";
+            Date date = booking.getActualCheckInDate();  // Current date and time
+
+            // Example LocalDateTime value
+            LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
+
+            // Convert Date to Instant
+            Instant actualDate = new java.util.Date(date.getTime()).toInstant();
+            // Convert LocalDateTime to Instant using system default time zone
+            Instant localDateTimeInstant = expectedDate.atZone(ZoneId.systemDefault()).toInstant();
+            System.out.println(actualDate + "," + localDateTimeInstant);
+            // Compare the two Instant values
+            if (actualDate.isBefore(localDateTimeInstant)) {
+                note = "Check in early than expected, ";
+            }
+            if (!listBrokenAmen.isEmpty()) {
+                for (RoomAmenBroken ba : listBrokenAmen) {
+                    note = note + "Room "+ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
+                };
+            }
+            invoice.setNote(note);
             //create invoice
             ivDao.insertInvoice(invoice);
         }
         Invoice iv = ivDao.getInvoiceByBookingId(bkId);
-        AmenityForRoomDAO amdao = new AmenityForRoomDAO();
-        List<RoomAmenBroken> listBrokenAmen = amdao.getAllBrokenAmenByBooking(bkId);
-        String note = "";
-        Date date = booking.getActualCheckInDate();  // Current date and time
-
-        // Example LocalDateTime value
-        LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
-
-        // Convert Date to Instant
-        Instant actualDate = new java.util.Date(date.getTime()).toInstant();
-        // Convert LocalDateTime to Instant using system default time zone
-        Instant localDateTimeInstant = expectedDate.atZone(ZoneId.systemDefault()).toInstant();
-        System.out.println(actualDate + "," + localDateTimeInstant);
-        // Compare the two Instant values
-        if (actualDate.isBefore(localDateTimeInstant)) {
-            note = "Check in early than expected, ";
-        }
-        if (!listBrokenAmen.isEmpty()) {
-            for (RoomAmenBroken ba : listBrokenAmen) {
-                note = note + ba.getRoomNumber() + ": " + ba.getAmenName() + ",";
-            };
-        }
-        //set note for reception
-        iv.setNote(note);
-        System.out.println(iv.getNote() + "aasfnote");
-        ivDao.updateNoteAndFine(iv);
         booking = bkDao.getBookingByBookingID(bkId);
         int guestId = booking.getGuestID();
         GuestDAO gDao = new GuestDAO();

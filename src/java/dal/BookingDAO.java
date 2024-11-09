@@ -570,7 +570,11 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -597,7 +601,11 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -626,7 +634,11 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -655,13 +667,18 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return allBooking;
     }
+
     public List<Booking> findCanceledBooking() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -679,7 +696,10 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -699,7 +719,7 @@ public class BookingDAO extends DBContext {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 allBooking.add(new Booking(
-                       rs.getInt("BookingID"),
+                        rs.getInt("BookingID"),
                         rs.getInt("GuestID"),
                         rs.getInt("Deposit"),
                         rs.getInt("CheckInStatus"),

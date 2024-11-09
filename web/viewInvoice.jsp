@@ -96,7 +96,12 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h2>ALIHOTEL INVOICE</h2>
-                                            <p>Ha Noi,${sessionScope.date}</p>
+                                            <%
+                                                Date now = new Date();
+                                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                                String formattedDate = sdf.format(now);
+                                            %>
+                                            <p>Ha Noi, <%= formattedDate %></p>
                                         </div>
                                         <div class="card-body">
                                             <!-- Customer and Hotel Information in the Same Row -->
@@ -172,20 +177,39 @@
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
+                                                        <!-- Conditionally Display Fine -->
+                                                        <c:if test="${sessionScope.invoice.fine >= 0}">
+                                                            <tr class="fine-highlight">
+                                                                <td colspan="3"><b>Note and Fine:</b></td>
+                                                                <td>
+                                                                    <table class="table table-sm table-borderless">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Description</th>
+                                                                                <th>Fine</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>${sessionScope.invoice.note}</td>
+                                                                                <td>+<span class="price-vnd">${sessionScope.invoice.fine}</span></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </c:if>
                                                         <tr>
-                                                            <td colspan="3"><b>Grand Total:  </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice}</span>
-                                                            </td>
+                                                            <td colspan="3"><b>Grand Total:</b></td>
+                                                            <td><span class="price-vnd">${sessionScope.invoice.finalAmount}</span></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3"><b>Deposit: </b></td>
-                                                            <td> <span class="price-vnd">-${sessionScope.booking.deposit}</span>
-                                                            </td>
+                                                            <td colspan="3"><b>Deposit:</b></td>
+                                                            <td><span class="price-vnd">-${sessionScope.booking.deposit}</span></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3"><b>Final Total: </b></td>
-                                                            <td> <span class="price-vnd">${sessionScope.booking.totalPrice- sessionScope.booking.deposit}</span>
-                                                            </td>
+                                                            <td colspan="3"><b>Final Total:</b></td>
+                                                            <td><span class="price-vnd">${sessionScope.invoice.finalAmount - sessionScope.booking.deposit }</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

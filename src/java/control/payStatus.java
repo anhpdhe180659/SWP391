@@ -149,7 +149,9 @@ public class payStatus extends HttpServlet {
             room.setCleanId(1);
             AmenityForRoomDAO amenityDao = new AmenityForRoomDAO();
             boolean hasMaintenanceOrBroken = amenityDao.checkForMaintenanceOrBroken(room.getRoomId());
-            if (!hasMaintenanceOrBroken) {
+            if (hasMaintenanceOrBroken) {
+                room.setStatusId(3);
+            }else{
                 room.setStatusId(1);
             }
             rDao.updateStatus(room);
@@ -305,7 +307,14 @@ public class payStatus extends HttpServlet {
         for (BookingRoom br : allBookingRoom) {
             Room r = rDao.getRoomByRoomID(br.getRoomID());
             r.setCleanId(1);
-            r.setStatusId(1);
+            AmenityForRoomDAO amenityDao = new AmenityForRoomDAO();
+            //kiem tra co do hong ko
+            boolean hasMaintenanceOrBroken = amenityDao.checkForMaintenanceOrBroken(r.getRoomId());
+            if (hasMaintenanceOrBroken) {
+                r.setStatusId(3);
+            }else{
+                r.setStatusId(1);
+            }
             rDao.updateStatus(r);
         }
         GuestDAO gDao = new GuestDAO();

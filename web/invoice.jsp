@@ -192,7 +192,7 @@
                                                         </c:if>
                                                         <tr>
                                                             <td colspan="3"><b>Grand Total:</b></td>
-                                                            <td><span class="price-vnd">${sessionScope.booking.totalPrice}</span></td>
+                                                            <td><span class="price-vnd">${sessionScope.invoice.finalAmount}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="3"><b>Deposit:</b></td>
@@ -200,7 +200,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td colspan="3"><b>Final Total:</b></td>
-                                                            <td><span class="price-vnd">${sessionScope.booking.totalPrice - sessionScope.booking.deposit + sessionScope.invoice.fine}</span></td>
+                                                            <td><span class="price-vnd">${sessionScope.invoice.finalAmount - sessionScope.booking.deposit }</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -277,7 +277,7 @@
                                         keyword.onchange = function () {
                                             const numberPattern = /^[1-9][0-9]{0,2}$|^1000$/;
                                             if (!numberPattern.test(keyword.value)) {
-                                                
+
                                             } else {
 
                                             }
@@ -292,7 +292,7 @@
                                             nameInput.value = nameInput.value.replace(/\s+/g, ' ');
 
                                             // Validate name (letters and single spaces between words)
-                                            const namePattern = /^[A-Za-zÀ-ỹ]+(?:\s[A-Za-zÀ-ỹ]+)*$/;
+                                            const namePattern = /^[A-Za-zÀ-ỹ0-9.,:]+(?:\s[A-Za-zÀ-ỹ0-9.,:]+)*$/;
                                             if (!namePattern.test(nameInput.value)) {
                                                 alert("Name can only contain letters and single spaces between words.");
                                                 event.preventDefault();
