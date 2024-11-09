@@ -192,11 +192,5 @@
             <script src="assets/js/core/bootstrap.min.js"></script>
             <script src="assets/js/kaiadmin.min.js"></script>
 
-            <script>
-                                            function validate() {
-                                            }
-
-            </script>
-
     </body>
 </html>
