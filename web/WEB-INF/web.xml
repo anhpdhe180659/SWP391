@@ -196,6 +196,10 @@
         <servlet-name>filterBooking</servlet-name>
         <servlet-class>control.filterBooking</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>filterRoomAvailable</servlet-name>
+        <servlet-class>control.filterRoomAvailable</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
@@ -487,6 +491,10 @@
     <servlet-mapping>
         <servlet-name>filterBooking</servlet-name>
         <url-pattern>/filterBooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filterRoomAvailable</servlet-name>
+        <url-pattern>/filterRoomAvailable</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestHomePage.jsp</welcome-file>
