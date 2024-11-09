@@ -66,22 +66,21 @@ public class viewDetailRoomAdmin extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with manager account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-
-            int roomId = Integer.parseInt(request.getParameter("id"));
-            RoomDao roomDao = new RoomDao();
-            Room room = roomDao.findRoomById(roomId);
-            RoomTypeDAO roomtypeDao = new RoomTypeDAO();
-            List<RoomType> listRoom = roomtypeDao.getAll();
-            session.setAttribute("roomType", listRoom);
-            session.setAttribute("detailRoomAdmin", room);
-            response.sendRedirect("roomDetailAdmin.jsp");
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
+        int roomId = Integer.parseInt(request.getParameter("id"));
+        RoomDao roomDao = new RoomDao();
+        Room room = roomDao.findRoomById(roomId);
+        RoomTypeDAO roomtypeDao = new RoomTypeDAO();
+        List<RoomType> listRoom = roomtypeDao.getAll();
+        session.setAttribute("roomType", listRoom);
+        session.setAttribute("detailRoomAdmin", room);
+        response.sendRedirect("roomDetailAdmin.jsp");
     }
 
     /**

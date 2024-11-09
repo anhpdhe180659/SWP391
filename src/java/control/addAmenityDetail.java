@@ -37,14 +37,14 @@ public class addAmenityDetail extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-            if (session == null) {
-                response.sendRedirect("login.jsp");
-            } else {
-                int role = (Integer) session.getAttribute("role");
-                if (session.getAttribute("role") != null && role != 1) {
-                    request.setAttribute("error", "Please sign in with admin account !");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                }
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         AmenityDAO adao = new AmenityDAO();
@@ -76,7 +76,7 @@ public class addAmenityDetail extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"status\":\"failed\"}");
     }
-    }
+
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

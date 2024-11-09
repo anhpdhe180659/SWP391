@@ -64,24 +64,23 @@ public class EditAmenityDetailController extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            String room = request.getParameter("roomid");
-            int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
-            System.out.println("roomID in edit ========================" + roomID);
-            AmenityDAO amenityDao = new AmenityDAO();
-            int amenID = Integer.parseInt(request.getParameter("amenId"));
-            AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
-            System.out.println(detail.getQuantity() + "=45454");
-            System.out.println(detail.getAmenID() + "sm");
-            System.out.println(detail.getRoomID() + "rm");
-            request.setAttribute("amenityDetail", detail);
-            request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        String room = request.getParameter("roomid");
+        int roomID = Integer.parseInt(new RoomDao().getRoomByRoomNumber(room).getRoomId() + "");
+        System.out.println("roomID in edit ========================" + roomID);
+        AmenityDAO amenityDao = new AmenityDAO();
+        int amenID = Integer.parseInt(request.getParameter("amenId"));
+        AmenityDetail detail = amenityDao.findByAmenityIDAndRoomId(roomID, amenID);
+        System.out.println(detail.getQuantity() + "=45454");
+        System.out.println(detail.getAmenID() + "sm");
+        System.out.println(detail.getRoomID() + "rm");
+        request.setAttribute("amenityDetail", detail);
+        request.getRequestDispatcher("editAmenityDetail.jsp").forward(request, response);
     }
 
     /**

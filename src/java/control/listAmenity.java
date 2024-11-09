@@ -37,22 +37,18 @@ public class listAmenity extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect("login.jsp");
-        } else {
-            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
-            if (session.getAttribute("role") != null && role != 1) {
-                request.setAttribute("error", "Please sign in with admin account !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session == null) {
-                response.sendRedirect("login.jsp");
-            } else {
-                AmenityDAO amenityDao = new AmenityDAO();
-                List<Amenity> listAmenity = amenityDao.getAllAmenities();
-                session.setAttribute("listAmenity", listAmenity);
-                response.sendRedirect("listAmenity.jsp");
-            }
-
         }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
+            request.setAttribute("error", "Please sign in with manager account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
+        AmenityDAO amenityDao = new AmenityDAO();
+        List<Amenity> listAmenity = amenityDao.getAllAmenities();
+        session.setAttribute("listAmenity", listAmenity);
+        response.sendRedirect("listAmenity.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
