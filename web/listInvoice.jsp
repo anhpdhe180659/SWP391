@@ -52,10 +52,12 @@
     </head>
     <body>
         <div class="wrapper">
-            <!-- Sidebar -->
-            <jsp:include page="sidebarReceptionist.jsp"/>
-            <!-- End Sidebar -->
-
+            <c:if test="${sessionScope.user.role == 2}">
+                <jsp:include page="sidebarReceptionist.jsp"/>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 1}">
+                <jsp:include page="sidebarManager.jsp"/>
+            </c:if>
             <div class="main-panel">
                 <div class="main-header">
                     <div class="main-header-logo">

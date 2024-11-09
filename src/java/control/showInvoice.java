@@ -130,18 +130,13 @@ public class showInvoice extends HttpServlet {
             });
 //
             String note = "";
-            Date date = booking.getActualCheckInDate();  // Current date and time
+            LocalDateTime actualDate = booking.getActualCheckInDate();  // Current date and time
 
             // Example LocalDateTime value
             LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
-
-            // Convert Date to Instant
-            Instant actualDate = new java.util.Date(date.getTime()).toInstant();
-            // Convert LocalDateTime to Instant using system default time zone
-            Instant localDateTimeInstant = expectedDate.atZone(ZoneId.systemDefault()).toInstant();
-            System.out.println(actualDate + "," + localDateTimeInstant);
-            // Compare the two Instant values
-            if (actualDate.isBefore(localDateTimeInstant)) {
+            System.out.println("Expected :" + expectedDate);
+           
+            if (actualDate.isBefore(expectedDate)) {
                 note = "Check in early than expected, ";
             }
             if (!listBrokenAmen.isEmpty()) {
@@ -159,18 +154,15 @@ public class showInvoice extends HttpServlet {
         //set not
         String note = iv.getNote();
         note = "";
-        Date date = booking.getActualCheckInDate();  // Current date and time
+        LocalDateTime actualDate = booking.getActualCheckInDate();  // Current date and time
 
         // Example LocalDateTime value
         LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
-
+        System.out.println("Expected :" + expectedDate);
         // Convert Date to Instant
-        Instant actualDate = new java.util.Date(date.getTime()).toInstant();
         // Convert LocalDateTime to Instant using system default time zone
-        Instant localDateTimeInstant = expectedDate.atZone(ZoneId.systemDefault()).toInstant();
-        System.out.println(actualDate + "," + localDateTimeInstant);
         // Compare the two Instant values
-        if (actualDate.isBefore(localDateTimeInstant)) {
+        if (actualDate.isBefore(expectedDate)) {
             note = "Check in early than expected, ";
         }
         if (!listBrokenAmen.isEmpty()) {
