@@ -18,31 +18,21 @@ public class addGuest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
-//        int role = (Integer) session.getAttribute("role");
-//        if (session.getAttribute("role") != null && role != 2 && role != 1) {
-//            request.setAttribute("error", "Please sign in with receptionist/ manager account!");
-//            request.getRequestDispatcher("login.jsp").forward(request, response);
-//        } else {
-//            // Chuyển hướng tới trang addGuest.jsp nếu đã đăng nhập
-//            request.getRequestDispatcher("addGuest.jsp").forward(request, response);
-//        }
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            response.sendRedirect("login.jsp");
+        HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
+        int role = (Integer) session.getAttribute("role");
+        if (session.getAttribute("role") != null && role != 2 && role != 1) {
+            request.setAttribute("error", "Please sign in with receptionist/ manager account!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
-            int role = (Integer) session.getAttribute("role");
-            if (session.getAttribute("role") != null && role != 2 && role != 1) {
-                request.setAttribute("error", "Please sign in with receptionist/ manager account!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+            // Chuyển hướng tới trang addGuest.jsp nếu đã đăng nhập
+            request.getRequestDispatcher("addGuest.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         PrintWriter out = response.getWriter();
         try {
             // Retrieve session
@@ -116,8 +106,8 @@ public class addGuest extends HttpServlet {
         if (phone.trim().isEmpty() || !phone.matches("^[0-9]{10}$")) {
             return "Phone must be exactly 10 digits.";
         }
-        if (identification.trim().isEmpty()) {
-            return "Identification cannot be blank.";
+        if (identification.trim().isEmpty() || !identification.matches("^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$")) {
+            return "Valid ID must contain 1 uppercase letter and 7 digits, or 9 digits, or 12 digits";
         }
         if (nationality.trim().isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
             return "Nationality cannot be blank.";
