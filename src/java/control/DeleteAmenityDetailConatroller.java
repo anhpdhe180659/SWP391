@@ -73,7 +73,12 @@ public class DeleteAmenityDetailConatroller extends HttpServlet {
         AmenityDAO amenityDao = new AmenityDAO();
         amenityDao.deleteAmenityDetailByRoomNumber(roomID);
 
-        response.sendRedirect("amenity-detail");
+         String referer = request.getHeader("referer");
+    if (referer != null && !referer.isEmpty()) {
+        response.sendRedirect(referer);  // Redirect back to the referring page
+    } else {
+        response.sendRedirect("defaultPage.jsp");  // If referer is not available, go to a default page
+    }
 
     }
 

@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -69,6 +70,15 @@ public class UpdateBookingService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
        int serviceId = Integer.parseInt(request.getParameter("serviceId"));
         int roomId = Integer.parseInt(request.getParameter("roomId"));
         int bookingId = Integer.parseInt(request.getParameter("bookingId"));

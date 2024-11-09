@@ -150,7 +150,11 @@
                                                                     <label>Quantity</label>
                                                                     <input
                                                                         min="1"
-                                                                        max="4"
+
+                                                                        max="2"
+
+                                                                        
+
                                                                         name="quantity"
                                                                         type="number"
                                                                         class="form-control"
@@ -168,6 +172,7 @@
                                                                     />
                                                             </div>
                                                         </div>  
+
 
                                                     </div>
 
@@ -198,7 +203,7 @@
 
                                                         // Function to validate conditions
                                                         function validate() {
-                                                            const quantityValid = quantity.value >= 0 && quantity.value < 3;
+                                                            const quantityValid = quantity.value > 0 && quantity.value < 3;
                                                             const roomnumberValid = roomnumber.value > 0 && roomnumber.value < 1000;
 
                                                             if (quantityValid && roomnumberValid) {
@@ -308,6 +313,7 @@
 </script>
 
 
+
 <script>
     function validate() {
         var email = document.querySelector('input[name="roomnumber"]').value;
@@ -324,7 +330,7 @@
 </script>
 <script>
     function doDelete(userid) {
-        var option = confirm("Are you sure to unactive this?");
+        var option = confirm("Are you sure to remove this?");
         if (option === true) {
             window.location = "deleteAmenityDetail?roomid=" + userid;
         }
