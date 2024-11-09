@@ -12,7 +12,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import model.Invoice;
 
 /**
@@ -170,6 +172,25 @@ public class InvoiceDAO extends DBContext {
         }
         return 0;
     }
+    public Map<String, Integer> getRevenueByMonth() {
+    Map<String, Integer> revenueData = new LinkedHashMap<>();
+    String query = """
+        SELECT DATE_FORMAT(PaymentDate, '%Y-%m') AS month, SUM(FinalAmount) AS totalRevenue
+        FROM Invoice
+        GROUP BY month
+        ORDER BY month
+    """;
+    try (PreparedStatement pre = connection.prepareStatement(query); ResultSet rs = pre.executeQuery()) {
+        while (rs.next()) {
+            String month = rs.getString("month");
+            int totalRevenue = rs.getInt("totalRevenue");
+            revenueData.put(month, totalRevenue);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error retrieving revenue by month: " + e.getMessage());
+    }
+    return revenueData;
+}
 
     public static void main(String[] args) {
         System.out.println(new InvoiceDAO().get5InvoicesATime("2024-11-07", null, 1).size());

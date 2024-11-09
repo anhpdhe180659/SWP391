@@ -108,6 +108,10 @@ public class dashboard extends HttpServlet {
         int total = ivDao.getTotalAmount();
         BookingDAO bkDao = new BookingDAO();
         List<ChartRoom> chartRooms = bkDao.getBookTimesByRoom();
+        Map<String, Integer> revenueByMonth = new InvoiceDAO().getRevenueByMonth();
+        request.setAttribute("revenueByMonth", revenueByMonth);
+        
+
         //get session 
         session.setAttribute("chartRooms", chartRooms);
         session.setAttribute("totalInvoice", total);
@@ -127,7 +131,7 @@ public class dashboard extends HttpServlet {
         session.setAttribute("familyRoomCount", familyRoomCount);
         session.setAttribute("deluxeRoomCount", deluxeRoomCount);
         session.setAttribute("presidentRoomCount", presidentRoomCount);
-        response.sendRedirect("dashboard.jsp");
+        request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
