@@ -177,7 +177,7 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>Description</th>
-                                                                                <th>Fine</th>
+                                                                                <th>Extra Fee</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -237,7 +237,7 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4 class="mb-0">Note and Fine</h4>
+                                            <h4 class="mb-0">Extra Fee</h4>
                                         </div>
                                         <div class="card-body">
                                             <form class="modify" action="modifyInvoice" method="post">
@@ -250,7 +250,7 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="fine" class="form-label"><strong>Fine Amount (VND)</strong></label>
+                                                    <label for="fine" class="form-label"><strong>Extra Fee (VND)</strong></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text">₫</span>
                                                         <input type="number" class="form-control" id="fine" min="0" max="100000000" name="fine" value="${sessionScope.invoice.fine}" placeholder="Enter fine amount" />
