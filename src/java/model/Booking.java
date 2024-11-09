@@ -11,7 +11,13 @@ import java.util.Date;
  * @author phand
  */
 public class Booking {
+
     int BookingID;
+
+    @Override
+    public String toString() {
+        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", PaidStatus=" + PaidStatus + ", UserID=" + UserID + ", BookingDate=" + BookingDate + ", TotalPrice=" + TotalPrice + ", PaymentMethod=" + PaymentMethod + ", ActualCheckInDate=" + ActualCheckInDate + ", ActualCheckOutDate=" + ActualCheckOutDate + '}';
+    }
     int GuestID;
     int Deposit;
     int CheckInStatus;
@@ -20,6 +26,9 @@ public class Booking {
     Date BookingDate;
     int TotalPrice;
     int PaymentMethod;
+    Date ActualCheckInDate;
+    Date ActualCheckOutDate;
+
     public Booking() {
     }
 
@@ -35,7 +44,7 @@ public class Booking {
         this.PaymentMethod = PaymentMethod;
     }
 
-    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice) {
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice, int PaymentMethod, Date ActualCheckInDate, Date ActualCheckOutDate) {
         this.BookingID = BookingID;
         this.GuestID = GuestID;
         this.Deposit = Deposit;
@@ -44,41 +53,10 @@ public class Booking {
         this.UserID = UserID;
         this.BookingDate = BookingDate;
         this.TotalPrice = TotalPrice;
-    }
-
-    public int getPaymentMethod() {
-        return PaymentMethod;
-    }
-
-    public void setPaymentMethod(int PaymentMethod) {
         this.PaymentMethod = PaymentMethod;
+        this.ActualCheckInDate = ActualCheckInDate;
+        this.ActualCheckOutDate = ActualCheckOutDate;
     }
-    
-
-    public int getPaidStatus() {
-        return PaidStatus;
-    }
-
-    public void setPaidStatus(int PaidStatus) {
-        this.PaidStatus = PaidStatus;
-    }
-
-    public Date getBookingDate() {
-        return BookingDate;
-    }
-
-    public void setBookingDate(Date BookingDate) {
-        this.BookingDate = BookingDate;
-    }
-
-    public int getTotalPrice() {
-        return TotalPrice;
-    }
-
-    public void setTotalPrice(int TotalPrice) {
-        this.TotalPrice = TotalPrice;
-    }
-
 
     public int getBookingID() {
         return BookingID;
@@ -112,6 +90,14 @@ public class Booking {
         this.CheckInStatus = CheckInStatus;
     }
 
+    public int getPaidStatus() {
+        return PaidStatus;
+    }
+
+    public void setPaidStatus(int PaidStatus) {
+        this.PaidStatus = PaidStatus;
+    }
+
     public int getUserID() {
         return UserID;
     }
@@ -120,12 +106,44 @@ public class Booking {
         this.UserID = UserID;
     }
 
-    @Override
-    public String toString() {
-        return "Booking{" + "BookingID=" + BookingID + ", GuestID=" + GuestID + ", Deposit=" + Deposit + ", CheckInStatus=" + CheckInStatus + ", PaidStatus=" + PaidStatus + ", UserID=" + UserID + ", BookingDate=" + BookingDate + ", TotalPrice=" + TotalPrice + '}';
+    public Date getBookingDate() {
+        return BookingDate;
     }
 
+    public void setBookingDate(Date BookingDate) {
+        this.BookingDate = BookingDate;
+    }
 
+    public int getTotalPrice() {
+        return TotalPrice;
+    }
 
-    
+    public void setTotalPrice(int TotalPrice) {
+        this.TotalPrice = TotalPrice;
+    }
+
+    public int getPaymentMethod() {
+        return PaymentMethod;
+    }
+
+    public void setPaymentMethod(int PaymentMethod) {
+        this.PaymentMethod = PaymentMethod;
+    }
+
+    public Date getActualCheckInDate() {
+        return ActualCheckInDate;
+    }
+
+    public void setActualCheckInDate(Date ActualCheckInDate) {
+        this.ActualCheckInDate = ActualCheckInDate;
+    }
+
+    public Date getActualCheckOutDate() {
+        return ActualCheckOutDate;
+    }
+
+    public void setActualCheckOutDate(Date ActualCheckOutDate) {
+        this.ActualCheckOutDate = ActualCheckOutDate;
+    }
+
 }
