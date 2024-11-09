@@ -36,20 +36,29 @@ public class editService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        ServiceDAO sdao = new ServiceDAO();
-        PrintWriter out = response.getWriter();
-        try {
-            int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-            Service service = sdao.findService(serviceid);
-            request.setAttribute("service", service);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 1) {
+                request.setAttribute("error", "Please sign in with admin account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            response.setContentType("text/html;charset=UTF-8");
+            ServiceDAO sdao = new ServiceDAO();
+            PrintWriter out = response.getWriter();
+            try {
+                int serviceid = Integer.parseInt(request.getParameter("serviceid"));
+                Service service = sdao.findService(serviceid);
+                request.setAttribute("service", service);
 
-            request.getRequestDispatcher("editService.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+                request.getRequestDispatcher("editService.jsp").forward(request, response);
+            } catch (ServletException | IOException | NumberFormatException e) {
+                out.print(e);
+            }
+
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,36 +86,45 @@ public class editService extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        try {
-            ServiceDAO sdao = new ServiceDAO();
-            HttpSession session = request.getSession();
-            int serviceid = Integer.parseInt(request.getParameter("serviceid"));
-            Service oldService = sdao.findService(serviceid);
-            String name = request.getParameter("name").trim();
-            int price = Integer.parseInt(request.getParameter("price"));
-            Service service = new Service(serviceid, name, price);
-
-            List<Service> listService = sdao.getAllServices();
-            // Check for duplicates
-            for (Service s : listService) {
-                if (s.getName().equals(name) && s.getServiceID() != serviceid) {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write("{\"status\":\"failed\"}");
-                    return;  // Stop further execution
-                }
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            int role = Integer.parseInt(String.valueOf(session.getAttribute("role")));
+            if (session.getAttribute("role") != null && role != 2) {
+                request.setAttribute("error", "Please sign in with receptionist account !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            // If no duplicates are found, proceed with the update
-            sdao.updateService(service);
-            request.setAttribute("noti", "Save successful!");
-            request.setAttribute("service", service);
-            response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write("{\"status\":\"success\"}");
+            PrintWriter out = response.getWriter();
+            try {
+                ServiceDAO sdao = new ServiceDAO();
+                int serviceid = Integer.parseInt(request.getParameter("serviceid"));
+                Service oldService = sdao.findService(serviceid);
+                String name = request.getParameter("name").trim();
+                int price = Integer.parseInt(request.getParameter("price"));
+                Service service = new Service(serviceid, name, price);
 
-        } catch (Exception e) {
-            out.print("There was an error: " + e.getMessage());
+                List<Service> listService = sdao.getAllServices();
+                // Check for duplicates
+                for (Service s : listService) {
+                    if (s.getName().equals(name) && s.getServiceID() != serviceid) {
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write("{\"status\":\"failed\"}");
+                        return;  // Stop further execution
+                    }
+                }
+                // If no duplicates are found, proceed with the update
+                sdao.updateService(service);
+                request.setAttribute("noti", "Save successful!");
+                request.setAttribute("service", service);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"status\":\"success\"}");
+
+            } catch (Exception e) {
+                out.print("There was an error: " + e.getMessage());
+            }
         }
     }
 

@@ -150,20 +150,19 @@
                                                                 // Get the name input field
                                                                 const nameInput = document.querySelector('input[name="name"]');
 
-                                                                // Trim whitespace from the name
+                                                                // Trim whitespace from the beginning and end of the name
                                                                 nameInput.value = nameInput.value.trim();
 
-                                                                // Check if the name input is valid (contains only letters and spaces)
-                                                                const namePattern = /^[A-Za-zÀ-ỹ\s]+$/;
+                                                                // Check if the name input is valid (contains only letters, single spaces between words, and no multiple spaces)
+                                                                const namePattern = /^[A-Za-zÀ-ỹ]+(?:\s[A-Za-zÀ-ỹ]+)*$/;
+
                                                                 if (!namePattern.test(nameInput.value)) {
-                                                                    alert("Name can only contain letters and spaces.");
+                                                                    alert("Name can only contain letters and single spaces between words.");
                                                                     event.preventDefault(); // Prevent form submission
                                                                     return;
                                                                 }
-
-                                                               
-
                                                             });
+
                                                         </script>
                                                     </div>
 
@@ -356,10 +355,10 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <c:if test="${duplicate != null}">
         <script>
-            swal({
-                icon: "error",
-                text: 'Duplicate amenity detected'
-            });
+        swal({
+            icon: "error",
+            text: 'Duplicate amenity detected'
+        });
         </script>
     </c:if>
 
