@@ -53,7 +53,7 @@ public class editAmenity extends HttpServlet {
 
             request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
         } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e);
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 
@@ -119,11 +119,11 @@ public class editAmenity extends HttpServlet {
                 request.setAttribute("amenity", amenity);
             }
 
-            // Chuyển hướng đến trang edit
+            
             request.getRequestDispatcher("editAmenity.jsp").forward(request, response);
 
         } catch (Exception e) {
-            out.print("There was an error: " + e.getMessage());
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
 
     }

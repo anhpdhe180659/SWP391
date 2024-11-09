@@ -67,7 +67,7 @@ public class addAmenity extends HttpServlet {
             session.setAttribute("listAmenity", listAmenity);
             response.sendRedirect("listAmenity");
         } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e.getMessage());
+            response.sendRedirect("exceptionErrorPage.jsp");
         }
     }
 
