@@ -564,7 +564,7 @@
             });
             document.getElementById("nationality").addEventListener("blur", function () {
                 const nationality = this.value.trim();
-                const patternNationality = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+                const patternNationality = /^[\p{L} ]+$/u;
                 if (nationality !== "") {
                     if (!patternNationality.test(nationality)) {
                         alert("Invalid nationality. Please use only letters, spaces, periods, and hyphens.");
