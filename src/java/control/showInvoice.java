@@ -123,6 +123,11 @@ public class showInvoice extends HttpServlet {
             //set note for receptionx
             AmenityForRoomDAO amdao = new AmenityForRoomDAO();
             List<RoomAmenBroken> listBrokenAmen = amdao.getAllBrokenAmenByBooking(bkId);
+            //test
+            
+            listBrokenAmen.forEach((r)->{
+                System.out.println(r.getAmenName());});
+//
             String note = "";
             Date date = booking.getActualCheckInDate();  // Current date and time
 
