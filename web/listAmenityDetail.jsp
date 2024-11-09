@@ -198,7 +198,7 @@
 
                                                         // Function to validate conditions
                                                         function validate() {
-                                                            const quantityValid = quantity.value >= 0 && quantity.value <= 3;
+                                                            const quantityValid = quantity.value >= 0 && quantity.value < 3;
                                                             const roomnumberValid = roomnumber.value > 0 && roomnumber.value < 1000;
 
                                                             if (quantityValid && roomnumberValid) {
@@ -305,29 +305,6 @@
     function doClose() {
         $('#addUserModal').modal('hide');
     }
-</script>
-<script>
-    document.querySelector('.form-add').addEventListener('submit', function (event) {
-        // Get the quantity input field
-        const quantityInput = document.querySelector('input[name="quantity"]');
-
-        // Trim any leading/trailing whitespace
-        const quantityValue = quantityInput.value.trim();
-
-        // Convert the input value to a number
-        const quantity = Number(quantityValue);
-
-        // Validate that the value is less than 3 and not negative
-        if (isNaN(quantity) || quantity >= 3 || quantity < 0) {
-            alert("Quantity must be a valid number, greater than or equal to 0, and less than 3.");
-            event.preventDefault(); // Prevent form submission
-        } else {
-            console.log("Valid input: " + quantity);  // Debugging step
-        }
-    });
-
-
-
 </script>
 
 
