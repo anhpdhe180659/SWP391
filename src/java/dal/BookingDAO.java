@@ -24,7 +24,7 @@ import model.Service;
  * @author nhatk
  */
 public class BookingDAO extends DBContext {
-
+    
     public List<Room> getRoomsByBookingID(int id) {
         List<Room> allRoom = new ArrayList<>();
         String query = """
@@ -44,7 +44,7 @@ public class BookingDAO extends DBContext {
         }
         return allRoom;
     }
-
+    
     public List<Service> getServicesByBookingID(int id) {
         List<Service> allRoom = new ArrayList<>();
         String query = """
@@ -64,7 +64,7 @@ public class BookingDAO extends DBContext {
         }
         return allRoom;
     }
-
+    
     public List<Room> getAllRooms() {
         List<Room> allRoom = new ArrayList<>();
         String query = """
@@ -85,7 +85,7 @@ public class BookingDAO extends DBContext {
         }
         return allRoom;
     }
-
+    
     public List<Booking> getAllBooking() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -113,7 +113,7 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
     public List<BookingRoom> getAllBookingRoom() {
         List<BookingRoom> allBookingRoom = new ArrayList<>();
         String query = """
@@ -141,7 +141,7 @@ public class BookingDAO extends DBContext {
         }
         return allBookingRoom;
     }
-
+    
     public List<BookingRoom> getAllBookingRoomByBookingID(int bookingid) {
         List<BookingRoom> allBookingRoom = new ArrayList<>();
         String query = """
@@ -171,7 +171,7 @@ public class BookingDAO extends DBContext {
         }
         return allBookingRoom;
     }
-
+    
     public List<BookingService> getAllBookingServiceByBookingID(int bookingid) {
         List<BookingService> allBookingService = new ArrayList<>();
         String query = """
@@ -201,7 +201,7 @@ public class BookingDAO extends DBContext {
         }
         return allBookingService;
     }
-
+    
     public List<BookingRoom> getNext5BookingRoomByBookingID(int bookingid, int index) {
         List<BookingRoom> allBookingRoom = new ArrayList<>();
         String query = """
@@ -230,9 +230,9 @@ public class BookingDAO extends DBContext {
         }
         return allBookingRoom;
     }
-
+    
     public void addBookingRoom(int bookingid, int roomid, int NumOfNight, LocalDateTime datein, LocalDateTime dateout, int price) {
-
+        
         String query = """
                        INSERT INTO HotelManagement.BookingRoom
                                   (BookingID
@@ -256,7 +256,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateStatusRoomOccupied(int roomid) {
         String query = """
                        UPDATE HotelManagement.Room
@@ -269,7 +269,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateStatusRoomAvailable(int roomid) {
         String query = """
                        UPDATE HotelManagement.Room
@@ -282,7 +282,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public List<Integer> getAllRoomIDDelete(int bookingid) {
         List<Integer> list = new ArrayList<>();
         String query = """
@@ -305,9 +305,9 @@ public class BookingDAO extends DBContext {
         }
         return list;
     }
-
+    
     public List<Integer> getAllRoomIDToCancelBooking(int bookingid) {
-
+        
         List<Integer> list = new ArrayList<>();
         String query = """
                        select * from HotelManagement.BookingRoom
@@ -324,7 +324,7 @@ public class BookingDAO extends DBContext {
         }
         return list;
     }
-
+    
     public boolean OverlapTime(LocalDateTime newCheckinTime, LocalDateTime newCheckoutTime, int roomid) {
         boolean ReadyToBook = false;
         List<Integer> list = new ArrayList<Integer>();
@@ -354,7 +354,7 @@ public class BookingDAO extends DBContext {
             return true;
         }
     }
-
+    
     public List<Room> getAllRoomAvailableFromDateToDate(LocalDateTime newCheckinTime, LocalDateTime newCheckoutTime) {
         List<Room> list = new ArrayList<>();
         java.sql.Timestamp newInTime = java.sql.Timestamp.valueOf(newCheckinTime);
@@ -383,7 +383,7 @@ public class BookingDAO extends DBContext {
         }
         return list;
     }
-
+    
     public boolean IsEverBooked(int roomid) {
         boolean ReadyToBook = false;
         List<Integer> list = new ArrayList<Integer>();
@@ -408,14 +408,13 @@ public class BookingDAO extends DBContext {
         // empty -> chua ai book phong do bao h
 
     }
-
+    
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
-        Booking b = bkDao.getBookingByBookingID(1);
+        List<Booking> b = bkDao.getAllBooking();
         System.out.println(b.toString());
-        System.out.println(new java.util.Date(b.getActualCheckInDate().getTime()).toInstant());
     }
-
+    
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice, int paymentMethod, LocalDateTime actualCheckInTime) {
         java.util.Date currentDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
@@ -451,7 +450,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void deleteBooking(int bookingid) {
         try {
             String query1 = """
@@ -466,7 +465,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateDeposit(int bookingid, int deposit) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -480,7 +479,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateActualCheckInDate(int bookingid) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -493,7 +492,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateCheckInStatus(int bookingid, int checkinstatus) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -506,9 +505,9 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        
     }
-
+    
     public void updatePaymentMethod(int bookingid, int paymentMethod) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -522,7 +521,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public int getNewBookingID() {
         int bookingid = 0;
         String query = """
@@ -547,7 +546,7 @@ public class BookingDAO extends DBContext {
         }
         return bookingid;
     }
-
+    
     public Booking getBookingByBookingID(int bookingid) {
         Booking booking = null;
         String query = """
@@ -577,9 +576,9 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return booking;
-
+        
     }
-
+    
     public List<Booking> findBookingNoShow() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -610,7 +609,7 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
     public List<Booking> findBookingOverdueForCheckout() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -641,7 +640,7 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
     public List<Booking> findBookingUpcomingCheckIn3Day() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -674,7 +673,7 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
     public List<Booking> findBookingUpcomingCheckOut3Day() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -707,7 +706,7 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
     public List<Booking> findCanceledBooking() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -735,7 +734,64 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
+    public List<Booking> findBookingNotPaidDeposit24Hour() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT *
+                       FROM Booking b
+                       WHERE b.Deposit = 0
+                         AND b.BookingDate < DATE_SUB(NOW(), INTERVAL 1 DAY)
+                         AND b.TotalPrice > 0;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+    
+    public List<BookingRoom> isReadyToCheckIn(int bookingid) {
+        List<BookingRoom> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT *
+                       FROM BookingRoom br
+                       WHERE br.BookingID = ?
+                       AND br.CheckOutDate <= NOW();""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                BookingRoom booking = new BookingRoom(
+                        rs.getInt("BookingID"),
+                        rs.getInt("RoomID"),
+                        rs.getInt("NumOfNight"),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime(),
+                        rs.getTimestamp("CheckOutDate").toLocalDateTime(),
+                        rs.getInt("Price"));
+                allBooking.add(booking);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+    
     public List<Booking> findBookingByBookingID(int bookingid) {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -764,9 +820,9 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
         return allBooking;
-
+        
     }
-
+    
     public List<Booking> getNext5Booking(int index) {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
@@ -807,13 +863,13 @@ public class BookingDAO extends DBContext {
         }
         return allBooking;
     }
-
+    
     public List<BookingRoom> getAllBookingUnpaid() {
         List<BookingRoom> unpaidBookings = new ArrayList<>();
         String query = "SELECT br.BookingID, br.RoomID, br.NumOfNight, br.CheckInDate, br.CheckOutDate, br.Price, b.CheckInStatus "
                 + "FROM Booking b join BookingRoom br "
                 + "WHERE br.BookingID = b.BookingID and b.PaidStatus = 0 and b.CheckInStatus = 1";
-
+        
         try (
                 PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -831,7 +887,7 @@ public class BookingDAO extends DBContext {
         }
         return unpaidBookings;
     }
-
+    
     public void updatePaidStatus(Booking booking) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -845,7 +901,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateTotalPrice(int bookingID, int totalPrice) {
         String query = """
                        UPDATE HotelManagement.Booking
@@ -859,7 +915,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public List<BookingService> getAllBookingServiceByBookingIDAndRoomID(int bookingID, int roomId) {
         List<BookingService> allBookingService = new ArrayList<>();
         String query = """
@@ -890,7 +946,7 @@ public class BookingDAO extends DBContext {
         }
         return allBookingService;
     }
-
+    
     public void addServiceBooking(int bookingId, int serviceId, int roomId, int price) {
         System.out.println("b s r" + bookingId + " " + serviceId + " " + roomId);
         String sql = """
@@ -907,9 +963,9 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        
     }
-
+    
     public void deleteServiceBooking(int bookingId, int serviceId, int roomId) {
         System.out.println("b s r" + bookingId + " " + serviceId + " " + roomId);
         String sql = """
@@ -925,7 +981,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public void updateQuantityService(int bookingId, int serviceId, int roomId, int quantity) {
         System.out.println("b s r" + bookingId + " " + serviceId + " " + roomId);
         String sql = """
@@ -942,9 +998,9 @@ public class BookingDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        
     }
-
+    
     public int getTotalPriceService(int bookingId, int roomId) {
         String sql = """
                      select ifnull(sum(TotalPrice),0) as 'Total' from bookingservice where BookingID = ? and RoomID = ?
@@ -961,7 +1017,7 @@ public class BookingDAO extends DBContext {
         }
         return 0;
     }
-
+    
     public void getTotalPriceBooking(int id) {
         String sql = "WITH RoomTotal AS (\n"
                 + "    SELECT ifnull(SUM(Price * NumOfNight),0) AS RoomMoney \n"
@@ -985,7 +1041,7 @@ public class BookingDAO extends DBContext {
             System.out.println(e.getMessage());
         }
     }
-
+    
     public List<ChartRoom> getBookTimesByRoom() {
         String sql = "with RoomCount as (select  br.BookingID, r.RoomID , r.TypeID, rt.TypeName  from bookingroom br join room r on br.RoomID = r.RoomID  join RoomType rt on rt.TypeID = r.TypeID)\n"
                 + "\n"
@@ -1001,5 +1057,5 @@ public class BookingDAO extends DBContext {
         }
         return listChart;
     }
-
+    
 }
