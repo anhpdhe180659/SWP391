@@ -237,8 +237,11 @@
                                                 </a>
                                             </div>
                                         </c:forEach>
-                                        <c:set value="${sessionScope.currentindex}" var="index" />
-                                        <c:set value="${sessionScope.Nopage}" var="Nopage" />
+                                        <c:if test="${requestScope.noti != null}">
+                                            <p style="text-align: center" colspan="5"><span class="text-warning">${requestScope.noti}</span></p>
+                                            </c:if>
+                                            <c:set value="${sessionScope.currentindex}" var="index" />
+                                            <c:set value="${sessionScope.Nopage}" var="Nopage" />
                                         <div class="card-body" >
                                             <div class="demo">
                                                 <ul class="pagination pg-primary" style="display: flex; justify-content: flex-end;">

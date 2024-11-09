@@ -101,7 +101,7 @@ public class addRoom extends HttpServlet {
 
             Room room = roomDao.getRoomByRoomNumber(roomNumber);
             if (room != null) {
-                request.setAttribute("noti", "Room number is existed !");
+                request.setAttribute("noti", "Room number is existed!");
                 request.getRequestDispatcher("addRoom.jsp").forward(request, response);
                 return;
             } else {
