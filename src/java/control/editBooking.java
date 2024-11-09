@@ -220,7 +220,6 @@ public class editBooking extends HttpServlet {
                 checkindate = bookingRoom.getCheckInDate();
                 checkoutdate = bookingRoom.getCheckOutDate();
             }
-
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             String checkindateFormatted = checkindate.format(formatter);
             String checkoutdateFormatted = checkoutdate.format(formatter);
@@ -234,7 +233,6 @@ public class editBooking extends HttpServlet {
             request.setAttribute("name", guest.getName());
             request.setAttribute("noti", noti);
             // nếu có email của khách thì gửi xác nhận đặt cọc
-
             request.getRequestDispatcher("editBooking.jsp").forward(request, response);
         } catch (Exception e) {
             response.sendRedirect("exceptionErrorPage.jsp");

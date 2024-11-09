@@ -306,8 +306,8 @@
                                                                     id="address"
                                                                     name="address"
                                                                     maxlength="200"
-                                                                    pattern="^[a-zA-Z0-9\s,.'-]+$"
-                                                                    title="Address can contain letters, numbers, spaces, commas, periods, hyphens, and apostrophes"
+                                                                    pattern="^[\p{L}\p{N}\s,.'-]+$"
+                                                                    title="Address can contain letters, numbers, spaces, commas, periods, apostrophes, and hyphens."
                                                                     value="${address}"
                                                                     placeholder="Enter address"
                                                                     required
@@ -536,8 +536,12 @@
         <script>
             // Get today's date in yyyy-mm-dd format
             const today = new Date().toISOString().split('T')[0];
+            const today2 = new Date();
             // Set the max attribute for the birthday input to today's date
-            document.getElementById("birthday").setAttribute("max", today);
+            const minAgeDate = new Date(today2.getFullYear() - 18, today2.getMonth(), today2.getDate());
+            // Set the max attribute for the birthday input to the date 18 years ago
+            document.getElementById("birthday").setAttribute("max", minAgeDate.toISOString().split('T')[0]);
+
             document.getElementById("checkindate").setAttribute("min", today);
             document.getElementById("checkoutdate").setAttribute("min", today);
             document.getElementById("checkindate").addEventListener("change", function () {
@@ -552,35 +556,25 @@
             });
         </script>
         <script>
-
+            document.getElementById("address").addEventListener("blur", function () {
+                const address = this.value.trim();
+                const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
+                if (!pattern.test(address)) {
+                    alert("The address contains invalid characters.");
+                    document.getElementById("address").focus();
+                }
+            });
+            document.getElementById("email").addEventListener("blur", function () {
+                const email = this.value.trim();
+                const regexEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+                if (!regexEmail.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    document.getElementById("email").focus();
+                }
+            });
         </script>
         <script>
             function validate() {
-                var email = document.getElementById("email").value.trim();
-//                var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-                var regex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-                if (email.length > 0) {
-                    if (!regex.test(email)) {
-                        alert("Please enter a valid Email address (example@gmail.com)");
-                        document.getElementById("email").focus();
-                        return false;
-                    }
-                }
-//                var identification = document.getElementById("identification").value.trim();
-//                var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-//                if (!regex2.test(identification)) {
-//                    alert("Please enter a valid identification number with 10 or 12 digit");
-//                    document.getElementById("identification").focus();
-//                    return false;
-//                }
-                document.getElementById("address").addEventListener("blur", function () {
-                    const address = this.value;
-                    const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
-                    if (!pattern.test(address)) {
-                        alert("The address contains invalid characters.");
-                        this.value = ""; // Optionally clear the input
-                    }
-                });
                 var checkboxes = document.querySelectorAll("input[name='roomSelected']");
                 var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
                 if (!isChecked) {
@@ -593,13 +587,11 @@
                     }
                     return false;
                 }
-
             }
         </script>
         <script>
             document.getElementById("name").addEventListener("blur", function () {
                 const nameInput1 = document.getElementById("name").value;
-
                 // Check if the input contains only spaces
                 if (nameInput1 !== "" && nameInput1.trim() === "") {
                     alert("The name field cannot contain only spaces.");

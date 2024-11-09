@@ -119,6 +119,7 @@
                                                                     <label>Full Name</label>
                                                                     <input
                                                                         name="name"
+                                                                        id="name"
                                                                         value="${u.name}"
                                                                         type="text"
                                                                         maxlength="100"
@@ -137,12 +138,13 @@
                                                                     <input
                                                                         value="${u.address}"
                                                                         name="address"
+                                                                        id="address"
                                                                         type="text"
                                                                         class="form-control"
                                                                         maxlength="200"
                                                                         minlength="4"
-                                                                        pattern="^[a-zA-Z0-9\s,.'-]+$"
-                                                                        title="Address can contain letters, numbers, spaces, commas, periods, hyphens, and apostrophes"
+                                                                        pattern="^[\p{L}\p{N}\s,.'-]+$"
+                                                                        title="Address can contain letters, numbers, spaces, commas, periods, apostrophes, and hyphens."
                                                                         required
                                                                         placeholder="Enter address"
                                                                         />
@@ -178,7 +180,7 @@
                                                                         required
                                                                         placeholder="Enter Identification"
                                                                         pattern="^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$"
-                                                                    title="Valid ID contains 1 uppercase letters and 7 digits, 9 or 12 digits"
+                                                                        title="Valid ID contains 1 uppercase letters and 7 digits, 9 or 12 digits"
                                                                         />
                                                                 </div>
                                                             </div>
@@ -210,6 +212,7 @@
                                                                     <label>Salary</label>
                                                                     <input type="number" name="salary"
                                                                            value="${u.salary}"
+                                                                           id="salary"
                                                                            min="0" max="2000000000" required
                                                                            placeholder="Enter salary"
                                                                            style="width: 100%; border: none; "/>
@@ -229,6 +232,7 @@
                                                                     <label>Username</label>
                                                                     <input
                                                                         value="${u.username}"
+                                                                        id="username"
                                                                         name="username"
                                                                         type="text"
                                                                         placeholder="Enter username"
@@ -242,7 +246,8 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Password</label>
                                                                     <input
-                                                                        name="password" id="password"
+                                                                        name="password"
+                                                                        id="password"
                                                                         type="text" pattern="[a-zA-Z0-9]{3,18}$" title="length should be 3-18, no spaces, unsigned"
                                                                         class="form-control"
                                                                         style="width: 50%"
@@ -353,16 +358,9 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="assets/js/setting-demo2.js"></script>
     <script>
-                                                    // Get today's date in yyyy-mm-dd format
-                                                    const today = new Date().toISOString().split('T')[0];
-                                                    // Set the max attribute for the birthday input to today's date
-                                                    document.getElementById("birthday").setAttribute("max", today);
-                                                    document.getElementById("startdate").setAttribute("max", today);
-    </script>
-    <script>
-        document.querySelector('.close').editEventListener('click', function () {
-            $('#editUserModal').modal('hide');
-        });
+                                                    document.querySelector('.close').editEventListener('click', function () {
+                                                        $('#editUserModal').modal('hide');
+                                                    });
     </script>
     <script>
         function doClose() {
@@ -374,20 +372,121 @@
             window.location = "listUser";
         }
     </script>
+
+    <script>
+        document.getElementById("email").addEventListener("blur", function () {
+            const email = this.value.trim();
+            const regexEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+            if (!regexEmail.test(email)) {
+                alert("Please enter a valid Email address (example@gmail.com)");
+                this.value = "";
+            }
+        });
+        document.getElementById("address").addEventListener("blur", function () {
+            const address = this.value;
+            const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
+            if (!pattern.test(address)) {
+                alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
+                this.value = ""; // Optionally clear the input
+            }
+        });
+    </script>
     <script>
         function validate() {
-            var email = document.getElementById("email").value;
-            var regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
-            var phone = document.getElementById("phone").value;
-            var regex1 = /^\d{10}$/;
-            var identification = document.getElementById("identification").value;
-            var regex2 = /^[A-Z0-9]{10}$|^[A-Z0-9]{12}$/;
-
-            return true;
+            var option = confirm("Are you sure to add new user?");
+            if (option === true) {
+                return true;
+            }
+            return false;
         }
     </script>
+    <script>
+        const startDateInput = document.getElementById("startdate");
 
+        // Set today's date as the minimum date (can't be in the past)
+        const today = new Date();
+        const minDate = today.toISOString().split('T')[0];
+        startDateInput.setAttribute("min", minDate);
+
+        // Set the max date to 30 days in the future
+        const maxFutureDate = new Date(today);
+        maxFutureDate.setDate(maxFutureDate.getDate() + 30); // 30 days from today
+        const maxDate = maxFutureDate.toISOString().split('T')[0];
+        startDateInput.setAttribute("max", maxDate);
+    </script>
+    <script>
+        const today2 = new Date();
+        // Set the max attribute for the birthday input to today's date
+        const minAgeDate = new Date(today2.getFullYear() - 18, today2.getMonth(), today2.getDate());
+        // Set the max attribute for the birthday input to the date 18 years ago
+        document.getElementById("birthday").setAttribute("max", minAgeDate.toISOString().split('T')[0]);
+    </script>
+    <script>
+        document.getElementById("name").addEventListener("blur", function () {
+            const nameInput1 = document.getElementById("name").value;
+            // Check if the input contains only spaces
+            if (nameInput1 !== "" && nameInput1.trim() === "") {
+                alert("The name field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("name").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("email").addEventListener("blur", function () {
+            const nameInput2 = document.getElementById("email").value;
+            // Check if the input contains only spaces
+            if (nameInput2 !== "" && nameInput2.trim() === "") {
+                alert("The email field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("email").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("identification").addEventListener("blur", function () {
+            const nameInput3 = document.getElementById("identification").value;
+            // Check if the input contains only spaces
+            if (nameInput3 !== "" && nameInput3.trim() === "") {
+                alert("The identification field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("identification").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("phone").addEventListener("blur", function () {
+            const nameInput4 = document.getElementById("phone").value;
+            // Check if the input contains only spaces
+            if (nameInput4 !== "" && nameInput4.trim() === "") {
+                alert("The phone field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("phone").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("address").addEventListener("blur", function () {
+            const nameInput5 = document.getElementById("address").value;
+            // Check if the input contains only spaces
+            if (nameInput5 !== "" && nameInput5.trim() === "") {
+                alert("The address field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("address").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("username").addEventListener("blur", function () {
+            const nameInput7 = document.getElementById("username").value;
+            // Check if the input contains only spaces
+            if (nameInput7 !== "" && nameInput7.trim() === "") {
+                alert("The username field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("username").value = ""; // Clear the field
+            }
+        });
+        document.getElementById("password").addEventListener("blur", function () {
+            const nameInput8 = document.getElementById("password").value;
+            // Check if the input contains only spaces
+            if (nameInput8 !== "" && nameInput8.trim() === "") {
+                alert("The password field cannot contain only spaces.");
+                // Optionally, you can clear the field or take any other action
+                document.getElementById("password").value = ""; // Clear the field
+            }
+        });
+    </script>
     <script>
         $(document).ready(function () {
             $("#basic-datatables").DataTable({});
