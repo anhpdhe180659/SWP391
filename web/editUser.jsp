@@ -90,9 +90,6 @@
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Manage User</h3>
                         </div>
-
-
-
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -106,14 +103,12 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-
                                     <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="editUser"  method="POST"  onsubmit="return validate()">
                                                     <c:set value="${requestScope.user}" var="u"/>
                                                     <div class="modal-body">
-
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">

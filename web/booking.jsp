@@ -98,8 +98,33 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header" style="display: flex;">
                                         <div class="card-title" style="font-size: 24px;">Create booking</div>
+                                        <c:set value="${requestScope.fromdate}" var="fromdate"/>
+                                        <c:set value="${requestScope.todate}" var="todate"/>
+                                        <form action="filterRoomAvailable" style="margin-left: 10%">
+                                            From &nbsp;<input type="date" name="fromDate" value="${fromdate}" />
+                                            &nbsp; to &nbsp;&nbsp;<input type="date" name="toDate" value="${todate}" />
+                                            <button class="btn btn-label-info ms-4" type="submit">Filter</button>
+                                            
+                                                <input
+                                                    type="time"
+                                                    class="form-control"
+                                                    name="checkintime"
+                                                    value="14:00"
+                                                    required
+                                                    readonly=""
+                                                    hidden=""
+                                                    />
+                                                <input
+                                                    type="time"
+                                                    class="form-control"
+                                                    name="checkouttime"
+                                                    value="12:00"
+                                                    readonly=""
+                                                    hidden=""
+                                                    />
+                                        </form>
                                     </div>
                                     <form action="booking" method="POST" onsubmit="validate()">
                                         <div class="card-body">
@@ -213,6 +238,7 @@
                                                 <c:set value="${requestScope.nationality}" var="nationality"/>
                                                 <c:set value="${requestScope.identification}" var="identification"/>
                                                 <c:set value="${requestScope.address}" var="address"/>
+                                                <c:set value="${requestScope.birthday}" var="birthday"/>
                                                 <c:set value="${requestScope.gender}" var="gender"/>
                                                 <c:set value="${requestScope.checkindate}" var="checkindate"/>
                                                 <c:set value="${requestScope.checkoutdate}" var="checkoutdate"/>
@@ -304,6 +330,7 @@
                                                                     class="form-control"
                                                                     id="birthday"
                                                                     name="birthday"
+                                                                    value="${birthday}"
                                                                     required
                                                                     />
                                                             </div>
@@ -547,7 +574,7 @@
                     if (!pattern.test(address)) {
                         alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
                         this.value = "";
-                        return; 
+                        return;
                     }
                 }
             });
@@ -558,7 +585,7 @@
                     if (!regexEmail.test(email)) {
                         alert("Please enter a valid Email address (example@gmail.com)");
                         this.value = "";
-                        return; 
+                        return;
                     }
                 }
             });
@@ -569,7 +596,7 @@
                     if (!patternNationality.test(nationality)) {
                         alert("Invalid nationality. Please use only letters, spaces, periods, and hyphens.");
                         this.value = "";
-                        return; 
+                        return;
                     }
                 }
             });
