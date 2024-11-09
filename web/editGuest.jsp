@@ -182,12 +182,10 @@
                         </div>
                     </div>
                 </div>
-
                 <footer class="footer">
                     <!-- Add your footer content here -->
                 </footer>
             </div>
-
             <!-- Core JS Files -->
             <script src="assets/js/core/jquery-3.7.1.min.js"></script>
             <script src="assets/js/core/popper.min.js"></script>
