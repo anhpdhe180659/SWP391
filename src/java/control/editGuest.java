@@ -127,8 +127,8 @@ public class editGuest extends HttpServlet {
         if (phone.trim().isEmpty() || !phone.matches("^[0-9]{10}$")) {
             return "Phone must be exactly 10 digits.";
         }
-        if (identification.trim().isEmpty()) {
-            return "Identification cannot be blank.";
+        if (identification.trim().isEmpty() || !identification.matches("^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$")) {
+            return "Valid ID must contain 1 uppercase letter and 7 digits, or 9 digits, or 12 digits";
         }
         if (nationality.trim().isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
             return "Nationality cannot be blank.";
