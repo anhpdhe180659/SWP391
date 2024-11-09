@@ -103,10 +103,9 @@
                                         <c:set value="${requestScope.fromdate}" var="fromdate"/>
                                         <c:set value="${requestScope.todate}" var="todate"/>
                                         <form action="filterRoomAvailable" style="margin-left: 10%">
-                                            From &nbsp;<input type="date" name="fromDate" value="${fromdate}" />
-                                            &nbsp; to &nbsp;&nbsp;<input type="date" name="toDate" value="${todate}" />
+                                            From &nbsp;<input type="date" id="fromDate" name="fromDate" value="${fromdate}" />
+                                            &nbsp; to &nbsp;&nbsp;<input type="date" id="toDate" name="toDate" value="${todate}" />
                                             <button class="btn btn-label-info ms-4" type="submit">Filter</button>
-                                            
                                                 <input
                                                     type="time"
                                                     class="form-control"
@@ -546,13 +545,13 @@
         <script></script>
         <script>
             // Get today's date in yyyy-mm-dd format
-            const today = new Date().toISOString().split('T')[0];
+            
             const today2 = new Date();
             // Set the max attribute for the birthday input to today's date
             const minAgeDate = new Date(today2.getFullYear() - 18, today2.getMonth(), today2.getDate());
             // Set the max attribute for the birthday input to the date 18 years ago
             document.getElementById("birthday").setAttribute("max", minAgeDate.toISOString().split('T')[0]);
-
+            const today = new Date().toISOString().split('T')[0];
             document.getElementById("checkindate").setAttribute("min", today);
             document.getElementById("checkoutdate").setAttribute("min", today);
             document.getElementById("checkindate").addEventListener("change", function () {
@@ -564,6 +563,16 @@
                 // Set the minimum date for checkout as one day after the check-in date
                 let checkOutInput = document.getElementById("checkoutdate");
                 checkOutInput.setAttribute("min", formattedCheckOutDate);
+            });
+            document.getElementById("fromDate").addEventListener("change", function () {
+                let fromDate = new Date(this.value);
+                let minToDate = new Date(fromDate);
+                minToDate.setDate(fromDate.getDate() + 1);
+                // Convert the date back to YYYY-MM-DD format
+                let formattedToDate = minToDate.toISOString().split('T')[0];
+                // Set the minimum date for checkout as one day after the check-in date
+                let ToDate = document.getElementById("toDate");
+                ToDate.setAttribute("min", formattedToDate);
             });
         </script>
         <script>
