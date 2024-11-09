@@ -149,7 +149,8 @@
                                                                 <div class="form-group form-group-default">
                                                                     <label>Quantity</label>
                                                                     <input
-                                                                        min="0"
+                                                                        min="1"
+                                                                        max="4"
                                                                         name="quantity"
                                                                         type="number"
                                                                         class="form-control"
@@ -167,23 +168,7 @@
                                                                     />
                                                             </div>
                                                         </div>  
-                                                        <script>
-                                                            document.querySelector('form').addEventListener('submit', function (event) {
-                                                                // Get the name input field
-                                                                const quantity = document.querySelector('input[name="quantity"]');
-                                                                // Check if price is greater than 0
-                                                                const roomnumber = document.querySelector('input[name="roomnumber"]');
-                                                                if (quantity.value < 0) {
-                                                                    alert("Price must be greater than or equal to 0.");
-                                                                    event.preventDefault(); // Prevent form submission
-                                                                }
-                                                                if (roomnumber.value <= 0) {
-                                                                    alert("Price must be greater than 0.");
-                                                                    event.preventDefault();
-                                                                    /
-                                                                }
-                                                            });
-                                                        </script>
+
                                                     </div>
 
 
@@ -205,6 +190,35 @@
                                                             </button>
                                                         </a>
                                                     </div>
+                                                    <script>
+                                                        // Get the button and input fields
+                                                        const btn = document.querySelector('button[type="button submit"]');
+                                                        const quantity = document.querySelector('input[name="quantity"]');
+                                                        const roomnumber = document.querySelector('input[name="roomnumber"]');
+
+                                                        // Function to validate conditions
+                                                        function validate() {
+                                                            const quantityValid = quantity.value >= 0 && quantity.value <= 3;
+                                                            const roomnumberValid = roomnumber.value > 0 && roomnumber.value < 1000;
+
+                                                            if (quantityValid && roomnumberValid) {
+                                                                btn.disabled = false; // Enable button if both conditions are met
+                                                            } else {
+                                                                btn.disabled = true; // Disable button if either condition is not met
+                                                                if (!quantityValid) {
+                                                                    alert("Quantity must be between 0 and 3.");
+                                                                }
+                                                                if (!roomnumberValid) {
+                                                                    alert("Room number must be between 1 and 999.");
+                                                                }
+                                                            }
+                                                        }
+
+                                                        // Attach onchange events to call validate function
+                                                        quantity.onchange = validate;
+                                                        roomnumber.onchange = validate;
+                                                    </script>
+
                                                 </form>
                                             </div>
                                         </div>
@@ -294,23 +308,23 @@
 </script>
 <script>
     document.querySelector('.form-add').addEventListener('submit', function (event) {
-    // Get the quantity input field
-    const quantityInput = document.querySelector('input[name="quantity"]');
+        // Get the quantity input field
+        const quantityInput = document.querySelector('input[name="quantity"]');
 
-    // Trim any leading/trailing whitespace
-    const quantityValue = quantityInput.value.trim();
+        // Trim any leading/trailing whitespace
+        const quantityValue = quantityInput.value.trim();
 
-    // Convert the input value to a number
-    const quantity = Number(quantityValue);
+        // Convert the input value to a number
+        const quantity = Number(quantityValue);
 
-    // Validate that the value is less than 3 and not negative
-    if (isNaN(quantity) || quantity >= 3 || quantity < 0) {
-        alert("Quantity must be a valid number, greater than or equal to 0, and less than 3.");
-        event.preventDefault(); // Prevent form submission
-    } else {
-        console.log("Valid input: " + quantity);  // Debugging step
-    }
-});
+        // Validate that the value is less than 3 and not negative
+        if (isNaN(quantity) || quantity >= 3 || quantity < 0) {
+            alert("Quantity must be a valid number, greater than or equal to 0, and less than 3.");
+            event.preventDefault(); // Prevent form submission
+        } else {
+            console.log("Valid input: " + quantity);  // Debugging step
+        }
+    });
 
 
 
