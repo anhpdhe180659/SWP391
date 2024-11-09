@@ -288,7 +288,7 @@ public class booking extends HttpServlet {
             }
             String bookingcode = utilConvert.toBase36(bookingid);
             if (Email != null) {
-                sendBookingCodeEmail(Email, bookingcode);
+                sendBookingCodeEmail(Email, bookingcode,guestBooking.getName());
             }
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
@@ -298,10 +298,10 @@ public class booking extends HttpServlet {
         }
     }
 
-    private void sendBookingCodeEmail(String email, String bookingcode) {
+    private void sendBookingCodeEmail(String email, String bookingcode,String name) {
         // Email sending logic
         String subject = "Booking code from ALIHOTEL";
-        String content = "Dear valued customer,\n\n"
+        String content = "Dear "+name+",\n\n"
                 + "Thank you for choosing ALIHOTEL. We are pleased to confirm your booking. "
                 + "Your booking code is: " + bookingcode + ".\n\n"
                 + "Please keep this code for reference. If you have any questions or need further assistance, feel free to contact us.\n\n"
