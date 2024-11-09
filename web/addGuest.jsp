@@ -95,7 +95,7 @@
                                                     <label><i class="fa fa-map-marker-alt"></i> Address</label>
                                                     <input name="address" 
                                                            type="text" 
-                                                           value="${guest.address}" 
+                                                           value="${tempGuest.address}" 
                                                            maxlength="200" 
                                                            pattern="^[A-Za-z0-9\s,.-]+$"
                                                            title="Address can only contain letters, numbers, spaces, commas, dots, and hyphens"
@@ -115,7 +115,7 @@
                                                     <label><i class="fa fa-id-card"></i> Identification</label>
                                                     <input name="identification" 
                                                            type="text" 
-                                                           value="${guest.identification}" 
+                                                           value="${tempGuest.identification}" 
                                                            maxlength="20" 
                                                            class="form-control" 
                                                            placeholder="Enter identification number" 
