@@ -90,9 +90,6 @@
                         <div class="page-header">
                             <h3 class="fw-bold mb-3">Manage User</h3>
                         </div>
-
-
-
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -106,14 +103,12 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
-
                                     <div>
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <form action="editUser"  method="POST"  onsubmit="return validate()">
                                                     <c:set value="${requestScope.user}" var="u"/>
                                                     <div class="modal-body">
-
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group form-group-default">
@@ -409,22 +404,25 @@
     </script>
     <script>
         document.getElementById("address").addEventListener("blur", function () {
-            const address = this.value;
+            const address = this.value.trim();
             const pattern = /^[\p{L}\p{N}\s,.'-]+$/u; // Supports letters, numbers, and common punctuation
-            if (!pattern.test(address)) {
-                alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
-                this.value = "";
+            if (address !== "") {
+                if (!pattern.test(address)) {
+                    alert("Invalid address. Please use only letters, numbers, spaces, commas, periods, apostrophes, and hyphens.");
+                    this.value = "";
+                }
             }
         });
         document.getElementById("email").addEventListener("blur", function () {
             const email = this.value.trim();
             const regexEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-            if (!regexEmail.test(email)) {
-                alert("Please enter a valid Email address (example@gmail.com)");
-                this.value = "";
+            if (email !== "") {
+                if (!regexEmail.test(email)) {
+                    alert("Please enter a valid Email address (example@gmail.com)");
+                    this.value = "";
+                }
             }
         });
-
     </script>
     <script>
         function BackToList() {

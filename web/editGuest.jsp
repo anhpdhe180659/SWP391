@@ -147,7 +147,7 @@
                                                 <div class="form-group form-group-default">
                                                     <label><i class="fa fa-calendar-alt"></i> Date of Birth</label>
                                                     <input type="date" name="dateOfBirth" value="${guest.dateOfBirth}"
-                                                           max="<%= java.time.LocalDate.now().minusYears(18) %>"
+                                                           max="<%= java.time.LocalDate.now().minusYears(18).minusDays(1) %>"
                                                            class="form-control" required />
                                                 </div>
                                             </div>
@@ -182,12 +182,10 @@
                         </div>
                     </div>
                 </div>
-
                 <footer class="footer">
                     <!-- Add your footer content here -->
                 </footer>
             </div>
-
             <!-- Core JS Files -->
             <script src="assets/js/core/jquery-3.7.1.min.js"></script>
             <script src="assets/js/core/popper.min.js"></script>

@@ -4,36 +4,23 @@
  */
 package control;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import config.CloudinaryConfig;
-import dal.RoomTypeDAO;
+import dal.InvoiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.Map;
-import model.RoomType;
-import org.apache.commons.io.IOUtils;
+import model.Invoice;
 
 /**
  *
  * @author phand
  */
-@MultipartConfig
-@WebServlet(name = "addRoomType", urlPatterns = {"/addRoomType"})
-public class addRoomType extends HttpServlet {
+@WebServlet(name = "modifyInvoice", urlPatterns = {"/modifyInvoice"})
+public class modifyInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,10 +39,10 @@ public class addRoomType extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet addRoomType</title>");
+            out.println("<title>Servlet modifyInvoice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet addRoomType at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet modifyInvoice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -77,15 +64,22 @@ public class addRoomType extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with manager account !");
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        RoomTypeDAO roomDao = new RoomTypeDAO();
-        List<RoomType> listRoom = roomDao.getAll();
-        session.setAttribute("listRoomType", listRoom);
-        response.sendRedirect("addRoomType.jsp");
+        String note = request.getParameter("note");
+        int fine = Integer.parseInt(request.getParameter("fine"));
+        int id = Integer.parseInt(request.getParameter("invoiceId"));
+        InvoiceDAO ivDao = new InvoiceDAO();
+        Invoice iv = ivDao.getInvoiceById(id);
+        iv.setNote(note);
+        iv.setFine(fine);
+        iv.setFinalAmount((int) (iv.getTotalAmount() * (100 - iv.getDiscount()) * 1.0 / 100 + iv.getFine()));
+        ivDao.updateNoteAndFine(iv);
+        response.sendRedirect("showInvoice?bookingId=" + iv.getBookingId());
+
     }
 
     /**
@@ -103,45 +97,25 @@ public class addRoomType extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 1) {
-            request.setAttribute("error", "Please sign in with manager account !");
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+            request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        CloudinaryConfig cloud = new CloudinaryConfig();
-        Cloudinary cloudinary = cloud.getCloudinary();
-        Part imageURL = request.getPart("image");
-        // Create temp file and upload image
-        File tempFile = File.createTempFile("upload", null);
-        try (InputStream input = imageURL.getInputStream(); OutputStream output = new FileOutputStream(tempFile)) {
-            IOUtils.copy(input, output);
-        }
+        String note = request.getParameter("note");
+        int fine = Integer.parseInt(request.getParameter("fine"));
+        int id = Integer.parseInt(request.getParameter("invoiceId"));
+        InvoiceDAO ivDao = new InvoiceDAO();
+        Invoice iv = ivDao.getInvoiceById(id);
+        iv.setNote(note);
+        iv.setFine(fine);
+        System.out.println(iv.getFine());
+        System.out.println(iv.getTotalAmount());
+        iv.setFinalAmount((int) (iv.getTotalAmount() * (100 - iv.getDiscount()) * 1.0 / 100 + iv.getFine()));
+        System.out.println("dsd"+(int) (iv.getTotalAmount() * (100 - iv.getDiscount()) * 1.0 / 100 + iv.getFine()));
+        ivDao.updateNoteAndFine(iv);
+        response.sendRedirect("showInvoice?bookingId=" + iv.getBookingId());
 
-        try {
-            Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
-            String url = (String) uploadResult.get("secure_url");
-
-            // Extract other parameters
-            String typeName = request.getParameter("typeName").trim();
-            int capacity = Integer.parseInt(request.getParameter("capacity").trim());
-            int price = Integer.parseInt(request.getParameter("price").trim());
-
-            // Create RoomType object and insert into DB
-            RoomType rt = new RoomType();
-            rt.setTypeName(typeName);
-            rt.setCapacity(capacity);
-            rt.setImage(url);
-            rt.setPrice(price);
-
-            RoomTypeDAO rdao = new RoomTypeDAO();
-            rdao.insertRoomType(rt);
-
-            // Redirect to list page after successful insertion
-            request.getRequestDispatcher("listRoomType.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            request.getRequestDispatcher("errorExcetionPage.jsp").forward(request, response);
-        }
     }
 
     /**

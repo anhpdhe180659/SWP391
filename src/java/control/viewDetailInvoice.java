@@ -90,12 +90,18 @@ public class viewDetailInvoice extends HttpServlet {
         Booking booking = bkDao.getBookingByBookingID(bkId);
         bkDao.getTotalPriceBooking(bkId);
         booking = bkDao.getBookingByBookingID(bkId);
+        iv.setTotalAmount(booking.getTotalPrice());
+        iv.setFinalAmount((int) (booking.getTotalPrice() * (100 - iv.getDiscount()) * 1.0 / 100 + iv.getFine()));
+        ivDao.updateNoteAndFine(iv);
         int guestId = booking.getGuestID();
         GuestDAO gDao = new GuestDAO();
         Guest guest = gDao.getGuestByGuestID(guestId);
         List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bkId);
         List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(bkId);
         LocalDate date = iv.getPaymentDate();
+        Invoice i = ivDao.getInvoiceByBookingId(bkId);
+        
+        session.setAttribute("invoice", i);
         session.setAttribute("date", date.toString());
         session.setAttribute("booking", booking);
         session.setAttribute("guest", guest);

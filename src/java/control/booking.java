@@ -271,6 +271,7 @@ public class booking extends HttpServlet {
                     totalPrice += price;
                 }
             }
+            totalPrice = totalPrice * numberOfNight;
             if (checkinstatus == 1) {
                 bdao.addBooking(guestBooking.getGuestID(), deposit, checkinstatus, receptionist.getUserID(), paidstatus, totalPrice, 0, currentDateTime);
             } else {
@@ -288,7 +289,7 @@ public class booking extends HttpServlet {
             }
             String bookingcode = utilConvert.toBase36(bookingid);
             if (Email != null) {
-                sendBookingCodeEmail(Email, bookingcode);
+                sendBookingCodeEmail(Email, bookingcode,guestBooking.getName());
             }
             request.setAttribute("code", bookingcode);
             request.setAttribute("guestid", guestBooking.getGuestID());
@@ -298,12 +299,12 @@ public class booking extends HttpServlet {
         }
     }
 
-    private void sendBookingCodeEmail(String email, String bookingcode) {
+    private void sendBookingCodeEmail(String email, String bookingcode,String name) {
         // Email sending logic
         String subject = "Booking code from ALIHOTEL";
-        String content = "Dear valued customer,\n\n"
+        String content = "Dear "+name+",\n\n"
                 + "Thank you for choosing ALIHOTEL. We are pleased to confirm your booking. "
-                + "Your booking code is: <strong>" + bookingcode + "</strong>.\n\n"
+                + "Your booking code is: " + bookingcode + ".\n\n"
                 + "Please keep this code for reference. If you have any questions or need further assistance, feel free to contact us.\n\n"
                 + "We would like to remind you that your check-in time is at 2:00 PM on the scheduled date. "
                 + "Please make sure to arrive on time to enjoy your stay.\n\n"

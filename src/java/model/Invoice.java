@@ -18,11 +18,13 @@ public class Invoice {
     int finalAmount;
     String paymentMethod;
     LocalDate paymentDate;
+    String note;
+    int fine;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceNo, int bookingId, int totalAmount, float discount, int finalAmount, String paymentMethod, LocalDate paymentDate) {
+    public Invoice(int invoiceNo, int bookingId, int totalAmount, float discount, int finalAmount, String paymentMethod, LocalDate paymentDate, String note, int fine) {
         this.invoiceNo = invoiceNo;
         this.bookingId = bookingId;
         this.totalAmount = totalAmount;
@@ -30,8 +32,11 @@ public class Invoice {
         this.finalAmount = finalAmount;
         this.paymentMethod = paymentMethod;
         this.paymentDate = paymentDate;
+        this.note = note;
+        this.fine = fine;
     }
 
+    
     public int getInvoiceNo() {
         return invoiceNo;
     }
@@ -86,6 +91,22 @@ public class Invoice {
 
     public void setPaymentDate(LocalDate paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public int getFine() {
+        return fine;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setFine(int fine) {
+        this.fine = fine;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
      
     

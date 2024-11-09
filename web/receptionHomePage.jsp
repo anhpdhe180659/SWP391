@@ -158,27 +158,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="card card-stats card-round">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-icon">
-                                                <div
-                                                    class="icon-big text-center icon-danger bubble-shadow-small"
-                                                    >
-                                                    <i class="far fa-bell"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col col-stats ms-3 ms-sm-0">
-                                                <div class="numbers">
-                                                    <p class="card-category">In-house Guest</p>
-                                                    <h4 class="card-title">0</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <!--Transaction history-->
                             <div class="col-md-6">
                                 <div class="card card-round">
@@ -248,7 +227,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">Room Statistics</div>
@@ -257,22 +236,6 @@
                                         <div class="chart-container">
                                             <canvas
                                                 id="myChart"
-                                                style="width: 50%; height: 50%"
-                                                ></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Guest Statistics</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas
-                                                id="guestChart"
                                                 style="width: 50%; height: 50%"
                                                 ></canvas>
                                         </div>

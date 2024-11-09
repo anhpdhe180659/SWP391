@@ -87,11 +87,11 @@ public class addUser extends HttpServlet {
             HttpSession session = request.getSession();
             UserDAO udao = new UserDAO();
             User user = new User();
-            String username = request.getParameter("username");
+            String username = request.getParameter("username").trim();
             if (request.getParameter("username") != null) {
                 user.setUsername(username);
             }
-            String password = request.getParameter("password");
+            String password = request.getParameter("password").trim();
             if (request.getParameter("password") != null) {
                 user.setPassword(hashPassword(password));
             }
@@ -117,7 +117,6 @@ public class addUser extends HttpServlet {
             user.setStartDate(StartDate);
             int Salary = Integer.parseInt(request.getParameter("salary"));
             user.setSalary(Salary);
-
             List<User> listUser = udao.getAllUser();
             request.setAttribute("user", user);
             String noti = "<div style='margin-right: 25px;color: green; font-weight:bold'>Add user successfully!</div>";
@@ -135,7 +134,7 @@ public class addUser extends HttpServlet {
                     return;
                 }
                 if (u.getPhone().equals(Phone)) {
-                    // check if Identification is existed in database
+                    // check if phone is existed in database
                     request.setAttribute("noti", "<div style='margin-right: 25px;color: red; font-weight:bold'>Phone number " + Phone + " existed!</div>");
                     request.getRequestDispatcher("addUser.jsp").forward(request, response);
                     return;

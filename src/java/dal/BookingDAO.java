@@ -89,14 +89,7 @@ public class BookingDAO extends DBContext {
     public List<Booking> getAllBooking() {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
-                       SELECT BookingID
-                             ,GuestID
-                             ,Deposit
-                             ,CheckInStatus
-                             ,PaidStatus
-                             ,UserID
-                             ,BookingDate
-                             ,TotalPrice
+                       SELECT *
                          FROM HotelManagement.Booking""";
         try (PreparedStatement pre = connection.prepareStatement(query);) {
             ResultSet rs = pre.executeQuery();
@@ -109,7 +102,10 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
                 ));
             }
         } catch (SQLException e) {
@@ -359,6 +355,35 @@ public class BookingDAO extends DBContext {
         }
     }
 
+    public List<Room> getAllRoomAvailableFromDateToDate(LocalDateTime newCheckinTime, LocalDateTime newCheckoutTime) {
+        List<Room> list = new ArrayList<>();
+        java.sql.Timestamp newInTime = java.sql.Timestamp.valueOf(newCheckinTime);
+        java.sql.Timestamp newOutTime = java.sql.Timestamp.valueOf(newCheckoutTime);
+        String query = """
+                       SELECT r.*
+                       FROM Room r
+                       LEFT JOIN BookingRoom br ON r.RoomID = br.RoomID
+                           AND (
+                               (br.CheckInDate <= ? AND br.CheckOutDate >= ?)
+                           )
+                       WHERE br.RoomID IS NULL;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setTimestamp(1, newOutTime);
+            pre.setTimestamp(2, newInTime);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Room(rs.getInt("RoomID"),
+                        rs.getString("RoomNumber"),
+                        rs.getInt("CleanID"),
+                        rs.getInt("TypeID"),
+                        rs.getInt("StatusID")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
     public boolean IsEverBooked(int roomid) {
         boolean ReadyToBook = false;
         List<Integer> list = new ArrayList<Integer>();
@@ -386,7 +411,9 @@ public class BookingDAO extends DBContext {
 
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
-        bkDao.deleteBooking(6);
+        Booking b = bkDao.getBookingByBookingID(1);
+        System.out.println(b.toString());
+        System.out.println(new java.util.Date(b.getActualCheckInDate().getTime()).toInstant());
     }
 
     public void addBooking(int guestid, int deposit, int checkinstatus, int userid, int paidstatus, int totalPrice, int paymentMethod, LocalDateTime actualCheckInTime) {
@@ -524,14 +551,7 @@ public class BookingDAO extends DBContext {
     public Booking getBookingByBookingID(int bookingid) {
         Booking booking = null;
         String query = """
-                       SELECT BookingID
-                             ,GuestID
-                             ,Deposit
-                             ,CheckInStatus
-                             ,PaidStatus
-                             ,UserID
-                             ,BookingDate
-                             ,TotalPrice
+                       SELECT *
                          FROM HotelManagement.Booking
                        WHERE BookingID = ?
                        """;
@@ -547,7 +567,11 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice"));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                );
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -556,17 +580,166 @@ public class BookingDAO extends DBContext {
 
     }
 
+    public List<Booking> findBookingNoShow() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.* FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                        WHERE b.CheckInStatus = 0
+                        AND br.CheckInDate < CURRENT_DATE and b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingOverdueForCheckout() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.* FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                       WHERE br.CheckOutDate < CURRENT_DATE
+                       AND b.PaidStatus = 0 and b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingUpcomingCheckIn3Day() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.*
+                       FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                       WHERE br.CheckInDate BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 3 DAY)
+                       AND b.CheckInStatus = 0
+                       AND b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingUpcomingCheckOut3Day() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT b.*
+                       FROM Booking b
+                       JOIN BookingRoom br ON b.BookingID = br.BookingID
+                       WHERE br.CheckOutDate BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 3 DAY)
+                       AND b.CheckInStatus = 1
+                       AND b.TotalPrice > 0
+                       GROUP BY b.BookingID;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findCanceledBooking() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT *
+                       FROM Booking b
+                       WHERE b.TotalPrice = 0;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
     public List<Booking> findBookingByBookingID(int bookingid) {
         List<Booking> allBooking = new ArrayList<>();
         String query = """
-                       SELECT BookingID
-                             ,GuestID
-                             ,Deposit
-                             ,CheckInStatus
-                             ,PaidStatus
-                             ,UserID
-                             ,BookingDate
-                             ,TotalPrice
+                       SELECT *
                          FROM HotelManagement.Booking
                        WHERE BookingID = ?
                        """;
@@ -582,7 +755,10 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -602,6 +778,9 @@ public class BookingDAO extends DBContext {
                              ,UserID
                              ,BookingDate
                              ,TotalPrice
+                             ,PaymentMethod
+                             ,ActualCheckInDate
+                             ,ActualCheckOutDate
                          FROM HotelManagement.Booking
                        ORDER BY BookingID
                        LIMIT 5 OFFSET ?""";
@@ -617,7 +796,11 @@ public class BookingDAO extends DBContext {
                         rs.getInt("PaidStatus"),
                         rs.getInt("UserID"),
                         rs.getDate("BookingDate"),
-                        rs.getInt("TotalPrice")));
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getDate("ActualCheckInDate"),
+                        rs.getDate("ActualCheckOutDate")
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

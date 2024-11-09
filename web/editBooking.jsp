@@ -177,7 +177,7 @@
                                                     <c:set value="${requestScope.deposit}" var="deposit"/>
                                                     <div class="form-group">
                                                         <label><i class="fas fa-money-bill-wave"></i> Deposit</label>
-                                                        <span style="font-weight: bold; margin-left: 90px; color: green">Need:</span> <span id="formattedDeposit" style="font-weight: bold; margin-left: 5px; color: green"> 0 ₫</span>
+                                                        <span style="font-weight: bold; margin-left: 60px; color: green">Need:</span> <span id="formattedDeposit" style="font-weight: bold; margin-left: 5px; color: green"> 0 ₫</span>
                                                         <input
                                                             type="number"
                                                             id="deposit"

@@ -87,7 +87,7 @@ public class addGuest extends HttpServlet {
     }
 
     private String validateGuestInformation(GuestDAO gdao, String name, String dateOfBirth, int sex, String address, String phone, String identification, String nationality, String email) {
-        // Kiểm tra thông tin như trước
+        // Check age first
         LocalDate dob = LocalDate.parse(dateOfBirth);
         LocalDate now = LocalDate.now();
         int age = now.getYear() - dob.getYear();
@@ -97,32 +97,41 @@ public class addGuest extends HttpServlet {
         if (age < 18) {
             return "Guest must be at least 18 years old.";
         }
+
+        // Check email format
+        if (email.trim().isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return "Invalid email format.";
+        }
+
+        // Check name
         if (name.trim().isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
             return "Full Name cannot be null, blank, or contain special characters.";
         }
+
+        // Check address
         if (address.trim().isEmpty()) {
             return "Address cannot be blank.";
-        }
-        if (phone.trim().isEmpty() || !phone.matches("^[0-9]{10}$")) {
-            return "Phone must be exactly 10 digits.";
-        }
-        if (identification.trim().isEmpty() || !identification.matches("^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$")) {
-            return "Valid ID must contain 1 uppercase letter and 7 digits, or 9 digits, or 12 digits";
-        }
-        if (nationality.trim().isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
-            return "Nationality cannot be blank.";
-        }
-        if (name.trim().isEmpty() || !name.matches("^[\\p{L}\\s]+$")) {
-            return "Full Name cannot be null, blank, or contain special characters.";
         }
         if (!address.matches("^[\\p{L}0-9\\s,.-]+$")) {
             return "Address cannot contain special characters except comma, dot, and hyphen.";
         }
-        // Kiểm tra email
-        if (email.trim().isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            return "Email cannot be null, blank, or have an invalid format.";
+
+        // Check phone
+        if (phone.trim().isEmpty() || !phone.matches("^[0-9]{10}$")) {
+            return "Phone must be exactly 10 digits.";
         }
-        // Kiểm tra trùng lặp
+
+        // Check identification
+        if (identification.trim().isEmpty() || !identification.matches("^[A-Z]{1}[0-9]{7}|[0-9]{9}|[0-9]{12}$")) {
+            return "Valid ID must contain 1 uppercase letter and 7 digits, or 9 digits, or 12 digits";
+        }
+
+        // Check nationality
+        if (nationality.trim().isEmpty() || !nationality.matches("^[\\p{L}\\s]+$")) {
+            return "Nationality cannot be blank.";
+        }
+
+        // Check duplicates
         List<Guest> listGuest = gdao.getAllGuests();
         for (Guest g : listGuest) {
             if (g.getIdentification().equals(identification)) {
@@ -131,12 +140,12 @@ public class addGuest extends HttpServlet {
             if (g.getPhone().equals(phone)) {
                 return "Phone number has existed, please try again!";
             }
-            if (g.getEmail() != null && g.getEmail().equals(email)) { // Kiểm tra trùng lặp email
+            if (g.getEmail() != null && g.getEmail().equals(email)) {
                 return "Email has existed, please try again!";
             }
         }
 
-        return null; // Không có lỗi
+        return null; // No errors
     }
 
 }

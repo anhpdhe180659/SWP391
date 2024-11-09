@@ -4,6 +4,7 @@
  */
 package control;
 
+import dal.AmenityForRoomDAO;
 import dal.BookingDAO;
 import dal.GuestDAO;
 import dal.InvoiceDAO;
@@ -146,7 +147,13 @@ public class payStatus extends HttpServlet {
         for (BookingRoom bkRoom : allBookingRoom) {
             Room room = rDao.getRoomByRoomID(bkRoom.getRoomID());
             room.setCleanId(1);
-            room.setStatusId(1);
+            AmenityForRoomDAO amenityDao = new AmenityForRoomDAO();
+            boolean hasMaintenanceOrBroken = amenityDao.checkForMaintenanceOrBroken(room.getRoomId());
+            if (hasMaintenanceOrBroken) {
+                room.setStatusId(3);
+            } else {
+                room.setStatusId(1);
+            }
             rDao.updateStatus(room);
             System.out.println("update r ne");
         };
@@ -160,7 +167,8 @@ public class payStatus extends HttpServlet {
         BookingDAO bkDao = new BookingDAO();
         RoomDao rDao = new RoomDao();
         ServiceDAO sDao = new ServiceDAO();
-
+        InvoiceDAO ivDao = new InvoiceDAO();
+        Invoice i = ivDao.getInvoiceByBookingId(b.getBookingID());
         List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(b.getBookingID());
         List<BookingService> allBookingService = bkDao.getAllBookingServiceByBookingID(b.getBookingID());
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -226,25 +234,51 @@ public class payStatus extends HttpServlet {
                     servicePrices += s.getTotalPrice();
                 }
             }
+
             emailContent.append("</tbody></table></td>");
 
             // Add room total here if necessary
             emailContent.append("<td>").append(currencyFormatter.format(br.getPrice() * br.getNumOfNight() + servicePrices)).append("</td>");
             emailContent.append("</tr>");
         }
-         emailContent.append("<tr>\n"
+
+// Append the Fine section if the fine is greater or equal to zero
+        if (i.getFine() >= 0) {
+            emailContent.append("<tr class=\"fine-highlight\">")
+                    .append("<td colspan=\"3\"><b>Note and Fine:</b></td>")
+                    .append("<td>")
+                    .append("<table class=\"table table-sm table-borderless\">")
+                    .append("<thead>")
+                    .append("<tr>")
+                    .append("<th>Description</th>")
+                    .append("<th>Fine</th>")
+                    .append("</tr>")
+                    .append("</thead>")
+                    .append("<tbody>")
+                    .append("<tr>")
+                    .append("<td>").append(i.getNote()).append("</td>")
+                    .append("<td>+<span class=\"price-vnd\">")
+                    .append(currencyFormatter.format(i.getFine()))
+                    .append("</span></td>")
+                    .append("</tr>")
+                    .append("</tbody>")
+                    .append("</table>")
+                    .append("</td>")
+                    .append("</tr>");
+        }
+        emailContent.append("<tr>\n"
                 + "                                                            <td colspan=\"3\"><b>Grand Total: </b></td>\n"
-                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getTotalPrice()) + "</span>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(i.getFinalAmount()) + "</span>\n"
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
         emailContent.append("<tr>\n"
                 + "                                                            <td colspan=\"3\"><b>Deposit: </b></td>\n"
-                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getDeposit()) + "</span>\n"
+                + "                                                            <td>-<span class=\"price-vnd\">" + currencyFormatter.format(b.getDeposit()) + "</span>\n"
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
         emailContent.append("<tr>\n"
                 + "                                                            <td colspan=\"3\"><b>Final Total: </b></td>\n"
-                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(b.getTotalPrice()-b.getDeposit()) + "</span>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(i.getFinalAmount()- b.getDeposit()) + "</span>\n"
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
 
@@ -289,24 +323,6 @@ public class payStatus extends HttpServlet {
     }
 
     private void payByCash(Booking booking, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        InvoiceDAO ivDao = new InvoiceDAO();
-        Invoice invoice = new Invoice();
-        invoice.setBookingId(booking.getBookingID());
-        invoice.setTotalAmount(booking.getTotalPrice());
-        invoice.setDiscount(0);
-        invoice.setFinalAmount((int) (booking.getTotalPrice() * (1 - invoice.getDiscount())));
-        invoice.setPaymentMethod("Cash");
-        Date currentDate = new Date();
-
-        // Convert Date to LocalDate
-        LocalDate localDate = currentDate.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-
-        // Set the payment date
-        invoice.setPaymentDate(localDate);
-        //create invoice
-        ivDao.insertInvoice(invoice);
 
         //update status booking payment
         BookingDAO bkDao = new BookingDAO();
@@ -318,7 +334,14 @@ public class payStatus extends HttpServlet {
         for (BookingRoom br : allBookingRoom) {
             Room r = rDao.getRoomByRoomID(br.getRoomID());
             r.setCleanId(1);
-            r.setStatusId(1);
+            AmenityForRoomDAO amenityDao = new AmenityForRoomDAO();
+            //kiem tra co do hong ko
+            boolean hasMaintenanceOrBroken = amenityDao.checkForMaintenanceOrBroken(r.getRoomId());
+            if (hasMaintenanceOrBroken) {
+                r.setStatusId(3);
+            } else {
+                r.setStatusId(1);
+            }
             rDao.updateStatus(r);
         }
         GuestDAO gDao = new GuestDAO();

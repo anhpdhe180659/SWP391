@@ -4,6 +4,7 @@
  */
 package dal;
 
+import dto.RoomAmenBroken;
 import java.util.ArrayList;
 import java.util.List;
 import model.AmenityDetail;
@@ -324,9 +325,35 @@ public class AmenityForRoomDAO extends DBContext {
         return stats;
     }
 
+    public List<RoomAmenBroken> getAllBrokenAmenByBooking(int bkId) {
+        List<RoomAmenBroken> list = new ArrayList<>();
+        String sql = "SELECT room.RoomNumber, Amenity.AmenName\n"
+                + "FROM hotelmanagement.amenitydetail \n"
+                + "JOIN amenity ON amenity.AmenID = amenitydetail.AmenID \n"
+                + "JOIN room ON amenitydetail.RoomID = room.RoomID\n"
+                + "WHERE amenitydetail.RoomID IN (\n"
+                + "    SELECT BookingRoom.RoomID\n"
+                + "    FROM BookingRoom\n"
+                + "    join Booking on BookingRoom.BookingID = booking.BookingID\n"
+                + "    WHERE BookingRoom.BookingID = ? and Booking.CheckInStatus = 1\n"
+                + "AND amenitydetail.Status = 3);";
+        try (PreparedStatement pre = connection.prepareStatement(sql);) {
+            pre.setInt(1, bkId);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new RoomAmenBroken(rs.getString("RoomNumber"), rs.getString("AmenName")));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error getting amenity maintenance stats: " + ex.getMessage());
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         AmenityForRoomDAO amenityForRoomDAO = new AmenityForRoomDAO();
         System.out.println(amenityForRoomDAO.checkForMaintenanceOrBroken(3));
-
+        amenityForRoomDAO.getAllBrokenAmenByBooking(1).forEach((r) -> {
+            System.out.println(r.getAmenName());
+        });
     }
 }
