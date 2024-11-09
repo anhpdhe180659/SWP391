@@ -750,8 +750,8 @@ public class BookingDAO extends DBContext {
                         rs.getDate("BookingDate"),
                         rs.getInt("TotalPrice"),
                         rs.getInt("PaymentMethod"),
-                        rs.getDate("ActualCheckInDate"),
-                        rs.getDate("ActualCheckOutDate")
+                        rs.getTimestamp("ActualCheckInDate").toLocalDateTime(),
+                        rs.getTimestamp("ActualCheckOutDate").toLocalDateTime()
                 ));
             }
         } catch (SQLException e) {
