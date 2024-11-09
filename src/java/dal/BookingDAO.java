@@ -411,7 +411,7 @@ public class BookingDAO extends DBContext {
 
     public static void main(String[] args) {
         BookingDAO bkDao = new BookingDAO();
-        Booking b = bkDao.getBookingByBookingID(1);
+        List<Booking> b = bkDao.getAllBooking();
         System.out.println(b.toString());
     }
 
@@ -722,6 +722,63 @@ public class BookingDAO extends DBContext {
                         rs.getInt("TotalPrice"),
                         rs.getInt("PaymentMethod")
                 ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<Booking> findBookingNotPaidDeposit24Hour() {
+        List<Booking> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT *
+                       FROM Booking b
+                       WHERE b.Deposit = 0
+                         AND b.BookingDate < DATE_SUB(NOW(), INTERVAL 1 DAY)
+                         AND b.TotalPrice > 0;""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                allBooking.add(new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("GuestID"),
+                        rs.getInt("Deposit"),
+                        rs.getInt("CheckInStatus"),
+                        rs.getInt("PaidStatus"),
+                        rs.getInt("UserID"),
+                        rs.getDate("BookingDate"),
+                        rs.getInt("TotalPrice"),
+                        rs.getInt("PaymentMethod"),
+                        rs.getTimestamp("ActualCheckinDate") != null
+                        ? rs.getTimestamp("ActualCheckinDate").toLocalDateTime() : null
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allBooking;
+    }
+
+    public List<BookingRoom> isReadyToCheckIn(int bookingid) {
+        List<BookingRoom> allBooking = new ArrayList<>();
+        String query = """
+                       SELECT *
+                       FROM BookingRoom br
+                       WHERE br.BookingID = ?
+                       AND br.CheckOutDate <= NOW();""";
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, bookingid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                BookingRoom booking = new BookingRoom(
+                        rs.getInt("BookingID"),
+                        rs.getInt("RoomID"),
+                        rs.getInt("NumOfNight"),
+                        rs.getTimestamp("CheckInDate").toLocalDateTime(),
+                        rs.getTimestamp("CheckOutDate").toLocalDateTime(),
+                        rs.getInt("Price"));
+                allBooking.add(booking);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

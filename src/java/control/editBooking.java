@@ -79,6 +79,8 @@ public class editBooking extends HttpServlet {
             RoomDao rdao = new RoomDao();
             Booking booking = bdao.getBookingByBookingID(bookingid);
             List<BookingRoom> listBookingRoom = bdao.getAllBookingRoomByBookingID(bookingid);
+            
+            
             List<Room> listRoom = new ArrayList<>();
             LocalDateTime checkindate = null;
             LocalDateTime checkoutdate = null;
@@ -142,28 +144,37 @@ public class editBooking extends HttpServlet {
             BookingDAO bdao = new BookingDAO();
             GuestDAO gdao = new GuestDAO();
             RoomDao rdao = new RoomDao();
+            boolean checkin = true;
+            String noti = "Save successfully!";
             int checkinstatus = Integer.parseInt(request.getParameter("checkinstatus"));
             int deposit = Integer.parseInt(request.getParameter("deposit"));
             int bookingid = Integer.parseInt(request.getParameter("bookingid"));
             int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
+            List<BookingRoom> listToCheckIn = bdao.isReadyToCheckIn(bookingid);
+            if(!listToCheckIn.isEmpty()){
+                checkin = false;
+                noti = "Check out date is before current date!";
+            }
             Booking booking = bdao.getBookingByBookingID(bookingid);
             BookingCodeConvert utilConvert = new BookingCodeConvert();
             String bookingcode = utilConvert.toBase36(bookingid);
             Guest guest = gdao.getGuestByGuestID(booking.getGuestID());
             String email = guest.getEmail();
-            String noti = "Save successfully!";
+            
             int neededDeposit = booking.getTotalPrice() / 2;
-            boolean checkin = true;
+            
             if (deposit != neededDeposit) {
                 noti = "Deposit must be 50% of total price";
                 checkin = false;
             } else {
                 // deposit da nhap dung 50%
                 noti = "Save successfully!";
-                bdao.updateDeposit(bookingid, deposit);
             }
-            bdao.updatePaymentMethod(bookingid, paymentMethod);
+            if (booking.getCheckInStatus() == 0) {
+                bdao.updateDeposit(bookingid, deposit);
+                bdao.updatePaymentMethod(bookingid, paymentMethod);
+            }
             if (booking.getCheckInStatus() == 0) {
                 if (checkinstatus == 1) {
                     // xem xem phòng đã đang occupied hay ko,
