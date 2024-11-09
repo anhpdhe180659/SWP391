@@ -38,73 +38,79 @@ public class login extends HttpServlet {
         }
     }
 
-@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("userC")) {
-                request.setAttribute("usernameC", cookie.getValue());
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userC")) {
+                    request.setAttribute("usernameC", cookie.getValue());
+                }
             }
         }
-    }
-    request.getRequestDispatcher("login.jsp").forward(request, response);
-}
-
-@Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
-    String remember = request.getParameter("remember");
-
-    UserDAO userDAO = new UserDAO();
-    User user = userDAO.getUserByUsername(username);
-
-    // Kiểm tra nếu tài khoản không tồn tại
-    if (user.getUsername() == null) {
-        request.setAttribute("error", "Invalid username or password!!!");
         request.getRequestDispatcher("login.jsp").forward(request, response);
-        return;
     }
 
-    // Kiểm tra tài khoản bị khóa
-    if (user.getStatus() == 0) {
-        request.setAttribute("error", "Account has been banned");
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-        return;
-    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Lấy username và password từ form, giữ nguyên case
+        String username = request.getParameter("username"); // thêm trim() để loại bỏ khoảng trắng
+        String password = request.getParameter("password");
+        String remember = request.getParameter("remember");
+
+        UserDAO userDAO = new UserDAO();
+        // Tìm user với username chính xác case
+        User user = userDAO.getUserByUsername(username);
+
+        // Kiểm tra nếu tài khoản không tồn tại
+        if (user.getUsername() == null) {
+            request.setAttribute("error", "Invalid username or password!!!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra tài khoản bị khóa
+        if (user.getStatus() == 0) {
+            request.setAttribute("error", "Account has been banned");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
 
         try {
-            // So sánh mật khẩu đã hash
-            if (PasswordUtils.verifyPassword(password, user.getPassword())) {
+            // So sánh username chính xác case và mật khẩu đã hash
+            if (username.equals(user.getUsername()) && PasswordUtils.verifyPassword(password, user.getPassword())) {
                 HttpSession session = request.getSession();
                 session.setAttribute("role", user.getRole());
                 session.setAttribute("loggedInUser", username);
                 session.setAttribute("user", user);
-                
+
                 if (remember != null) {
                     Cookie userCookie = new Cookie("userC", username);
                     userCookie.setMaxAge(COOKIE_MAX_AGE);
                     response.addCookie(userCookie);
                 }
-                
+
                 // Chuyển hướng dựa trên role
                 switch (user.getRole()) {
-                    case 1 -> response.sendRedirect("/SWP391/dashboard");
-                    case 2 -> response.sendRedirect("/SWP391/receptionDashboard");
-                    case 3 -> response.sendRedirect("/SWP391/dashboardstaff");
-                    default -> response.sendRedirect("guestHomePage.jsp");
+                    case 1 ->
+                        response.sendRedirect("/SWP391/dashboard");
+                    case 2 ->
+                        response.sendRedirect("/SWP391/receptionDashboard");
+                    case 3 ->
+                        response.sendRedirect("/SWP391/dashboardstaff");
+                    default ->
+                        response.sendRedirect("guestHomePage.jsp");
                 }
             } else {
                 request.setAttribute("error", "Invalid username or password!!!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
-            }   } catch (NoSuchAlgorithmException ex) {
+            }
+        } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
-
+    }
 
     @Override
     public String getServletInfo() {
