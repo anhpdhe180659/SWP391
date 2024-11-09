@@ -45,30 +45,28 @@ public class addService extends HttpServlet {
         }
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        try {
-            ServiceDAO sdao = new ServiceDAO();
-            List<Service> listService = sdao.getAllServices();
-            String name = request.getParameter("name");
-            boolean flag = false;
-            for (Service a : listService) {
-                if (a.getName().equals(name)) {
-                    request.setAttribute("duplicate", "Amenity existed in system.");
-                    flag = true;
-                    break;
-                }
+        ServiceDAO sdao = new ServiceDAO();
+        List<Service> listService = sdao.getAllServices();
+        String name = request.getParameter("name");
+        boolean flag = false;
+        for (Service a : listService) {
+            if (a.getName().equals(name)) {
+                request.setAttribute("duplicate", "Service existed in system.");
+                flag = true;
+                request.getRequestDispatcher("listService.jsp").forward(request, response);
+                break;
             }
-            if (!flag) {
-                int price = Integer.parseInt(request.getParameter("price"));
-                Service s = new Service();
-                s.setName(name);
-                s.setPrice(price);
-                sdao.addService(s);
-            }
-            session.setAttribute("listService", listService);
-            request.getRequestDispatcher("listService.jsp").forward(request, response);
-        } catch (ServletException | IOException | NumberFormatException e) {
-            out.print(e.getMessage());
         }
+        if (!flag) {
+            int price = Integer.parseInt(request.getParameter("price"));
+            Service s = new Service();
+            s.setName(name);
+            s.setPrice(price);
+            sdao.addService(s);
+        }
+        session.setAttribute("listService", listService);
+        response.sendRedirect("listService");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -83,7 +81,6 @@ public class addService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

@@ -93,7 +93,7 @@ public class addRoom extends HttpServlet {
             return;
         }
         try {
-            String roomNumber = request.getParameter("roomNumber");
+            String roomNumber = request.getParameter("roomNumber").trim();
             int cleanId = Integer.parseInt(request.getParameter("cleanId"));
             int statusId = Integer.parseInt(request.getParameter("statusId"));
             int typeId = Integer.parseInt(request.getParameter("typeId"));

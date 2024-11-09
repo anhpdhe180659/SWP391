@@ -54,6 +54,7 @@ public class addAmenity extends HttpServlet {
                 if (a.getAmenName().equals(name)) {
                     request.setAttribute("duplicate", "Amenity existed in system.");
                     flag = true;
+                    request.getRequestDispatcher("listAmenity.jsp").forward(request, response);
                     break;
                 }
             }
@@ -64,7 +65,7 @@ public class addAmenity extends HttpServlet {
                 adao.addAmenity(a);
             }
             session.setAttribute("listAmenity", listAmenity);
-            request.getRequestDispatcher("listAmenity.jsp").forward(request, response);
+            response.sendRedirect("listAmenity");
         } catch (ServletException | IOException | NumberFormatException e) {
             out.print(e.getMessage());
         }

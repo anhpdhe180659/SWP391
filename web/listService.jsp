@@ -123,7 +123,7 @@
                                                         <span class="fw-light"> Service </span>
                                                     </h5>
                                                 </div>
-                                                <form action="addService" onsubmit="return validate()">
+                                                <form action="addService" method="post">
                                                     <div class="modal-body">
                                                         <p class="small">
                                                             Create a new service, make sure you
