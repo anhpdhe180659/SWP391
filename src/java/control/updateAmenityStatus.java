@@ -94,8 +94,11 @@ public class updateAmenityStatus extends HttpServlet {
             if (newStatus == 2 || newStatus == 3) {
                 RoomDao roomDao = new RoomDao();
                 Room room = roomDao.findRoomById(roomID);
-                room.setStatusId(3);
-                roomDao.updateStatus(room);
+                // Chỉ cập nhật nếu phòng không phải đang occupied (statusId != 2)
+                if (room.getStatusId() != 2) {
+                    room.setStatusId(3);
+                    roomDao.updateStatus(room);
+                }
             }
 
             // Gửi phản hồi thành công về client
