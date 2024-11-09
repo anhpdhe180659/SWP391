@@ -93,8 +93,9 @@ public class checkout extends HttpServlet {
             }
             b.setTotalPrice(totalAmount);
             bkDao.updateTotalPrice(b.getBookingID(), b.getTotalPrice());
-            totalAmount = totalAmount - b.getDeposit();
-            PaymentData paymentData = PaymentData.builder().amount(totalAmount)
+            InvoiceDAO ivDao = new InvoiceDAO();
+            Invoice i = ivDao.getInvoiceByBookingId(b.getBookingID());
+            PaymentData paymentData = PaymentData.builder().amount(i.getFinalAmount()-b.getDeposit())
                     .cancelUrl("http://localhost:8080/SWP391/payStatus")
                     .returnUrl("http://localhost:8080/SWP391/payStatus")
                     .description("Bill of " + g.getName())

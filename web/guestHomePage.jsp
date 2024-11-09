@@ -97,7 +97,7 @@
                             <img src="<%= room.getImage() %>">
                             <div class="content">
                                 <div class="title"><%= room.getTypeName() %></div>
-                                <div class="topic">Price : <%= room.getPrice() %>VND</div>
+                                <div class="topic">Price : <span class="price-vnd"><%= room.getPrice() %></span></div>
                                 <div class="author">Capacity: <%= room.getCapacity() %></div>
 
                             </div>
@@ -217,7 +217,28 @@
         </div>
     </div>
     <br>
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script>
+        // Format price to VND
+        function formatCurrencyVND(value) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(value);
+        }
 
+        // Apply the format to all prices
+        $(document).ready(function () {
+            $('.price-vnd').each(function () {
+                let price = parseFloat($(this).text());
+                $(this).text(formatCurrencyVND(price));
+            });
+        });
+
+        function doClose() {
+            $('#addUserModal').modal('hide');
+        }
+    </script>
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
@@ -244,34 +265,6 @@
     <!-- jQuery Vector Maps -->
     <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
     <script src="assets/js/plugin/jsvectormap/world.js"></script>
-    <script>
-        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#177dff",
-            fillColor: "rgba(23, 125, 255, 0.14)",
-        });
-
-        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#f3545d",
-            fillColor: "rgba(243, 84, 93, .14)",
-        });
-
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#ffa534",
-            fillColor: "rgba(255, 165, 52, .14)",
-        });
-    </script> 
     <script src="JS/animate.js"></script>
 
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>

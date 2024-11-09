@@ -42,7 +42,9 @@ public class InvoiceDAO extends DBContext {
                         rs.getFloat("Discount"),
                         rs.getInt("FinalAmount"),
                         rs.getString("PaymentMethod"),
-                        rs.getDate("PaymentDate").toLocalDate()
+                        rs.getDate("PaymentDate").toLocalDate(),
+                        rs.getString("Note"),
+                        rs.getInt("Fine")
                 ));
             }
         } catch (SQLException e) {
@@ -80,7 +82,9 @@ public class InvoiceDAO extends DBContext {
                         rs.getFloat("Discount"),
                         rs.getInt("FinalAmount"),
                         rs.getString("PaymentMethod"),
-                        rs.getDate("PaymentDate").toLocalDate()
+                        rs.getDate("PaymentDate").toLocalDate(),
+                        rs.getString("Note"),
+                        rs.getInt("Fine")
                 ));
             }
         } catch (SQLException e) {
@@ -108,7 +112,9 @@ public class InvoiceDAO extends DBContext {
                         rs.getFloat("Discount"),
                         rs.getInt("FinalAmount"),
                         rs.getString("PaymentMethod"),
-                        rs.getDate("PaymentDate").toLocalDate()
+                        rs.getDate("PaymentDate").toLocalDate(),
+                        rs.getString("Note"),
+                        rs.getInt("Fine")
                 ));
             }
         } catch (SQLException e) {
@@ -119,8 +125,8 @@ public class InvoiceDAO extends DBContext {
 
     public void insertInvoice(Invoice i) {
         String sql = """
-                    insert into Invoice (BookingID,TotalAmount,Discount,FinalAmount,PaymentMethod,PaymentDate)
-                    values(?,?,?,?,?,?)
+                    insert into Invoice (BookingID,TotalAmount,Discount,FinalAmount,PaymentMethod,PaymentDate,Note,Fine)
+                    values(?,?,?,?,?,?,?,?)
                     """;
         try (PreparedStatement pre = connection.prepareStatement(sql);) {
 
@@ -130,9 +136,28 @@ public class InvoiceDAO extends DBContext {
             pre.setInt(4, i.getFinalAmount());
             pre.setString(5, i.getPaymentMethod());
             pre.setDate(6, java.sql.Date.valueOf(i.getPaymentDate()));
+            pre.setString(7, i.getNote());
+            pre.setInt(8, i.getFine());
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateNoteAndFine(Invoice i) {
+        String sql = """
+                    update Invoice set Note = ?,Fine = ?, FinalAmount = ?
+                    where InvoiceNo = ?
+                    """;
+        try (PreparedStatement pre = connection.prepareStatement(sql);) {
+
+            pre.setString(1, i.getNote());
+            pre.setInt(2, i.getFine());
+            pre.setInt(3, i.getFinalAmount());
+            pre.setInt(4, i.getInvoiceNo());
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("sdasd" + e.getMessage());
         }
     }
 
@@ -152,7 +177,36 @@ public class InvoiceDAO extends DBContext {
                         rs.getFloat("Discount"),
                         rs.getInt("FinalAmount"),
                         rs.getString("PaymentMethod"),
-                        rs.getDate("PaymentDate").toLocalDate()
+                        rs.getDate("PaymentDate").toLocalDate(),
+                        rs.getString("Note"),
+                        rs.getInt("Fine")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving invoices: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Invoice getInvoiceByBookingId(int id) {
+        String query = """
+                   SELECT * FROM hotelmanagement.invoice where BookingID = ?
+                   """;
+        try (PreparedStatement pre = connection.prepareStatement(query);) {
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+
+                return new Invoice(
+                        rs.getInt("InvoiceNo"),
+                        rs.getInt("BookingID"),
+                        rs.getInt("TotalAmount"),
+                        rs.getFloat("Discount"),
+                        rs.getInt("FinalAmount"),
+                        rs.getString("PaymentMethod"),
+                        rs.getDate("PaymentDate").toLocalDate(),
+                        rs.getString("Note"),
+                        rs.getInt("Fine")
                 );
             }
         } catch (SQLException e) {
