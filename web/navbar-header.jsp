@@ -30,7 +30,7 @@
                         <span class="op-7">Hi,</span>
                         <!-- Sidebar -->
                         <span class="fw-bold">
-                                    ${sessionScope.user.name}
+                            ${sessionScope.user.name}
                         </span>
                     </span>
                 </a>
@@ -60,8 +60,6 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="ViewProfileServlet?userId=${sessionScope.user.userID}">My Profile</a>
                             <a class="dropdown-item" href="changePassword.jsp">Change Password</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Account Setting</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="logout">Logout</a>
                         </li>
