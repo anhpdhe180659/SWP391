@@ -365,7 +365,7 @@
                                             <div class="row align-items-center">
                                                 <div class="col-icon">
                                                     <div
-                                                        class="icon-big text-center icon-info bubble-shadow-small"style="background-color: slategray"
+                                                        class="icon-big text-center icon-info bubble-shadow-small"style="background-color: palevioletred"
                                                         >
                                                         <i class="fas fa-users"></i>
                                                     </div>
@@ -475,9 +475,9 @@
                                                     <div class="card-header">
                                                         <div class="card-title">Room Statistics</div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="chart-container">
-                                                            <canvas id="myChart" style="width: 50%; height: 50%;"></canvas>
+                                                    <div class="card-body" style="padding: 0; display: flex; justify-content: center; align-items: center;">
+                                                        <div class="chart-container" style="width: 800px; height: 600px;"> <!-- Smaller container size -->
+                                                            <canvas id="myChart" style="width: 100%; height: 100%;"></canvas> <!-- Make chart fit container -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -531,9 +531,9 @@
                                                     <div class="card-header">
                                                         <div class="card-title">Number of room types</div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="chart-container">
-                                                            <canvas id="roomChart" style="width: 50%; height: 50%;"></canvas>
+                                                    <div class="card-body" style=" display: flex; justify-content: center;">
+                                                        <div class="chart-container" style="width: 800px; height: 600px;">
+                                                            <canvas id="roomChart" style="width: 100%; height: 100%;"></canvas>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -545,8 +545,8 @@
                                                     <div class="card-header">
                                                         <div class="card-title">Revenue Statistics by Month</div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="chart-container">
+                                                    <div class="card-body" >
+                                                        <div class="chart-container" style="display: flex; justify-content: center;">
                                                             <canvas id="revenueChart" style="width: 100%; height: 100%;"></canvas>
                                                         </div>
                                                     </div>
@@ -780,43 +780,43 @@
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const months = [];
-        const revenue = [];
+                    <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const months = [];
+                                                const revenue = [];
 
-        
-        <c:forEach var="entry" items="${revenueByMonth}">
-            months.push('${entry.key}');
-            revenue.push(${entry.value});
-        </c:forEach>
 
-        
-        console.log(months, revenue);
+                        <c:forEach var="entry" items="${revenueByMonth}">
+                                                months.push('${entry.key}');
+                                                revenue.push(${entry.value});
+                        </c:forEach>
 
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(ctx, {
-            type: 'bar', 
-            data: {
-                labels: months,
-                datasets: [{
-                    label: 'Revenue (VND)',
-                    data: revenue,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-</script>
+
+                                                console.log(months, revenue);
+
+                                                const ctx = document.getElementById('revenueChart').getContext('2d');
+                                                const revenueChart = new Chart(ctx, {
+                                                    type: 'bar',
+                                                    data: {
+                                                        labels: months,
+                                                        datasets: [{
+                                                                label: 'Revenue (VND)',
+                                                                data: revenue,
+                                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                                borderWidth: 1
+                                                            }]
+                                                    },
+                                                    options: {
+                                                        scales: {
+                                                            y: {
+                                                                beginAtZero: true
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            });
+                    </script>
 
 
                     </body>
