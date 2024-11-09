@@ -75,17 +75,19 @@
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Capacity</label>
-                                                                    <input name="capacity" type="number" class="form-control" required />
+                                                                    <input name="capacity" type="number" min="1" max="20" class="form-control" required />
                                                                 </div>
+                                                                <span class="capacityError" style="display: none; color: red"></span>
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
                                                                     <label>Price</label>
-                                                                    <input type="number" name="price" class="form-control" />
+                                                                    <input type="number" min="1000" max="99999999" name="price" class="form-control" required=""/>
                                                                 </div>
+                                                                <span class="priceError" style="display: none; color: red"></span>
                                                                 <div class="form-group form-group-default">
                                                                     <label>Image</label>
-                                                                    <input type="file" name="image" class="form-control image-input" required />
+                                                                    <input type="file" name="image" class="form-control image-input" accept=".jpg, .jpeg, .png" required />
                                                                     <img height="300px" class="preview-img" style="display: none" src="#" alt="alt"/>
                                                                 </div>
                                                             </div>
@@ -133,7 +135,7 @@
                                                 const value = typeName.value;
                                                 console.log(value);
                                                 if (labels_type.includes(value)) {
-                                                   button.disabled = true;
+                                                    button.disabled = true;
                                                     error.style.display = 'block';
                                                 } else {
                                                     button.disabled = false;
@@ -179,6 +181,51 @@
                             }
                         });
                     });
+                </script>
+                <script>
+                    const keyword = document.querySelector('input[type="number"]');
+                    console.log(keyword);
+                    const errorMessage = document.getElementById("error-message");
+                    keyword.addEventListener("keypress", function (event) {
+                        if (event.key === "e" || event.key === "E") {
+                            event.preventDefault();
+                        }
+                    });
+
+                    const capacity = document.querySelector('input[name="capacity"]');
+                    console.log(capacity);
+                    capacity.onchange = function () {
+                        const value = capacity.value;
+                        var re = new RegExp("^([0-9]{0,2})$");
+                        console.log(re);
+                        if (!re.test(value)) {
+                            const error = document.querySelector('.capacityError');
+                            error.textContent = "Please input number with 1-2 digits";
+                            error.style.display = 'block';
+                            button.disabled = true;
+                        } else {
+                            const error = document.querySelector('.capacityError');
+                            error.style.display = 'none'; // Hide error if input is valid
+                            button.disabled = false;
+                        }
+                    }
+                    const roomNum = document.querySelector('input[name="price"]');
+                    console.log(roomNum);
+                    roomNum.onchange = function () {
+                        const value = roomNum.value;
+                        var re = new RegExp("^([0-9]{0,9})$");
+                        console.log(re);
+                        if (!re.test(value)) {
+                            const error = document.querySelector('.priceError');
+                            error.textContent = "Please input number with 5-9 digits";
+                            error.style.display = 'block';
+                            button.disabled = true;
+                        } else {
+                            const error = document.querySelector('.priceError');
+                            error.style.display = 'none'; // Hide error if input is valid
+                            button.disabled = false;
+                        }
+                    }
                 </script>
             </div>
         </div>
