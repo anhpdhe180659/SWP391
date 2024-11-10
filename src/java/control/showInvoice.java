@@ -118,8 +118,10 @@ public class showInvoice extends HttpServlet {
             LocalDate localDate = currentDate.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
+
             // Set the payment date
             invoice.setPaymentDate(localDate);
+
             //set note for receptionx
             AmenityForRoomDAO amdao = new AmenityForRoomDAO();
             List<RoomAmenBroken> listBrokenAmen = amdao.getAllBrokenAmenByBooking(bkId);
@@ -130,7 +132,18 @@ public class showInvoice extends HttpServlet {
             });
 //
             String note = invoice.getNote();
+            
+            //check in sớm
+            LocalDateTime actualDate = booking.getActualCheckInDate();  // Current date and time
 
+            // Example LocalDateTime value
+            LocalDateTime expectedDate = bkDao.getAllBookingRoomByBookingID(bkId).get(0).getCheckInDate();  // Current date and time without timezone
+            System.out.println("Expected :" + expectedDate);
+
+            if (actualDate.isBefore(expectedDate)) {
+                note = "Check in early than expected, ";
+            }
+            //hỏng đồ
             if (!listBrokenAmen.isEmpty()) {
                 for (RoomAmenBroken ba : listBrokenAmen) {
                     note = note + "Room " + ba.getRoomNumber() + ": " + ba.getAmenName() + ",";

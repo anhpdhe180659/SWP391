@@ -260,4 +260,17 @@ public class InvoiceDAO extends DBContext {
     public static void main(String[] args) {
         System.out.println(new InvoiceDAO().get5InvoicesATime("2024-11-07", null, 1).size());
     }
+
+    public void updateDate(Invoice ivDao) {
+        String sql = """
+                     update Invoice set PaymentDate = ? where InvoiceNo = ?
+                     """;
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+            pre.setDate(1, java.sql.Date.valueOf(ivDao.getPaymentDate()));
+            pre.setInt(2, ivDao.getInvoiceNo());
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

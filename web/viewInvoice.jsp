@@ -187,7 +187,7 @@
                                                         <!-- Conditionally Display Fine -->
                                                         <c:if test="${sessionScope.invoice.fine >= 0}">
                                                             <tr class="fine-highlight">
-                                                                <td colspan="3"><b>Note and Fine:</b></td>
+                                                                <td colspan="3"><b>Note and Extra Fee:</b></td>
                                                                 <td>
                                                                     <table class="table table-sm table-borderless">
                                                                         <thead>
