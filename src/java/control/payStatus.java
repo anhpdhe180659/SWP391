@@ -97,7 +97,8 @@ public class payStatus extends HttpServlet {
                 System.out.println("succes r dcm");
             }
             case "CANCELLED" -> {
-                response.sendRedirect("listRoom");
+                int bookingId = Integer.parseInt((String) session.getAttribute("bookingInPay"));
+                response.sendRedirect("showInvoice?bookingId="+bookingId);
             }
             case "CASH" -> {
                 int bkId = Integer.parseInt(request.getParameter("bookingId"));
@@ -143,6 +144,17 @@ public class payStatus extends HttpServlet {
         Guest g = gDao.getGuestByGuestID(booking.getGuestID());
         booking.setPaidStatus(1);
         bkDao.updatePaidStatus(booking);
+        InvoiceDAO ivDao = new InvoiceDAO();
+        Invoice i = ivDao.getInvoiceByBookingId(booking.getBookingID());
+        // Convert Date to LocalDate
+        Date currentDate = new Date();
+        LocalDate localDate = currentDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        // Set the payment date
+        i.setPaymentDate(localDate);
+        ivDao.updateDate(i);
         List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(bookingId);
         for (BookingRoom bkRoom : allBookingRoom) {
             Room room = rDao.getRoomByRoomID(bkRoom.getRoomID());
@@ -245,7 +257,7 @@ public class payStatus extends HttpServlet {
 // Append the Fine section if the fine is greater or equal to zero
         if (i.getFine() >= 0) {
             emailContent.append("<tr class=\"fine-highlight\">")
-                    .append("<td colspan=\"3\"><b>Note and Fine:</b></td>")
+                    .append("<td colspan=\"3\"><b>Note and Extra Fee:</b></td>")
                     .append("<td>")
                     .append("<table class=\"table table-sm table-borderless\">")
                     .append("<thead>")
@@ -278,7 +290,7 @@ public class payStatus extends HttpServlet {
                 + "                                                        </tr>");
         emailContent.append("<tr>\n"
                 + "                                                            <td colspan=\"3\"><b>Final Total: </b></td>\n"
-                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(i.getFinalAmount()- b.getDeposit()) + "</span>\n"
+                + "                                                            <td> <span class=\"price-vnd\">" + currencyFormatter.format(i.getFinalAmount() - b.getDeposit()) + "</span>\n"
                 + "                                                            </td>\n"
                 + "                                                        </tr>");
 
@@ -329,6 +341,17 @@ public class payStatus extends HttpServlet {
         booking.setPaidStatus(1);
         bkDao.updatePaidStatus(booking);
         RoomDao rDao = new RoomDao();
+        InvoiceDAO ivDao = new InvoiceDAO();
+        Invoice i = ivDao.getInvoiceByBookingId(booking.getBookingID());
+        // Convert Date to LocalDate
+        Date currentDate = new Date();
+        LocalDate localDate = currentDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        // Set the payment date
+        i.setPaymentDate(localDate);
+        ivDao.updateDate(i);
         //update status room
         List<BookingRoom> allBookingRoom = bkDao.getAllBookingRoomByBookingID(booking.getBookingID());
         for (BookingRoom br : allBookingRoom) {
