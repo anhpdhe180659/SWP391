@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -26,10 +27,23 @@ public class Booking {
     Date BookingDate;
     int TotalPrice;
     int PaymentMethod;
-    Date ActualCheckInDate;
-    Date ActualCheckOutDate;
+    LocalDateTime ActualCheckInDate;
+    LocalDateTime ActualCheckOutDate;
 
     public Booking() {
+    }
+
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice, int PaymentMethod, LocalDateTime ActualCheckInDate) {
+        this.BookingID = BookingID;
+        this.GuestID = GuestID;
+        this.Deposit = Deposit;
+        this.CheckInStatus = CheckInStatus;
+        this.PaidStatus = PaidStatus;
+        this.UserID = UserID;
+        this.BookingDate = BookingDate;
+        this.TotalPrice = TotalPrice;
+        this.PaymentMethod = PaymentMethod;
+        this.ActualCheckInDate = ActualCheckInDate;
     }
 
     public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice, int PaymentMethod) {
@@ -44,7 +58,7 @@ public class Booking {
         this.PaymentMethod = PaymentMethod;
     }
 
-    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice, int PaymentMethod, Date ActualCheckInDate, Date ActualCheckOutDate) {
+    public Booking(int BookingID, int GuestID, int Deposit, int CheckInStatus, int PaidStatus, int UserID, Date BookingDate, int TotalPrice, int PaymentMethod, LocalDateTime ActualCheckInDate,LocalDateTime ActualCheckOutDate) {
         this.BookingID = BookingID;
         this.GuestID = GuestID;
         this.Deposit = Deposit;
@@ -130,19 +144,19 @@ public class Booking {
         this.PaymentMethod = PaymentMethod;
     }
 
-    public Date getActualCheckInDate() {
+    public LocalDateTime getActualCheckInDate() {
         return ActualCheckInDate;
     }
 
-    public void setActualCheckInDate(Date ActualCheckInDate) {
+    public void setActualCheckInDate(LocalDateTime ActualCheckInDate) {
         this.ActualCheckInDate = ActualCheckInDate;
     }
 
-    public Date getActualCheckOutDate() {
+    public LocalDateTime getActualCheckOutDate() {
         return ActualCheckOutDate;
     }
 
-    public void setActualCheckOutDate(Date ActualCheckOutDate) {
+    public void setActualCheckOutDate(LocalDateTime ActualCheckOutDate) {
         this.ActualCheckOutDate = ActualCheckOutDate;
     }
 

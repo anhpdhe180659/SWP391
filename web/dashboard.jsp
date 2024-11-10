@@ -779,56 +779,24 @@
                     </script>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <script>
-                                            // Chuẩn bị dữ liệu từ server
-                                            const months = [];
-                                            const revenue = [];
 
-                        <c:forEach var="entry" items="${revenueByMonth}">
-                                            months.push('${entry.key}');
-                                            revenue.push(${entry.value});
-                        </c:forEach>
-
-                                            // Hiển thị biểu đồ doanh thu
-                                            const ctx = document.getElementById('revenueChart').getContext('2d');
-                                            const revenueChart = new Chart(ctx, {
-                                                type: 'bar', // Có thể là 'line', 'bar', 'doughnut', v.v.
-                                                data: {
-                                                    labels: months,
-                                                    datasets: [{
-                                                            label: 'Revenue (VND)',
-                                                            data: revenue,
-                                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                                            borderColor: 'rgba(75, 192, 192, 1)',
-                                                            borderWidth: 1
-                                                        }]
-                                                },
-                                                options: {
-                                                    scales: {
-                                                        y: {
-                                                            beginAtZero: true
-                                                        }
-                                                    }
-                                                }
-                                            });
-                    </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const months = [];
         const revenue = [];
 
-        // Kiểm tra dữ liệu từ server
+        
         <c:forEach var="entry" items="${revenueByMonth}">
             months.push('${entry.key}');
             revenue.push(${entry.value});
         </c:forEach>
 
-        // Kiểm tra xem có dữ liệu hay không
+        
         console.log(months, revenue);
 
         const ctx = document.getElementById('revenueChart').getContext('2d');
         const revenueChart = new Chart(ctx, {
-            type: 'bar', // Hoặc 'line' tùy vào loại biểu đồ
+            type: 'bar', 
             data: {
                 labels: months,
                 datasets: [{

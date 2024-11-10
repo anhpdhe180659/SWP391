@@ -65,7 +65,7 @@ public class listInvoice extends HttpServlet {
         if (session == null) {
             response.sendRedirect("login.jsp");
         }
-        if (session.getAttribute("user") == null || (int) session.getAttribute("role") != 2) {
+        if (session.getAttribute("user") == null || (int) session.getAttribute("role") == 3) {
             request.setAttribute("error", "Please sign in with receptionist account !");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
