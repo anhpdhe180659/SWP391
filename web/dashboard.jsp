@@ -440,7 +440,7 @@
                                                 <button class="nav-link" id="room-types-tab" data-bs-toggle="tab" data-bs-target="#room-types" type="button" role="tab" aria-controls="room-types" aria-selected="false">Number of Room Types</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="revenue-stats-tab" data-bs-toggle="tab" data-bs-target="#revenue-stats" type="button" role="tab" aria-controls="revenue-stats" aria-selected="false">Revenue Statistics by Month</button>
+                                                <button class="nav-link" id="revenue-stats-tab" data-bs-toggle="tab" data-bs-target="#revenue-stats" type="button" role="tab" aria-controls="revenue-stats" aria-selected="false">Invoice Statistics by Month</button>
                                             </li>
                                         </ul>
 
@@ -476,8 +476,8 @@
                                                         <div class="card-title">Room Statistics</div>
                                                     </div>
                                                     <div class="card-body" style="padding: 0; display: flex; justify-content: center; align-items: center;">
-                                                        <div class="chart-container" style="width: 800px; height: 600px;"> <!-- Smaller container size -->
-                                                            <canvas id="myChart" style="width: 100%; height: 100%;"></canvas> <!-- Make chart fit container -->
+                                                        <div class="chart-container" style="width: 800px; height: 600px;"> 
+                                                            <canvas id="myChart" style="width: 100%; height: 100%;"></canvas> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -539,11 +539,11 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Revenue Statistics by Month Section -->
+                                            
                                             <div class="tab-pane fade" id="revenue-stats" role="tabpanel" aria-labelledby="revenue-stats-tab">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <div class="card-title">Revenue Statistics by Month</div>
+                                                        <div class="card-title">Invoice Statistics by Month</div>
                                                     </div>
                                                     <div class="card-body" >
                                                         <div class="chart-container" style="display: flex; justify-content: center;">
@@ -560,17 +560,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--                    <div class="row">
-                                            <div class="col-md-4">
-                                                <canvas id="maintenanceChart"></canvas>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <canvas id="availableChart"></canvas>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <canvas id="occupiedChart"></canvas>
-                                            </div>
-                                        </div>-->
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script>
             var maintenanceData = {
@@ -680,9 +669,9 @@
                             datasets: [{
                                     data: [underMaintenance, available, occupied],
                                     backgroundColor: [
-                                        'orange', // Màu đỏ cho giá trị 10
-                                        'greenyellow', // Màu xanh cho giá trị 20
-                                        '#286090' // Màu vàng cho giá trị 30
+                                        'orange', 
+                                        'greenyellow', 
+                                        '#286090' 
                                     ],
                                     borderWidth: 1
                                 }]

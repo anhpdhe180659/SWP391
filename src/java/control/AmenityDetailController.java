@@ -73,15 +73,12 @@ public class AmenityDetailController extends HttpServlet {
             return;
         }
         String amenityIdParam = request.getParameter("amenityId");
-        int amenityId = 1; // Default value
-
-        // Check if the parameter is not null and is a valid integer
+        int amenityId = 1; 
         if (amenityIdParam != null) {
             try {
                 amenityId = Integer.parseInt(amenityIdParam);
-            } catch (NumberFormatException e) {
-                // Handle invalid format, e.g., log the error or set a default
-                e.printStackTrace();
+            } catch (NumberFormatException e) {                
+               response.sendRedirect("exceptionErrorPage.jsp");
             }
         }
 

@@ -151,11 +151,7 @@ public class editBooking extends HttpServlet {
             int bookingid = Integer.parseInt(request.getParameter("bookingid"));
             int paymentMethod = Integer.parseInt(request.getParameter("paymentMethod"));
             List<BookingRoom> listRoomBooked = bdao.getAllBookingRoomByBookingID(bookingid);
-            List<BookingRoom> listToCheckIn = bdao.isReadyToCheckIn(bookingid);
-            if(!listToCheckIn.isEmpty()){
-                checkin = false;
-                noti = "Check out date is before current date!";
-            }
+            
             Booking booking = bdao.getBookingByBookingID(bookingid);
             BookingCodeConvert utilConvert = new BookingCodeConvert();
             String bookingcode = utilConvert.toBase36(bookingid);
@@ -170,6 +166,11 @@ public class editBooking extends HttpServlet {
             } else {
                 // deposit da nhap dung 50%
                 noti = "Save successfully!";
+            }
+            List<BookingRoom> listToCheckIn = bdao.isReadyToCheckIn(bookingid);
+            if(!listToCheckIn.isEmpty()){
+                checkin = false;
+                noti = "Check out date is before current date!";
             }
             if (booking.getCheckInStatus() == 0) {
                 bdao.updateDeposit(bookingid, deposit);
